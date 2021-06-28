@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "clib:cobalt_block",
+    "clib:zinc_block"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:gems/lapis"
+    },
+    {
+      "item": "clib:iron_hammer"
+    }
+  ],
+  "result": {
+    "item": "clib:lapis_dust"
+  }
+}

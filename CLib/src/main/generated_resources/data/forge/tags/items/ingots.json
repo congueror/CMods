@@ -1,0 +1,27 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:ingots/tin",
+    "#forge:ingots/steel",
+    "#forge:ingots/aluminum",
+    "#forge:ingots/lead",
+    "#forge:ingots/copper",
+    "#forge:ingots/silver",
+    "#forge:ingots/lumium",
+    "#forge:ingots/nickel",
+    "#forge:ingots/invar",
+    "#forge:ingots/electrum",
+    "#forge:ingots/platinum",
+    "#forge:ingots/enderium",
+    "#forge:ingots/signalum",
+    "#forge:ingots/tungsten",
+    "#forge:ingots/bronze",
+    "#forge:ingots/titanium",
+    "#forge:ingots/uranium",
+    "#forge:ingots/cobalt",
+    "#forge:ingots/zinc",
+    "#forge:ingots/brass",
+    "#forge:ingots/chromium",
+    "#forge:ingots/thorium"
+  ]
+}

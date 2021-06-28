@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ipi",
+    "cic",
+    "ccc"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/copper"
+    },
+    "c": {
+      "tag": "forge:dusts/redstone"
+    },
+    "p": {
+      "tag": "forge:ingots/silver"
+    }
+  },
+  "result": {
+    "item": "clib:signalum_blend",
+    "count": 2
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "clib:block/titanium_ore_side",
+    "end": "clib:block/titanium_ore_top"
+  }
+}
