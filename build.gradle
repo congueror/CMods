@@ -1,6 +1,7 @@
 gradle.projectsEvaluated {
     def projects = [
-            "CLib"//,
+            "CLib",
+            "CGalaxy"
             //"CSuperheroes",
             //"MechAddendums"
     ]

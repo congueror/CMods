@@ -99,8 +99,6 @@ public class BlockInit {
     public static final RegistryObject<Block> RUBBER_PLANKS = BLOCKS.register("rubber_planks", () -> new Block(AbstractBlock.Properties.from(Blocks.OAK_PLANKS)));
     public static final RegistryObject<Block> RUBBER_SAPLING = BLOCKS.register("rubber_sapling", () -> new SaplingBlock(new RubberTree(), AbstractBlock.Properties.from(Blocks.OAK_SAPLING)));
 
-
-    public static final RegistryObject<Block> TEST = registerStorageBlock("test", 1, 1);
     public static RegistryObject<Block> registerStorageBlock(String name, float hardness, int harvestLvl) {
         return BLOCKS.register(name, () -> new Block(AbstractBlock.Properties
                 .create(Material.IRON).setRequiresTool()
