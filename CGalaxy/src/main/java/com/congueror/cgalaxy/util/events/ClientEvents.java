@@ -125,13 +125,10 @@ public class ClientEvents {
                                 RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE,
                                         GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                                 matrixStack.push();
-                                float f11 = 100000.0F - world.getRainStrength(partialTicks);// Rrain basiss ist es auf
-                                // 1.0F
+                                float f11 = 100000.0F - world.getRainStrength(partialTicks);
                                 RenderSystem.color4f(1.0F, 1.0F, 1.0F, f11);
                                 matrixStack.rotate(Vector3f.YP.rotationDegrees(-90.0F));
-                                // matrixStack.rotate(Vector3f.XP.rotationDegrees(world.func_242415_f(partialTicks)
-                                // * 360.0F));
-                                matrixStack.rotate(Vector3f.XP.rotationDegrees(180.0F /* world.func_242415_f(partialTicks) * 360.0F */));
+                                matrixStack.rotate(Vector3f.XP.rotationDegrees(180.0F));
                                 matrixStack.rotate(Vector3f.ZP.rotationDegrees(30.0F));
                                 matrix4f1 = matrixStack.getLast().getMatrix();
                                 float f12 = 30.0F;
@@ -160,6 +157,7 @@ public class ClientEvents {
                                 bufferbuilder.finishDrawing();
                                 WorldVertexBufferUploader.draw(bufferbuilder);
                                 // Earth Light end
+
                                 matrixStack.rotate(Vector3f.ZP.rotationDegrees(-30.0F));
                                 matrixStack.rotate(Vector3f.XP.rotationDegrees(world.func_242415_f(partialTicks) * 360.0F));
                                 matrix4f1 = matrixStack.getLast().getMatrix();
@@ -173,8 +171,7 @@ public class ClientEvents {
                                 WorldVertexBufferUploader.draw(bufferbuilder);
                                 RenderSystem.disableTexture();
                                 f12 = 20.0F;
-                                // f11 = 1000.0F;// Star Brightness
-                                float f10 = 1.0F;// world.getStarBrightness(partialTicks) * f11;
+                                float f10 = 1.0F;
                                 // f11
                                 if (f10 > 0.0F) {
                                     RenderSystem.color4f(f10, f10, f10, f10);
@@ -184,7 +181,7 @@ public class ClientEvents {
                                     VertexBuffer.unbindBuffer();
                                     mc.worldRenderer.skyVertexFormat.clearBufferState();
                                 }
-                                RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+                                RenderSystem.color4f(2.0F, 2.0F, 2.0F, 1.0F);
                                 RenderSystem.disableBlend();
                                 RenderSystem.enableAlphaTest();
                                 RenderSystem.enableFog();
