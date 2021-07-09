@@ -1,10 +1,8 @@
 package com.congueror.cgalaxy.init;
 
 import com.congueror.cgalaxy.CGalaxy;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.FallingBlock;
-import net.minecraft.block.SoundType;
+import com.congueror.cgalaxy.block.LaunchPadBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
@@ -19,4 +17,6 @@ public class BlockInit {
 
     public static final RegistryObject<Block> MOON_STONE = BLOCKS.register("moon_stone", () -> new Block(AbstractBlock.Properties
             .create(Material.ROCK).hardnessAndResistance(2f, 6.5f).sound(SoundType.STONE).harvestLevel(1).harvestTool(ToolType.PICKAXE)));
+
+    public static final RegistryObject<Block> LAUNCH_PAD = BLOCKS.register("launch_pad", () -> new LaunchPadBlock(AbstractBlock.Properties.from(Blocks.IRON_BLOCK)));
 }

@@ -1,15 +1,20 @@
 package com.congueror.cgalaxy.util.events;
 
 import com.congueror.cgalaxy.CGalaxy;
+import com.congueror.cgalaxy.entities.rocket_entity.RocketTier1Renderer;
+import com.congueror.cgalaxy.init.EntityTypeInit;
+import com.congueror.cgalaxy.init.Keybinds;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.client.world.DimensionRenderInfo;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
@@ -18,6 +23,8 @@ import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.ICloudRenderHandler;
 import net.minecraftforge.client.ISkyRenderHandler;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -28,8 +35,19 @@ public class ClientEvents {
     public static class ModCommonEvents {
         @SubscribeEvent
         public static void clientSetup(FMLClientSetupEvent e) {
-            //RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.ROCKET.get(), RocketRenderer::new);
             CGalaxy.LOGGER.info("Starting client setup for CGalaxy");
+
+            ClientRegistry.registerKeyBinding(Keybinds.LAUNCH_ROCKET);
+
+            RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.ROCKET_TIER_1.get(), renderManager -> {
+                return new MobRenderer(renderManager, new RocketTier1Renderer(), 0.5f) {
+                    @Override
+                    public ResourceLocation getEntityTexture(Entity entity) {
+                        return new ResourceLocation(CGalaxy.MODID, "textures/entity/rocket_tier_1.png");
+                    }
+                };
+            });
+
             DimensionRenderInfo.field_239208_a_.put(new ResourceLocation(CGalaxy.MODID, "moon"),
                     // cloudHeight, alternate sky color, fog type, render sky, diffuse lighting
                     new DimensionRenderInfo(Float.NaN, false, DimensionRenderInfo.FogType.NONE, false, false) {
@@ -133,13 +151,6 @@ public class ClientEvents {
                                 matrix4f1 = matrixStack.getLast().getMatrix();
                                 float f12 = 30.0F;
                                 mc.getTextureManager().bindTexture(EARTH_TEXTURES);
-                                int k = world.getMoonPhase();
-                                int l = k % 4;
-                                int i1 = k / 4 % 2;
-                                float f13 = (float) (l + 0) / 4.0F;
-                                float f14 = (float) (i1 + 0) / 2.0F;
-                                float f15 = (float) (l + 1) / 4.0F;
-                                float f16 = (float) (i1 + 1) / 2.0F;
                                 bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
                                 bufferbuilder.pos(matrix4f1, -9, -100.0F, 9).tex(0.0F, 0.0F).endVertex();
                                 bufferbuilder.pos(matrix4f1, 9, -100.0F, 9).tex(1.0F, 0.0F).endVertex();
@@ -181,7 +192,7 @@ public class ClientEvents {
                                     VertexBuffer.unbindBuffer();
                                     mc.worldRenderer.skyVertexFormat.clearBufferState();
                                 }
-                                RenderSystem.color4f(2.0F, 2.0F, 2.0F, 1.0F);
+                                RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
                                 RenderSystem.disableBlend();
                                 RenderSystem.enableAlphaTest();
                                 RenderSystem.enableFog();
@@ -212,6 +223,7 @@ public class ClientEvents {
                     });
         }
     }
+
     @Mod.EventBusSubscriber(modid = CGalaxy.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class ForgeCommonEvents {
 
