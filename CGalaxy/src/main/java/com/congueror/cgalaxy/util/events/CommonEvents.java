@@ -93,25 +93,23 @@ public class CommonEvents {
             double y = player.getPosY();
             double z = player.getPosZ();
 
-            if (world.getDimensionKey() == Dimensions.MOON) {
-                List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(x - (192 / 2d), y - (192 / 2d), z - (192 / 2d), x + (192 / 2d), y + (192 / 2d), z + (192 / 2d)), null);
-                for (Entity entity : entities) {
-                    if (entity instanceof LivingEntity) {
-                        AttributeModifierManager manager = ((LivingEntity) entity).getAttributeManager();
-                        if (world.getDimensionKey() == Dimensions.MOON) {
-                            manager.createInstanceIfAbsent(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(0.01);
-                            entity.fallDistance = 1;
-                        } else {
-                            manager.createInstanceIfAbsent(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(0.08);
-                        }
+            List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(x - (192 / 2d), y - (192 / 2d), z - (192 / 2d), x + (192 / 2d), y + (192 / 2d), z + (192 / 2d)), null);
+            for (Entity entity : entities) {
+                if (entity instanceof LivingEntity) {
+                    AttributeModifierManager manager = ((LivingEntity) entity).getAttributeManager();
+                    if (world.getDimensionKey() == Dimensions.MOON) {
+                        manager.createInstanceIfAbsent(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(0.0162);
+                        entity.fallDistance = 1;
+                    } else {
+                        manager.createInstanceIfAbsent(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(ForgeMod.ENTITY_GRAVITY.get().getDefaultValue());
                     }
-                    if (entity instanceof ItemEntity) {
-                        if (world.getDimensionKey() == Dimensions.MOON && entity.getPersistentData().getDouble("ItemGravity") <= 1 && entity.getMotion().getY() <= -0.1) {
-                            entity.getPersistentData().putDouble("ItemGravity", 2);
-                            entity.setMotion((entity.getMotion().getX()), ((entity.getMotion().getY()) + 0.04),
-                                    (entity.getMotion().getZ()));
-                            entity.getPersistentData().putDouble("ItemGravity", 0);
-                        }
+                }
+                if (entity instanceof ItemEntity) {
+                    if (world.getDimensionKey() == Dimensions.MOON && entity.getPersistentData().getDouble("ItemGravity") <= 1 && entity.getMotion().getY() <= -0.1) {
+                        entity.getPersistentData().putDouble("ItemGravity", 2);
+                        entity.setMotion((entity.getMotion().getX()), ((entity.getMotion().getY()) + 0.04),
+                                (entity.getMotion().getZ()));
+                        entity.getPersistentData().putDouble("ItemGravity", 0);
                     }
                 }
             }
@@ -136,7 +134,7 @@ public class CommonEvents {
                 }
             }
 
-            if (player.getPosY() >= 600 && player.getRidingEntity() instanceof RocketEntity) {
+            if (player.getPosY() >= 600 && player.getRidingEntity() instanceof RocketEntity && mc.currentScreen == null) {
                 if (player instanceof ServerPlayerEntity) {
                     Networking.sendToClient(new PacketOpenGalaxyMap(), (ServerPlayerEntity) player);
                 }

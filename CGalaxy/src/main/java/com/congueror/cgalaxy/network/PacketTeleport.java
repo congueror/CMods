@@ -1,11 +1,9 @@
 package com.congueror.cgalaxy.network;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -36,7 +34,7 @@ public class PacketTeleport {
                 RegistryKey<World> dim = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, world);
                 ServerWorld world = player.world.getServer().getWorld(dim);
                 if (world != null) {
-                    player.dismount();
+                    player.getRidingEntity().remove();
                     player.teleport(world, player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(), 0, 0);
                 }
             }
