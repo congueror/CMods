@@ -1,4 +1,4 @@
 rootProject.name = 'CMods 1.16.5'
 include 'src:untitled'
 findProject(':src:untitled')?.name = 'untitled'
-include 'CLib', 'CGalaxy'
+include 'CLib', 'CGalaxy', 'COres'

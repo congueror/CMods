@@ -1,11 +1,17 @@
 package com.congueror.cgalaxy.util.events;
 
 import com.congueror.cgalaxy.CGalaxy;
-import com.congueror.cgalaxy.entities.rocket_entity.RocketTier1Renderer;
+import com.congueror.cgalaxy.entities.RocketEntity;
+import com.congueror.cgalaxy.entities.rocket_tier_1.RocketTier1Renderer;
 import com.congueror.cgalaxy.init.EntityTypeInit;
-import com.congueror.cgalaxy.init.Keybinds;
+import com.congueror.cgalaxy.keybinds.Keybinds;
+import com.congueror.cgalaxy.network.PacketLaunchSequence;
+import com.congueror.cgalaxy.network.Networking;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.Tessellator;
@@ -22,11 +28,15 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.ICloudRenderHandler;
 import net.minecraftforge.client.ISkyRenderHandler;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.system.CallbackI;
 
 import javax.annotation.Nullable;
 
@@ -226,6 +236,33 @@ public class ClientEvents {
 
     @Mod.EventBusSubscriber(modid = CGalaxy.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class ForgeCommonEvents {
+        @SubscribeEvent
+        public static void onKeyInput(InputEvent.KeyInputEvent e) {
+            if (Minecraft.getInstance().currentScreen == null) {
+                if (e.getKey() == Keybinds.LAUNCH_ROCKET.getKey().getKeyCode()) {
+                    if (e.getAction() == GLFW.GLFW_PRESS) {
+                        Networking.sendToServer(new PacketLaunchSequence());
+                    }
+                }
+            }
+        }
 
+        @SubscribeEvent
+        public static void renderGameOverlay(RenderGameOverlayEvent e) {
+            Minecraft mc = Minecraft.getInstance();
+            ClientPlayerEntity player = mc.player;
+            MatrixStack mStack = e.getMatrixStack();
+            if (player != null) {
+                if (player.getRidingEntity() instanceof RocketEntity) {
+                    mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/hud/rocket_y_hud"));
+                    mc.ingameGUI.blit(mStack, 0, 0, 0, 0, e.getWindow().getScaledWidth(), e.getWindow().getScaledHeight());
+                    mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/hud/rocket_y"));
+                    double y = player.getPosY();
+                    if (y < 10) {
+                        //mc.ingameGUI.blit(mStack, );
+                    }
+                }
+            }
+        }
     }
 }

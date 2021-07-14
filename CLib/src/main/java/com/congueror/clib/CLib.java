@@ -1,9 +1,8 @@
 package com.congueror.clib;
 
-import com.congueror.clib.init.BlockInit;
-import com.congueror.clib.init.ItemInit;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -20,13 +19,23 @@ public class CLib {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         CLib.instance = this;
-        BlockInit.BLOCKS.register(modEventBus);
-        ItemInit.ITEMS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     public static int calculateRGB(int R, int G, int B) {
         return (R * 65536) + (G * 256) + B;
+    }
+
+    public static boolean isModLoaded(String mod) {
+        return ModList.get().isLoaded(mod);
+    }
+
+    public static boolean isCOresLoaded() {
+        return isModLoaded("cores");
+    }
+
+    public static boolean isCGalaxyLoaded() {
+        return isModLoaded("cgalaxy");
     }
 }

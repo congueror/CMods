@@ -145,6 +145,7 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.0.52")
 
     compile project(':CLib')
+    compile project(':COres')
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -153,7 +154,7 @@ jar {
         attributes([
                 "Specification-Title"     : "cgalaxy",
                 "Specification-Vendor"    : "Congueror",
-                "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Specification-Version"   : "0.1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.version,
                 "Implementation-Vendor"   : "Congueror",

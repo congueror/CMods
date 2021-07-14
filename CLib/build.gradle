@@ -13,7 +13,6 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-
 group = 'com.congueror'
 version = '1.16.5-2.0.0'
 archivesBaseName = 'clib'

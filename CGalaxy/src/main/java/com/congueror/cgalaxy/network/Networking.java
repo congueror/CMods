@@ -28,6 +28,11 @@ public class Networking {
                 .decoder(PacketTeleport::new)
                 .consumer(PacketTeleport::handle)
                 .add();
+        INSTANCE.messageBuilder(PacketLaunchSequence.class, nextID())
+                .encoder((packetLaunchSequence, packetBuffer) -> {})
+                .decoder(packetBuffer -> new PacketLaunchSequence())
+                .consumer(PacketLaunchSequence::handle)
+                .add();
     }
 
     public static void sendToClient(Object packet, ServerPlayerEntity player) {

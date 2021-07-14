@@ -1,6 +1,7 @@
 package com.congueror.cgalaxy;
 
 import com.congueror.cgalaxy.init.*;
+import com.congueror.cgalaxy.keybinds.Keybinds;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -23,6 +24,7 @@ public class CGalaxy {
         BlockInit.BLOCKS.register(modEventBus);
         EntityTypeInit.ENTITY_TYPES.register(modEventBus);
         ItemInit.ITEMS.register(modEventBus);
+        FluidInit.FLUIDS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(Keybinds.class);

@@ -1,6 +1,6 @@
 package com.congueror.cgalaxy.block;
 
-import com.congueror.cgalaxy.entities.rocket_entity.RocketEntity;
+import com.congueror.cgalaxy.entities.RocketEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;

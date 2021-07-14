@@ -2,17 +2,17 @@ package com.congueror.cgalaxy.util.events;
 
 import com.congueror.cgalaxy.CGalaxy;
 import com.congueror.cgalaxy.commands.ModCommands;
-import com.congueror.cgalaxy.entities.rocket_entity.RocketEntity;
-import com.congueror.cgalaxy.gui.GalaxyMapGui;
+import com.congueror.cgalaxy.entities.RocketEntity;
 import com.congueror.cgalaxy.init.BlockInit;
 import com.congueror.cgalaxy.init.EntityTypeInit;
-import com.congueror.cgalaxy.init.Keybinds;
+import com.congueror.cgalaxy.keybinds.Keybinds;
 import com.congueror.cgalaxy.network.Networking;
 import com.congueror.cgalaxy.network.PacketOpenGalaxyMap;
 import com.congueror.cgalaxy.world.dimension.Dimensions;
 import com.congueror.clib.util.ModItemGroups;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
@@ -59,9 +59,12 @@ public class CommonEvents {
         @SubscribeEvent
         public static void onRegisterItem(final RegistryEvent.Register<Item> e) {
             final IForgeRegistry<Item> registry = e.getRegistry();
-            BlockInit.BLOCKS.getEntries().stream().map(RegistryObject::get).forEach(block ->
+            BlockInit.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(block -> !(block instanceof FlowingFluidBlock)).forEach(block ->
             {
-                final Item.Properties properties = new Item.Properties().group(ModItemGroups.BlocksIG.instance);
+                Item.Properties properties = new Item.Properties().group(ModItemGroups.BlocksIG.instance);
+                if (block.matchesBlock(BlockInit.LAUNCH_PAD.get())) {
+                    properties = new Item.Properties().group(ModItemGroups.CGalaxyIG.instance);
+                }
                 final BlockItem blockItem;
                 blockItem = new BlockItem(block, properties);
                 blockItem.setRegistryName(block.getRegistryName());
@@ -110,26 +113,6 @@ public class CommonEvents {
                         entity.setMotion((entity.getMotion().getX()), ((entity.getMotion().getY()) + 0.04),
                                 (entity.getMotion().getZ()));
                         entity.getPersistentData().putDouble("ItemGravity", 0);
-                    }
-                }
-            }
-
-            Entity entity = player.getRidingEntity();
-
-            if (mc.currentScreen == null) {
-                if (Keybinds.LAUNCH_ROCKET.isPressed()) {
-                    if (!world.isBlockLoaded(new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()))) {
-                        return;
-                    }
-                    if (world.isRemote) {
-                        return;
-                    }
-                    if (entity instanceof RocketEntity) {
-                        if (!entity.getPersistentData().getBoolean("Powered") && entity.getPersistentData().getInt("Fuel") >= 0/*TODO*/) {
-                            entity.getPersistentData().putBoolean("Powered", true);
-                        } else {
-                            player.sendStatusMessage(new TranslationTextComponent("text.cgalaxy.insufficient_fuel"), false);
-                        }
                     }
                 }
             }

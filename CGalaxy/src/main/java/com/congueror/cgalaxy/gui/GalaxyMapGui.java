@@ -1,7 +1,7 @@
 package com.congueror.cgalaxy.gui;
 
 import com.congueror.cgalaxy.CGalaxy;
-import com.congueror.cgalaxy.entities.rocket_entity.RocketEntity;
+import com.congueror.cgalaxy.entities.RocketEntity;
 import com.congueror.cgalaxy.network.Networking;
 import com.congueror.cgalaxy.network.PacketTeleport;
 import com.congueror.cgalaxy.world.dimension.Dimensions;
@@ -17,7 +17,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.Dimension;
 import net.minecraft.world.World;
 
 public class GalaxyMapGui extends Screen {
@@ -75,6 +74,7 @@ public class GalaxyMapGui extends Screen {
         this.SOLAR_SYSTEM = addButton(new ImageButton(490, 150, 7, 7, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/galaxy_map_select.png"), 7, 7, p_onPress_1_ -> {
             CURRENT_MAP = 2;
         }));
+
 
 
         this.MERCURY = addButton(new ImageButton(404, 161, 16, 16, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), 16, 16, p_onPress_1_ -> {
