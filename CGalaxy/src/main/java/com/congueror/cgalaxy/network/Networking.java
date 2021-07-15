@@ -1,6 +1,6 @@
 package com.congueror.cgalaxy.network;
 
-import com.congueror.clib.CLib;
+import com.congueror.cgalaxy.CGalaxy;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -16,7 +16,7 @@ public class Networking {
     }
 
     public static void registerMessages() {
-        INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(CLib.MODID, "clib"), () -> "1.0", s -> true, s -> true);
+        INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(CGalaxy.MODID, "cgalaxy"), () -> "1.0", s -> true, s -> true);
 
         INSTANCE.messageBuilder(PacketOpenGalaxyMap.class, nextID())
                 .encoder((packetOpenGalaxyMap, packetBuffer) -> {})

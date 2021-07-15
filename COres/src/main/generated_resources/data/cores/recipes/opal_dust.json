@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:gems/opal"
+    },
+    {
+      "item": "cores:iron_hammer"
+    }
+  ],
+  "result": {
+    "item": "cores:opal_dust"
+  }
+}

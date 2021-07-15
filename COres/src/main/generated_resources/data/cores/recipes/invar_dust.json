@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/invar"
+    },
+    {
+      "item": "cores:iron_hammer"
+    }
+  ],
+  "result": {
+    "item": "cores:invar_dust"
+  }
+}

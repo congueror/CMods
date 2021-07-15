@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cores:ruby_dust_smelting"
+    ]
+  },
+  "criteria": {
+    "ruby_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "cores:ruby_dust"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cores:ruby_dust_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "ruby_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

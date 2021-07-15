@@ -1,8 +1,10 @@
 package com.congueror.cgalaxy.util.events;
 
 import com.congueror.cgalaxy.CGalaxy;
+import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryScreen;
 import com.congueror.cgalaxy.entities.RocketEntity;
 import com.congueror.cgalaxy.entities.rocket_tier_1.RocketTier1Renderer;
+import com.congueror.cgalaxy.init.ContainerInit;
 import com.congueror.cgalaxy.init.EntityTypeInit;
 import com.congueror.cgalaxy.keybinds.Keybinds;
 import com.congueror.cgalaxy.network.PacketLaunchSequence;
@@ -12,6 +14,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.Tessellator;
@@ -48,6 +51,8 @@ public class ClientEvents {
             CGalaxy.LOGGER.info("Starting client setup for CGalaxy");
 
             ClientRegistry.registerKeyBinding(Keybinds.LAUNCH_ROCKET);
+
+            ScreenManager.registerFactory(ContainerInit.FUEL_REFINERY.get(), FuelRefineryScreen::new);
 
             RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.ROCKET_TIER_1.get(), renderManager -> {
                 return new MobRenderer(renderManager, new RocketTier1Renderer(), 0.5f) {
@@ -254,9 +259,9 @@ public class ClientEvents {
             MatrixStack mStack = e.getMatrixStack();
             if (player != null) {
                 if (player.getRidingEntity() instanceof RocketEntity) {
-                    mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/hud/rocket_y_hud"));
-                    mc.ingameGUI.blit(mStack, 0, 0, 0, 0, e.getWindow().getScaledWidth(), e.getWindow().getScaledHeight());
-                    mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/hud/rocket_y"));
+                    mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/hud/rocket_y_hud.png"));
+                    mc.ingameGUI.blit(mStack, 0, 0, 0, 0, e.getWindow().getWidth(), e.getWindow().getHeight());
+                    //mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/hud/rocket_y"));
                     double y = player.getPosY();
                     if (y < 10) {
                         //mc.ingameGUI.blit(mStack, );

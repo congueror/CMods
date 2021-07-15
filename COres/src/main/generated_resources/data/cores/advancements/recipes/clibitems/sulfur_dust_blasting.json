@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cores:sulfur_dust_blasting"
+    ]
+  },
+  "criteria": {
+    "sulfur_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "cores:sulfur_ore"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cores:sulfur_dust_blasting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "sulfur_ore",
+      "has_the_recipe"
+    ]
+  ]
+}

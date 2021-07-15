@@ -3,6 +3,7 @@ package com.congueror.cgalaxy.block.fuel_refinery;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -15,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
@@ -34,13 +36,19 @@ public class FuelRefineryBlock extends Block {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return null/*TODO*/;
+        return new FuelRefineryTileEntity();
     }
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (!worldIn.isRemote) {
-
+            TileEntity tileEntity = worldIn.getTileEntity(pos);
+            if (tileEntity instanceof FuelRefineryTileEntity) {
+                FuelRefineryTileEntity te = (FuelRefineryTileEntity) tileEntity;
+                NetworkHooks.openGui((ServerPlayerEntity) player, te, te.getPos());
+            } else {
+                throw new IllegalStateException("Named container provider is missing!");
+            }
         }
         return ActionResultType.SUCCESS;
     }

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cores:titanium_ingot"
+    ]
+  },
+  "criteria": {
+    "titanium_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "cores:titanium_scrap"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cores:titanium_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "titanium_scrap",
+      "has_the_recipe"
+    ]
+  ]
+}

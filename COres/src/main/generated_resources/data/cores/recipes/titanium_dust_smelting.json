@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "cores:titanium_dust"
+  },
+  "result": "cores:titanium_ingot",
+  "experience": 0.7,
+  "cookingtime": 200
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "cores:block/thorium_ore"
+    }
+  }
+}

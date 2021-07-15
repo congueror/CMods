@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cores:wood_gear"
+    ]
+  },
+  "criteria": {
+    "planks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "minecraft:planks"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cores:wood_gear"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "planks",
+      "has_the_recipe"
+    ]
+  ]
+}

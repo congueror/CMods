@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:gems/sapphire"
+    },
+    {
+      "item": "cores:iron_hammer"
+    }
+  ],
+  "result": {
+    "item": "cores:sapphire_dust"
+  }
+}

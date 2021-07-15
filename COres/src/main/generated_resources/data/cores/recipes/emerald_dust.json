@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:gems/emerald"
+    },
+    {
+      "item": "cores:iron_hammer"
+    }
+  ],
+  "result": {
+    "item": "cores:emerald_dust"
+  }
+}

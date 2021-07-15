@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cores:steel_ingot_blasting"
+    ]
+  },
+  "criteria": {
+    "steel_blend": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "cores:steel_blend"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cores:steel_ingot_blasting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "steel_blend",
+      "has_the_recipe"
+    ]
+  ]
+}

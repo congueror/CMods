@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/opal"
+    }
+  ],
+  "result": {
+    "item": "cores:opal",
+    "count": 9
+  }
+}

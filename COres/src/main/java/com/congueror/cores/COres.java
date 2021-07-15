@@ -1,5 +1,7 @@
 package com.congueror.cores;
 
+import com.congueror.cores.init.BlockInit;
+import com.congueror.cores.init.ItemInit;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,6 +32,8 @@ public class COres {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         instance = this;
+        ItemInit.ITEMS.register(modEventBus);
+        BlockInit.BLOCKS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }

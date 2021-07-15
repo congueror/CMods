@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cores:copper_ingot_smelting"
+    ]
+  },
+  "criteria": {
+    "copper_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "cores:copper_ore"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cores:copper_ingot_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "copper_ore",
+      "has_the_recipe"
+    ]
+  ]
+}

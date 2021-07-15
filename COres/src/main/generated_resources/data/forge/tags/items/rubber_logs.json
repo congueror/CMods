@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "cores:rubber_log",
+    "cores:stripped_rubber_log",
+    "cores:rubber_wood",
+    "cores:stripped_rubber_wood"
+  ]
+}

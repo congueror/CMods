@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "cores:cobalt_block",
+    "cores:zinc_block"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cores:nickel_ingot_smelting"
+    ]
+  },
+  "criteria": {
+    "nickel_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "cores:nickel_ore"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cores:nickel_ingot_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "nickel_ore",
+      "has_the_recipe"
+    ]
+  ]
+}

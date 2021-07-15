@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cores:quartz_dust_smelting"
+    ]
+  },
+  "criteria": {
+    "quartz": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/quartz"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cores:quartz_dust_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "quartz",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cores:thorium_nugget"
+    ]
+  },
+  "criteria": {
+    "thorium_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/thorium"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cores:thorium_nugget"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "thorium_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

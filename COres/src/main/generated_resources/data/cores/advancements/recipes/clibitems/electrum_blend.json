@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cores:electrum_blend"
+    ]
+  },
+  "criteria": {
+    "silver_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/silver"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cores:electrum_blend"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "silver_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

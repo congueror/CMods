@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "cores:saltpetre_ore"
+  },
+  "result": "cores:saltpetre_dust",
+  "experience": 0.7,
+  "cookingtime": 400
+}

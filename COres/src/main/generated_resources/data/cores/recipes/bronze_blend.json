@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ip ",
+    "p  ",
+    "   "
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/copper"
+    },
+    "p": {
+      "tag": "forge:ingots/tin"
+    }
+  },
+  "result": {
+    "item": "cores:bronze_blend",
+    "count": 2
+  }
+}

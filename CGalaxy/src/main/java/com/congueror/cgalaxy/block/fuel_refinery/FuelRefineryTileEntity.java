@@ -79,7 +79,7 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
     public FuelRefineryTileEntity() {
         super(TileEntityInit.FUEL_REFINERY.get());
         energyStorage = createEnergy();
-        this.tanks = IntStream.range(0, 3).mapToObj(k -> new FluidTank(15000)).toArray(FluidTank[]::new);
+        this.tanks = IntStream.range(0, 2).mapToObj(k -> new FluidTank(15000)).toArray(FluidTank[]::new);
         this.fluidHandler = LazyOptional.of(() -> this);
     }
 
@@ -98,6 +98,10 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
     @Override
     public void tick() {
 
+    }
+
+    public int getEnergyUsage() {
+        return 30;
     }
 
     @Nonnull
@@ -150,7 +154,7 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
     @Nullable
     @Override
     public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
-        return null;//TODO
+        return new FuelRefineryContainer(p_createMenu_1_, p_createMenu_2_, this, data);
     }
 
     @Override

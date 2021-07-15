@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cores:titanium_dust_smelting"
+    ]
+  },
+  "criteria": {
+    "titanium_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "cores:titanium_dust"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cores:titanium_dust_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "titanium_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

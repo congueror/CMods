@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/platinum"
+    },
+    {
+      "item": "cores:iron_hammer"
+    }
+  ],
+  "result": {
+    "item": "cores:platinum_dust"
+  }
+}

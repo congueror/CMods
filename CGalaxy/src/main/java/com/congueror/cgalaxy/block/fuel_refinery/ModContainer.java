@@ -33,13 +33,18 @@ public class ModContainer<T extends FuelRefineryTileEntity> extends Container {
 
         if (tile != null) {
             tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-                addSlot(new SlotItemHandler(iItemHandler, 0, 0, 0));
-                addSlot(new SlotItemHandler(iItemHandler, 0, 0, 0));
+                addSlot(new SlotItemHandler(iItemHandler, 0, 51, 18));
+                addSlot(new SlotItemHandler(iItemHandler, 1, 126, 18));
+                addSlot(new SlotItemHandler(iItemHandler, 2, 4, 4));
+                addSlot(new SlotItemHandler(iItemHandler, 3, 4, 22));
+                addSlot(new SlotItemHandler(iItemHandler, 4, 4, 40));
+                addSlot(new SlotItemHandler(iItemHandler, 5, 4, 58));
             });
         }
 
         trackPower();
         trackIntArray(tile.data);
+        layoutPlayerInventorySlots(28, 84);
     }
 
     public int getProgress() {

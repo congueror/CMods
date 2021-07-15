@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " a ",
+    "a a",
+    " a "
+  ],
+  "key": {
+    "a": {
+      "tag": "forge:gems/opal"
+    }
+  },
+  "result": {
+    "item": "cores:opal_gear"
+  }
+}

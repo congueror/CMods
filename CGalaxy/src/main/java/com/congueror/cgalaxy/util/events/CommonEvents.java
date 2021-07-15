@@ -62,7 +62,7 @@ public class CommonEvents {
             BlockInit.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(block -> !(block instanceof FlowingFluidBlock)).forEach(block ->
             {
                 Item.Properties properties = new Item.Properties().group(ModItemGroups.BlocksIG.instance);
-                if (block.matchesBlock(BlockInit.LAUNCH_PAD.get())) {
+                if (block.matchesBlock(BlockInit.LAUNCH_PAD.get()) || block.matchesBlock(BlockInit.FUEL_REFINERY.get())) {
                     properties = new Item.Properties().group(ModItemGroups.CGalaxyIG.instance);
                 }
                 final BlockItem blockItem;
