@@ -1,6 +1,5 @@
 package com.congueror.cores.init;
 
-import com.congueror.clib.CLib;
 import com.congueror.clib.items.DamageableContainerItem;
 import com.congueror.clib.items.ModFuelItem;
 import com.congueror.clib.util.ModItemGroups;

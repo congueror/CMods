@@ -24,7 +24,7 @@
                   }
                 }
               ],
-              "name": "clib:sulfur_ore"
+              "name": "cores:sulfur_ore"
             },
             {
               "type": "minecraft:item",
@@ -49,7 +49,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "clib:sulfur_dust"
+              "name": "cores:sulfur_dust"
             }
           ]
         }

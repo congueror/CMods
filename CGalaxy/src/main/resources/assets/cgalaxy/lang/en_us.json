@@ -1,4 +1,14 @@
 {
+  "block.cgalaxy.moon_turf": "Moon Turf",
+  "block.cgalaxy.moon_stone": "Moon Stone",
+  "block.cgalaxy.moon_iron_ore": "Moon Iron Ore",
+  "block.cgalaxy.moon_silicon_ore": "Moon Silicon Ore",
+  "block.cgalaxy.moon_aluminum_ore": "Moon Aluminum Ore",
+  "block.cgalaxy.moon_titanium_ore": "Moon Titanium Ore",
+  "block.cgalaxy.launch_pad": "Launch Pad",
+
+  "key.cgalaxy.empty": "Empty",
+
   "text.cgalaxy.about_to_launch": "You are about to go to space. Are you sure you wish to proceed?",
   "text.cgalaxy.about_to_launch1": "Press launch to continue.",
 

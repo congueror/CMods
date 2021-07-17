@@ -35,7 +35,7 @@
                   ]
                 }
               ],
-              "name": "clib:rubber_leaves"
+              "name": "cores:rubber_leaves"
             },
             {
               "type": "minecraft:item",
@@ -54,7 +54,7 @@
                   ]
                 }
               ],
-              "name": "clib:rubber_sapling"
+              "name": "cores:rubber_sapling"
             }
           ]
         }

@@ -24,7 +24,7 @@
                   }
                 }
               ],
-              "name": "clib:saltpetre_ore"
+              "name": "cores:saltpetre_ore"
             },
             {
               "type": "minecraft:item",
@@ -49,7 +49,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "clib:saltpetre_dust"
+              "name": "cores:saltpetre_dust"
             }
           ]
         }

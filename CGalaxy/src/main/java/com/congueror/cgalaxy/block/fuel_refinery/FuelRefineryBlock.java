@@ -1,11 +1,16 @@
 package com.congueror.cgalaxy.block.fuel_refinery;
 
+import com.congueror.cgalaxy.init.FluidInit;
+import com.congueror.cgalaxy.init.ItemInit;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -16,6 +21,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -45,7 +52,11 @@ public class FuelRefineryBlock extends Block {
             TileEntity tileEntity = worldIn.getTileEntity(pos);
             if (tileEntity instanceof FuelRefineryTileEntity) {
                 FuelRefineryTileEntity te = (FuelRefineryTileEntity) tileEntity;
-                NetworkHooks.openGui((ServerPlayerEntity) player, te, te.getPos());
+                if (player.getItemStackFromSlot(EquipmentSlotType.MAINHAND).getItem().equals(ItemInit.OIL_BUCKET.get())) {
+                    te.tanks[0].fill(new FluidStack(FluidInit.OIL.get(), 1000), IFluidHandler.FluidAction.EXECUTE);
+                } else {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, te, te.getPos());
+                }
             } else {
                 throw new IllegalStateException("Named container provider is missing!");
             }

@@ -24,7 +24,7 @@
                   }
                 }
               ],
-              "name": "clib:amethyst_ore"
+              "name": "cores:amethyst_ore"
             },
             {
               "type": "minecraft:item",
@@ -38,7 +38,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "clib:amethyst"
+              "name": "cores:amethyst"
             }
           ]
         }

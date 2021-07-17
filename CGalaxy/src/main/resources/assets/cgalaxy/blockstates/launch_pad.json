@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "cgalaxy:block/launch_pad"
+    },
+    "lit=true": {
+      "model": "cgalaxy:block/launch_pad_mid"
+    }
+  }
+}

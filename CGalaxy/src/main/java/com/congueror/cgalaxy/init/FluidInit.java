@@ -13,12 +13,17 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class FluidInit {
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, CGalaxy.MODID);
 
-    public static final RegistryObject<FlowingFluid> KEROSENE_STILL = FLUIDS.register("kerosene_still", () ->
-            new ForgeFlowingFluid.Source(keroseneProperties()));
     public static final RegistryObject<FlowingFluid> KEROSENE = FLUIDS.register("kerosene", () ->
             new ForgeFlowingFluid.Flowing(keroseneProperties()));
     private static ForgeFlowingFluid.Properties keroseneProperties() {
-        return new ForgeFlowingFluid.Properties(KEROSENE_STILL, KEROSENE, FluidAttributes.builder(new ResourceLocation(CGalaxy.MODID, "fluid/kerosene_still"), new ResourceLocation(CGalaxy.MODID, "fluid/kerosene_flowing"))
+        return new ForgeFlowingFluid.Properties(() -> null, KEROSENE, FluidAttributes.builder(new ResourceLocation(CGalaxy.MODID, "block/kerosene"), new ResourceLocation(CGalaxy.MODID, "block/kerosene"))
                 .density(1).temperature(437));
+    }
+
+    public static final RegistryObject<FlowingFluid> OIL = FLUIDS.register("oil", () ->
+            new ForgeFlowingFluid.Flowing(oilProperties()));
+    private static ForgeFlowingFluid.Properties oilProperties() {
+        return new ForgeFlowingFluid.Properties(() -> null, OIL, FluidAttributes.builder(new ResourceLocation(CGalaxy.MODID, "block/oil"), new ResourceLocation(CGalaxy.MODID, "block/oil"))
+                .density(825).temperature(437));
     }
 }

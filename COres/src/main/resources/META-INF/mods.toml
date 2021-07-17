@@ -14,7 +14,7 @@ displayName="COres"
 description='''
 
 '''
-[[dependencies.COres]] #optional
+[[dependencies.cores]] #optional
    # the modid of the dependency
    modId="forge" #mandatory
    # Does this dependency have to exist - if not, ordering below must be specified
@@ -26,10 +26,17 @@ description='''
    # Side this dependency is applied on - BOTH, CLIENT or SERVER
    side="BOTH"
 # Here's another dependency
-[[dependencies.COres]]
+[[dependencies.cores]]
    modId="minecraft"
    mandatory=true
    # This version range declares a minimum of the current minecraft version up to but not including the next major version
    versionRange="[1.16.5,1.17)"
    ordering="NONE"
+   side="BOTH"
+[[dependencies.cores]]
+   modId="clib"
+   mandatory=true
+   # This version range declares a minimum of the current minecraft version up to but not including the next major version
+   versionRange="[2.0.0,)"
+   ordering="BEFORE"
    side="BOTH"

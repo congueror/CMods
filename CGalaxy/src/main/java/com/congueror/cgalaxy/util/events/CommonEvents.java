@@ -9,6 +9,7 @@ import com.congueror.cgalaxy.keybinds.Keybinds;
 import com.congueror.cgalaxy.network.Networking;
 import com.congueror.cgalaxy.network.PacketOpenGalaxyMap;
 import com.congueror.cgalaxy.world.dimension.Dimensions;
+import com.congueror.cgalaxy.world.dimension.PlanetOreGen;
 import com.congueror.clib.util.ModItemGroups;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
@@ -53,7 +54,10 @@ public class CommonEvents {
             ObfuscationReflectionHelper.setPrivateValue(WorldCarver.class, WorldCarver.CAVE, new ImmutableSet.Builder<Block>()
                     .addAll((Set<Block>) ObfuscationReflectionHelper.getPrivateValue(WorldCarver.class, WorldCarver.CAVE, "field_222718_j"))
                     .add(BlockInit.MOON_STONE.get().getDefaultState().getBlock()).build(), "field_222718_j");
-            e.enqueueWork(Dimensions::setupDims);
+            e.enqueueWork(() -> {
+               Dimensions.setupDims();
+               PlanetOreGen.registerFeatures();
+            });
         }
 
         @SubscribeEvent

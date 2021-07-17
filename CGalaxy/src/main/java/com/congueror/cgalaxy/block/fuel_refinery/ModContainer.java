@@ -12,6 +12,8 @@ import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.IntReferenceHolder;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -31,28 +33,9 @@ public class ModContainer<T extends FuelRefineryTileEntity> extends Container {
         this.data = dataIn;
         this.playerInventory = new InvWrapper(playerInventory);
 
-        if (tile != null) {
-            tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-                addSlot(new SlotItemHandler(iItemHandler, 0, 51, 18));
-                addSlot(new SlotItemHandler(iItemHandler, 1, 126, 18));
-                addSlot(new SlotItemHandler(iItemHandler, 2, 4, 4));
-                addSlot(new SlotItemHandler(iItemHandler, 3, 4, 22));
-                addSlot(new SlotItemHandler(iItemHandler, 4, 4, 40));
-                addSlot(new SlotItemHandler(iItemHandler, 5, 4, 58));
-            });
-        }
-
         trackPower();
         trackIntArray(tile.data);
         layoutPlayerInventorySlots(28, 84);
-    }
-
-    public int getProgress() {
-        return tile.data.get(0);
-    }
-
-    public int getProcessTime() {
-        return tile.data.get(1);
     }
 
     private void layoutPlayerInventorySlots(int leftCol, int topRow) {
@@ -80,48 +63,6 @@ public class ModContainer<T extends FuelRefineryTileEntity> extends Container {
             y += dy;
         }
         return index;
-    }
-
-    @Override
-    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
-        ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
-        if (slot != null && slot.getHasStack()) {
-            ItemStack stack = slot.getStack();
-            itemstack = stack.copy();
-            if (index == 0) {
-                if (!this.mergeItemStack(stack, 1, 37, true)) {
-                    return ItemStack.EMPTY;
-                }
-                slot.onSlotChange(stack, itemstack);
-            } else {
-                if (tile.isItemValid(stack)) {
-                    if (!this.mergeItemStack(stack, 0, 1, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (index < 28) {
-                    if (!this.mergeItemStack(stack, 28, 37, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (index < 37 && !this.mergeItemStack(stack, 1, 28, false)) {
-                    return ItemStack.EMPTY;
-                }
-            }
-
-            if (stack.isEmpty()) {
-                slot.putStack(ItemStack.EMPTY);
-            } else {
-                slot.onSlotChanged();
-            }
-
-            if (stack.getCount() == itemstack.getCount()) {
-                return ItemStack.EMPTY;
-            }
-
-            slot.onTake(playerIn, stack);
-        }
-
-        return itemstack;
     }
 
     @Override

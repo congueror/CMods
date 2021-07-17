@@ -64,30 +64,30 @@ public class OreGen {
     @SubscribeEvent
     public static void setupOreGen(BiomeLoadingEvent e) {
         if (isOverworld(e)) {
-            genore(e, TIN);
-            genore(e, ALUMINUM);
-            genore(e, LEAD);
-            genore(e, COPPER);
-            genore(e, SILVER);
-            genore(e, NICKEL);
-            genore(e, PLATINUM);
-            genore(e, TUNGSTEN);
-            genore(e, AMETHYST);
-            genore(e, SAPPHIRE);
-            genore(e, URANIUM);
-            genore(e, ZINC);
-            genore(e, CHROMIUM);
-            genore(e, THORIUM);
-            genore(e, SALTPETRE);
-            genore(e, SALT);
+            genOre(e, TIN);
+            genOre(e, ALUMINUM);
+            genOre(e, LEAD);
+            genOre(e, COPPER);
+            genOre(e, SILVER);
+            genOre(e, NICKEL);
+            genOre(e, PLATINUM);
+            genOre(e, TUNGSTEN);
+            genOre(e, AMETHYST);
+            genOre(e, SAPPHIRE);
+            genOre(e, URANIUM);
+            genOre(e, ZINC);
+            genOre(e, CHROMIUM);
+            genOre(e, THORIUM);
+            genOre(e, SALTPETRE);
+            genOre(e, SALT);
         }
         if (isNether(e)) {
-            genore(e, RUBY);
-            genore(e, TITANIUM);
-            genore(e, COBALT);
+            genOre(e, RUBY);
+            genOre(e, TITANIUM);
+            genOre(e, COBALT);
         }
         if (isEnd(e)) {
-            genore(e, OPAL);
+            genOre(e, OPAL);
         }
     }
 }

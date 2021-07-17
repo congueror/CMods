@@ -23,7 +23,7 @@ public class DataGenerators
         }
         if (event.includeClient()) {
             CGalaxy.LOGGER.debug("Starting Client Data Generators");
-            //generator.addProvider(new ItemModelDataGen(generator, event.getExistingFileHelper()));
+            generator.addProvider(new ItemModelDataGen(generator, event.getExistingFileHelper()));
             generator.addProvider(new BlockModelDataGen(generator, event.getExistingFileHelper()));
         }
     }

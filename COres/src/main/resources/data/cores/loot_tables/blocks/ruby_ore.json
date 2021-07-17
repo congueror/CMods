@@ -24,7 +24,7 @@
                   }
                 }
               ],
-              "name": "clib:ruby_ore"
+              "name": "cores:ruby_ore"
             },
             {
               "type": "minecraft:item",
@@ -38,7 +38,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "clib:ruby"
+              "name": "cores:ruby"
             }
           ]
         }

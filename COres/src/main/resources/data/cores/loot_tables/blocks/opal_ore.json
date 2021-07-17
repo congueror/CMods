@@ -24,7 +24,7 @@
                   }
                 }
               ],
-              "name": "clib:opal_ore"
+              "name": "cores:opal_ore"
             },
             {
               "type": "minecraft:item",
@@ -38,7 +38,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "clib:opal"
+              "name": "cores:opal"
             }
           ]
         }

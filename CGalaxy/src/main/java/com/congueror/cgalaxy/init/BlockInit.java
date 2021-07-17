@@ -1,11 +1,10 @@
 package com.congueror.cgalaxy.init;
 
 import com.congueror.cgalaxy.CGalaxy;
-import com.congueror.cgalaxy.block.LaunchPadBlock;
+import com.congueror.cgalaxy.block.launch_pad.LaunchPadBlock;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.tags.FluidTags;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -20,10 +19,16 @@ public class BlockInit {
     public static final RegistryObject<Block> MOON_STONE = BLOCKS.register("moon_stone", () -> new Block(AbstractBlock.Properties
             .create(Material.ROCK).hardnessAndResistance(2f, 6.5f).sound(SoundType.STONE).harvestLevel(1).harvestTool(ToolType.PICKAXE)));
 
-    public static final RegistryObject<Block> LAUNCH_PAD = BLOCKS.register("launch_pad", () -> new LaunchPadBlock(AbstractBlock.Properties.from(Blocks.IRON_BLOCK)));
+    public static final RegistryObject<Block> MOON_IRON_ORE = BLOCKS.register("moon_iron_ore", () -> new Block(AbstractBlock.Properties
+            .create(Material.ROCK).hardnessAndResistance(2f, 6.5f).sound(SoundType.STONE).harvestLevel(1).harvestTool(ToolType.PICKAXE)));
+    public static final RegistryObject<Block> MOON_SILICON_ORE = BLOCKS.register("moon_silicon_ore", () -> new Block(AbstractBlock.Properties
+            .create(Material.ROCK).hardnessAndResistance(2f, 6.5f).sound(SoundType.STONE).harvestLevel(1).harvestTool(ToolType.PICKAXE)));
+    public static final RegistryObject<Block> MOON_ALUMINUM_ORE = BLOCKS.register("moon_aluminum_ore", () -> new Block(AbstractBlock.Properties
+            .create(Material.ROCK).hardnessAndResistance(2f, 6.5f).sound(SoundType.STONE).harvestLevel(1).harvestTool(ToolType.PICKAXE)));
+    public static final RegistryObject<Block> MOON_TITANIUM_ORE = BLOCKS.register("moon_titanium_ore", () -> new Block(AbstractBlock.Properties
+            .create(Material.ROCK).hardnessAndResistance(2f, 6.5f).sound(SoundType.STONE).harvestLevel(3).harvestTool(ToolType.PICKAXE)));
 
-    public static final RegistryObject<FlowingFluidBlock> KEROSENE = BLOCKS.register("kerosene", () -> new FlowingFluidBlock(FluidInit.KEROSENE_STILL, AbstractBlock.Properties
-            .create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(100f).noDrops()));
+    public static final RegistryObject<Block> LAUNCH_PAD = BLOCKS.register("launch_pad", () -> new LaunchPadBlock(AbstractBlock.Properties.from(Blocks.IRON_BLOCK)));
 
     public static final RegistryObject<Block> FUEL_REFINERY = BLOCKS.register("fuel_refinery", () -> new FuelRefineryBlock(AbstractBlock.Properties.create(Material.IRON)
             .hardnessAndResistance(6f).sound(SoundType.METAL)));

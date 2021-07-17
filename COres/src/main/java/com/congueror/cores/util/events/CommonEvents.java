@@ -21,8 +21,10 @@ public class CommonEvents {
     public static class ModCommonEvents {
         @SubscribeEvent
         public static void commonSetup(FMLCommonSetupEvent e) {
-            e.enqueueWork(TreeGen::registerTreeFeature);
-            e.enqueueWork(OreGen::registerFeatures);
+            e.enqueueWork(() -> {
+               TreeGen.registerTreeFeature();
+               OreGen.registerFeatures();
+            });
         }
 
         @SubscribeEvent

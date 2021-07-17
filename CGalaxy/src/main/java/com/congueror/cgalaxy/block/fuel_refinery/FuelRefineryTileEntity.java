@@ -1,5 +1,6 @@
 package com.congueror.cgalaxy.block.fuel_refinery;
 
+import com.congueror.cgalaxy.init.FluidInit;
 import com.congueror.cgalaxy.init.TileEntityInit;
 import com.congueror.clib.util.ModEnergyStorage;
 import net.minecraft.block.BlockState;
@@ -41,6 +42,7 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
     protected ModEnergyStorage energyStorage = createEnergy();
     protected LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
 
+    protected int capacity, receive;
     protected float progress;
     protected int processTime;
     public static final int FIELDS_COUNT = 2;
@@ -79,29 +81,70 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
     public FuelRefineryTileEntity() {
         super(TileEntityInit.FUEL_REFINERY.get());
         energyStorage = createEnergy();
+        capacity = 40000;
+        receive = 1000;
+
         this.tanks = IntStream.range(0, 2).mapToObj(k -> new FluidTank(15000)).toArray(FluidTank[]::new);
         this.fluidHandler = LazyOptional.of(() -> this);
     }
 
     private ModEnergyStorage createEnergy() {
-        return new ModEnergyStorage(40000, 1000, 0);
+        return new ModEnergyStorage(capacity, receive, 0);
     }
 
     public int[] invSize() {
-        return new int[]{0, 1};
+        return new int[]{0, 1, 2, 3, 4, 5};
     }
 
-    public boolean isItemValid(ItemStack stack) {
-        return stack.getContainerItem().getItem() == Items.BUCKET;
+    public int getEnergyUsage() {
+        return 100;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public int getMaxReceive() {
+        return receive;
+    }
+
+    public int getProcessTime() {
+        return 1000;
+    }
+
+    public int getProgressSpeed() {
+        return 1;
     }
 
     @Override
     public void tick() {
+        if (world.isRemote) {
+            return;
+        }
 
+        ItemStack inputStack = itemHandler.getStackInSlot(0);
+        FluidStack tank1 = tanks[0].getFluid();
+        if (tank1.getFluid() != null && tank1.getAmount() >= 100) {
+            if (energyStorage.getEnergyStored() >= getEnergyUsage()) {
+                processTime = getProcessTime();
+                progress += getProgressSpeed();
+                energyStorage.consumeEnergy(getEnergyUsage());
+                if (progress >= processTime) {
+                    tanks[0].drain(new FluidStack(tank1.getFluid(), tank1.getAmount() - 100), FluidAction.EXECUTE);
+                    tanks[1].fill(new FluidStack(FluidInit.KEROSENE.get(), 100), FluidAction.EXECUTE);
+                    progress = 0;
+                }
+            }
+        }
     }
 
-    public int getEnergyUsage() {
-        return 30;
+    public boolean isBucket(ItemStack stack) {
+        return stack.getContainerItem().getItem() == Items.BUCKET;
+    }
+
+    //TODO
+    public boolean isUpgrade(ItemStack stack) {
+        return false;
     }
 
     @Nonnull
@@ -128,8 +171,8 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
 
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                if (slot == 0) {
-                    return FuelRefineryTileEntity.this.isItemValid(stack);
+                if (slot <= 1) {
+                    return FuelRefineryTileEntity.this.isBucket(stack);
                 } else {
                     return false;
                 }
@@ -138,7 +181,7 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
             @Nonnull
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if (!FuelRefineryTileEntity.this.isItemValid(stack)) {
+                if (!FuelRefineryTileEntity.this.isBucket(stack)) {
                     return stack;
                 }
                 return super.insertItem(slot, stack, simulate);

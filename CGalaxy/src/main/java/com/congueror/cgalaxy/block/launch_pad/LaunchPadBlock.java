@@ -1,29 +1,41 @@
-package com.congueror.cgalaxy.block;
+package com.congueror.cgalaxy.block.launch_pad;
 
 import com.congueror.cgalaxy.entities.RocketEntity;
+import com.congueror.clib.CLib;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 public class LaunchPadBlock extends Block {
+    protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
+    protected static final VoxelShape SHAPE_MID = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D);
 
     public LaunchPadBlock(Properties properties) {
         super(properties);
+        this.setDefaultState(this.getStateContainer().getBaseState().with(BlockStateProperties.LIT, false));
     }
 
     /**
      * Checks whether the structure is complete.
-     * @param pos Position of middle block
+     *
+     * @param pos   Position of middle block
      * @param world World
      * @return true if complete, otherwise false.
      */
@@ -33,8 +45,9 @@ public class LaunchPadBlock extends Block {
 
     /**
      * Gets the rocket entity that is on top of the multiblock.
+     *
      * @param world World
-     * @param pos Position of middle block
+     * @param pos   Position of middle block
      * @return rocket entity if found, otherwise null.
      */
     public RocketEntity getRocket(IWorld world, BlockPos pos) {
@@ -51,8 +64,9 @@ public class LaunchPadBlock extends Block {
 
     /**
      * Spawns a rocket on top of the middle launch pad.
-     * @param world World
-     * @param pos Position of middle block
+     *
+     * @param world  World
+     * @param pos    Position of middle block
      * @param entity The rocket entity
      * @return true if no rocket is present and if the multiblock is complete, otherwise false.
      */
@@ -63,6 +77,31 @@ public class LaunchPadBlock extends Block {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        if (state.get(BlockStateProperties.LIT)) {
+            return SHAPE_MID;
+        } else {
+            return SHAPE;
+        }
+    }
+
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(BlockStateProperties.LIT);
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+        return new LaunchPadTileEntity();
     }
 
     @Override

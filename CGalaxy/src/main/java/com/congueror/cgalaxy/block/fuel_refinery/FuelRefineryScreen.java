@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +16,11 @@ import java.util.List;
 public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
 
     public static ResourceLocation GUI = new ResourceLocation(CGalaxy.MODID, "textures/gui/fuel_refinery.png");
-    FuelRefineryTileEntity tile;
+    FuelRefineryContainer container;
 
     public FuelRefineryScreen(FuelRefineryContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
-        this.tile = screenContainer.tile;
+        this.container = screenContainer;
     }
 
     @Override
@@ -28,12 +29,25 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
 
         List<ITextComponent> energy_bar = new ArrayList<>();
-        energy_bar.add(new TranslationTextComponent("tooltip.cgalaxy.screen.energy_percent").appendString(": " + getPercent() + "%" + " (" + tile.energyStorage.getEnergyStored() + "FE)"));
-        energy_bar.add(new TranslationTextComponent("tooltip.cgalaxy.screen.energy_usage").appendString(": " + tile.getEnergyUsage() + "FE/t"));
-
+        energy_bar.add(new TranslationTextComponent("tooltip.cgalaxy.screen.energy_percent").appendString(": " + getEnergyPercent() + "%" + " (" + container.getEnergy() + "FE)"));
+        energy_bar.add(new TranslationTextComponent("tooltip.cgalaxy.screen.energy_usage").appendString(": " + container.getEnergyUsage() + "FE/t"));
         this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
-        if(mouseX > guiLeft + 170 && mouseX < guiLeft + 188 && mouseY > guiTop + 7 && mouseY < guiTop + 69) {
+        if (mouseX > guiLeft + 170 && mouseX < guiLeft + 188 && mouseY > guiTop + 7 && mouseY < guiTop + 69) {
             this.func_243308_b(matrixStack, energy_bar, mouseX, mouseY);
+        }
+
+        for (int i = 0; i < container.getFluidTank().length; i++) {
+            FluidTank tank = container.getFluidTank()[i];
+            List<ITextComponent> tanks = new ArrayList<>();
+            if (!tank.getFluid().isEmpty()) {
+                tanks.add(new TranslationTextComponent(tank.getFluid().getTranslationKey()).appendString(": " + tank.getFluid().getAmount() + "mB"));
+            } else {
+                tanks.add(new TranslationTextComponent("key.cgalaxy.empty"));
+            }
+            this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
+            if (mouseX > guiLeft + 65 && mouseX < guiLeft + 82 && mouseY > guiTop + 16 && mouseY < guiTop + 68) {
+                this.func_243308_b(matrixStack, tanks, mouseX, mouseY);
+            }
         }
     }
 
@@ -43,7 +57,7 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
         this.font.drawString(matrixStack, title, (xSize / 2 - font.getStringWidth(title) / 2) + 5, 6, 4210752);
 
         String inv = new TranslationTextComponent("key.categories.inventory").getString();
-        this.font.drawString(matrixStack, inv, (xSize / 2 - font.getStringWidth(inv) /2) - 50, 74, 4210752);
+        this.font.drawString(matrixStack, inv, (xSize / 2 - font.getStringWidth(inv) / 2) - 40, 74, 4210752);
     }
 
     @Override
@@ -59,19 +73,33 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
         this.blit(matrixStack, this.guiLeft + 85, this.guiTop + 35, 196, 0, length + 1, 16);
 
         //Energy
-        int z = 60 - (60 * getPercent() / 100);
+        int z = 60 - (60 * getEnergyPercent() / 100);
         this.blit(matrixStack, this.guiLeft + 170, this.guiTop + 7 + z, 196, 17, 16, 60 - z);
 
         this.blit(matrixStack, this.guiLeft + 172, this.guiTop + 9, 212, 17, 16, 60);
+
+        //Fluid Tanks
+        if (!container.getFluidTank()[0].getFluid().isEmpty()) {
+            int a = 50 - (50 * getFluidPercent(0) / 100);
+            minecraft.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/block/" + container.getFluidTank()[0].getFluid().getFluid()));
+            this.blit(matrixStack, this.guiLeft + 64, this.guiTop + 16 + a, 0, 0, 16, 50 - a);
+        }
     }
 
-    private int getPercent()
-    {
-        long currentEnergy = tile.energyStorage.getEnergyStored();
-        int maxEnergy = tile.energyStorage.getMaxEnergyStored();
+    private int getEnergyPercent() {
+        long currentEnergy = container.getEnergy();
+        int maxEnergy = container.getMaxEnergy();
 
         long result = currentEnergy * 100 / maxEnergy;
 
+        return (int) result;
+    }
+
+    private int getFluidPercent(int tank) {
+        long fluid = container.getFluidTank()[tank].getFluidAmount();
+        int fluidCapacity = container.getFluidTank()[tank].getCapacity();
+
+        long result = fluid * 100 / fluidCapacity;
         return (int) result;
     }
 }

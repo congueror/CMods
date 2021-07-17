@@ -24,7 +24,7 @@
                   }
                 }
               ],
-              "name": "clib:sapphire_ore"
+              "name": "cores:sapphire_ore"
             },
             {
               "type": "minecraft:item",
@@ -38,7 +38,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "clib:sapphire"
+              "name": "cores:sapphire"
             }
           ]
         }

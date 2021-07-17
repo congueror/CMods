@@ -23,7 +23,9 @@ public class BlockModelDataGen extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         BlockInit.BLOCKS.getEntries().stream().map(RegistryObject::get).forEach(block -> {
-            if (block == null) {
+            if (block == BlockInit.LAUNCH_PAD.get()) {
+
+            } else if (block == BlockInit.FUEL_REFINERY.get()) {
 
             } else {
                 basicBlock(block);
