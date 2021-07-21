@@ -52,8 +52,16 @@ public class FuelRefineryBlock extends Block {
             TileEntity tileEntity = worldIn.getTileEntity(pos);
             if (tileEntity instanceof FuelRefineryTileEntity) {
                 FuelRefineryTileEntity te = (FuelRefineryTileEntity) tileEntity;
-                if (player.getItemStackFromSlot(EquipmentSlotType.MAINHAND).getItem().equals(ItemInit.OIL_BUCKET.get())) {
-                    te.tanks[0].fill(new FluidStack(FluidInit.OIL.get(), 1000), IFluidHandler.FluidAction.EXECUTE);
+                ItemStack stack = player.getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+                if (stack.getItem() instanceof BucketItem) {
+                    Fluid fluid = ((BucketItem) stack.getItem()).getFluid();
+                    if (te.tanks[0].isEmpty() || te.tanks[0].getFluid().getFluid().equals(fluid)) {
+                        te.tanks[0].fill(new FluidStack(fluid, 1000), IFluidHandler.FluidAction.EXECUTE);
+                        te.markDirty();
+                        if (!player.isCreative()) {
+                            stack.shrink(1);
+                        }
+                    }
                 } else {
                     NetworkHooks.openGui((ServerPlayerEntity) player, te, te.getPos());
                 }

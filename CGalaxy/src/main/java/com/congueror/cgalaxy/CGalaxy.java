@@ -2,7 +2,7 @@ package com.congueror.cgalaxy;
 
 import com.congueror.cgalaxy.init.*;
 import com.congueror.cgalaxy.keybinds.Keybinds;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import com.congueror.cgalaxy.init.CarverInit;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -28,6 +28,7 @@ public class CGalaxy {
         FluidInit.FLUIDS.register(modEventBus);
         TileEntityInit.TILE_ENTITY_TYPES.register(modEventBus);
         ContainerInit.CONTAINER_TYPES.register(modEventBus);
+        CarverInit.WORLD_CARVERS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(Keybinds.class);

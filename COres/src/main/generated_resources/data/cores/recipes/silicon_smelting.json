@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "cores:silica"
+  },
+  "result": "cores:silicon",
+  "experience": 0.7,
+  "cookingtime": 200
+}

@@ -4,6 +4,7 @@ import com.congueror.clib.items.DamageableContainerItem;
 import com.congueror.clib.items.ModFuelItem;
 import com.congueror.clib.util.ModItemGroups;
 import com.congueror.cores.COres;
+import com.congueror.cores.items.HammerItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
@@ -148,6 +149,9 @@ public class ItemInit {
 
     public static final RegistryObject<Item> COAL_NUGGET = ITEMS.register("coal_nugget", () -> new ModFuelItem(properties(), 178));
 
+    public static final RegistryObject<Item> SILICA = registerItem("silica");
+    public static final RegistryObject<Item> SILICON = registerItem("silicon");
+
     public static final RegistryObject<Item> SALTPETRE_DUST = registerItem("saltpetre_dust");
     public static final RegistryObject<Item> SULFUR_DUST = registerItem("sulfur_dust");
 
@@ -155,7 +159,7 @@ public class ItemInit {
 
     public static final RegistryObject<Item> PYROTHEUM_DUST = ITEMS.register("pyrotheum_dust", () -> new ModFuelItem(properties(), 3200));
 
-    public static final RegistryObject<Item> IRON_HAMMER = ITEMS.register("iron_hammer", () -> new DamageableContainerItem(properties().defaultMaxDamage(16)));
+    public static final RegistryObject<Item> IRON_HAMMER = ITEMS.register("iron_hammer", () -> new HammerItem(properties().defaultMaxDamage(16)));
 
     public static final RegistryObject<Item> WOOD_DUST = registerItem("wood_dust");
     public static final RegistryObject<Item> COAL_DUST = registerItem("coal_dust");

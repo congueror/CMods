@@ -629,6 +629,17 @@ public class RecipeDataGen extends RecipeProvider {
                 .build(recipe, new ResourceLocation(COres.MODID, "coal_nuggets"));
         //====================================================|COAL NUGGET END|================================================================================
 
+        //SILICON
+        //ingot_blasting
+        CookingRecipeBuilder.blastingRecipe(Ingredient.fromItems(ItemInit.SILICA.get()), ItemInit.SILICON.get(), 0.7f, 400)
+                .addCriterion("silica", hasItem(ItemInit.SILICA.get()))
+                .build(recipe, new ResourceLocation(COres.MODID, "silicon_blasting"));
+
+        //ingot_smelting
+        CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(ItemInit.SILICA.get()), ItemInit.SILICON.get(), 0.7f, 200)
+                .addCriterion("silica", hasItem(ItemInit.SILICA.get()))
+                .build(recipe, new ResourceLocation(COres.MODID, "silicon_smelting"));
+
         //SALT BLOCK
         ShapedRecipeBuilder.shapedRecipe(BlockInit.SALT_BLOCK.get(), 1)
                 .patternLine("pp ")

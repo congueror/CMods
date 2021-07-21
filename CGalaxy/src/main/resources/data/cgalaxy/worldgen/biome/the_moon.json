@@ -19,7 +19,7 @@
   "surface_builder": "cgalaxy:moon",
   "carvers": {
     "air": [
-      "minecraft:cave"
+      "cgalaxy:moon_carver"
     ]
   },
   "features": [],

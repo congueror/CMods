@@ -8,11 +8,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -37,8 +40,10 @@ import java.util.stream.IntStream;
 public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler, ITickableTileEntity, INamedContainerProvider {
     protected ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+
     public FluidTank[] tanks;
     private final LazyOptional<IFluidHandler> fluidHandler;
+
     protected ModEnergyStorage energyStorage = createEnergy();
     protected LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
 
@@ -129,9 +134,11 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
                 processTime = getProcessTime();
                 progress += getProgressSpeed();
                 energyStorage.consumeEnergy(getEnergyUsage());
+                markDirty();
                 if (progress >= processTime) {
                     tanks[0].drain(new FluidStack(tank1.getFluid(), tank1.getAmount() - 100), FluidAction.EXECUTE);
                     tanks[1].fill(new FluidStack(FluidInit.KEROSENE.get(), 100), FluidAction.EXECUTE);
+                    markDirty();
                     progress = 0;
                 }
             }
@@ -139,7 +146,7 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
     }
 
     public boolean isBucket(ItemStack stack) {
-        return stack.getContainerItem().getItem() == Items.BUCKET;
+        return stack.getItem() instanceof BucketItem;
     }
 
     //TODO
@@ -210,34 +217,56 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
 
     @Override
     public void read(BlockState state, CompoundNBT nbt) {
-        itemHandler.deserializeNBT(nbt.getCompound("inv"));
         this.progress = nbt.getInt("Progress");
         this.processTime = nbt.getInt("ProcessTime");
         energyStorage.deserializeNBT(nbt.getCompound("energy"));
 
-        ListNBT list = nbt.getList("Tanks", 10);
-        for (int i = 0; i < tanks.length && i < list.size(); ++i) {
-            INBT inbt = list.get(i);
-            tanks[i].setFluid(FluidStack.loadFluidStackFromNBT((CompoundNBT) inbt));
-        }
+        deserializeContents(nbt);
 
         super.read(state, nbt);
     }
 
     @Override
     public CompoundNBT write(CompoundNBT tag) {
-        tag.put("inv", itemHandler.serializeNBT());
         tag.putInt("Progress", (int) this.progress);
         tag.putInt("ProcessTime", this.processTime);
         tag.put("energy", energyStorage.serializeNBT());
 
-        ListNBT list = new ListNBT();
-        for (FluidTank tank : tanks) {
-            list.add(tank.writeToNBT(new CompoundNBT()));
-        }
-        tag.put("Tanks", list);
+        tag.put("contents", serializeContents());
 
         return super.write(tag);
+    }
+
+    private CompoundNBT serializeContents() {
+        CompoundNBT tag = new CompoundNBT();
+
+        for (int i = 0; i < invSize().length; i++) {
+            if (!itemHandler.getStackInSlot(i).isEmpty()) {
+                tag.put("slot" + i, itemHandler.getStackInSlot(i).serializeNBT());
+            }
+        }
+
+        for (int i = 0; i < tanks.length; i++) {
+            if (!tanks[i].isEmpty()) {
+                tag.put("tank" + i, tanks[i].getFluid().writeToNBT(new CompoundNBT()));
+            }
+        }
+
+        return tag;
+    }
+
+    private void deserializeContents(CompoundNBT tag) {
+        for (int i = 0; i < invSize().length; i++) {
+            if (tag.contains("slot" + i)) {
+                itemHandler.deserializeNBT(tag.getCompound("slot" + i));
+            }
+        }
+
+        for (int i = 0; i < tanks.length; i++) {
+            if (tag.contains("tank" + i)) {
+                tanks[i].setFluid(FluidStack.loadFluidStackFromNBT(tag.getCompound("tank" + i)));
+            }
+        }
     }
 
     @Override

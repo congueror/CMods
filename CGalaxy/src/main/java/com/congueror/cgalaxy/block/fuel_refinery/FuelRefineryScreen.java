@@ -45,7 +45,10 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
                 tanks.add(new TranslationTextComponent("key.cgalaxy.empty"));
             }
             this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
-            if (mouseX > guiLeft + 65 && mouseX < guiLeft + 82 && mouseY > guiTop + 16 && mouseY < guiTop + 68) {
+            if (mouseX > guiLeft + 65 && mouseX < guiLeft + 82 && mouseY > guiTop + 16 && mouseY < guiTop + 68 && i == 0) {
+                this.func_243308_b(matrixStack, tanks, mouseX, mouseY);
+            }
+            if (mouseX > guiLeft + 109 && mouseX < guiLeft + 127 && mouseY > guiTop + 16 && mouseY < guiTop + 68 && i == 1) {
                 this.func_243308_b(matrixStack, tanks, mouseX, mouseY);
             }
         }
@@ -81,8 +84,9 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
         //Fluid Tanks
         if (!container.getFluidTank()[0].getFluid().isEmpty()) {
             int a = 50 - (50 * getFluidPercent(0) / 100);
-            minecraft.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/block/" + container.getFluidTank()[0].getFluid().getFluid()));
-            this.blit(matrixStack, this.guiLeft + 64, this.guiTop + 16 + a, 0, 0, 16, 50 - a);
+            String string = container.getFluidTank()[0].getFluid().getFluid().getRegistryName().getPath();
+            minecraft.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/block/" + string));
+            this.blit(matrixStack, this.guiLeft + 66, this.guiTop + 18 + a, 0, 0, 16, 50 - a);
         }
     }
 

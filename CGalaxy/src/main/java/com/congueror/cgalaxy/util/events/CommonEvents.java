@@ -5,14 +5,12 @@ import com.congueror.cgalaxy.commands.ModCommands;
 import com.congueror.cgalaxy.entities.RocketEntity;
 import com.congueror.cgalaxy.init.BlockInit;
 import com.congueror.cgalaxy.init.EntityTypeInit;
-import com.congueror.cgalaxy.keybinds.Keybinds;
 import com.congueror.cgalaxy.network.Networking;
 import com.congueror.cgalaxy.network.PacketOpenGalaxyMap;
+import com.congueror.cgalaxy.init.CarverInit;
 import com.congueror.cgalaxy.world.dimension.Dimensions;
-import com.congueror.cgalaxy.world.dimension.PlanetOreGen;
+import com.congueror.cgalaxy.world.PlanetOreGen;
 import com.congueror.clib.util.ModItemGroups;
-import com.google.common.collect.ImmutableSet;
-import net.minecraft.block.Block;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.CreatureEntity;
@@ -26,10 +24,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.carver.WorldCarver;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -38,12 +33,10 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.List;
-import java.util.Set;
 
 public class CommonEvents {
     @Mod.EventBusSubscriber(modid = CGalaxy.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -51,12 +44,10 @@ public class CommonEvents {
         @SubscribeEvent
         public static void commonSetup(FMLCommonSetupEvent e) {
             Networking.registerMessages();
-            ObfuscationReflectionHelper.setPrivateValue(WorldCarver.class, WorldCarver.CAVE, new ImmutableSet.Builder<Block>()
-                    .addAll((Set<Block>) ObfuscationReflectionHelper.getPrivateValue(WorldCarver.class, WorldCarver.CAVE, "field_222718_j"))
-                    .add(BlockInit.MOON_STONE.get().getDefaultState().getBlock()).build(), "field_222718_j");
             e.enqueueWork(() -> {
-               Dimensions.setupDims();
-               PlanetOreGen.registerFeatures();
+                Dimensions.setupDims();
+                PlanetOreGen.registerFeatures();
+                CarverInit.registerCarvers();
             });
         }
 
