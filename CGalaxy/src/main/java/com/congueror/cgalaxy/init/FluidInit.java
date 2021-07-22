@@ -23,7 +23,7 @@ public class FluidInit {
     public static final RegistryObject<FlowingFluid> OIL = FLUIDS.register("oil", () ->
             new ForgeFlowingFluid.Flowing(oilProperties()));
     private static ForgeFlowingFluid.Properties oilProperties() {
-        return new ForgeFlowingFluid.Properties(() -> null, OIL, FluidAttributes.builder(new ResourceLocation(CGalaxy.MODID, "block/oil"), new ResourceLocation(CGalaxy.MODID, "block/oil"))
+        return new ForgeFlowingFluid.Properties(() -> null, OIL, FluidAttributes.builder(new ResourceLocation(CGalaxy.MODID, "block/oil_still"), new ResourceLocation(CGalaxy.MODID, "block/oil_flowing"))
                 .density(825).temperature(437));
     }
 }

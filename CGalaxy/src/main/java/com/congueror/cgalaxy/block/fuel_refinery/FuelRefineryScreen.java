@@ -77,15 +77,15 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
 
         //Energy
         int z = 60 - (60 * getEnergyPercent() / 100);
-        this.blit(matrixStack, this.guiLeft + 170, this.guiTop + 7 + z, 196, 17, 16, 60 - z);
+        this.blit(matrixStack, this.guiLeft + 172, this.guiTop + 9 + z, 196, 17, 16, 60 - z);
 
         this.blit(matrixStack, this.guiLeft + 172, this.guiTop + 9, 212, 17, 16, 60);
 
         //Fluid Tanks
         if (!container.getFluidTank()[0].getFluid().isEmpty()) {
             int a = 50 - (50 * getFluidPercent(0) / 100);
-            String string = container.getFluidTank()[0].getFluid().getFluid().getRegistryName().getPath();
-            minecraft.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/block/" + string));
+            ResourceLocation texture = container.getFluidTank()[0].getFluid().getFluid().getAttributes().getStillTexture();
+            minecraft.getTextureManager().bindTexture(new ResourceLocation(texture.getNamespace(), "textures/" + texture.getPath() + ".png"));
             this.blit(matrixStack, this.guiLeft + 66, this.guiTop + 18 + a, 0, 0, 16, 50 - a);
         }
     }

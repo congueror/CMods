@@ -59,11 +59,13 @@ public class FuelRefineryBlock extends Block {
                         te.tanks[0].fill(new FluidStack(fluid, 1000), IFluidHandler.FluidAction.EXECUTE);
                         te.markDirty();
                         if (!player.isCreative()) {
-                            stack.shrink(1);
+                            stack.getContainerItem();
+                            return ActionResultType.CONSUME;
                         }
                     }
                 } else {
                     NetworkHooks.openGui((ServerPlayerEntity) player, te, te.getPos());
+                    return ActionResultType.PASS;
                 }
             } else {
                 throw new IllegalStateException("Named container provider is missing!");

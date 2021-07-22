@@ -43,6 +43,8 @@ public class FuelRefineryContainer extends ModContainer<FuelRefineryTileEntity> 
             addSlot(new SlotItemHandler(iItemHandler, 4, 4, 40));
             addSlot(new SlotItemHandler(iItemHandler, 5, 4, 58));
         });
+
+        trackIntArray(tile.data);
     }
 
     @Override
@@ -94,7 +96,7 @@ public class FuelRefineryContainer extends ModContainer<FuelRefineryTileEntity> 
         return te.data.get(1);
     }
 
-    /*
+
     @Override
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
@@ -108,7 +110,7 @@ public class FuelRefineryContainer extends ModContainer<FuelRefineryTileEntity> 
                     return ItemStack.EMPTY;
                 }
             } else {
-                if (tile.isItemValid(stack)) {
+                if (tile.isItemValid(index, stack)) {
                     if (!this.mergeItemStack(stack, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
@@ -135,5 +137,5 @@ public class FuelRefineryContainer extends ModContainer<FuelRefineryTileEntity> 
         }
 
         return itemstack;
-    }*/
+    }
 }

@@ -34,7 +34,6 @@ public class ModContainer<T extends FuelRefineryTileEntity> extends Container {
         this.playerInventory = new InvWrapper(playerInventory);
 
         trackPower();
-        trackIntArray(tile.data);
         layoutPlayerInventorySlots(28, 84);
     }
 

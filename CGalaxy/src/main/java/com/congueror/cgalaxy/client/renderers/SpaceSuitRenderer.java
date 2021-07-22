@@ -5,7 +5,6 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 
 public class SpaceSuitRenderer extends BipedModel<PlayerEntity> {
     private final ModelRenderer Head;
@@ -19,8 +18,6 @@ public class SpaceSuitRenderer extends BipedModel<PlayerEntity> {
 
     public SpaceSuitRenderer() {
         super(0, 0, 64, 64);
-        Minecraft mc = Minecraft.getInstance();
-        ClientPlayerEntity player = mc.player;
 
         Body = new ModelRenderer(this);
         Body.setRotationPoint(0.0F, 0.0F, 0.0F);

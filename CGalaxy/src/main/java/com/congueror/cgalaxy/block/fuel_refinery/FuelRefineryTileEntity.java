@@ -24,6 +24,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -32,6 +33,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.lwjgl.system.CallbackI;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -44,7 +46,7 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
     public FluidTank[] tanks;
     private final LazyOptional<IFluidHandler> fluidHandler;
 
-    protected ModEnergyStorage energyStorage = createEnergy();
+    protected ModEnergyStorage energyStorage;
     protected LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
 
     protected int capacity, receive;
@@ -85,16 +87,16 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
 
     public FuelRefineryTileEntity() {
         super(TileEntityInit.FUEL_REFINERY.get());
-        energyStorage = createEnergy();
         capacity = 40000;
         receive = 1000;
 
+        this.energyStorage = createEnergy();
         this.tanks = IntStream.range(0, 2).mapToObj(k -> new FluidTank(15000)).toArray(FluidTank[]::new);
         this.fluidHandler = LazyOptional.of(() -> this);
     }
 
     private ModEnergyStorage createEnergy() {
-        return new ModEnergyStorage(capacity, receive, 0);
+        return new ModEnergyStorage(40000, 1000, 0);
     }
 
     public int[] invSize() {
@@ -102,7 +104,7 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
     }
 
     public int getEnergyUsage() {
-        return 100;
+        return 60;
     }
 
     public int getCapacity() {
@@ -127,8 +129,8 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
             return;
         }
 
-        ItemStack inputStack = itemHandler.getStackInSlot(0);
         FluidStack tank1 = tanks[0].getFluid();
+        FluidStack tank2 = tanks[1].getFluid();
         if (tank1.getFluid() != null && tank1.getAmount() >= 100) {
             if (energyStorage.getEnergyStored() >= getEnergyUsage()) {
                 processTime = getProcessTime();
@@ -136,10 +138,18 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
                 energyStorage.consumeEnergy(getEnergyUsage());
                 markDirty();
                 if (progress >= processTime) {
-                    tanks[0].drain(new FluidStack(tank1.getFluid(), tank1.getAmount() - 100), FluidAction.EXECUTE);
-                    tanks[1].fill(new FluidStack(FluidInit.KEROSENE.get(), 100), FluidAction.EXECUTE);
-                    markDirty();
+                    if (tank1.getAmount() == 100) {
+                        tanks[0].setFluid(FluidStack.EMPTY);
+                    } else {
+                        tanks[0].getFluid().shrink(100);
+                    }
+                    if (tank2.isEmpty()) {
+                        tanks[1].setFluid(new FluidStack(FluidInit.KEROSENE.get(), 100));//TODO recipe plz
+                    } else {
+                        tanks[1].getFluid().grow(100);
+                    }
                     progress = 0;
+                    markDirty();
                 }
             }
         }
@@ -162,6 +172,9 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
         }
         if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return fluidHandler.cast();
+        }
+        if (cap == CapabilityEnergy.ENERGY) {
+            return energy.cast();
         }
         return super.getCapability(cap, side);
     }
@@ -196,6 +209,14 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
         };
     }
 
+    public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+        if (slot <= 1) {
+            return FuelRefineryTileEntity.this.isBucket(stack);
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public ITextComponent getDisplayName() {
         return new TranslationTextComponent(this.getBlockState().getBlock().getTranslationKey());
@@ -217,34 +238,26 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
 
     @Override
     public void read(BlockState state, CompoundNBT nbt) {
+        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         this.progress = nbt.getInt("Progress");
         this.processTime = nbt.getInt("ProcessTime");
         energyStorage.deserializeNBT(nbt.getCompound("energy"));
 
-        deserializeContents(nbt);
+        for (int i = 0; i < tanks.length; i++) {
+            if (nbt.contains("tank" + i)) {
+                tanks[i].setFluid(FluidStack.loadFluidStackFromNBT(nbt.getCompound("tank" + i)));
+            }
+        }
 
         super.read(state, nbt);
     }
 
     @Override
     public CompoundNBT write(CompoundNBT tag) {
+        tag.put("inventory", itemHandler.serializeNBT());
         tag.putInt("Progress", (int) this.progress);
         tag.putInt("ProcessTime", this.processTime);
         tag.put("energy", energyStorage.serializeNBT());
-
-        tag.put("contents", serializeContents());
-
-        return super.write(tag);
-    }
-
-    private CompoundNBT serializeContents() {
-        CompoundNBT tag = new CompoundNBT();
-
-        for (int i = 0; i < invSize().length; i++) {
-            if (!itemHandler.getStackInSlot(i).isEmpty()) {
-                tag.put("slot" + i, itemHandler.getStackInSlot(i).serializeNBT());
-            }
-        }
 
         for (int i = 0; i < tanks.length; i++) {
             if (!tanks[i].isEmpty()) {
@@ -252,21 +265,7 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
             }
         }
 
-        return tag;
-    }
-
-    private void deserializeContents(CompoundNBT tag) {
-        for (int i = 0; i < invSize().length; i++) {
-            if (tag.contains("slot" + i)) {
-                itemHandler.deserializeNBT(tag.getCompound("slot" + i));
-            }
-        }
-
-        for (int i = 0; i < tanks.length; i++) {
-            if (tag.contains("tank" + i)) {
-                tanks[i].setFluid(FluidStack.loadFluidStackFromNBT(tag.getCompound("tank" + i)));
-            }
-        }
+        return super.write(tag);
     }
 
     @Override
