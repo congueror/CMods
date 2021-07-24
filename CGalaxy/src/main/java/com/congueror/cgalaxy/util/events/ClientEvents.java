@@ -255,13 +255,11 @@ public class ClientEvents {
             MatrixStack mStack = e.getMatrixStack();
             if (player != null) {
                 if (player.getRidingEntity() instanceof RocketEntity) {
-                    mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/hud/rocket_y_hud.png"));
-                    mc.ingameGUI.blit(mStack, 0, 0, 0, 0, e.getWindow().getWidth(), e.getWindow().getHeight());
-                    //mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/hud/rocket_y"));
+                    int width = e.getWindow().getWidth();
+                    int height = e.getWindow().getHeight();
+                    mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/rocket_y_hud.png"));
+                    mc.ingameGUI.blit(mStack, width / 2, height / 2, 0, 0, 16, 102);
                     double y = player.getPosY();
-                    if (y < 10) {
-                        //mc.ingameGUI.blit(mStack, );
-                    }
                 }
             }
         }

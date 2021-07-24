@@ -23,10 +23,6 @@ public class CLib {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    public static int calculateRGB(int R, int G, int B) {
-        return (R * 65536) + (G * 256) + B;
-    }
-
     public static boolean isModLoaded(String mod) {
         return ModList.get().isLoaded(mod);
     }

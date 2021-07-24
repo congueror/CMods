@@ -1,6 +1,7 @@
 package com.congueror.cgalaxy.block.fuel_refinery;
 
 import com.congueror.cgalaxy.CGalaxy;
+import com.congueror.clib.util.MathHelper;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -105,10 +106,10 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
             minecraft.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
             BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-            bufferbuilder.pos(matrix, (float)x1, (float)y2, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMinU(), sprite.getMaxV()).endVertex();
-            bufferbuilder.pos(matrix, (float)x2, (float)y2, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMaxU(), sprite.getMaxV()).endVertex();
-            bufferbuilder.pos(matrix, (float)x2, (float)y1, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMaxU(), sprite.getMinV()).endVertex();
-            bufferbuilder.pos(matrix, (float)x1, (float)y1, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMinU(), sprite.getMinV()).endVertex();
+            bufferbuilder.pos(matrix, (float)x1, (float)y2, (float)blitOffset).color((int) MathHelper.getFluidColor(color).getRed(), (int) MathHelper.getFluidColor(color).getGreen(), (int) MathHelper.getFluidColor(color).getBlue(), (int) MathHelper.getFluidColor(color).getAlpha()).tex(sprite.getMinU(), sprite.getMaxV()).endVertex();
+            bufferbuilder.pos(matrix, (float)x2, (float)y2, (float)blitOffset).color((int) MathHelper.getFluidColor(color).getRed(), (int) MathHelper.getFluidColor(color).getGreen(), (int) MathHelper.getFluidColor(color).getBlue(), (int) MathHelper.getFluidColor(color).getAlpha()).tex(sprite.getMaxU(), sprite.getMaxV()).endVertex();
+            bufferbuilder.pos(matrix, (float)x2, (float)y1, (float)blitOffset).color((int) MathHelper.getFluidColor(color).getRed(), (int) MathHelper.getFluidColor(color).getGreen(), (int) MathHelper.getFluidColor(color).getBlue(), (int) MathHelper.getFluidColor(color).getAlpha()).tex(sprite.getMaxU(), sprite.getMinV()).endVertex();
+            bufferbuilder.pos(matrix, (float)x1, (float)y1, (float)blitOffset).color((int) MathHelper.getFluidColor(color).getRed(), (int) MathHelper.getFluidColor(color).getGreen(), (int) MathHelper.getFluidColor(color).getBlue(), (int) MathHelper.getFluidColor(color).getAlpha()).tex(sprite.getMinU(), sprite.getMinV()).endVertex();
             bufferbuilder.finishDrawing();
             RenderSystem.enableAlphaTest();
             WorldVertexBufferUploader.draw(bufferbuilder);
@@ -127,10 +128,10 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
             minecraft.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
             BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-            bufferbuilder.pos(matrix, (float)x1, (float)y2, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMinU(), sprite.getMaxV()).endVertex();
-            bufferbuilder.pos(matrix, (float)x2, (float)y2, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMaxU(), sprite.getMaxV()).endVertex();
-            bufferbuilder.pos(matrix, (float)x2, (float)y1, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMaxU(), sprite.getMinV()).endVertex();
-            bufferbuilder.pos(matrix, (float)x1, (float)y1, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMinU(), sprite.getMinV()).endVertex();
+            bufferbuilder.pos(matrix, (float)x1, (float)y2, (float)blitOffset).color(MathHelper.getFluidColor(color).getRed(), MathHelper.getFluidColor(color).getGreen(), MathHelper.getFluidColor(color).getBlue(), 1.0f).tex(sprite.getMinU(), sprite.getMaxV()).endVertex();
+            bufferbuilder.pos(matrix, (float)x2, (float)y2, (float)blitOffset).color(MathHelper.getFluidColor(color).getRed(), MathHelper.getFluidColor(color).getGreen(), MathHelper.getFluidColor(color).getBlue(), 1.0f).tex(sprite.getMaxU(), sprite.getMaxV()).endVertex();
+            bufferbuilder.pos(matrix, (float)x2, (float)y1, (float)blitOffset).color(MathHelper.getFluidColor(color).getRed(), MathHelper.getFluidColor(color).getGreen(), MathHelper.getFluidColor(color).getBlue(), 1.0f).tex(sprite.getMaxU(), sprite.getMinV()).endVertex();
+            bufferbuilder.pos(matrix, (float)x1, (float)y1, (float)blitOffset).color(MathHelper.getFluidColor(color).getRed(), MathHelper.getFluidColor(color).getGreen(), MathHelper.getFluidColor(color).getBlue(), 1.0f).tex(sprite.getMinU(), sprite.getMinV()).endVertex();
             bufferbuilder.finishDrawing();
             RenderSystem.enableAlphaTest();
             WorldVertexBufferUploader.draw(bufferbuilder);

@@ -28,8 +28,7 @@ public abstract class RocketEntity extends CreatureEntity {
 
     int fuel;
 
-    int i;
-    int k;
+    int i, k;
 
     public RocketEntity(EntityType<? extends RocketEntity> entity, World world) {
         super(entity, world);
@@ -253,7 +252,6 @@ public abstract class RocketEntity extends CreatureEntity {
         return false;
     }
 
-    //TODO
     @Override
     public double getMountedYOffset() {
         return super.getMountedYOffset() + -1.7000000000000002;

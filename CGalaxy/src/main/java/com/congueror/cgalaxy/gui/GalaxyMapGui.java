@@ -6,6 +6,7 @@ import com.congueror.cgalaxy.network.Networking;
 import com.congueror.cgalaxy.network.PacketTeleport;
 import com.congueror.cgalaxy.world.dimension.Dimensions;
 import com.congueror.clib.CLib;
+import com.congueror.clib.util.MathHelper;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -169,7 +170,7 @@ public class GalaxyMapGui extends Screen {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         int width = mc.getMainWindow().getScaledWidth();
         int height = mc.getMainWindow().getScaledHeight();
-        int infoColor = CLib.calculateRGB(0, 150, 255);
+        int infoColor = MathHelper.calculateRGB(0, 150, 255);
 
         SOLAR_SYSTEM.visible = false;
 
@@ -210,14 +211,14 @@ public class GalaxyMapGui extends Screen {
                 this.blit(matrixStack, 448, 113, 0, 0, 96, 35, 96, 35);
                 matrixStack.push();
                 matrixStack.scale(1.3f, 1.3f, 0);
-                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.solar_system"), 348, 96, CLib.calculateRGB(249, 215, 28));
+                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.solar_system"), 348, 96, MathHelper.calculateRGB(249, 215, 28));
                 matrixStack.pop();
             }
 
             //matrixStack, this.font, text, x, y, color
             matrixStack.push();
             matrixStack.scale(2f, 2f, 0);
-            drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.milky_way"), 15, 31, CLib.calculateRGB(255, 0, 255)/*16711935*/);
+            drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.milky_way"), 15, 31, MathHelper.calculateRGB(255, 0, 255)/*16711935*/);
             matrixStack.pop();
 
             drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.milky_way.diameter"), 26, 99, infoColor);
@@ -226,8 +227,8 @@ public class GalaxyMapGui extends Screen {
 
             matrixStack.push();
             matrixStack.scale(0.9f, 0.9f, 0);
-            drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.hover_tip1"), 26, 160, CLib.calculateRGB(0, 100, 255));
-            drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.hover_tip2"), 26, 170, CLib.calculateRGB(0, 100, 255));
+            drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.hover_tip1"), 26, 160, MathHelper.calculateRGB(0, 100, 255));
+            drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.hover_tip2"), 26, 170, MathHelper.calculateRGB(0, 100, 255));
             matrixStack.pop();
         }
         if (CURRENT_MAP == 2) {
@@ -277,7 +278,7 @@ public class GalaxyMapGui extends Screen {
                 this.blit(matrixStack, 366, 124, 0, 0, 96, 35, 96, 35);
                 matrixStack.push();
                 matrixStack.scale(1.3f, 1.3f, 0);
-                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.mercury"), 285, 104, CLib.calculateRGB(255, 255, 255));
+                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.mercury"), 285, 104, MathHelper.calculateRGB(255, 255, 255));
                 matrixStack.pop();
             }
 
@@ -291,7 +292,7 @@ public class GalaxyMapGui extends Screen {
                 this.blit(matrixStack, 257, 163, 0, 0, 96, 35, 96, 35);
                 matrixStack.push();
                 matrixStack.scale(1.3f, 1.3f, 0);
-                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.venus"), 201, 134, CLib.calculateRGB(255, 255, 255));
+                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.venus"), 201, 134, MathHelper.calculateRGB(255, 255, 255));
                 matrixStack.pop();
             }
 
@@ -305,7 +306,7 @@ public class GalaxyMapGui extends Screen {
                 this.blit(matrixStack, 450, 164, 0, 0, 96, 35, 96, 35);
                 matrixStack.push();
                 matrixStack.scale(1.3f, 1.3f, 0);
-                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.earth"), 350, 135, CLib.calculateRGB(255, 255, 255));
+                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.earth"), 350, 135, MathHelper.calculateRGB(255, 255, 255));
                 matrixStack.pop();
             }
 
@@ -319,7 +320,7 @@ public class GalaxyMapGui extends Screen {
                 this.blit(matrixStack, 212, 63, 0, 0, 96, 35, 96, 35);
                 matrixStack.push();
                 matrixStack.scale(1.3f, 1.3f, 0);
-                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.mars"), 167, 57, CLib.calculateRGB(255, 255, 255));
+                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.mars"), 167, 57, MathHelper.calculateRGB(255, 255, 255));
                 matrixStack.pop();
             }
 
@@ -335,7 +336,7 @@ public class GalaxyMapGui extends Screen {
 
             matrixStack.push();
             matrixStack.scale(1.4f, 1.4f, 0);
-            drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.solar_system"), 21, 50, CLib.calculateRGB(249, 215, 28));
+            drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.solar_system"), 21, 50, MathHelper.calculateRGB(249, 215, 28));
             matrixStack.pop();
 
             drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.solar_system.diameter"), 26, 99, infoColor);
@@ -378,7 +379,7 @@ public class GalaxyMapGui extends Screen {
 
             matrixStack.push();
             matrixStack.scale(2f, 2f, 0);
-            drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.mercury"), 17, 32, CLib.calculateRGB(255, 255, 255));
+            drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.mercury"), 17, 32, MathHelper.calculateRGB(255, 255, 255));
             matrixStack.pop();
 
             drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.mercury.type"), 26, 99, infoColor);
@@ -422,7 +423,7 @@ public class GalaxyMapGui extends Screen {
 
             matrixStack.push();
             matrixStack.scale(2f, 2f, 0);
-            drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.venus"), 17, 32, CLib.calculateRGB(255, 255, 255));
+            drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.venus"), 17, 32, MathHelper.calculateRGB(255, 255, 255));
             matrixStack.pop();
 
             drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.venus.type"), 26, 99, infoColor);
@@ -485,7 +486,7 @@ public class GalaxyMapGui extends Screen {
             if (CURRENT_MAP == 2.31) {
                 matrixStack.push();
                 matrixStack.scale(2f, 2f, 0);
-                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.moon"), 17, 32, CLib.calculateRGB(255, 255, 255));
+                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.moon"), 17, 32, MathHelper.calculateRGB(255, 255, 255));
                 matrixStack.pop();
 
                 drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.moon.type"), 26, 99, infoColor);
@@ -497,7 +498,7 @@ public class GalaxyMapGui extends Screen {
             } else {
                 matrixStack.push();
                 matrixStack.scale(2f, 2f, 0);
-                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.earth"), 17, 32, CLib.calculateRGB(255, 255, 255));
+                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.earth"), 17, 32, MathHelper.calculateRGB(255, 255, 255));
                 matrixStack.pop();
 
                 drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.earth.type"), 26, 99, infoColor);
@@ -573,7 +574,7 @@ public class GalaxyMapGui extends Screen {
             if (CURRENT_MAP == 2.41) {
                 matrixStack.push();
                 matrixStack.scale(2f, 2f, 0);
-                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.phobos"), 17, 32, CLib.calculateRGB(255, 255, 255));
+                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.phobos"), 17, 32, MathHelper.calculateRGB(255, 255, 255));
                 matrixStack.pop();
 
                 drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.phobos.type"), 26, 99, infoColor);
@@ -585,7 +586,7 @@ public class GalaxyMapGui extends Screen {
             } else if (CURRENT_MAP == 2.42) {
                 matrixStack.push();
                 matrixStack.scale(2f, 2f, 0);
-                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.deimos"), 17, 32, CLib.calculateRGB(255, 255, 255));
+                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.deimos"), 17, 32, MathHelper.calculateRGB(255, 255, 255));
                 matrixStack.pop();
 
                 drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.deimos.type"), 26, 99, infoColor);
@@ -597,7 +598,7 @@ public class GalaxyMapGui extends Screen {
             } else {
                 matrixStack.push();
                 matrixStack.scale(2f, 2f, 0);
-                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.mars"), 17, 32, CLib.calculateRGB(255, 255, 255));
+                drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.mars"), 17, 32, MathHelper.calculateRGB(255, 255, 255));
                 matrixStack.pop();
 
                 drawString(matrixStack, this.font, new TranslationTextComponent("gui.cgalaxy.mars.type"), 26, 99, infoColor);
