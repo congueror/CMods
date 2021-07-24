@@ -4,26 +4,32 @@ import com.congueror.cgalaxy.CGalaxy;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.lwjgl.system.CallbackI;
 
 public class FluidInit {
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, CGalaxy.MODID);
 
-    public static final RegistryObject<FlowingFluid> KEROSENE = FLUIDS.register("kerosene", () ->
+    public static final RegistryObject<FlowingFluid> KEROSENE = FLUIDS.register("kerosene_still", () ->
+            new ForgeFlowingFluid.Source(keroseneProperties()));
+    public static final RegistryObject<FlowingFluid> KEROSENE_FLOWING = FLUIDS.register("kerosene_flowing", () ->
             new ForgeFlowingFluid.Flowing(keroseneProperties()));
     private static ForgeFlowingFluid.Properties keroseneProperties() {
-        return new ForgeFlowingFluid.Properties(() -> null, KEROSENE, FluidAttributes.builder(new ResourceLocation(CGalaxy.MODID, "block/kerosene"), new ResourceLocation(CGalaxy.MODID, "block/kerosene"))
-                .density(1).temperature(437));
+        return new ForgeFlowingFluid.Properties(KEROSENE, KEROSENE_FLOWING, FluidAttributes.builder(new ResourceLocation(CGalaxy.MODID, "block/kerosene_still"), new ResourceLocation(CGalaxy.MODID, "block/kerosene_flow"))
+                .color(0xE5E5C0).density(1).temperature(437).sound(SoundEvents.ITEM_BUCKET_FILL, SoundEvents.ITEM_BUCKET_EMPTY)).bucket(ItemInit.KEROSENE_BUCKET).block(BlockInit.KEROSENE);
     }
 
-    public static final RegistryObject<FlowingFluid> OIL = FLUIDS.register("oil", () ->
+    public static final RegistryObject<FlowingFluid> OIL = FLUIDS.register("oil_still", () ->
+            new ForgeFlowingFluid.Source(oilProperties()));
+    public static final RegistryObject<FlowingFluid> OIL_FLOWING = FLUIDS.register("oil_flowing", () ->
             new ForgeFlowingFluid.Flowing(oilProperties()));
     private static ForgeFlowingFluid.Properties oilProperties() {
-        return new ForgeFlowingFluid.Properties(() -> null, OIL, FluidAttributes.builder(new ResourceLocation(CGalaxy.MODID, "block/oil_still"), new ResourceLocation(CGalaxy.MODID, "block/oil_flowing"))
-                .density(825).temperature(437));
+        return new ForgeFlowingFluid.Properties(OIL, OIL_FLOWING, FluidAttributes.builder(new ResourceLocation(CGalaxy.MODID, "block/oil_still"), new ResourceLocation(CGalaxy.MODID, "block/oil_still"))
+                .density(825).temperature(437).sound(SoundEvents.ITEM_BUCKET_FILL, SoundEvents.ITEM_BUCKET_EMPTY)).bucket(ItemInit.OIL_BUCKET).block(BlockInit.OIL).tickRate(20);
     }
 }

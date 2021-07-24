@@ -7,8 +7,8 @@ import com.congueror.cgalaxy.entities.rocket_tier_1.RocketTier1Renderer;
 import com.congueror.cgalaxy.init.ContainerInit;
 import com.congueror.cgalaxy.init.EntityTypeInit;
 import com.congueror.cgalaxy.keybinds.Keybinds;
-import com.congueror.cgalaxy.network.PacketLaunchSequence;
 import com.congueror.cgalaxy.network.Networking;
+import com.congueror.cgalaxy.network.PacketLaunchSequence;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -39,9 +39,6 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.system.CallbackI;
-
-import javax.annotation.Nullable;
 
 public class ClientEvents {
     @Mod.EventBusSubscriber(modid = CGalaxy.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -76,7 +73,6 @@ public class ClientEvents {
                             return false;
                         }
 
-                        @Nullable
                         @Override
                         public ICloudRenderHandler getCloudRenderHandler() {
                             return (i, v, matrixStack, clientWorld, minecraft, v1, v2, v3) -> {
@@ -84,14 +80,13 @@ public class ClientEvents {
                             };
                         }
 
-                        @Nullable
                         @Override
                         public ISkyRenderHandler getSkyRenderHandler() {
                             return (ticks, partialTicks, matrixStack, world, mc) -> {
                                 ResourceLocation SKY_TEXTURE = new ResourceLocation(CGalaxy.MODID, "textures/sky/moon_sky.png");
-                                ResourceLocation EARTH_TEXTURES = new ResourceLocation(CGalaxy.MODID, "textures/sky/earth.png");
-                                ResourceLocation EARTH_BACKGROUND_TEXTURES = new ResourceLocation(CGalaxy.MODID, "textures/sky/earth_background.png");
-                                ResourceLocation SUN_TEXTURES = new ResourceLocation(CGalaxy.MODID, "textures/sky/moon_sun.png");
+                                ResourceLocation EARTH_TEXTURE = new ResourceLocation(CGalaxy.MODID, "textures/sky/earth.png");
+                                ResourceLocation EARTH_BACKGROUND_TEXTURE = new ResourceLocation(CGalaxy.MODID, "textures/sky/earth_background.png");
+                                ResourceLocation SUN_TEXTURE = new ResourceLocation(CGalaxy.MODID, "textures/sky/moon_sun.png");
 
                                 RenderSystem.disableTexture();
                                 Vector3d vector3d = world.getSkyColor(mc.gameRenderer.getActiveRenderInfo().getBlockPos(), partialTicks);
@@ -165,7 +160,7 @@ public class ClientEvents {
                                 matrixStack.rotate(Vector3f.ZP.rotationDegrees(30.0F));
                                 matrix4f1 = matrixStack.getLast().getMatrix();
                                 float f12 = 30.0F;
-                                mc.getTextureManager().bindTexture(EARTH_TEXTURES);
+                                mc.getTextureManager().bindTexture(EARTH_TEXTURE);
                                 bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
                                 bufferbuilder.pos(matrix4f1, -9, -100.0F, 9).tex(0.0F, 0.0F).endVertex();
                                 bufferbuilder.pos(matrix4f1, 9, -100.0F, 9).tex(1.0F, 0.0F).endVertex();
@@ -174,7 +169,7 @@ public class ClientEvents {
                                 bufferbuilder.finishDrawing();
                                 WorldVertexBufferUploader.draw(bufferbuilder);
                                 // Earth light
-                                mc.getTextureManager().bindTexture(EARTH_BACKGROUND_TEXTURES);
+                                mc.getTextureManager().bindTexture(EARTH_BACKGROUND_TEXTURE);
                                 bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
                                 bufferbuilder.pos(matrix4f1, -25, -100.0F, 25).tex(0.0F, 0.0F).endVertex();
                                 bufferbuilder.pos(matrix4f1, 25, -100.0F, 25).tex(1.0F, 0.0F).endVertex();
@@ -187,7 +182,8 @@ public class ClientEvents {
                                 matrixStack.rotate(Vector3f.ZP.rotationDegrees(-30.0F));
                                 matrixStack.rotate(Vector3f.XP.rotationDegrees(world.func_242415_f(partialTicks) * 360.0F));
                                 matrix4f1 = matrixStack.getLast().getMatrix();
-                                mc.getTextureManager().bindTexture(SUN_TEXTURES);
+                                //Sun
+                                mc.getTextureManager().bindTexture(SUN_TEXTURE);
                                 bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
                                 bufferbuilder.pos(matrix4f1, -f12, -100.0F, f12).tex(0.0F, 0.0F).endVertex();
                                 bufferbuilder.pos(matrix4f1, f12, -100.0F, f12).tex(1.0F, 0.0F).endVertex();
@@ -195,10 +191,10 @@ public class ClientEvents {
                                 bufferbuilder.pos(matrix4f1, -f12, -100.0F, -f12).tex(0.0F, 1.0F).endVertex();
                                 bufferbuilder.finishDrawing();
                                 WorldVertexBufferUploader.draw(bufferbuilder);
+                                //Sun end
                                 RenderSystem.disableTexture();
                                 f12 = 20.0F;
                                 float f10 = 1.0F;
-                                // f11
                                 if (f10 > 0.0F) {
                                     RenderSystem.color4f(f10, f10, f10, f10);
                                     mc.worldRenderer.starVBO.bindBuffer();

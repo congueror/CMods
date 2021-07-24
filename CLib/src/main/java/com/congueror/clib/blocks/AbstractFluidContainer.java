@@ -1,33 +1,28 @@
-package com.congueror.cgalaxy.block.fuel_refinery;
+package com.congueror.clib.blocks;
 
 import com.congueror.clib.util.ModEnergyStorage;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.IntReferenceHolder;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
 
-public class ModContainer<T extends FuelRefineryTileEntity> extends Container {
+public abstract class AbstractFluidContainer<T extends AbstractFluidTileEntity> extends Container {
     //TODO
     T tile;
     IIntArray data;
     IItemHandler playerInventory;
 
-    public ModContainer(@Nullable ContainerType<?> type, int id, PlayerInventory playerInventory, T tile, IIntArray dataIn) {
+    public AbstractFluidContainer(@Nullable ContainerType<?> type, int id, PlayerInventory playerInventory, T tile, IIntArray dataIn) {
         super(type, id);
         this.tile = tile;
         this.data = dataIn;

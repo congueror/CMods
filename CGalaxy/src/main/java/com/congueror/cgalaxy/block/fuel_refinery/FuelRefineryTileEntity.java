@@ -2,20 +2,18 @@ package com.congueror.cgalaxy.block.fuel_refinery;
 
 import com.congueror.cgalaxy.init.FluidInit;
 import com.congueror.cgalaxy.init.TileEntityInit;
+import com.congueror.clib.blocks.AbstractFluidTileEntity;
 import com.congueror.clib.util.ModEnergyStorage;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -33,74 +31,32 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.lwjgl.system.CallbackI;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.stream.IntStream;
 
-public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler, ITickableTileEntity, INamedContainerProvider {
-    protected ItemStackHandler itemHandler = createHandler();
-    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
-
-    public FluidTank[] tanks;
-    private final LazyOptional<IFluidHandler> fluidHandler;
-
-    protected ModEnergyStorage energyStorage;
-    protected LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
-
-    protected int capacity, receive;
-    protected float progress;
-    protected int processTime;
-    public static final int FIELDS_COUNT = 2;
-    public final IIntArray data = new IIntArray() {
-
-        @Override
-        public int get(int index) {
-            switch (index) {
-                case 0:
-                    return (int) progress;
-                case 1:
-                    return processTime;
-                default:
-                    return 0;
-            }
-        }
-
-        @Override
-        public void set(int index, int value) {
-            switch (index) {
-                case 0:
-                    progress = value;
-                    break;
-                case 1:
-                    processTime = value;
-                    break;
-            }
-        }
-
-        @Override
-        public int size() {
-            return FIELDS_COUNT;
-        }
-    };
+public class FuelRefineryTileEntity extends AbstractFluidTileEntity {
 
     public FuelRefineryTileEntity() {
         super(TileEntityInit.FUEL_REFINERY.get());
-        capacity = 40000;
-        receive = 1000;
 
-        this.energyStorage = createEnergy();
         this.tanks = IntStream.range(0, 2).mapToObj(k -> new FluidTank(15000)).toArray(FluidTank[]::new);
-        this.fluidHandler = LazyOptional.of(() -> this);
-    }
-
-    private ModEnergyStorage createEnergy() {
-        return new ModEnergyStorage(40000, 1000, 0);
     }
 
     public int[] invSize() {
         return new int[]{0, 1, 2, 3, 4, 5};
+    }
+
+    @Override
+    public boolean canItemFit(int slot, ItemStack stack) {
+        if (slot == 0) {
+            return stack.getItem() instanceof BucketItem;
+        }
+        if (slot == 1) {
+            return stack.getItem().equals(Items.BUCKET);
+        }
+        return false;
     }
 
     public int getEnergyUsage() {
@@ -108,230 +64,59 @@ public class FuelRefineryTileEntity extends TileEntity implements IFluidHandler,
     }
 
     public int getCapacity() {
-        return capacity;
+        return 40000;
     }
 
     public int getMaxReceive() {
-        return receive;
+        return 1000;
     }
 
     public int getProcessTime() {
         return 1000;
     }
 
-    public int getProgressSpeed() {
-        return 1;
-    }
-
-    @Override
-    public void tick() {
-        if (world.isRemote) {
-            return;
-        }
-
-        FluidStack tank1 = tanks[0].getFluid();
-        FluidStack tank2 = tanks[1].getFluid();
-        if (tank1.getFluid() != null && tank1.getAmount() >= 100) {
-            if (energyStorage.getEnergyStored() >= getEnergyUsage()) {
-                processTime = getProcessTime();
-                progress += getProgressSpeed();
-                energyStorage.consumeEnergy(getEnergyUsage());
-                markDirty();
-                if (progress >= processTime) {
-                    if (tank1.getAmount() == 100) {
-                        tanks[0].setFluid(FluidStack.EMPTY);
-                    } else {
-                        tanks[0].getFluid().shrink(100);
-                    }
-                    if (tank2.isEmpty()) {
-                        tanks[1].setFluid(new FluidStack(FluidInit.KEROSENE.get(), 100));//TODO recipe plz
-                    } else {
-                        tanks[1].getFluid().grow(100);
-                    }
-                    progress = 0;
-                    markDirty();
-                }
-            }
-        }
-    }
-
-    public boolean isBucket(ItemStack stack) {
-        return stack.getItem() instanceof BucketItem;
-    }
-
-    //TODO
-    public boolean isUpgrade(ItemStack stack) {
-        return false;
-    }
-
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return handler.cast();
-        }
-        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            return fluidHandler.cast();
-        }
-        if (cap == CapabilityEnergy.ENERGY) {
-            return energy.cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
-    private ItemStackHandler createHandler() {
-        return new ItemStackHandler(invSize().length) {
-
-            @Override
-            protected void onContentsChanged(int slot) {
-                // To make sure the TE persists when the chunk is saved later we need to
-                // mark it dirty every time the item handler changes
-                markDirty();
-            }
-
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                if (slot <= 1) {
-                    return FuelRefineryTileEntity.this.isBucket(stack);
-                } else {
-                    return false;
-                }
-            }
-
-            @Nonnull
-            @Override
-            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if (!FuelRefineryTileEntity.this.isBucket(stack)) {
-                    return stack;
-                }
-                return super.insertItem(slot, stack, simulate);
-            }
-        };
-    }
-
-    public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-        if (slot <= 1) {
-            return FuelRefineryTileEntity.this.isBucket(stack);
+    public void execute() {
+        if (tanks[0].getFluid().getAmount() == 100) {
+            tanks[0].setFluid(FluidStack.EMPTY);
         } else {
-            return false;
+            tanks[0].getFluid().shrink(100);
+        }
+        if (tanks[1].getFluid().isEmpty()) {
+            tanks[1].setFluid(new FluidStack(FluidInit.KEROSENE.get(), 100));//TODO recipe plz
+        } else {
+            tanks[1].getFluid().grow(100);
         }
     }
 
-    @Override
-    public ITextComponent getDisplayName() {
-        return new TranslationTextComponent(this.getBlockState().getBlock().getTranslationKey());
+    public void executeSlot() {
+        ItemStack slot = itemHandler.getStackInSlot(0);
+        if (slot.getItem() instanceof BucketItem) {
+            if (((BucketItem) slot.getItem()).getFluid() != Fluids.EMPTY) {
+                if (tanks[0].isEmpty()) {
+                    tanks[0].setFluid(new FluidStack(((BucketItem) slot.getItem()).getFluid(), 1000));
+                } else if (tanks[0].getFluid().getFluid().equals(((BucketItem) slot.getItem()).getFluid())) {
+                    tanks[0].getFluid().grow(1000);
+                } else {
+                    return;
+                }
+                itemHandler.setStackInSlot(0, new ItemStack(Items.BUCKET));
+            }
+        }
+
+        ItemStack slot1 = itemHandler.getStackInSlot(1);
+        if (slot1.getItem().equals(Items.BUCKET)) {
+            if (tanks[1].isEmpty()) {
+                return;
+            } else if (tanks[1].getFluid().getAmount() >= 1000) {
+                tanks[1].getFluid().shrink(1000);
+            }
+            itemHandler.setStackInSlot(1, tanks[1].getFluid().getFluid().getAttributes().getBucket(tanks[1].getFluid()));
+        }
     }
 
     @Nullable
     @Override
     public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
         return new FuelRefineryContainer(p_createMenu_1_, p_createMenu_2_, this, data);
-    }
-
-    @Override
-    public void remove() {
-        super.remove();
-        handler.invalidate();
-        fluidHandler.invalidate();
-        energy.invalidate();
-    }
-
-    @Override
-    public void read(BlockState state, CompoundNBT nbt) {
-        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        this.progress = nbt.getInt("Progress");
-        this.processTime = nbt.getInt("ProcessTime");
-        energyStorage.deserializeNBT(nbt.getCompound("energy"));
-
-        for (int i = 0; i < tanks.length; i++) {
-            if (nbt.contains("tank" + i)) {
-                tanks[i].setFluid(FluidStack.loadFluidStackFromNBT(nbt.getCompound("tank" + i)));
-            }
-        }
-
-        super.read(state, nbt);
-    }
-
-    @Override
-    public CompoundNBT write(CompoundNBT tag) {
-        tag.put("inventory", itemHandler.serializeNBT());
-        tag.putInt("Progress", (int) this.progress);
-        tag.putInt("ProcessTime", this.processTime);
-        tag.put("energy", energyStorage.serializeNBT());
-
-        for (int i = 0; i < tanks.length; i++) {
-            if (!tanks[i].isEmpty()) {
-                tag.put("tank" + i, tanks[i].getFluid().writeToNBT(new CompoundNBT()));
-            }
-        }
-
-        return super.write(tag);
-    }
-
-    @Override
-    public int getTanks() {
-        return tanks.length;
-    }
-
-    @Nonnull
-    @Override
-    public FluidStack getFluidInTank(int tank) {
-        if (tank < 0 || tank >= tanks.length) {
-            return FluidStack.EMPTY;
-        }
-        return tanks[tank].getFluid();
-    }
-
-    @Override
-    public int getTankCapacity(int tank) {
-        if (tank < 0 || tank >= tanks.length) {
-            return 0;
-        }
-        return tanks[tank].getCapacity();
-    }
-
-    @Override
-    public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
-        if (tank < 0 || tank >= tanks.length) {
-            return false;
-        }
-        return tanks[tank].isFluidValid(stack);
-    }
-
-    @Override
-    public int fill(FluidStack resource, FluidAction action) {
-        for (int i = 0; i < 1; ++i) {
-            FluidStack fluidInTank = tanks[i].getFluid();
-            if (isFluidValid(i, resource) && (fluidInTank.isEmpty() || resource.isFluidEqual(fluidInTank))) {
-                return tanks[i].fill(resource, action);
-            }
-        }
-        return 0;
-    }
-
-    @Nonnull
-    @Override
-    public FluidStack drain(FluidStack resource, FluidAction action) {
-        if (resource.isEmpty()) {
-            return FluidStack.EMPTY;
-        }
-
-        for (int i = 0; i < 1; ++i) {
-            if (resource.isFluidEqual(tanks[i].getFluid())) {
-                return tanks[i].drain(resource, action);
-            }
-        }
-        return FluidStack.EMPTY;
-    }
-
-    @Nonnull
-    @Override
-    public FluidStack drain(int maxDrain, FluidAction action) {
-        for (int i = 0; i < 1; ++i) {
-            if (tanks[i].getFluidAmount() > 0) {
-                return tanks[i].drain(maxDrain, action);
-            }
-        }
-        return FluidStack.EMPTY;
     }
 }

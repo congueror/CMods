@@ -1,0 +1,8 @@
+{
+  "craftable": false,
+  "tier": 2,
+  "sortOrder": 2,
+  "fluid": "tconstruct:molten_tin",
+  "fluidPerUnit": 144,
+  "textColor": "#FFFFFF"
+}

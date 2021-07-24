@@ -3,6 +3,7 @@ package com.congueror.cgalaxy.block.fuel_refinery;
 import com.congueror.cgalaxy.init.ContainerInit;
 import com.congueror.cgalaxy.network.Networking;
 import com.congueror.cgalaxy.network.PacketUpdateFuelRefinery;
+import com.congueror.clib.blocks.AbstractFluidContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -13,16 +14,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.lwjgl.system.CallbackI;
 
-public class FuelRefineryContainer extends ModContainer<FuelRefineryTileEntity> {
+public class FuelRefineryContainer extends AbstractFluidContainer<FuelRefineryTileEntity> {
     FuelRefineryTileEntity te;
     NonNullList<FluidStack> fluidLastTick = NonNullList.create();
 
@@ -44,7 +43,7 @@ public class FuelRefineryContainer extends ModContainer<FuelRefineryTileEntity> 
             addSlot(new SlotItemHandler(iItemHandler, 5, 4, 58));
         });
 
-        trackIntArray(tile.data);
+        trackIntArray(te.data);
     }
 
     @Override
@@ -54,7 +53,7 @@ public class FuelRefineryContainer extends ModContainer<FuelRefineryTileEntity> 
             FluidStack stack = getFluidTank()[i].getFluid();
             FluidStack stack1 = this.fluidLastTick.get(i);
             if (stack != stack1) {
-                boolean stackChanged = !stack1.equals(stack);
+                boolean stackChanged = !stack1.isFluidStackIdentical(stack);
                 FluidStack stack2 = stack.copy();
                 this.fluidLastTick.set(i, stack2);
                 if (stackChanged) {
@@ -110,7 +109,7 @@ public class FuelRefineryContainer extends ModContainer<FuelRefineryTileEntity> 
                     return ItemStack.EMPTY;
                 }
             } else {
-                if (tile.isItemValid(index, stack)) {
+                if (te.canItemFit(index, stack)) {
                     if (!this.mergeItemStack(stack, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }

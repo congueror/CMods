@@ -220,5 +220,8 @@
   "block.cores.stripped_rubber_wood": "Stripped Rubber Wood",
   "block.cores.rubber_leaves": "Rubber Leaves",
   "block.cores.rubber_planks": "Rubber Planks",
-  "block.cores.rubber_sapling": "Rubber Sapling"
+  "block.cores.rubber_sapling": "Rubber Sapling",
+
+  "material.cores.tin": "Tin",
+  "material.cores.aluminum": "Aluminum"
 }

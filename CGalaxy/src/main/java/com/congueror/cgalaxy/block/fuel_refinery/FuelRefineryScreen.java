@@ -4,12 +4,21 @@ import com.congueror.cgalaxy.CGalaxy;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldVertexBufferUploader;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +69,7 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
         this.font.drawString(matrixStack, title, (xSize / 2 - font.getStringWidth(title) / 2) + 5, 6, 4210752);
 
         String inv = new TranslationTextComponent("key.categories.inventory").getString();
-        this.font.drawString(matrixStack, inv, (xSize / 2 - font.getStringWidth(inv) / 2) - 40, 74, 4210752);
+        this.font.drawString(matrixStack, inv, (xSize / 2 - font.getStringWidth(inv) / 2) - 30, 74, 4210752);
     }
 
     @Override
@@ -72,7 +81,7 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
         //Progress Arrow
         int progress = container.getProgress();
         int processTime = container.getProcessTime();
-        int length = processTime > 0 && progress > 0 && progress > processTime ? progress * 24 / processTime : 0;
+        int length = processTime > 0 && progress > 0 ? progress * 24 / processTime : 0;
         this.blit(matrixStack, this.guiLeft + 85, this.guiTop + 35, 196, 0, length + 1, 16);
 
         //Energy
@@ -83,10 +92,48 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
 
         //Fluid Tanks
         if (!container.getFluidTank()[0].getFluid().isEmpty()) {
-            int a = 50 - (50 * getFluidPercent(0) / 100);
             ResourceLocation texture = container.getFluidTank()[0].getFluid().getFluid().getAttributes().getStillTexture();
-            minecraft.getTextureManager().bindTexture(new ResourceLocation(texture.getNamespace(), "textures/" + texture.getPath() + ".png"));
-            this.blit(matrixStack, this.guiLeft + 66, this.guiTop + 18 + a, 0, 0, 16, 50 - a);
+            TextureAtlasSprite sprite = minecraft.getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(texture);
+            int color = container.getFluidTank()[0].getFluid().getFluid().getAttributes().getColor();
+            Matrix4f matrix = matrixStack.getLast().getMatrix();
+            int a = 50 - (50 * getFluidPercent(0) / 100);
+            int x1 = this.guiLeft + 66;
+            int x2 = x1 + 16;
+            int y1 = this.guiTop + 18 + a;
+            int y2 = y1 + (50 - a);
+            int blitOffset = this.getBlitOffset();
+            minecraft.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
+            BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
+            bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+            bufferbuilder.pos(matrix, (float)x1, (float)y2, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMinU(), sprite.getMaxV()).endVertex();
+            bufferbuilder.pos(matrix, (float)x2, (float)y2, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMaxU(), sprite.getMaxV()).endVertex();
+            bufferbuilder.pos(matrix, (float)x2, (float)y1, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMaxU(), sprite.getMinV()).endVertex();
+            bufferbuilder.pos(matrix, (float)x1, (float)y1, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMinU(), sprite.getMinV()).endVertex();
+            bufferbuilder.finishDrawing();
+            RenderSystem.enableAlphaTest();
+            WorldVertexBufferUploader.draw(bufferbuilder);
+        }
+        if (!container.getFluidTank()[1].getFluid().isEmpty()) {
+            ResourceLocation texture = container.getFluidTank()[1].getFluid().getFluid().getAttributes().getStillTexture();
+            TextureAtlasSprite sprite = minecraft.getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(texture);
+            int color = container.getFluidTank()[1].getFluid().getFluid().getAttributes().getColor();
+            Matrix4f matrix = matrixStack.getLast().getMatrix();
+            int a = 50 - (50 * getFluidPercent(1) / 100);
+            int x1 = this.guiLeft + 66;
+            int x2 = x1 + 16;
+            int y1 = this.guiTop + 18 + a;
+            int y2 = y1 + (50 - a);
+            int blitOffset = this.getBlitOffset();
+            minecraft.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
+            BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
+            bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+            bufferbuilder.pos(matrix, (float)x1, (float)y2, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMinU(), sprite.getMaxV()).endVertex();
+            bufferbuilder.pos(matrix, (float)x2, (float)y2, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMaxU(), sprite.getMaxV()).endVertex();
+            bufferbuilder.pos(matrix, (float)x2, (float)y1, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMaxU(), sprite.getMinV()).endVertex();
+            bufferbuilder.pos(matrix, (float)x1, (float)y1, (float)blitOffset).color(Color.decode(String.valueOf(color)).getRed(), Color.decode(String.valueOf(color)).getGreen(), Color.decode(String.valueOf(color)).getBlue(), 1.0f).tex(sprite.getMinU(), sprite.getMinV()).endVertex();
+            bufferbuilder.finishDrawing();
+            RenderSystem.enableAlphaTest();
+            WorldVertexBufferUploader.draw(bufferbuilder);
         }
     }
 

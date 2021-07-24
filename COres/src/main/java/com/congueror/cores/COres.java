@@ -1,6 +1,7 @@
 package com.congueror.cores;
 
 import com.congueror.cores.init.BlockInit;
+import com.congueror.cores.init.FluidInit;
 import com.congueror.cores.init.ItemInit;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -34,6 +35,7 @@ public class COres {
         instance = this;
         ItemInit.ITEMS.register(modEventBus);
         BlockInit.BLOCKS.register(modEventBus);
+        FluidInit.FLUIDS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }

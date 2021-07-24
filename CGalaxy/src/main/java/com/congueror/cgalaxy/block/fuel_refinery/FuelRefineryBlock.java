@@ -1,7 +1,5 @@
 package com.congueror.cgalaxy.block.fuel_refinery;
 
-import com.congueror.cgalaxy.init.FluidInit;
-import com.congueror.cgalaxy.init.ItemInit;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,7 +25,6 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-@SuppressWarnings("ALL")
 public class FuelRefineryBlock extends Block {
 
     public FuelRefineryBlock(Properties properties) {
@@ -65,7 +62,6 @@ public class FuelRefineryBlock extends Block {
                     }
                 } else {
                     NetworkHooks.openGui((ServerPlayerEntity) player, te, te.getPos());
-                    return ActionResultType.PASS;
                 }
             } else {
                 throw new IllegalStateException("Named container provider is missing!");
