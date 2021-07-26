@@ -1,0 +1,8 @@
+{
+  "default": [
+      {
+        "name": "cores:magnetic",
+        "level": 1
+      }
+  ]
+}

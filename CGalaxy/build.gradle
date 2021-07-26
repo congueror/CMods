@@ -10,8 +10,7 @@ buildscript {
 
 apply plugin: 'net.minecraftforge.gradle'
 //Only edit below this line
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
+apply plugin: 'idea'
 
 group = 'com.congueror'
 version = '1.16.5-0.1'
@@ -135,9 +134,6 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.0'
-
-    implementation fg.deobf("curse.maven:world-stripper-250603:3142092")
-    //implementation fg.deobf("curse.maven:shutup-experimental-settings-407174:3188120")
 
     // compile against the JEI API but do not include it at runtime
     compileOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.0.52:api")

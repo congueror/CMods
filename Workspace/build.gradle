@@ -10,8 +10,7 @@ buildscript {
 
 apply plugin: 'net.minecraftforge.gradle'
 //Only edit below this line
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
+apply plugin: 'idea'
 
 group = 'com.congueror'
 version = '1.0-SNAPSHOT'
@@ -141,12 +140,10 @@ dependencies {
 
     implementation fg.deobf("curse.maven:world-stripper-250603:3142092")
     implementation fg.deobf("curse.maven:solar_flux_reborn-246974:3273858")
-    //implementation fg.deobf("curse.maven:tinkers-construct-74072:3389395")
-    //implementation fg.deobf("curse.maven:mantle-74924:3389377")
+    compile fg.deobf('slimeknights.tconstruct:TConstruct:1.16.5-3.1.0.231')
+    compile fg.deobf('slimeknights.mantle:Mantle:1.16.5-1.6.114')
 
-    // compile against the JEI API but do not include it at runtime
     compileOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.0.52:api")
-    // at runtime, use the full JEI jar
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.0.52")
 
     compile project(':CLib')

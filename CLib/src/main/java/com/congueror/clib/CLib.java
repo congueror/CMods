@@ -34,4 +34,8 @@ public class CLib {
     public static boolean isCGalaxyLoaded() {
         return isModLoaded("cgalaxy");
     }
+
+    public static boolean isTConstructLoaded() {
+        return isModLoaded("tconstruct");
+    }
 }

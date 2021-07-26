@@ -223,5 +223,12 @@
   "block.cores.rubber_sapling": "Rubber Sapling",
 
   "material.cores.tin": "Tin",
-  "material.cores.aluminum": "Aluminum"
+  "material.cores.aluminum": "Aluminum",
+  "material.cores.nickel": "Nickel",
+  "material.cores.invar": "Invar",
+  "material.cores.platinum": "Platinum",
+
+  "modifier.cores.magnetic": "Magnetic",
+  "modifier.cores.magnetic.flavor": "Ferromagnetism!",
+  "modifier.cores.magnetic.description": "Uses durability to attract nearby items toward the tool."
 }

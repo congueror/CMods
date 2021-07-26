@@ -1,9 +1,8 @@
 gradle.projectsEvaluated {
     def projects = [
             "CLib",
+            "COres",
             "CGalaxy"
-            //"CSuperheroes",
-            //"MechAddendums"
     ]
     project.tasks.create('assembleAll') {
         def last = null

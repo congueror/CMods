@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
@@ -155,6 +156,14 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
     //TODO
     public int getProgressSpeed() {
         return 1;
+    }
+
+    public NonNullList<ItemStack> getDrops() {
+        NonNullList<ItemStack> drops = NonNullList.create();
+        for (int i = 0; i < invSize().length; i++) {
+            drops.add(itemHandler.getStackInSlot(i));
+        }
+        return drops;
     }
 
     private ModEnergyStorage createEnergy() {
