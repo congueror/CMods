@@ -4,6 +4,7 @@ import com.congueror.cgalaxy.CGalaxy;
 import com.congueror.cgalaxy.items.OxygenTankItem;
 import com.congueror.cgalaxy.items.RocketItem;
 import com.congueror.cgalaxy.items.SpaceSuitItem;
+import com.congueror.clib.items.UpgradeItem;
 import com.congueror.clib.util.ModItemGroups;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BucketItem;
@@ -19,6 +20,8 @@ public class ItemInit {
 
     public static final RegistryObject<Item> KEROSENE_BUCKET = ITEMS.register("kerosene_bucket", () -> new BucketItem(FluidInit.KEROSENE, com.congueror.cores.init.ItemInit.properties().maxStackSize(1).containerItem(Items.BUCKET)));
     public static final RegistryObject<Item> OIL_BUCKET = ITEMS.register("oil_bucket", () -> new BucketItem(FluidInit.OIL, com.congueror.cores.init.ItemInit.properties().maxStackSize(1).containerItem(Items.BUCKET)));
+
+    public static final RegistryObject<Item> SPEED_UPGRADE = ITEMS.register("speed_upgrade", () -> new UpgradeItem(new Item.Properties().group(ModItemGroups.MachinesIG.instance).maxStackSize(4), UpgradeItem.UpgradeType.SPEED));
 
     public static final RegistryObject<Item> SPACESUIT_HELM = ITEMS.register("space_suit_helm", () -> new SpaceSuitItem(EquipmentSlotType.HEAD, new Item.Properties().group(ModItemGroups.CGalaxyIG.instance)));
     public static final RegistryObject<Item> SPACESUIT_CHEST = ITEMS.register("space_suit_chest", () -> new SpaceSuitItem(EquipmentSlotType.CHEST, new Item.Properties().group(ModItemGroups.CGalaxyIG.instance)));

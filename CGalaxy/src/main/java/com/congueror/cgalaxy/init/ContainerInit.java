@@ -1,6 +1,8 @@
 package com.congueror.cgalaxy.init;
 
 import com.congueror.cgalaxy.CGalaxy;
+import com.congueror.cgalaxy.block.fuel_loader.FuelLoaderContainer;
+import com.congueror.cgalaxy.block.fuel_loader.FuelLoaderTileEntity;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryContainer;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryTileEntity;
 import net.minecraft.inventory.container.ContainerType;
@@ -21,5 +23,13 @@ public class ContainerInit {
                 TileEntity tile = inv.player.getEntityWorld().getTileEntity(pos);
                 FuelRefineryTileEntity te = (FuelRefineryTileEntity) tile;
                 return new FuelRefineryContainer(windowId, inv, te, new IntArray(FuelRefineryTileEntity.FIELDS_COUNT));
+            }));
+
+    public static final RegistryObject<ContainerType<FuelLoaderContainer>> FUEL_LOADER = CONTAINER_TYPES.register("fuel_loader", () ->
+            IForgeContainerType.create((windowId, inv, data) -> {
+                BlockPos pos = data.readBlockPos();
+                TileEntity tile = inv.player.getEntityWorld().getTileEntity(pos);
+                FuelLoaderTileEntity te = (FuelLoaderTileEntity) tile;
+                return new FuelLoaderContainer(windowId, inv, te, new IntArray(FuelLoaderTileEntity.FIELDS_COUNT));
             }));
 }

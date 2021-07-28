@@ -1,6 +1,7 @@
 package com.congueror.cgalaxy.block.launch_pad;
 
 import com.congueror.cgalaxy.entities.RocketEntity;
+import com.congueror.cgalaxy.init.BlockInit;
 import com.congueror.clib.CLib;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -18,8 +19,10 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import org.lwjgl.system.CallbackI;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -57,6 +60,35 @@ public class LaunchPadBlock extends Block {
         for (Entity entity : rocket) {
             if (entity instanceof RocketEntity) {
                 return (RocketEntity) (entity);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the middle block of the multiblock.
+     * @param world The world
+     * @param pos   Current Position
+     * @return block position of the middle block, null otherwise.
+     */
+    public BlockPos getMidBlock(IWorld world, BlockPos pos) {
+        ArrayList<BlockPos> pos1 = new ArrayList<>();
+        pos1.add(pos.east());
+        pos1.add(pos.west());
+        pos1.add(pos.south());
+        pos1.add(pos.north());
+        pos1.add(pos);
+        pos1.add(pos.add(1, 0, 1));
+        pos1.add(pos.add(-1, 0, 1));
+        pos1.add(pos.add(-1, 0, -1));
+        pos1.add(pos.add(1, 0, -1));
+        for (BlockPos pos2 : pos1) {
+            if (world.getBlockState(pos2).matchesBlock(BlockInit.LAUNCH_PAD.get())) {
+                if (this.is3x3(pos2, world)) {
+                    return pos2;
+                } else {
+                    return null;
+                }
             }
         }
         return null;

@@ -1,6 +1,7 @@
 package com.congueror.cgalaxy.init;
 
 import com.congueror.cgalaxy.CGalaxy;
+import com.congueror.cgalaxy.block.fuel_loader.FuelLoaderTileEntity;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryTileEntity;
 import com.congueror.cgalaxy.block.launch_pad.LaunchPadTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -14,6 +15,9 @@ public class TileEntityInit {
 
     public static final RegistryObject<TileEntityType<FuelRefineryTileEntity>> FUEL_REFINERY = TILE_ENTITY_TYPES.register("fuel_refinery", () ->
             TileEntityType.Builder.create(FuelRefineryTileEntity::new, BlockInit.FUEL_REFINERY.get()).build(null));
+
+    public static final RegistryObject<TileEntityType<FuelLoaderTileEntity>> FUEL_LOADER = TILE_ENTITY_TYPES.register("fuel_loader", () ->
+            TileEntityType.Builder.create(FuelLoaderTileEntity::new, BlockInit.FUEL_LOADER.get()).build(null));
 
     public static final RegistryObject<TileEntityType<LaunchPadTileEntity>> LAUNCH_PAD = TILE_ENTITY_TYPES.register("launch_pad", () ->
             TileEntityType.Builder.create(LaunchPadTileEntity::new, BlockInit.LAUNCH_PAD.get()).build(null));

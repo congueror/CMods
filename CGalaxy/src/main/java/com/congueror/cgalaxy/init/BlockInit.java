@@ -1,6 +1,7 @@
 package com.congueror.cgalaxy.init;
 
 import com.congueror.cgalaxy.CGalaxy;
+import com.congueror.cgalaxy.block.fuel_loader.FuelLoaderBlock;
 import com.congueror.cgalaxy.block.launch_pad.LaunchPadBlock;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryBlock;
 import net.minecraft.block.*;
@@ -32,6 +33,8 @@ public class BlockInit {
     public static final RegistryObject<Block> LAUNCH_PAD = BLOCKS.register("launch_pad", () -> new LaunchPadBlock(AbstractBlock.Properties.from(Blocks.IRON_BLOCK)));
 
     public static final RegistryObject<Block> FUEL_REFINERY = BLOCKS.register("fuel_refinery", () -> new FuelRefineryBlock(AbstractBlock.Properties.create(Material.IRON)
+            .hardnessAndResistance(6f).sound(SoundType.METAL)));
+    public static final RegistryObject<Block> FUEL_LOADER = BLOCKS.register("fuel_loader", () -> new FuelLoaderBlock(AbstractBlock.Properties.create(Material.IRON)
             .hardnessAndResistance(6f).sound(SoundType.METAL)));
 
     public static final RegistryObject<FlowingFluidBlock> KEROSENE = BLOCKS.register("kerosene", () -> new FlowingFluidBlock(FluidInit.KEROSENE, AbstractBlock.Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(100.0F).noDrops()));

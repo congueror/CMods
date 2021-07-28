@@ -25,7 +25,7 @@ public class PlanetOreGen {
         MOON_IRON = registerConfiguredOre(moon, BlockInit.MOON_IRON_ORE.get(), 8, 64, 12);
         MOON_SILICON = registerConfiguredOre(moon, BlockInit.MOON_ALUMINUM_ORE.get(), 7, 64, 10);
         MOON_ALUMINUM = registerConfiguredOre(moon, BlockInit.MOON_SILICON_ORE.get(), 4, 64, 8);
-        MOON_TITANIUM = registerConfiguredOre(moon, BlockInit.MOON_TITANIUM_ORE.get(), 8, 16, 2);
+        MOON_TITANIUM = registerConfiguredOre(moon, BlockInit.MOON_TITANIUM_ORE.get(), 1, 16, 1);
     }
 
     @SubscribeEvent

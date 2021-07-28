@@ -1,4 +1,4 @@
-package com.congueror.cgalaxy.block.fuel_refinery;
+package com.congueror.cgalaxy.block.fuel_loader;
 
 import com.congueror.cgalaxy.init.ContainerInit;
 import com.congueror.clib.blocks.AbstractFluidContainer;
@@ -11,30 +11,31 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class FuelRefineryContainer extends AbstractFluidContainer<FuelRefineryTileEntity> {
-    FuelRefineryTileEntity te;
+public class FuelLoaderContainer extends AbstractFluidContainer<FuelLoaderTileEntity> {
+    FuelLoaderTileEntity te;
 
-    public FuelRefineryContainer(int id, PlayerInventory playerInventory, FuelRefineryTileEntity tile, IIntArray dataIn) {
-        super(ContainerInit.FUEL_REFINERY.get(), id, playerInventory, tile, dataIn);
+    public FuelLoaderContainer(int id, PlayerInventory playerInventory, FuelLoaderTileEntity tile, IIntArray dataIn) {
+        super(ContainerInit.FUEL_LOADER.get(), id, playerInventory, tile, dataIn);
         this.te = tile;
 
         tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-            addSlot(new SlotItemHandler(iItemHandler, 0, 46, 18));
-            addSlot(new SlotItemHandler(iItemHandler, 1, 131, 18));
-            addSlot(new SlotItemHandler(iItemHandler, 2, 4, 4));
-            addSlot(new SlotItemHandler(iItemHandler, 3, 4, 22));
-            addSlot(new SlotItemHandler(iItemHandler, 4, 4, 40));
-            addSlot(new SlotItemHandler(iItemHandler, 5, 4, 58));
+            addSlot(new SlotItemHandler(iItemHandler, 0, 120, 18));
+            addSlot(new SlotItemHandler(iItemHandler, 1, 4, 4));
+            addSlot(new SlotItemHandler(iItemHandler, 2, 4, 22));
+            addSlot(new SlotItemHandler(iItemHandler, 3, 4, 40));
+            addSlot(new SlotItemHandler(iItemHandler, 4, 4, 58));
         });
 
         trackIntArray(te.data);
     }
+
 
     @Override
     public FluidTank[] getFluidTanks() {
         return te.tanks;
     }
 
+    @Override
     public int getEnergyUsage() {
         return te.getEnergyUsage();
     }
@@ -51,10 +52,9 @@ public class FuelRefineryContainer extends AbstractFluidContainer<FuelRefineryTi
         return te.data.get(1);
     }
 
-
     @Override
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
-        ItemStack itemstack = ItemStack.EMPTY;
+        ItemStack itemstack = ItemStack.EMPTY;//TODO: fix plz
         Slot slot = this.inventorySlots.get(index);
         if (slot != null && slot.getHasStack()) {
             ItemStack stack = slot.getStack();

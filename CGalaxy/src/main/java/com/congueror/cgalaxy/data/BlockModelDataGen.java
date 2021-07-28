@@ -3,6 +3,7 @@ package com.congueror.cgalaxy.data;
 import com.congueror.cgalaxy.CGalaxy;
 import com.congueror.cgalaxy.init.BlockInit;
 import net.minecraft.block.Block;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -22,7 +23,7 @@ public class BlockModelDataGen extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        BlockInit.BLOCKS.getEntries().stream().map(RegistryObject::get).forEach(block -> {
+        BlockInit.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(block -> !(block instanceof FlowingFluidBlock)).forEach(block -> {
             if (block == BlockInit.LAUNCH_PAD.get()) {
 
             } else if (block == BlockInit.FUEL_REFINERY.get()) {

@@ -1,14 +1,13 @@
 package com.congueror.clib.blocks;
 
+import com.congueror.clib.items.UpgradeItem;
 import com.congueror.clib.util.ModEnergyStorage;
+import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -32,12 +31,15 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractFluidTileEntity extends TileEntity implements IFluidHandler, ITickableTileEntity, INamedContainerProvider {
     protected ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
 
-    /**Initialization in subclass constructor like so:
+    /**
+     * Initialization in subclass constructor like so:
      * tanks = IntStream.range(0, [Amount of tanks]).mapToObj(k -> new FluidTank([Capacity])).toArray(FluidTank[]::new);
      */
     public FluidTank[] tanks;
@@ -95,7 +97,8 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
 
     /**
      * Check whether an item can fit in the given slot.
-     * @param slot The slot of the item
+     *
+     * @param slot  The slot of the item
      * @param stack The ItemStack in the slot.
      */
     public abstract boolean canItemFit(int slot, ItemStack stack);
@@ -104,20 +107,33 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
      * The amount of FE consumed per tick.
      */
     public abstract int getEnergyUsage();
+
     /**
      * The capacity of the energy buffer.
      */
-    public abstract int getCapacity();
+    public abstract int getEnergyCapacity();
 
     /**
      * The maximum FE/t that the machine can receive.
      */
-    public abstract int getMaxReceive();
+    public abstract int getEnergyMaxReceive();
 
     /**
      * The amount of ticks it takes for the machine to complete a process
      */
     public abstract int getProcessTime();
+
+    /**
+     * A collection of acceptable fluids
+     */
+    public abstract Collection<Fluid> fluidIngredients();
+
+    /**
+     * Here you can add any additional requirements for the machine to start
+     *
+     * @return True if the machine should run.
+     */
+    public abstract boolean requisites();
 
     /**
      * The result of the machine.
@@ -136,7 +152,7 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
         }
 
         FluidStack tank1 = tanks[0].getFluid();
-        if (tank1.getFluid() != Fluids.EMPTY && tank1.getAmount() >= 100) {
+        if (tank1.getFluid() != Fluids.EMPTY && tank1.getAmount() >= 100 && fluidIngredients().contains(tank1.getFluid()) && requisites()) {
             if (energyStorage.getEnergyStored() >= getEnergyUsage()) {
                 processTime = getProcessTime();
                 progress += getProgressSpeed();
@@ -145,19 +161,54 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
                 if (progress >= processTime) {
                     execute();
                     progress = 0;
+                    sendUpdate(getActiveState(), false);
                     markDirty();
+                } else {
+                    sendUpdate(getActiveState(), false);
                 }
+            } else {
+                progress--;
             }
+        } else {
+            if (tank1.getAmount() < 100) {
+                progress = 0;
+            }
+            sendUpdate(getInactiveState(), false);
         }
 
         executeSlot();
+        sendOutFluid(0);
     }
 
-    //TODO
     public int getProgressSpeed() {
-        return 1;
+        int progress = 1;
+        for (int i = 0; i < invSize().length; i++) {
+            if (canItemFit(i, itemHandler.getStackInSlot(i))) {
+                if (((UpgradeItem) itemHandler.getStackInSlot(i).getItem()).getType().equals(UpgradeItem.UpgradeType.SPEED)) {
+                    progress += 2;
+                }
+            }
+        }
+        return progress;
     }
 
+    public int getProcessSize() {
+        int stack = 100;
+        for (int i = 0; i < invSize().length; i++) {
+            if (canItemFit(i, itemHandler.getStackInSlot(i))) {
+                if (((UpgradeItem) itemHandler.getStackInSlot(i).getItem()).getType().equals(UpgradeItem.UpgradeType.STACK)) {
+                    stack += 100;
+                }
+            }
+        }
+        return stack;
+    }
+
+    /**
+     * Used by block to drop contents when broken.
+     *
+     * @return A list of item stacks inside the te.
+     */
     public NonNullList<ItemStack> getDrops() {
         NonNullList<ItemStack> drops = NonNullList.create();
         for (int i = 0; i < invSize().length; i++) {
@@ -166,8 +217,34 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
         return drops;
     }
 
+    public void sendOutFluid(int tank) {
+        FluidStack fluidStack = tanks[tank].getFluid();
+        if (fluidStack.getAmount() > 0 && !fluidStack.isEmpty()) {
+            for (Direction direction : Direction.values()) {
+                TileEntity te = world.getTileEntity(pos.offset(direction));
+                if (te != null) {
+                    boolean doContinue = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction).map(handler -> {
+                                if (handler.getTanks() >= 0) {
+                                    int fill = handler.fill(fluidStack, FluidAction.EXECUTE);
+                                    fluidStack.shrink(fill);
+                                    tanks[tank].getFluid().shrink(fill);
+                                    markDirty();
+                                    return fluidStack.getAmount() > 0;
+                                } else {
+                                    return true;
+                                }
+                            }
+                    ).orElse(true);
+                    if (!doContinue) {
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
     private ModEnergyStorage createEnergy() {
-        return new ModEnergyStorage(getCapacity(), getMaxReceive(), 0);
+        return new ModEnergyStorage(getEnergyCapacity(), getEnergyMaxReceive(), 0);
     }
 
     private ItemStackHandler createHandler() {
@@ -175,8 +252,6 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
 
             @Override
             protected void onContentsChanged(int slot) {
-                // To make sure the TE persists when the chunk is saved later we need to
-                // mark it dirty every time the item handler changes
                 markDirty();
             }
 
@@ -189,6 +264,14 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
                 return super.insertItem(slot, stack, simulate);
+            }
+
+            @Override
+            protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
+                if (stack.getItem() instanceof UpgradeItem) {
+                    return 1;
+                }
+                return super.getStackLimit(slot, stack);
             }
         };
     }
@@ -238,6 +321,24 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
         return super.write(tag);
     }
 
+    protected void sendUpdate(BlockState newState, boolean force) {
+        if (world == null)
+            return;
+        BlockState oldState = world.getBlockState(pos);
+        if (oldState != newState || force) {
+            world.setBlockState(pos, newState, 3);
+            world.notifyBlockUpdate(pos, oldState, newState, 3);
+        }
+    }
+
+    protected BlockState getActiveState() {
+        return getBlockState().with(AbstractFurnaceBlock.LIT, true);
+    }
+
+    protected BlockState getInactiveState() {
+        return getBlockState().with(AbstractFurnaceBlock.LIT, false);
+    }
+
     @Override
     public int getTanks() {
         return tanks.length;
@@ -262,7 +363,7 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
 
     @Override
     public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
-        if (tank < 0 || tank >= tanks.length) {
+        if (tank < 0 || tank >= tanks.length || !fluidIngredients().contains(stack.getFluid())) {
             return false;
         }
         return tanks[tank].isFluidValid(stack);
@@ -316,6 +417,6 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
         if (cap == CapabilityEnergy.ENERGY) {
             return energy.cast();
         }
-        return super.getCapability(cap, side);
+        return super.getCapability(cap, side);//TODO: Change which side can accept a capability
     }
 }

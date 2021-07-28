@@ -1,31 +1,19 @@
 package com.congueror.cores.data;
 
+import com.congueror.clib.data.ItemModelDataGenerator;
 import com.congueror.cores.COres;
 import com.congueror.cores.init.ItemInit;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fml.RegistryObject;
 
-public class ItemModelDataGen extends ItemModelProvider {
+public class ItemModelDataGen extends ItemModelDataGenerator {
     public ItemModelDataGen(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, COres.MODID, existingFileHelper);
-    }
-
-    protected void texture(Item item, String texture) {
-        singleTexture(item.getRegistryName().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(COres.MODID, texture));
+        super(generator, COres.MODID, existingFileHelper, ItemInit.ITEMS, ItemInit.RUBBER_SAPLING.get());
     }
 
     @Override
     protected void registerModels() {
-        ItemInit.ITEMS.getEntries().stream().map(RegistryObject::get).forEach(item -> {
-            if (item == ItemInit.RUBBER_SAPLING.get()) {
-                texture(item, "block/" + item.toString());
-            } else {
-                texture(item, "item/" + item.toString());
-            }
-        });
+        super.registerModels();
+        texture(ItemInit.RUBBER_SAPLING.get(), "block/rubber_sapling");
     }
 }

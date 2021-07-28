@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "cgalaxy:block/machine_frame",
+    "front": "cgalaxy:block/fuel_loader_lit",
+    "side": "cgalaxy:block/machine_frame"
+  }
+}

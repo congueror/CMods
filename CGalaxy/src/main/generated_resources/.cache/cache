@@ -11,6 +11,7 @@ b1759a55d3a986baff231eed01264e1b6f02aeb6 assets/cgalaxy/models/block/moon_iron_o
 59c714acfd9831a5fda164e3d055ab184f6fb9e9 assets/cgalaxy/models/block/moon_titanium_ore.json
 5ff965b714e49ec359d00d629a6833922012fa21 assets/cgalaxy/models/block/moon_turf.json
 1d5e7b70b0c07dd27612e2ad497b5ba9268f53fd assets/cgalaxy/models/item/kerosene_bucket.json
+17d108d8292dc844e0583b6dc530744c1aa03f8f assets/cgalaxy/models/item/light_oxygen_tank.json
 e91820d49b14e57deef5f233b154234bfa9b801d assets/cgalaxy/models/item/moon_aluminum_ore.json
 b33f13b3ed304f7a05b1079c6a5cc80673b0d3da assets/cgalaxy/models/item/moon_iron_ore.json
 72524179c36b46f6b2cd941b10390021ade754fb assets/cgalaxy/models/item/moon_silicon_ore.json
@@ -18,3 +19,4 @@ e544d20d35bd4b01f303d2b728f962e7ac8ca6d7 assets/cgalaxy/models/item/moon_stone.j
 e2ade15f343e62e2507598c203c1ea278a6c209c assets/cgalaxy/models/item/moon_titanium_ore.json
 0a5f89ea39fb330af5223c2921ca26964d6adfd9 assets/cgalaxy/models/item/moon_turf.json
 151c3fb83f772a9e5699cc6b7c52a7ea645a7038 assets/cgalaxy/models/item/oil_bucket.json
+be29319d749a7432e4f2257d5d3074cb0c8f68dd assets/cgalaxy/models/item/speed_upgrade.json

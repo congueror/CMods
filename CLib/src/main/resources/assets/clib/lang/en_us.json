@@ -2,6 +2,7 @@
   "itemGroup.clibitems": "CItems",
   "itemGroup.clibblocks": "CBlocks",
   "itemGroup.cgalaxy": "CGalaxy",
+  "itemGroup.clibmachines": "CMachines",
 
   "tooltip.clib.block_tags": "Block Tags",
   "tooltip.clib.item_tags": "Item Tags",

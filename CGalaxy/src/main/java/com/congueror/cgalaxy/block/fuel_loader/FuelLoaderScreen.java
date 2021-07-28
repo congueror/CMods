@@ -1,4 +1,4 @@
-package com.congueror.cgalaxy.block.fuel_refinery;
+package com.congueror.cgalaxy.block.fuel_loader;
 
 import com.congueror.cgalaxy.CGalaxy;
 import com.congueror.clib.util.MathHelper;
@@ -21,12 +21,11 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
+public class FuelLoaderScreen extends ContainerScreen<FuelLoaderContainer> {
+    public static ResourceLocation GUI = new ResourceLocation(CGalaxy.MODID, "textures/gui/fuel_loader.png");
+    FuelLoaderContainer container;
 
-    public static ResourceLocation GUI = new ResourceLocation(CGalaxy.MODID, "textures/gui/fuel_refinery.png");
-    FuelRefineryContainer container;
-
-    public FuelRefineryScreen(FuelRefineryContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
+    public FuelLoaderScreen(FuelLoaderContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
         this.container = screenContainer;
     }
@@ -37,7 +36,7 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
 
         List<ITextComponent> energy_bar = new ArrayList<>();
-        energy_bar.add(new TranslationTextComponent("tooltip.cgalaxy.screen.energy_percent").appendString(": " + getEnergyPercent() + "%" + " (" + container.getEnergy() + "FE)"));
+        energy_bar.add(new TranslationTextComponent("tooltip.cgalaxy.screen.energy_percent").appendString(": " + MathHelper.getPercent(container.getEnergy(), container.getMaxEnergy()) + "%" + " (" + container.getEnergy() + "FE)"));
         energy_bar.add(new TranslationTextComponent("tooltip.cgalaxy.screen.energy_usage").appendString(": " + container.getEnergyUsage() + "FE/t"));
         this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
         if (mouseX > guiLeft + 170 && mouseX < guiLeft + 188 && mouseY > guiTop + 7 && mouseY < guiTop + 69) {
@@ -53,10 +52,7 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
                 tanks.add(new TranslationTextComponent("key.cgalaxy.empty"));
             }
             this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
-            if (mouseX > guiLeft + 65 && mouseX < guiLeft + 82 && mouseY > guiTop + 16 && mouseY < guiTop + 68 && i == 0) {
-                this.func_243308_b(matrixStack, tanks, mouseX, mouseY);
-            }
-            if (mouseX > guiLeft + 109 && mouseX < guiLeft + 127 && mouseY > guiTop + 16 && mouseY < guiTop + 68 && i == 1) {
+            if (mouseX > guiLeft + 99 && mouseX < guiLeft + 115 && mouseY > guiTop + 16 && mouseY < guiTop + 68 && i == 0) {
                 this.func_243308_b(matrixStack, tanks, mouseX, mouseY);
             }
         }
@@ -64,7 +60,7 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
 
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int x, int y) {
-        String title = new TranslationTextComponent("gui.cgalaxy.fuel_refinery.title").getString();
+        String title = new TranslationTextComponent("gui.cgalaxy.fuel_loader.title").getString();
         this.font.drawString(matrixStack, title, (xSize / 2 - font.getStringWidth(title) / 2) + 5, 6, 4210752);
 
         String inv = new TranslationTextComponent("key.categories.inventory").getString();
@@ -81,10 +77,10 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
         int progress = container.getProgress();
         int processTime = container.getProcessTime();
         int length = processTime > 0 && progress > 0 ? progress * 24 / processTime : 0;
-        this.blit(matrixStack, this.guiLeft + 85, this.guiTop + 35, 196, 0, length + 1, 16);
+        this.blit(matrixStack, this.guiLeft + 83, this.guiTop + 35, 196, 0, 16, length + 1);
 
         //Energy
-        int z = 60 - (60 * getEnergyPercent() / 100);
+        int z = 60 - (60 * MathHelper.getPercent(container.getEnergy(), container.getMaxEnergy()) / 100);
         this.blit(matrixStack, this.guiLeft + 172, this.guiTop + 9 + z, 196, 17, 16, 60 - z);
 
         this.blit(matrixStack, this.guiLeft + 172, this.guiTop + 9, 212, 17, 16, 60);
@@ -95,7 +91,7 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
             TextureAtlasSprite sprite = minecraft.getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(texture);
             int color = container.getFluidTanks()[0].getFluid().getFluid().getAttributes().getColor();
             Matrix4f matrix = matrixStack.getLast().getMatrix();
-            int a = 50 - (50 * getFluidPercent(0) / 100);
+            int a = 50 - (50 * MathHelper.getPercent(container.getFluidTanks()[0].getFluidAmount(), container.getFluidTanks()[0].getCapacity()) / 100);
             int x1 = this.guiLeft + 66;
             int x2 = x1 + 16;
             int y1 = this.guiTop + 18 + a;
@@ -117,51 +113,5 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
             RenderSystem.enableAlphaTest();
             WorldVertexBufferUploader.draw(bufferbuilder);
         }
-        if (!container.getFluidTanks()[1].getFluid().isEmpty()) {
-            ResourceLocation texture = container.getFluidTanks()[1].getFluid().getFluid().getAttributes().getStillTexture();
-            TextureAtlasSprite sprite = minecraft.getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(texture);
-            int color = container.getFluidTanks()[1].getFluid().getFluid().getAttributes().getColor();
-            Matrix4f matrix = matrixStack.getLast().getMatrix();
-            int a = 50 - (50 * getFluidPercent(1) / 100);
-            int x1 = this.guiLeft + 111;
-            int x2 = x1 + 16;
-            int y1 = this.guiTop + 18 + a;
-            int y2 = y1 + (50 - a);
-            int blitOffset = this.getBlitOffset();
-            float r = MathHelper.getFluidColor(color).getRed();
-            float g = MathHelper.getFluidColor(color).getGreen();
-            float b = MathHelper.getFluidColor(color).getBlue();
-            minecraft.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
-            RenderSystem.color3f(r, g, b);
-            RenderSystem.enableBlend();
-            BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
-            bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-            bufferbuilder.pos(matrix, (float)x1, (float)y2, (float)blitOffset).tex(sprite.getMinU(), sprite.getMaxV()).endVertex();
-            bufferbuilder.pos(matrix, (float)x2, (float)y2, (float)blitOffset).tex(sprite.getMaxU(), sprite.getMaxV()).endVertex();
-            bufferbuilder.pos(matrix, (float)x2, (float)y1, (float)blitOffset).tex(sprite.getMaxU(), sprite.getMinV()).endVertex();
-            bufferbuilder.pos(matrix, (float)x1, (float)y1, (float)blitOffset).tex(sprite.getMinU(), sprite.getMinV()).endVertex();
-            bufferbuilder.finishDrawing();
-            RenderSystem.enableAlphaTest();
-            WorldVertexBufferUploader.draw(bufferbuilder);
-        }
-        RenderSystem.disableBlend();
-        RenderSystem.color3f(1, 1, 1);
-    }
-
-    private int getEnergyPercent() {
-        long currentEnergy = container.getEnergy();
-        int maxEnergy = container.getMaxEnergy();
-
-        long result = currentEnergy * 100 / maxEnergy;
-
-        return (int) result;
-    }
-
-    private int getFluidPercent(int tank) {
-        long fluid = container.getFluidTanks()[tank].getFluidAmount();
-        int fluidCapacity = container.getFluidTanks()[tank].getCapacity();
-
-        long result = fluid * 100 / fluidCapacity;
-        return (int) result;
     }
 }

@@ -1,6 +1,7 @@
-package com.congueror.cgalaxy.network;
+package com.congueror.clib.network;
 
-import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryContainer;
+import com.congueror.clib.blocks.AbstractFluidContainer;
+import com.congueror.clib.blocks.AbstractFluidTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -10,21 +11,20 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PacketUpdateFuelRefinery {
-
+public class PacketUpdateFluidTanks {
     private final int windowId;
     private final ResourceLocation fluid;
     private final int amount;
     private final int tankId;
 
-    public PacketUpdateFuelRefinery(PacketBuffer buf) {
+    public PacketUpdateFluidTanks(PacketBuffer buf) {
         this.windowId = buf.readInt();
         this.fluid = buf.readResourceLocation();
         this.amount = buf.readInt();
         this.tankId = buf.readInt();
     }
 
-    public PacketUpdateFuelRefinery(int windowId, ResourceLocation fluid, int amount, int tankId) {
+    public PacketUpdateFluidTanks(int windowId, ResourceLocation fluid, int amount, int tankId) {
         this.windowId = windowId;
         this.fluid = fluid;
         this.amount = amount;
@@ -43,10 +43,10 @@ public class PacketUpdateFuelRefinery {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
             ctx.get().enqueueWork(() -> {
                 PlayerEntity player = mc.player;
-                if (windowId != -1) {
+                if (windowId != -1 && player != null) {
                     if (windowId == player.openContainer.windowId) {
-                        if (player.openContainer instanceof FuelRefineryContainer) {
-                            ((FuelRefineryContainer) player.openContainer).updateTanks(fluid, amount, tankId);
+                        if (player.openContainer instanceof AbstractFluidContainer) {
+                            ((AbstractFluidContainer<?>) player.openContainer).updateTanks(fluid, amount, tankId);
                         }
                     }
                 }

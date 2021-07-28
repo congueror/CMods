@@ -112,4 +112,38 @@ public class ModItemGroups {
             return new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
         }
     }
+
+    public static class MachinesIG extends ItemGroup {
+        public static final MachinesIG instance = new MachinesIG(ItemGroup.GROUPS.length, "clibmachines");
+        public MachinesIG(int index, String label) {
+            super(index, label);
+            this.setBackgroundImage(new ResourceLocation("textures/gui/container/creative_inventory/tab_item_search.png"));
+        }
+
+        @Override
+        public ItemStack createIcon() {
+            Item logo;
+            if (CLib.isCGalaxyLoaded()) {
+                logo = ForgeRegistries.ITEMS.getValue(new ResourceLocation("cgalaxy:speed_upgrade"));
+            } else {
+                logo = Items.BARRIER;
+            }
+            return new ItemStack(logo);
+        }
+
+        @Override
+        public boolean hasSearchBar() {
+            return true;
+        }
+
+        @Override
+        public int getSearchbarWidth() {
+            return 88;
+        }
+
+        @Override
+        public ResourceLocation getTabsImage() {
+            return new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
+        }
+    }
 }
