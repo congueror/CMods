@@ -33,6 +33,11 @@ public class Networking {
                 .decoder(packetBuffer -> new PacketLaunchSequence())
                 .consumer(PacketLaunchSequence::handle)
                 .add();
+        INSTANCE.messageBuilder(PacketUpdateFluidTanks.class, nextID())
+                .encoder(PacketUpdateFluidTanks::toBytes)
+                .decoder(PacketUpdateFluidTanks::new)
+                .consumer(PacketUpdateFluidTanks::handle)
+                .add();
     }
 
     public static void sendToClient(Object packet, ServerPlayerEntity player) {

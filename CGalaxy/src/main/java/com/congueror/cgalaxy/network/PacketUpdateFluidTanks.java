@@ -1,5 +1,6 @@
-package com.congueror.clib.network;
+package com.congueror.cgalaxy.network;
 
+import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryContainer;
 import com.congueror.clib.blocks.AbstractFluidContainer;
 import com.congueror.clib.blocks.AbstractFluidTileEntity;
 import net.minecraft.client.Minecraft;
@@ -45,8 +46,8 @@ public class PacketUpdateFluidTanks {
                 PlayerEntity player = mc.player;
                 if (windowId != -1 && player != null) {
                     if (windowId == player.openContainer.windowId) {
-                        if (player.openContainer instanceof AbstractFluidContainer) {
-                            ((AbstractFluidContainer<?>) player.openContainer).updateTanks(fluid, amount, tankId);
+                        if (player.openContainer instanceof FuelRefineryContainer) {
+                            ((FuelRefineryContainer) player.openContainer).updateTanks(fluid, amount, tankId);
                         }
                     }
                 }

@@ -2,14 +2,23 @@ package com.congueror.cgalaxy.block.fuel_loader;
 
 import com.congueror.cgalaxy.init.ContainerInit;
 import com.congueror.clib.blocks.AbstractFluidContainer;
+import com.congueror.clib.network.Networking;
+import com.congueror.cgalaxy.network.PacketUpdateFluidTanks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.inventory.container.IContainerListener;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class FuelLoaderContainer extends AbstractFluidContainer<FuelLoaderTileEntity> {
     FuelLoaderTileEntity te;
@@ -17,6 +26,11 @@ public class FuelLoaderContainer extends AbstractFluidContainer<FuelLoaderTileEn
     public FuelLoaderContainer(int id, PlayerInventory playerInventory, FuelLoaderTileEntity tile, IIntArray dataIn) {
         super(ContainerInit.FUEL_LOADER.get(), id, playerInventory, tile, dataIn);
         this.te = tile;
+        if (fluidLastTick.isEmpty()) {
+            for (int i = 0; i < getFluidTanks().length; i++) {
+                fluidLastTick.add(i, FluidStack.EMPTY);
+            }
+        }
 
         tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
             addSlot(new SlotItemHandler(iItemHandler, 0, 120, 18));
@@ -50,6 +64,36 @@ public class FuelLoaderContainer extends AbstractFluidContainer<FuelLoaderTileEn
 
     public int getProcessTime() {
         return te.data.get(1);
+    }
+
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+        for (int i = 0; i < getFluidTanks().length; i++) {
+            FluidStack stack = getFluidTanks()[i].getFluid();
+            FluidStack stack1 = this.fluidLastTick.get(i);
+            if (stack != stack1) {
+                boolean stackChanged = !stack1.isFluidStackIdentical(stack);
+                FluidStack stack2 = stack.copy();
+                this.fluidLastTick.set(i, stack2);
+                if (stackChanged) {
+                    for (IContainerListener icontainerlistener : this.listeners) {
+                        Networking.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) icontainerlistener),
+                                new PacketUpdateFluidTanks(windowId, stack2.getFluid().getRegistryName(), stack2.getAmount(), i));
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void updateTanks(ResourceLocation rl, int amount, int tankId) {
+        Fluid fluid = ForgeRegistries.FLUIDS.getValue(rl);
+        if (fluid != null) {
+            te.tanks[tankId].setFluid(new FluidStack(fluid, amount));
+        } else {
+            te.tanks[tankId].setFluid(FluidStack.EMPTY);
+        }
     }
 
     @Override

@@ -16,13 +16,8 @@ public class Networking {
     }
 
     public static void registerMessages() {
-        INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(CLib.MODID, "cgalaxy"), () -> "1.0", s -> true, s -> true);
+        INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(CLib.MODID, "clib"), () -> "1.0", s -> true, s -> true);
 
-        INSTANCE.messageBuilder(PacketUpdateFluidTanks.class, nextID())
-                .encoder(PacketUpdateFluidTanks::toBytes)
-                .decoder(PacketUpdateFluidTanks::new)
-                .consumer(PacketUpdateFluidTanks::handle)
-                .add();
     }
 
     public static void sendToClient(Object packet, ServerPlayerEntity player) {

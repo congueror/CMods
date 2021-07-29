@@ -1,6 +1,7 @@
 package com.congueror.cgalaxy.util.events;
 
 import com.congueror.cgalaxy.CGalaxy;
+import com.congueror.cgalaxy.block.fuel_loader.FuelLoaderScreen;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryScreen;
 import com.congueror.cgalaxy.client.renderers.MoonSkyRenderer;
 import com.congueror.cgalaxy.entities.RocketEntity;
