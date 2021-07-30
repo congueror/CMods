@@ -84,10 +84,8 @@ public class LaunchPadBlock extends Block {
         pos1.add(pos.add(1, 0, -1));
         for (BlockPos pos2 : pos1) {
             if (world.getBlockState(pos2).matchesBlock(BlockInit.LAUNCH_PAD.get())) {
-                if (this.is3x3(pos2, world)) {
+                if (world.getBlockState(pos2).get(BlockStateProperties.LIT)) {
                     return pos2;
-                } else {
-                    return null;
                 }
             }
         }

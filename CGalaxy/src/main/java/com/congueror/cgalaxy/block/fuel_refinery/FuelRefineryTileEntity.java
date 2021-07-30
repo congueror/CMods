@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.stream.IntStream;
 
 public class FuelRefineryTileEntity extends AbstractFluidTileEntity {
@@ -30,6 +31,13 @@ public class FuelRefineryTileEntity extends AbstractFluidTileEntity {
 
     public int[] invSize() {
         return new int[]{0, 1, 2, 3, 4, 5};
+    }
+
+    @Override
+    public HashMap<String, int[]> outputSlotsAndTanks() {
+        HashMap<String, int[]> map = new HashMap<>();
+        map.put("tanks", new int[] {1});
+        return map;
     }
 
     @Override
@@ -88,29 +96,8 @@ public class FuelRefineryTileEntity extends AbstractFluidTileEntity {
     }
 
     public void executeSlot() {
-        ItemStack slot = itemHandler.getStackInSlot(0);
-        if (slot.getItem() instanceof BucketItem) {
-            if (((BucketItem) slot.getItem()).getFluid() != Fluids.EMPTY) {
-                if (tanks[0].isEmpty()) {
-                    tanks[0].setFluid(new FluidStack(((BucketItem) slot.getItem()).getFluid(), 1000));
-                } else if (tanks[0].getFluid().getFluid().equals(((BucketItem) slot.getItem()).getFluid())) {
-                    tanks[0].getFluid().grow(1000);
-                } else {
-                    return;
-                }
-                itemHandler.setStackInSlot(0, new ItemStack(Items.BUCKET));
-            }
-        }
-
-        ItemStack slot1 = itemHandler.getStackInSlot(1);
-        if (slot1.getItem().equals(Items.BUCKET)) {
-            if (tanks[1].isEmpty()) {
-                return;
-            } else if (tanks[1].getFluid().getAmount() >= 1000) {
-                tanks[1].getFluid().shrink(1000);
-            }
-            itemHandler.setStackInSlot(1, tanks[1].getFluid().getFluid().getAttributes().getBucket(tanks[1].getFluid()));
-        }
+        emptyBucketSlot(0);
+        fillBucketSlot(1);
     }
 
     @Nullable

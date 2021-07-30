@@ -1,9 +1,9 @@
 package com.congueror.cgalaxy.block.fuel_refinery;
 
 import com.congueror.cgalaxy.init.ContainerInit;
-import com.congueror.clib.blocks.AbstractFluidContainer;
-import com.congueror.clib.network.Networking;
+import com.congueror.cgalaxy.network.Networking;
 import com.congueror.cgalaxy.network.PacketUpdateFluidTanks;
+import com.congueror.clib.blocks.AbstractFluidContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -78,8 +78,10 @@ public class FuelRefineryContainer extends AbstractFluidContainer<FuelRefineryTi
                 this.fluidLastTick.set(i, stack2);
                 if (stackChanged) {
                     for (IContainerListener icontainerlistener : this.listeners) {
-                        Networking.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) icontainerlistener),
-                                new PacketUpdateFluidTanks(windowId, stack2.getFluid().getRegistryName(), stack2.getAmount(), i));
+                        if (icontainerlistener instanceof ServerPlayerEntity) {
+                            Networking.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) icontainerlistener),
+                                    new PacketUpdateFluidTanks(windowId, stack2.getFluid().getRegistryName(), stack2.getAmount(), i));
+                        }
                     }
                 }
             }

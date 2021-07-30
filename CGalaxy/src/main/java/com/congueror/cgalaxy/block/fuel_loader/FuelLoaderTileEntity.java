@@ -1,6 +1,7 @@
 package com.congueror.cgalaxy.block.fuel_loader;
 
 import com.congueror.cgalaxy.block.launch_pad.LaunchPadBlock;
+import com.congueror.cgalaxy.entities.RocketEntity;
 import com.congueror.cgalaxy.init.BlockInit;
 import com.congueror.cgalaxy.init.FluidInit;
 import com.congueror.cgalaxy.init.TileEntityInit;
@@ -22,9 +23,12 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.stream.IntStream;
 
 public class FuelLoaderTileEntity extends AbstractFluidTileEntity {
+    RocketEntity entity;
+
     public FuelLoaderTileEntity() {
         super(TileEntityInit.FUEL_LOADER.get());
 
@@ -34,6 +38,13 @@ public class FuelLoaderTileEntity extends AbstractFluidTileEntity {
     @Override
     public int[] invSize() {
         return new int[]{0, 1, 2, 3, 4};
+    }
+
+    @Override
+    public HashMap<String, int[]> outputSlotsAndTanks() {
+        HashMap<String, int[]> map = new HashMap<>();
+        map.put("tanks", new int[]{0});
+        return map;
     }
 
     @Override
@@ -77,13 +88,17 @@ public class FuelLoaderTileEntity extends AbstractFluidTileEntity {
     public boolean requisites() {
         for (Direction dir : Direction.values()) {
             if (dir.equals(Direction.DOWN) || dir.equals(Direction.UP)) {
-                return false;
+                continue;
             }
             BlockPos pos = getPos().offset(dir);
             if (world.getBlockState(pos).matchesBlock(BlockInit.LAUNCH_PAD.get())) {
                 LaunchPadBlock pad = (LaunchPadBlock) world.getBlockState(pos).getBlock();
                 if (pad.getMidBlock(world, pos) != null) {
-                    return true;
+                    BlockPos mid = pad.getMidBlock(world, pos);
+                    if (((LaunchPadBlock) world.getBlockState(mid).getBlock()).getRocket(world, mid) != null) {
+                        entity = ((LaunchPadBlock) world.getBlockState(mid).getBlock()).getRocket(world, mid);
+                        return true;
+                    }
                 }
             }
         }
@@ -92,28 +107,19 @@ public class FuelLoaderTileEntity extends AbstractFluidTileEntity {
 
     @Override
     public void execute() {
-        if (tanks[0].getFluid().getAmount() == getProcessSize()) {
-            tanks[0].setFluid(FluidStack.EMPTY);
-        } else {
-            tanks[0].getFluid().shrink(getProcessSize());
+        if (entity.getFuel() < entity.getFuelCapacity()) {
+            int fill = entity.fill(Math.min(tanks[0].getFluidAmount(), getProcessSize()));
+            if (tanks[0].getFluid().getAmount() == fill) {
+                tanks[0].setFluid(FluidStack.EMPTY);
+            } else {
+                tanks[0].getFluid().shrink(fill);
+            }
         }
     }
 
     @Override
     public void executeSlot() {
-        ItemStack slot = itemHandler.getStackInSlot(0);
-        if (slot.getItem() instanceof BucketItem) {
-            if (((BucketItem) slot.getItem()).getFluid() != Fluids.EMPTY) {
-                if (tanks[0].isEmpty()) {
-                    tanks[0].setFluid(new FluidStack(((BucketItem) slot.getItem()).getFluid(), 1000));
-                } else if (tanks[0].getFluid().getFluid().equals(((BucketItem) slot.getItem()).getFluid())) {
-                    tanks[0].getFluid().grow(1000);
-                } else {
-                    return;
-                }
-                itemHandler.setStackInSlot(0, new ItemStack(Items.BUCKET));
-            }
-        }
+        emptyBucketSlot(0);
     }
 
     @Nullable

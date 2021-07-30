@@ -76,14 +76,14 @@ public class FuelLoaderScreen extends ContainerScreen<FuelLoaderContainer> {
         //Progress Arrow
         int progress = container.getProgress();
         int processTime = container.getProcessTime();
-        int length = processTime > 0 && progress > 0 ? progress * 24 / processTime : 0;
-        this.blit(matrixStack, this.guiLeft + 83, this.guiTop + 35, 196, 0, 16, length + 1);
+        int length = processTime > 0 && progress > 0 ? progress * 30 / processTime : 0;
+        this.blit(matrixStack, this.guiLeft + 82, this.guiTop + 59 - length, 228, 30 - length, 16, length + 1);
 
         //Energy
         int z = 60 - (60 * MathHelper.getPercent(container.getEnergy(), container.getMaxEnergy()) / 100);
-        this.blit(matrixStack, this.guiLeft + 172, this.guiTop + 9 + z, 196, 17, 16, 60 - z);
+        this.blit(matrixStack, this.guiLeft + 172, this.guiTop + 9 + z, 196, 0, 16, 60 - z);
 
-        this.blit(matrixStack, this.guiLeft + 172, this.guiTop + 9, 212, 17, 16, 60);
+        this.blit(matrixStack, this.guiLeft + 172, this.guiTop + 9, 212, 0, 16, 60);
 
         //Fluid Tanks
         if (!container.getFluidTanks()[0].getFluid().isEmpty()) {
@@ -92,7 +92,7 @@ public class FuelLoaderScreen extends ContainerScreen<FuelLoaderContainer> {
             int color = container.getFluidTanks()[0].getFluid().getFluid().getAttributes().getColor();
             Matrix4f matrix = matrixStack.getLast().getMatrix();
             int a = 50 - (50 * MathHelper.getPercent(container.getFluidTanks()[0].getFluidAmount(), container.getFluidTanks()[0].getCapacity()) / 100);
-            int x1 = this.guiLeft + 66;
+            int x1 = this.guiLeft + 100;
             int x2 = x1 + 16;
             int y1 = this.guiTop + 18 + a;
             int y2 = y1 + (50 - a);

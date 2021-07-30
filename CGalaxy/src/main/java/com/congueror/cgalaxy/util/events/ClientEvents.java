@@ -76,7 +76,7 @@ public class ClientEvents {
                         int width = e.getWindow().getWidth();
                         int height = e.getWindow().getHeight();
                         mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/rocket_y_hud.png"));
-                        mc.ingameGUI.blit(mStack, width / 2, height / 2, 0, 0, 26, 102);//TODO: Fix this bullshit
+                        mc.ingameGUI.blit(mStack, width / 2, height / 2, 0, 0, 26, 102, 26, 102);//TODO: Fix this
                         double y = player.getPosY();
                     }
                 }

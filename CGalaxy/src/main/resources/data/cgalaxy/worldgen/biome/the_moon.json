@@ -24,6 +24,15 @@
   },
   "features": [],
   "starts": [],
-  "spawners": {},
+  "spawners": {
+    "monster": [
+      {
+        "type": "minecraft:enderman",
+        "weight": 1,
+        "minCount": 0,
+        "maxCount": 1
+      }
+    ]
+  },
   "spawn_costs": {}
 }

@@ -27,7 +27,6 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public abstract class RocketEntity extends CreatureEntity {
 
     int fuel;
-
     int i, k;
 
     public RocketEntity(EntityType<? extends RocketEntity> entity, World world) {
@@ -50,28 +49,43 @@ public abstract class RocketEntity extends CreatureEntity {
 
     public abstract Item getItem();
 
+    public int fill(int amount) {
+        int filled = getFuelCapacity() - fuel;
+        if (amount < filled) {
+            fuel += amount;
+            filled = fuel;
+        } else {
+            fuel = getFuelCapacity();
+        }
+        return filled;
+    }
+
     @Override
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putInt("Fuel", fuel);
+        compound.putInt("FuelCapacity", getFuelCapacity());
     }
 
     @Override
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         compound.getInt("Fuel");
+        compound.getInt("FuelCapacity");
     }
 
     @Override
     protected ActionResultType getEntityInteractionResult(PlayerEntity playerIn, Hand hand) {
         super.getEntityInteractionResult(playerIn, hand);
         if (playerIn.isSneaking()) {
-            if (playerIn.isCreative() && playerIn.inventory.hasItemStack(new ItemStack(getItem()))) {
-                this.remove();
-                return ActionResultType.CONSUME;
-            }
             ItemStack stack = new ItemStack(getItem());
             stack.getOrCreateTag().putInt("Fuel", fuel);
+            for (ItemStack stack1 : playerIn.inventory.mainInventory) {
+                if (playerIn.isCreative() && stack1.equals(stack, false)) {
+                    this.remove();
+                    return ActionResultType.CONSUME;
+                }
+            }
             this.remove();
             playerIn.addItemStackToInventory(stack);
             return ActionResultType.CONSUME;

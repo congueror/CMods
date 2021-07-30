@@ -20,7 +20,7 @@ public class PacketLaunchSequence {
                         player.sendStatusMessage(new TranslationTextComponent("text.cgalaxy.about_to_launch"), false);
                         player.sendStatusMessage(new TranslationTextComponent("text.cgalaxy.about_to_launch1"), false);
                     }
-                    if (entity.getPersistentData().getInt("Fuel") >= 0/*TODO*/) {
+                    if (entity.getPersistentData().getInt("Fuel") >= 500/*TODO*/) {
                         entity.getPersistentData().putInt("Powered", entity.getPersistentData().getInt("Powered") + 1);
                     } else {
                         if (!entity.getPersistentData().getBoolean("Powered")) {

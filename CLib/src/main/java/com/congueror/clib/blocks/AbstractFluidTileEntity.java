@@ -7,7 +7,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -32,7 +34,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.HashMap;
 
 public abstract class AbstractFluidTileEntity extends TileEntity implements IFluidHandler, ITickableTileEntity, INamedContainerProvider {
     protected ItemStackHandler itemHandler = createHandler();
@@ -94,6 +96,11 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
      * An array of numbers that represent slots. Must start at 0. Must include 4 additional slots at the end for upgrades.
      */
     public abstract int[] invSize();
+
+    /**
+     * A map of all output slot and tank indexes. String should be either "tanks" or "slots" and the array of integers should be the indexes of all output slots/tanks.
+     */
+    public abstract HashMap<String, int[]> outputSlotsAndTanks();
 
     /**
      * Check whether an item can fit in the given slot.
@@ -167,7 +174,9 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
                     sendUpdate(getActiveState(), false);
                 }
             } else {
-                progress--;
+                if (progress >= 0) {
+                    progress--;
+                }
             }
         } else {
             if (tank1.getAmount() < 100) {
@@ -176,8 +185,8 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
             sendUpdate(getInactiveState(), false);
         }
 
+        sendOutFluid(outputSlotsAndTanks().get("tanks"));
         executeSlot();
-        sendOutFluid(0);
     }
 
     public int getProgressSpeed() {
@@ -217,28 +226,62 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
         return drops;
     }
 
-    public void sendOutFluid(int tank) {
-        FluidStack fluidStack = tanks[tank].getFluid();
-        if (fluidStack.getAmount() > 0 && !fluidStack.isEmpty()) {
-            for (Direction direction : Direction.values()) {
-                TileEntity te = world.getTileEntity(pos.offset(direction));
-                if (te != null) {
-                    boolean doContinue = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction).map(handler -> {
-                                if (handler.getTanks() >= 0) {
-                                    int fill = handler.fill(fluidStack, FluidAction.EXECUTE);
-                                    fluidStack.shrink(fill);
-                                    tanks[tank].getFluid().shrink(fill);
-                                    markDirty();
-                                    return fluidStack.getAmount() > 0;
-                                } else {
-                                    return true;
+    public void sendOutFluid(int... tank) {
+        for (int i : tank) {
+            FluidStack fluidStack = tanks[i].getFluid();
+            if (fluidStack.getAmount() > 0 && !fluidStack.isEmpty()) {
+                for (Direction direction : Direction.values()) {
+                    TileEntity te = world.getTileEntity(pos.offset(direction));
+                    if (te != null) {
+                        boolean doContinue = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction).map(handler -> {
+                                    if (handler.getTanks() >= 0) {
+                                        int fill = handler.fill(fluidStack, FluidAction.EXECUTE);
+                                        fluidStack.shrink(fill);
+                                        tanks[i].getFluid().shrink(fill);
+                                        markDirty();
+                                        return fluidStack.getAmount() > 0;
+                                    } else {
+                                        return true;
+                                    }
                                 }
-                            }
-                    ).orElse(true);
-                    if (!doContinue) {
-                        return;
+                        ).orElse(true);
+                        if (!doContinue) {
+                            return;
+                        }
                     }
                 }
+            }
+        }
+    }
+
+    public void emptyBucketSlot(int... slots) {
+        for (int i : slots) {
+            ItemStack slot = itemHandler.getStackInSlot(i);
+            if (slot.getItem() instanceof BucketItem) {
+                if (((BucketItem) slot.getItem()).getFluid() != Fluids.EMPTY) {
+                    if (tanks[i].isEmpty()) {
+                        tanks[i].setFluid(new FluidStack(((BucketItem) slot.getItem()).getFluid(), 1000));
+                    } else if (tanks[i].getFluid().getFluid().equals(((BucketItem) slot.getItem()).getFluid())) {
+                        tanks[i].getFluid().grow(1000);
+                    } else {
+                        return;
+                    }
+                    itemHandler.setStackInSlot(0, new ItemStack(Items.BUCKET));
+                }
+            }
+        }
+    }
+
+    public void fillBucketSlot(int... slots) {
+        for (int i : slots) {
+            ItemStack slot1 = itemHandler.getStackInSlot(i);
+            if (slot1.getItem().equals(Items.BUCKET)) {
+                if (tanks[i].isEmpty()) {
+                    return;
+                } else if (tanks[i].getFluid().getAmount() >= 1000) {
+                    tanks[i].getFluid().shrink(1000);
+                }
+                itemHandler.setStackInSlot(1, tanks[i].getFluid().getFluid().getAttributes().getBucket(tanks[i].getFluid()));
             }
         }
     }
