@@ -5,6 +5,7 @@ import com.congueror.cgalaxy.block.fuel_loader.FuelLoaderContainer;
 import com.congueror.cgalaxy.block.fuel_loader.FuelLoaderTileEntity;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryContainer;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryTileEntity;
+import com.congueror.cgalaxy.gui.GalaxyMapContainer;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IntArray;
@@ -32,4 +33,7 @@ public class ContainerInit {
                 FuelLoaderTileEntity te = (FuelLoaderTileEntity) tile;
                 return new FuelLoaderContainer(windowId, inv, te, new IntArray(FuelLoaderTileEntity.FIELDS_COUNT));
             }));
+
+    public static final RegistryObject<ContainerType<GalaxyMapContainer>> GALAXY_MAP = CONTAINER_TYPES.register("galaxy_map", () ->
+            IForgeContainerType.create((windowId, inv, data) -> new GalaxyMapContainer(windowId, false)));
 }

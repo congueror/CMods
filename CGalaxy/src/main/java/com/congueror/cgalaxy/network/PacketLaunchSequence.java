@@ -16,17 +16,15 @@ public class PacketLaunchSequence {
             if (player != null) {
                 Entity entity = player.getRidingEntity();
                 if (entity instanceof RocketEntity) {
-                    if (entity.getPersistentData().getInt("Powered") < 1) {
-                        player.sendStatusMessage(new TranslationTextComponent("text.cgalaxy.about_to_launch"), false);
-                        player.sendStatusMessage(new TranslationTextComponent("text.cgalaxy.about_to_launch1"), false);
-                    }
-                    if (entity.getPersistentData().getInt("Fuel") >= 500/*TODO*/) {
-                        entity.getPersistentData().putInt("Powered", entity.getPersistentData().getInt("Powered") + 1);
+                    if (((RocketEntity) entity).getFuel() < 500) {
+                        player.sendStatusMessage(new TranslationTextComponent("text.cgalaxy.insufficient_fuel"), false);
                     } else {
-                        if (!entity.getPersistentData().getBoolean("Powered")) {
-                            if (((RocketEntity) entity).getFuel() < 500) {
-                                player.sendStatusMessage(new TranslationTextComponent("text.cgalaxy.insufficient_fuel"), false);
-                            }
+                        if (entity.getPersistentData().getInt("Powered") < 1) {
+                            player.sendStatusMessage(new TranslationTextComponent("text.cgalaxy.about_to_launch"), false);
+                            player.sendStatusMessage(new TranslationTextComponent("text.cgalaxy.about_to_launch1"), false);
+                        }
+                        if (((RocketEntity) entity).getFuel() >= 500) {
+                            entity.getPersistentData().putInt("Powered", entity.getPersistentData().getInt("Powered") + 1);
                         }
                     }
                 }

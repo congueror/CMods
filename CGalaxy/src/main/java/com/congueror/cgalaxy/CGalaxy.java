@@ -1,7 +1,7 @@
 package com.congueror.cgalaxy;
 
 import com.congueror.cgalaxy.init.*;
-import com.congueror.cgalaxy.keybinds.Keybinds;
+import com.congueror.cgalaxy.util.KeyBindings;
 import com.congueror.cgalaxy.init.CarverInit;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -31,6 +31,6 @@ public class CGalaxy {
         CarverInit.WORLD_CARVERS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(Keybinds.class);
+        MinecraftForge.EVENT_BUS.register(KeyBindings.class);
     }
 }

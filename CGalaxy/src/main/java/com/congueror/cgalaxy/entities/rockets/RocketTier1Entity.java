@@ -1,4 +1,4 @@
-package com.congueror.cgalaxy.entities.rocket_tier_1;
+package com.congueror.cgalaxy.entities.rockets;
 
 import com.congueror.cgalaxy.entities.RocketEntity;
 import com.congueror.cgalaxy.init.ItemInit;

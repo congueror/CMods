@@ -5,7 +5,6 @@ import com.congueror.cgalaxy.entities.RocketEntity;
 import com.congueror.cgalaxy.network.Networking;
 import com.congueror.cgalaxy.network.PacketTeleport;
 import com.congueror.cgalaxy.world.dimension.Dimensions;
-import com.congueror.clib.CLib;
 import com.congueror.clib.util.MathHelper;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -20,7 +19,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-public class GalaxyMapGui extends Screen {
+public class GalaxyMapGuiOLD extends Screen {
     /**
      * 1 = Milky Way,
      * 2 = Solar System,
@@ -61,7 +60,7 @@ public class GalaxyMapGui extends Screen {
     ClientPlayerEntity player = mc.player;
     Entity entity = player.getRidingEntity();
 
-    public GalaxyMapGui() {
+    public GalaxyMapGuiOLD() {
         super(new StringTextComponent("map"));
     }
 
@@ -89,6 +88,7 @@ public class GalaxyMapGui extends Screen {
         }));
 
 
+
         this.VENUS = addButton(new ImageButton(295, 200, 16, 16, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), 16, 16, p_onPress_1_ -> {
             CURRENT_MAP = 2.2;
         }));
@@ -98,6 +98,7 @@ public class GalaxyMapGui extends Screen {
                 //tp to venus
             }
         }));
+
 
 
         this.EARTH = addButton(new ImageButton(488, 201, 16, 16, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), 16, 16, p_onPress_1_ -> {
@@ -125,6 +126,7 @@ public class GalaxyMapGui extends Screen {
                 Networking.sendToServer(new PacketTeleport(Dimensions.MOON.getLocation()));
             }
         }));
+
 
 
         this.MARS = addButton(new ImageButton(250, 100, 16, 16, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), 16, 16, p_onPress_1_ -> {
@@ -156,6 +158,7 @@ public class GalaxyMapGui extends Screen {
         }));
 
 
+
         this.BACK_SL_PLANET = addButton(new ImageButton(26, 190, 15, 10, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), 15, 10, p_onPress_1_ -> {
             CURRENT_MAP = 2;
         }));
@@ -171,6 +174,7 @@ public class GalaxyMapGui extends Screen {
         int width = mc.getMainWindow().getScaledWidth();
         int height = mc.getMainWindow().getScaledHeight();
         int infoColor = MathHelper.calculateRGB(0, 150, 255);
+        //x: -55, y: +80
 
         SOLAR_SYSTEM.visible = false;
 
@@ -237,6 +241,7 @@ public class GalaxyMapGui extends Screen {
             VENUS.visible = true;
             EARTH.visible = true;
             MARS.visible = true;
+
             RenderSystem.color4f(1, 1, 1, 1);
             mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/galaxy_map_empty_background.png"));
             this.blit(matrixStack, 0, 0, 0, 0, width, height, width, height);
@@ -615,6 +620,6 @@ public class GalaxyMapGui extends Screen {
 
     public static void open() {
         CURRENT_MAP = 1;
-        Minecraft.getInstance().displayGuiScreen(new GalaxyMapGui());
+        Minecraft.getInstance().displayGuiScreen(new GalaxyMapGuiOLD());
     }
 }

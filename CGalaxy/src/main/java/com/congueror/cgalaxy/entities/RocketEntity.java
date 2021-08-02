@@ -6,13 +6,16 @@ import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.play.server.STitlePacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
@@ -20,6 +23,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -27,7 +32,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public abstract class RocketEntity extends CreatureEntity {
 
     int fuel;
-    int i, k;
+    int i, k = 0;
 
     public RocketEntity(EntityType<? extends RocketEntity> entity, World world) {
         super(entity, world);
@@ -53,7 +58,7 @@ public abstract class RocketEntity extends CreatureEntity {
         int filled = getFuelCapacity() - fuel;
         if (amount < filled) {
             fuel += amount;
-            filled = fuel;
+            filled = amount;
         } else {
             fuel = getFuelCapacity();
         }
@@ -101,116 +106,29 @@ public abstract class RocketEntity extends CreatureEntity {
             if (world instanceof ServerWorld) {
                 if (this.isBeingRidden()) {
                     i++;
-                    {
+                    ServerPlayerEntity player = (ServerPlayerEntity) world.getClosestPlayer(this, 1);
+                    if (player != null) {
                         if (i == 20) {
-                            world.getServer().getCommandManager().handleCommand(new CommandSource(ICommandSource.DUMMY
-                                    , new Vector3d(getPosX()
-                                    , getPosY(), getPosZ())
-                                    , Vector2f.ZERO
-                                    , (ServerWorld) world
-                                    , 4
-                                    , ""
-                                    , new StringTextComponent("")
-                                    , world.getServer(), null).withFeedbackDisabled(), "/title @p times 5 10 10");
-                            world.getServer().getCommandManager().handleCommand(new CommandSource(ICommandSource.DUMMY
-                                    , new Vector3d(getPosX()
-                                    , getPosY(), getPosZ())
-                                    , Vector2f.ZERO
-                                    , (ServerWorld) world
-                                    , 4
-                                    , ""
-                                    , new StringTextComponent("")
-                                    , world.getServer(), null).withFeedbackDisabled(), "/title @p title {\"text\":\"10\",\"color\":\"red\",\"bold\":\"false\"}");
+                            player.connection.sendPacket(new STitlePacket(5, 10, 10));
+                            player.connection.sendPacket(new STitlePacket(STitlePacket.Type.TITLE, new StringTextComponent("10").mergeStyle(TextFormatting.DARK_RED, TextFormatting.BOLD)));
                         } else if (i == 40) {
-                            world.getServer().getCommandManager().handleCommand(new CommandSource(ICommandSource.DUMMY
-                                    , new Vector3d(getPosX()
-                                    , getPosY(), getPosZ())
-                                    , Vector2f.ZERO
-                                    , (ServerWorld) world
-                                    , 4
-                                    , ""
-                                    , new StringTextComponent("")
-                                    , world.getServer(), null).withFeedbackDisabled(), "/title @p title {\"text\":\"9\",\"color\":\"red\",\"bold\":\"false\"}");
+                            player.connection.sendPacket(new STitlePacket(STitlePacket.Type.TITLE, new StringTextComponent("9").mergeStyle(TextFormatting.DARK_RED, TextFormatting.BOLD)));
                         } else if (i == 60) {
-                            world.getServer().getCommandManager().handleCommand(new CommandSource(ICommandSource.DUMMY
-                                    , new Vector3d(getPosX()
-                                    , getPosY(), getPosZ())
-                                    , Vector2f.ZERO
-                                    , (ServerWorld) world
-                                    , 4
-                                    , ""
-                                    , new StringTextComponent("")
-                                    , world.getServer(), null).withFeedbackDisabled(), "/title @p title {\"text\":\"8\",\"color\":\"red\",\"bold\":\"false\"}");
+                            player.connection.sendPacket(new STitlePacket(STitlePacket.Type.TITLE, new StringTextComponent("8").mergeStyle(TextFormatting.DARK_RED, TextFormatting.BOLD)));
                         } else if (i == 80) {
-                            world.getServer().getCommandManager().handleCommand(new CommandSource(ICommandSource.DUMMY
-                                    , new Vector3d(getPosX()
-                                    , getPosY(), getPosZ())
-                                    , Vector2f.ZERO
-                                    , (ServerWorld) world
-                                    , 4
-                                    , ""
-                                    , new StringTextComponent("")
-                                    , world.getServer(), null).withFeedbackDisabled(), "/title @p title {\"text\":\"7\",\"color\":\"red\",\"bold\":\"false\"}");
+                            player.connection.sendPacket(new STitlePacket(STitlePacket.Type.TITLE, new StringTextComponent("7").mergeStyle(TextFormatting.DARK_RED, TextFormatting.BOLD)));
                         } else if (i == 100) {
-                            world.getServer().getCommandManager().handleCommand(new CommandSource(ICommandSource.DUMMY
-                                    , new Vector3d(getPosX()
-                                    , getPosY(), getPosZ())
-                                    , Vector2f.ZERO
-                                    , (ServerWorld) world
-                                    , 4
-                                    , ""
-                                    , new StringTextComponent("")
-                                    , world.getServer(), null).withFeedbackDisabled(), "/title @p title {\"text\":\"6\",\"color\":\"red\",\"bold\":\"false\"}");
+                            player.connection.sendPacket(new STitlePacket(STitlePacket.Type.TITLE, new StringTextComponent("6").mergeStyle(TextFormatting.DARK_RED, TextFormatting.BOLD)));
                         } else if (i == 120) {
-                            world.getServer().getCommandManager().handleCommand(new CommandSource(ICommandSource.DUMMY
-                                    , new Vector3d(getPosX()
-                                    , getPosY(), getPosZ())
-                                    , Vector2f.ZERO
-                                    , (ServerWorld) world
-                                    , 4
-                                    , ""
-                                    , new StringTextComponent("")
-                                    , world.getServer(), null).withFeedbackDisabled(), "/title @p title {\"text\":\"5\",\"color\":\"red\",\"bold\":\"false\"}");
+                            player.connection.sendPacket(new STitlePacket(STitlePacket.Type.TITLE, new StringTextComponent("5").mergeStyle(TextFormatting.DARK_RED, TextFormatting.BOLD)));
                         } else if (i == 140) {
-                            world.getServer().getCommandManager().handleCommand(new CommandSource(ICommandSource.DUMMY
-                                    , new Vector3d(getPosX()
-                                    , getPosY(), getPosZ())
-                                    , Vector2f.ZERO
-                                    , (ServerWorld) world
-                                    , 4
-                                    , ""
-                                    , new StringTextComponent("")
-                                    , world.getServer(), null).withFeedbackDisabled(), "/title @p title {\"text\":\"4\",\"color\":\"red\",\"bold\":\"false\"}");
+                            player.connection.sendPacket(new STitlePacket(STitlePacket.Type.TITLE, new StringTextComponent("4").mergeStyle(TextFormatting.DARK_RED, TextFormatting.BOLD)));
                         } else if (i == 160) {
-                            world.getServer().getCommandManager().handleCommand(new CommandSource(ICommandSource.DUMMY
-                                    , new Vector3d(getPosX()
-                                    , getPosY(), getPosZ())
-                                    , Vector2f.ZERO
-                                    , (ServerWorld) world
-                                    , 4
-                                    , ""
-                                    , new StringTextComponent("")
-                                    , world.getServer(), null).withFeedbackDisabled(), "/title @p title {\"text\":\"3\",\"color\":\"red\",\"bold\":\"false\"}");
+                            player.connection.sendPacket(new STitlePacket(STitlePacket.Type.TITLE, new StringTextComponent("3").mergeStyle(TextFormatting.DARK_RED, TextFormatting.BOLD)));
                         } else if (i == 180) {
-                            world.getServer().getCommandManager().handleCommand(new CommandSource(ICommandSource.DUMMY
-                                    , new Vector3d(getPosX()
-                                    , getPosY(), getPosZ())
-                                    , Vector2f.ZERO
-                                    , (ServerWorld) world
-                                    , 4
-                                    , ""
-                                    , new StringTextComponent("")
-                                    , world.getServer(), null).withFeedbackDisabled(), "/title @p title {\"text\":\"2\",\"color\":\"red\",\"bold\":\"false\"}");
+                            player.connection.sendPacket(new STitlePacket(STitlePacket.Type.TITLE, new StringTextComponent("2").mergeStyle(TextFormatting.DARK_RED, TextFormatting.BOLD)));
                         } else if (i == 200) {
-                            world.getServer().getCommandManager().handleCommand(new CommandSource(ICommandSource.DUMMY
-                                    , new Vector3d(getPosX()
-                                    , getPosY(), getPosZ())
-                                    , Vector2f.ZERO
-                                    , (ServerWorld) world
-                                    , 4
-                                    , ""
-                                    , new StringTextComponent("")
-                                    , world.getServer(), null).withFeedbackDisabled(), "/title @p title {\"text\":\"1\",\"color\":\"red\",\"bold\":\"false\"}");
+                            player.connection.sendPacket(new STitlePacket(STitlePacket.Type.TITLE, new StringTextComponent("1").mergeStyle(TextFormatting.DARK_RED, TextFormatting.BOLD)));
                         }
                     }
                     if (i <= 200) {
@@ -268,7 +186,7 @@ public abstract class RocketEntity extends CreatureEntity {
 
     @Override
     public double getMountedYOffset() {
-        return super.getMountedYOffset() + -1.7000000000000002;
+        return super.getMountedYOffset() + -1.7;
     }
 
     @Override
@@ -284,35 +202,13 @@ public abstract class RocketEntity extends CreatureEntity {
         super.registerGoals();
     }
 
-    //TODO
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if (source.getImmediateSource() instanceof ArrowEntity)
-            return false;
-        if (source.getImmediateSource() instanceof PlayerEntity)
-            return false;
-        if (source.getImmediateSource() instanceof PotionEntity)
-            return false;
-        if (source == DamageSource.FALL)
-            return false;
-        if (source == DamageSource.CACTUS)
-            return false;
-        if (source == DamageSource.DROWN)
-            return false;
-        if (source == DamageSource.LIGHTNING_BOLT)
-            return false;
-        if (source.isExplosion())
-            return false;
-        if (source.getDamageType().equals("trident"))
-            return false;
-        if (source == DamageSource.ANVIL)
-            return false;
-        if (source == DamageSource.DRAGON_BREATH)
-            return false;
-        if (source == DamageSource.WITHER)
-            return false;
-        if (source.getDamageType().equals("witherSkull"))
-            return false;
+        if (amount > this.getMaxHealth()) {
+            ItemStack stack = new ItemStack(getItem());
+            stack.getOrCreateTag().putInt("Fuel", fuel);
+            world.addEntity(new ItemEntity(world, this.getPosX(), this.getPosY(), this.getPosZ(), stack));
+        }
         return super.attackEntityFrom(source, amount);
     }
 

@@ -5,10 +5,11 @@ import com.congueror.cgalaxy.block.fuel_loader.FuelLoaderScreen;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryScreen;
 import com.congueror.cgalaxy.client.renderers.MoonSkyRenderer;
 import com.congueror.cgalaxy.entities.RocketEntity;
-import com.congueror.cgalaxy.entities.rocket_tier_1.RocketTier1Renderer;
+import com.congueror.cgalaxy.entities.rockets.RocketTier1Renderer;
+import com.congueror.cgalaxy.gui.GalaxyMapScreen;
 import com.congueror.cgalaxy.init.ContainerInit;
 import com.congueror.cgalaxy.init.EntityTypeInit;
-import com.congueror.cgalaxy.keybinds.Keybinds;
+import com.congueror.cgalaxy.util.KeyBindings;
 import com.congueror.cgalaxy.network.Networking;
 import com.congueror.cgalaxy.network.PacketLaunchSequence;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -34,10 +35,11 @@ public class ClientEvents {
         public static void clientSetup(FMLClientSetupEvent e) {
             CGalaxy.LOGGER.info("Starting client setup for CGalaxy");
 
-            ClientRegistry.registerKeyBinding(Keybinds.LAUNCH_ROCKET);
+            ClientRegistry.registerKeyBinding(KeyBindings.LAUNCH_ROCKET);
 
             ScreenManager.registerFactory(ContainerInit.FUEL_REFINERY.get(), FuelRefineryScreen::new);
             ScreenManager.registerFactory(ContainerInit.FUEL_LOADER.get(), FuelLoaderScreen::new);
+            ScreenManager.registerFactory(ContainerInit.GALAXY_MAP.get(), GalaxyMapScreen::new);
 
             RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.ROCKET_TIER_1.get(), renderManager -> {
                 return new MobRenderer(renderManager, new RocketTier1Renderer(), 0.5f) {
@@ -57,7 +59,7 @@ public class ClientEvents {
         @SubscribeEvent
         public static void onKeyInput(InputEvent.KeyInputEvent e) {
             if (Minecraft.getInstance().currentScreen == null) {
-                if (e.getKey() == Keybinds.LAUNCH_ROCKET.getKey().getKeyCode()) {
+                if (e.getKey() == KeyBindings.LAUNCH_ROCKET.getKey().getKeyCode()) {
                     if (e.getAction() == GLFW.GLFW_PRESS) {
                         Networking.sendToServer(new PacketLaunchSequence());
                     }

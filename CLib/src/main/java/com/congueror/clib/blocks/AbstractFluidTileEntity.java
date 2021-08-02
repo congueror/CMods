@@ -159,8 +159,8 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
         }
 
         FluidStack tank1 = tanks[0].getFluid();
-        if (tank1.getFluid() != Fluids.EMPTY && tank1.getAmount() >= 100 && fluidIngredients().contains(tank1.getFluid()) && requisites()) {
-            if (energyStorage.getEnergyStored() >= getEnergyUsage()) {
+        if (tank1.getFluid() != Fluids.EMPTY && tank1.getAmount() >= 100 && fluidIngredients().contains(tank1.getFluid())) {
+            if (energyStorage.getEnergyStored() >= getEnergyUsage() && requisites()) {
                 processTime = getProcessTime();
                 progress += getProgressSpeed();
                 energyStorage.consumeEnergy(getEnergyUsage());
@@ -189,12 +189,13 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
         executeSlot();
     }
 
-    public int getProgressSpeed() {
+    public float getProgressSpeed() {
+        int[] slots = new int[]{invSize().length - 1, invSize().length - 2, invSize().length - 3, invSize().length - 4};
         int progress = 1;
-        for (int i = 0; i < invSize().length; i++) {
-            if (canItemFit(i, itemHandler.getStackInSlot(i))) {
-                if (((UpgradeItem) itemHandler.getStackInSlot(i).getItem()).getType().equals(UpgradeItem.UpgradeType.SPEED)) {
-                    progress += 2;
+        for (int i = 0; i < slots.length; i++) {
+            if (itemHandler.getStackInSlot(i).getItem() instanceof UpgradeItem) {
+                if (((UpgradeItem)itemHandler.getStackInSlot(i).getItem()).getType().equals(UpgradeItem.UpgradeType.SPEED)) {
+                    progress += 1;
                 }
             }
         }
@@ -202,15 +203,21 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
     }
 
     public int getProcessSize() {
+        int[] slots = new int[]{invSize().length - 1, invSize().length - 2, invSize().length - 3, invSize().length - 4};
         int stack = 100;
-        for (int i = 0; i < invSize().length; i++) {
-            if (canItemFit(i, itemHandler.getStackInSlot(i))) {
-                if (((UpgradeItem) itemHandler.getStackInSlot(i).getItem()).getType().equals(UpgradeItem.UpgradeType.STACK)) {
+        for (int i = 0; i < slots.length; i++) {
+            if (itemHandler.getStackInSlot(i).getItem() instanceof UpgradeItem) {
+                if (((UpgradeItem)itemHandler.getStackInSlot(i).getItem()).getType().equals(UpgradeItem.UpgradeType.STACK)) {
                     stack += 100;
                 }
             }
         }
         return stack;
+    }
+
+    public int getEnergyUsageFinal() {
+        int usage = getEnergyUsage();
+        return usage;
     }
 
     /**

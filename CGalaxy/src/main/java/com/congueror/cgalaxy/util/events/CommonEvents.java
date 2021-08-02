@@ -3,6 +3,7 @@ package com.congueror.cgalaxy.util.events;
 import com.congueror.cgalaxy.CGalaxy;
 import com.congueror.cgalaxy.commands.ModCommands;
 import com.congueror.cgalaxy.entities.RocketEntity;
+import com.congueror.cgalaxy.gui.GalaxyMapContainer;
 import com.congueror.cgalaxy.init.BlockInit;
 import com.congueror.cgalaxy.init.EntityTypeInit;
 import com.congueror.cgalaxy.network.Networking;
@@ -20,10 +21,15 @@ import net.minecraft.entity.ai.attributes.AttributeModifierManager;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -34,8 +40,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class CommonEvents {
@@ -70,7 +78,7 @@ public class CommonEvents {
         @SubscribeEvent
         public static void entityAttributeCreate(EntityAttributeCreationEvent e) {
             e.put(EntityTypeInit.ROCKET_TIER_1.get(), CreatureEntity.func_233666_p_()
-                    .createMutableAttribute(Attributes.MAX_HEALTH, 500)
+                    .createMutableAttribute(Attributes.MAX_HEALTH, 1)
                     .create());
         }
     }
@@ -114,7 +122,18 @@ public class CommonEvents {
 
             if (player.getPosY() >= 600 && player.getRidingEntity() instanceof RocketEntity && mc.currentScreen == null) {
                 if (player instanceof ServerPlayerEntity) {
-                    Networking.sendToClient(new PacketOpenGalaxyMap(), (ServerPlayerEntity) player);
+                    NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
+                        @Override
+                        public ITextComponent getDisplayName() {
+                            return new TranslationTextComponent("gui.cgalaxy.galaxy_map");
+                        }
+
+                        @Nullable
+                        @Override
+                        public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
+                            return new GalaxyMapContainer(p_createMenu_1_, true);
+                        }
+                    });
                 }
             }
         }

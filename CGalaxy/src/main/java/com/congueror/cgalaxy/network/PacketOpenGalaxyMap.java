@@ -1,6 +1,6 @@
 package com.congueror.cgalaxy.network;
 
-import com.congueror.cgalaxy.gui.GalaxyMapGui;
+import com.congueror.cgalaxy.gui.GalaxyMapGuiOLD;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 public class PacketOpenGalaxyMap {
 
     public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(GalaxyMapGui::open);
+        ctx.get().enqueueWork(GalaxyMapGuiOLD::open);
         return true;
     }
 }
