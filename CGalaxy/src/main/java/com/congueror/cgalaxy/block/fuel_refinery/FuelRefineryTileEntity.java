@@ -2,12 +2,11 @@ package com.congueror.cgalaxy.block.fuel_refinery;
 
 import com.congueror.cgalaxy.init.FluidInit;
 import com.congueror.cgalaxy.init.TileEntityInit;
-import com.congueror.clib.items.UpgradeItem;
 import com.congueror.clib.blocks.AbstractFluidTileEntity;
+import com.congueror.clib.items.UpgradeItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
@@ -83,15 +82,15 @@ public class FuelRefineryTileEntity extends AbstractFluidTileEntity {
     }
 
     public void execute() {
-        if (tanks[0].getFluid().getAmount() == getProcessSize()) {
-            tanks[0].setFluid(FluidStack.EMPTY);
-        } else {
-            tanks[0].getFluid().shrink(100);
-        }
         if (tanks[1].getFluid().isEmpty()) {
             tanks[1].setFluid(new FluidStack(FluidInit.KEROSENE.get(), 100));//TODO recipe plz
         } else {
             tanks[1].getFluid().grow(100);
+        }
+        if (tanks[0].getFluid().getAmount() == getProcessSize()) {
+            tanks[0].setFluid(FluidStack.EMPTY);
+        } else {
+            tanks[0].getFluid().shrink(100);
         }
     }
 

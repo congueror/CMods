@@ -421,6 +421,10 @@ public class GalaxyMapScreen extends ContainerScreen<GalaxyMapContainer> {
 
             mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/rings/galaxy_map_ring3.png"));
             this.blit(matrixStack, this.guiLeft + 155, this.guiTop + 190, 0, 0, 350, 200, 350, 200);
+            if (tier1) {
+                mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/rings/galaxy_map_ring3_ul.png"));
+                this.blit(matrixStack, this.guiLeft + 155, this.guiTop + 190, 0, 0, 350, 200, 350, 200);
+            }
 
             mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/earth_big.png"));
             this.blit(matrixStack, this.guiLeft + 275, this.guiTop + 213, 0, 0, 96, 96, 96, 96);
@@ -500,9 +504,17 @@ public class GalaxyMapScreen extends ContainerScreen<GalaxyMapContainer> {
 
             mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/rings/galaxy_map_ring3.png"));
             this.blit(matrixStack, this.guiLeft + 155, this.guiTop + 190, 0, 0, 350, 200, 350, 200);
+            if (tier2) {
+                mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/rings/galaxy_map_ring3_ul.png"));
+                this.blit(matrixStack, this.guiLeft + 155, this.guiTop + 190, 0, 0, 350, 200, 350, 200);
+            }
 
             mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/rings/galaxy_map_ring3.png"));
             this.blit(matrixStack, this.guiLeft + 130, this.guiTop + 165, 0, 0, 400, 250, 400, 250);
+            if (tier2) {
+                mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/rings/galaxy_map_ring3_ul.png"));
+                this.blit(matrixStack, this.guiLeft + 130, this.guiTop + 165, 0, 0, 400, 250, 400, 250);
+            }
 
             mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/mars_big.png"));
             this.blit(matrixStack, this.guiLeft + 275, this.guiTop + 213, 0, 0, 96, 96, 96, 96);

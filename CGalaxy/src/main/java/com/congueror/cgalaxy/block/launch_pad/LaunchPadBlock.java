@@ -100,10 +100,11 @@ public class LaunchPadBlock extends Block {
      * @param entity The rocket entity
      * @return true if no rocket is present and if the multiblock is complete, otherwise false.
      */
-    public boolean spawnRocket(World world, BlockPos pos, RocketEntity entity) {
+    public boolean spawnRocket(World world, BlockPos pos, RocketEntity entity, int fuel) {
         if (this.is3x3(pos, world) && this.getRocket(world, pos) == null) {
             entity.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 0, 0);
             world.addEntity(entity);
+            entity.fill(fuel);
             return true;
         }
         return false;

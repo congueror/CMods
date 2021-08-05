@@ -30,6 +30,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -215,7 +216,7 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
         return stack;
     }
 
-    public int getEnergyUsageFinal() {
+    public int getEnergyUsageFinal() {//TODO
         int usage = getEnergyUsage();
         return usage;
     }

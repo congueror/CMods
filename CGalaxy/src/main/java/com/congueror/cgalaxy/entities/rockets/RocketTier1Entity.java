@@ -9,11 +9,7 @@ import net.minecraft.world.World;
 public class RocketTier1Entity extends RocketEntity {
     public RocketTier1Entity(EntityType<? extends RocketEntity> entity, World world) {
         super(entity, world);
-    }
-
-    @Override
-    public int getFuelCapacity() {
-        return 1000;
+        capacity = 1000;
     }
 
     @Override

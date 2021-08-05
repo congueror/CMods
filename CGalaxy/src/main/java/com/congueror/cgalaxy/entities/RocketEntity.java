@@ -1,7 +1,5 @@
 package com.congueror.cgalaxy.entities;
 
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
@@ -9,8 +7,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -20,18 +16,17 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.vector.Vector2f;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public abstract class RocketEntity extends CreatureEntity {
 
-    int fuel;
+    protected int fuel;
+    /**Set value in subclass constructor*/
+    protected int capacity;
     int i, k = 0;
 
     public RocketEntity(EntityType<? extends RocketEntity> entity, World world) {
@@ -50,17 +45,19 @@ public abstract class RocketEntity extends CreatureEntity {
         return fuel;
     }
 
-    public abstract int getFuelCapacity();
+    public int getFuelCapacity() {
+        return capacity;
+    }
 
     public abstract Item getItem();
 
     public int fill(int amount) {
-        int filled = getFuelCapacity() - fuel;
+        int filled = capacity - fuel;
         if (amount < filled) {
             fuel += amount;
             filled = amount;
         } else {
-            fuel = getFuelCapacity();
+            fuel = capacity;
         }
         return filled;
     }
@@ -69,14 +66,14 @@ public abstract class RocketEntity extends CreatureEntity {
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putInt("Fuel", fuel);
-        compound.putInt("FuelCapacity", getFuelCapacity());
+        compound.putInt("FuelCapacity", capacity);
     }
 
     @Override
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
-        compound.getInt("Fuel");
-        compound.getInt("FuelCapacity");
+        fuel = compound.getInt("Fuel");
+        capacity = compound.getInt("FuelCapacity");
     }
 
     @Override
@@ -104,7 +101,7 @@ public abstract class RocketEntity extends CreatureEntity {
         super.baseTick();
         if (this.getPersistentData().getInt("Powered") == 2) {
             if (world instanceof ServerWorld) {
-                if (this.isBeingRidden()) {
+                if (this.isBeingRidden() && world.canBlockSeeSky(this.getPosition().down())) {
                     i++;
                     ServerPlayerEntity player = (ServerPlayerEntity) world.getClosestPlayer(this, 1);
                     if (player != null) {

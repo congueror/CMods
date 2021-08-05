@@ -64,7 +64,7 @@ public class FuelRefineryScreen extends ContainerScreen<FuelRefineryContainer> {
 
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int x, int y) {
-        String title = new TranslationTextComponent("gui.cgalaxy.fuel_refinery.title").getString();
+        String title = new TranslationTextComponent("block.cgalaxy.fuel_refinery").getString();
         this.font.drawString(matrixStack, title, (xSize / 2 - font.getStringWidth(title) / 2) + 5, 6, 4210752);
 
         String inv = new TranslationTextComponent("key.categories.inventory").getString();

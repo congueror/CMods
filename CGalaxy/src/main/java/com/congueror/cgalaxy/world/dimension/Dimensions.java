@@ -6,7 +6,7 @@ import net.minecraft.util.RegistryKey;
 import net.minecraft.world.World;
 
 public class Dimensions {
-    /**TODO: Remove Lava, Add Ores, Add Structures, Add mobs, Add Boss*/
+    /**TODO: Add Structures, Add mobs, Add Boss*/
     public static final RegistryKey<World> MOON = WorldHelper.registerDim(CGalaxy.MODID, "moon");
 
     public static void setupDims() {}

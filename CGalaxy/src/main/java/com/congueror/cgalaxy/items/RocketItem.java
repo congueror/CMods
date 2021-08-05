@@ -31,7 +31,8 @@ public class RocketItem extends Item {
             LaunchPadBlock launchPad = (LaunchPadBlock) (blockState.getBlock());
             ItemStack stack = context.getItem();
             RocketEntity entity = rocketEntity(world);
-            if (launchPad.spawnRocket(world, pos, entity)) {
+            int fuel = stack.getOrCreateTag().getInt("Fuel");
+            if (launchPad.spawnRocket(world, pos, entity, fuel)) {
                 stack.shrink(1);
                 return ActionResultType.CONSUME;
             }

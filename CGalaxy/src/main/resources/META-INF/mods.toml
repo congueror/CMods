@@ -1,6 +1,6 @@
 modLoader="javafml" #mandatory
 loaderVersion="[36,)" #mandatory
-license="All rights reserved"
+license="All Rights Reserved"
 #issueTrackerURL="http://my.issue.tracker/" #optional
 [[mods]] #mandatory
 modId="cgalaxy" #mandatory

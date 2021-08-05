@@ -9,18 +9,32 @@ import com.congueror.cgalaxy.entities.rockets.RocketTier1Renderer;
 import com.congueror.cgalaxy.gui.GalaxyMapScreen;
 import com.congueror.cgalaxy.init.ContainerInit;
 import com.congueror.cgalaxy.init.EntityTypeInit;
-import com.congueror.cgalaxy.util.KeyBindings;
+import com.congueror.cgalaxy.items.SpaceSuitItem;
 import com.congueror.cgalaxy.network.Networking;
 import com.congueror.cgalaxy.network.PacketLaunchSequence;
+import com.congueror.cgalaxy.util.KeyBindings;
+import com.congueror.cgalaxy.world.dimension.Dimensions;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -75,11 +89,45 @@ public class ClientEvents {
                 MatrixStack mStack = e.getMatrixStack();
                 if (player != null) {
                     if (player.getRidingEntity() instanceof RocketEntity) {
-                        int width = e.getWindow().getWidth();
-                        int height = e.getWindow().getHeight();
-                        mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/rocket_y_hud.png"));
-                        mc.ingameGUI.blit(mStack, width / 2, height / 2, 0, 0, 26, 102, 26, 102);//TODO: Fix this
+                        String texture = "textures/gui/rocket_y_hud.png";
+                        if (player.world.getDimensionKey().equals(Dimensions.MOON)) {
+                            texture = "textures/gui/rocket_y_hud_moon.png";
+                        }
+                        mc.getTextureManager().bindTexture(new ResourceLocation(CGalaxy.MODID, texture));
+                        mc.ingameGUI.blit(mStack, 0, 100, 0, 0, 16, 102, 26, 102);
                         double y = player.getPosY();
+                        if (y <= 400 && y >= 48) {
+                            mc.ingameGUI.blit(mStack, 3, 202 - (int) (y / 4), 16, 0, 10, 10, 26, 102);
+                        } else if (y >= 400) {
+                            mc.ingameGUI.blit(mStack, 3, 202 - (400 / 4), 16, 0, 10, 10, 26, 102);
+                        } else if (y <= 48) {
+                            mc.ingameGUI.blit(mStack, 3, 202 - (48 / 4), 16, 0, 10, 10, 26, 102);
+                        }
+                    }
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public static void onRenderHand(RenderHandEvent e) {
+            Minecraft mc = Minecraft.getInstance();
+            AbstractClientPlayerEntity player = mc.player;
+            if (player != null) {
+                ItemStack chest = player.getItemStackFromSlot(EquipmentSlotType.CHEST);
+                if (chest.getItem() instanceof SpaceSuitItem) {
+                    MatrixStack matrixStack = e.getMatrixStack();
+                    HandSide side = player.getPrimaryHand();
+                    IRenderTypeBuffer buffer = e.getBuffers();
+                    int combinedLight = e.getLight();
+
+                    PlayerRenderer playerrenderer = (PlayerRenderer) mc.getRenderManager().getRenderer(player);
+                    BipedModel<AbstractClientPlayerEntity> armor = chest.getItem().getArmorModel(player, chest, EquipmentSlotType.CHEST, playerrenderer.getEntityModel());
+                    if (armor != null) {
+                        if (side != HandSide.LEFT) {
+                            playerrenderer.renderItem(matrixStack, buffer, combinedLight, player, armor.bipedRightArm, armor.bipedRightArm);
+                        } else {
+                            playerrenderer.renderItem(matrixStack, buffer, combinedLight, player, armor.bipedLeftArm, armor.bipedLeftArm);
+                        }
                     }
                 }
             }

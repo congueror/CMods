@@ -1,6 +1,9 @@
 {
   "item.cgalaxy.speed_upgrade": "Speed Upgrade",
 
+  "item.cgalaxy.kerosene_bucket": "Kerosene Bucket",
+  "item.cgalaxy.oil_bucket": "Oil Bucket",
+
   "block.cgalaxy.moon_turf": "Moon Turf",
   "block.cgalaxy.moon_stone": "Moon Stone",
   "block.cgalaxy.moon_iron_ore": "Moon Iron Ore",
@@ -15,6 +18,8 @@
 
   "text.cgalaxy.about_to_launch": "You are about to go to space. Are you sure you wish to proceed?",
   "text.cgalaxy.about_to_launch1": "Press launch to continue.",
+
+  "key.cgalaxy.rocket_launch": "Launch Rocket",
 
   "gui.cgalaxy.hover_tip1": "Hover over a location on map",
   "gui.cgalaxy.hover_tip2": "and left click to select it",
