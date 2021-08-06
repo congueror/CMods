@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "item": "cores:sulfur_ore"
-  },
-  "result": "cores:sulfur_dust",
-  "experience": 0.7,
-  "cookingtime": 400
-}

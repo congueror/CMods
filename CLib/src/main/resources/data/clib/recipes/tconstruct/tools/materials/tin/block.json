@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:material",
+  "ingredient": {
+    "tag": "forge:storage_blocks/tin"
+  },
+  "value": 9,
+  "needed": 1,
+  "material": "clib:tin",
+  "leftover": {
+    "tag": "forge:ingots/tin"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " a ",
+    "a a",
+    " a "
+  ],
+  "key": {
+    "a": {
+      "item": "clib:titanium_ingot"
+    }
+  },
+  "result": {
+    "item": "clib:titanium_gear"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "clib:rubber_log"
+    },
+    {
+      "item": "clib:rubber_log"
+    },
+    {
+      "item": "clib:rubber_log"
+    },
+    {
+      "item": "clib:rubber_log"
+    },
+    {
+      "item": "clib:tree_tap"
+    }
+  ],
+  "result": {
+    "item": "clib:rubber"
+  }
+}

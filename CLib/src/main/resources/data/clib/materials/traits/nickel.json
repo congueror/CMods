@@ -1,0 +1,8 @@
+{
+  "default": [
+      {
+        "name": "clib:magnetic",
+        "level": 1
+      }
+  ]
+}

@@ -5,7 +5,7 @@ import com.congueror.cgalaxy.block.fuel_loader.FuelLoaderContainer;
 import com.congueror.cgalaxy.block.fuel_loader.FuelLoaderTileEntity;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryContainer;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryTileEntity;
-import com.congueror.cgalaxy.gui.GalaxyMapContainer;
+import com.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IntArray;

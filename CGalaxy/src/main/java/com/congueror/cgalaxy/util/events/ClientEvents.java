@@ -6,7 +6,7 @@ import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryScreen;
 import com.congueror.cgalaxy.client.renderers.MoonSkyRenderer;
 import com.congueror.cgalaxy.entities.RocketEntity;
 import com.congueror.cgalaxy.entities.rockets.RocketTier1Renderer;
-import com.congueror.cgalaxy.gui.GalaxyMapScreen;
+import com.congueror.cgalaxy.gui.galaxy_map.GalaxyMapScreen;
 import com.congueror.cgalaxy.init.ContainerInit;
 import com.congueror.cgalaxy.init.EntityTypeInit;
 import com.congueror.cgalaxy.items.SpaceSuitItem;
@@ -23,15 +23,11 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
@@ -55,13 +51,11 @@ public class ClientEvents {
             ScreenManager.registerFactory(ContainerInit.FUEL_LOADER.get(), FuelLoaderScreen::new);
             ScreenManager.registerFactory(ContainerInit.GALAXY_MAP.get(), GalaxyMapScreen::new);
 
-            RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.ROCKET_TIER_1.get(), renderManager -> {
-                return new MobRenderer(renderManager, new RocketTier1Renderer(), 0.5f) {
-                    @Override
-                    public ResourceLocation getEntityTexture(Entity entity) {
-                        return new ResourceLocation(CGalaxy.MODID, "textures/entity/rocket_tier_1.png");
-                    }
-                };
+            RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.ROCKET_TIER_1.get(), renderManager -> new MobRenderer(renderManager, new RocketTier1Renderer(), 0.5f) {
+                @Override
+                public ResourceLocation getEntityTexture(Entity entity) {
+                    return new ResourceLocation(CGalaxy.MODID, "textures/entity/rocket_tier_1.png");
+                }
             });
 
             MoonSkyRenderer.render();
@@ -120,10 +114,11 @@ public class ClientEvents {
                     IRenderTypeBuffer buffer = e.getBuffers();
                     int combinedLight = e.getLight();
 
+
                     PlayerRenderer playerrenderer = (PlayerRenderer) mc.getRenderManager().getRenderer(player);
                     BipedModel<AbstractClientPlayerEntity> armor = chest.getItem().getArmorModel(player, chest, EquipmentSlotType.CHEST, playerrenderer.getEntityModel());
                     if (armor != null) {
-                        if (side != HandSide.LEFT) {
+                        if (side != HandSide.LEFT) {//TODO
                             playerrenderer.renderItem(matrixStack, buffer, combinedLight, player, armor.bipedRightArm, armor.bipedRightArm);
                         } else {
                             playerrenderer.renderItem(matrixStack, buffer, combinedLight, player, armor.bipedLeftArm, armor.bipedLeftArm);

@@ -1,8 +1,11 @@
 package com.congueror.clib.util.events;
 
 import com.congueror.clib.CLib;
+import com.congueror.clib.init.BlockInit;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
@@ -11,6 +14,7 @@ import net.minecraft.util.text.*;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.util.List;
 import java.util.Set;
@@ -18,7 +22,10 @@ import java.util.Set;
 public class ClientEvents {
     @Mod.EventBusSubscriber(modid = CLib.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModCommonEvents {
-
+        @SubscribeEvent
+        public static void clientSetup(final FMLClientSetupEvent event) {
+            RenderTypeLookup.setRenderLayer(BlockInit.RUBBER_SAPLING.get(), RenderType.getCutout());
+        }
     }
 
     @Mod.EventBusSubscriber(modid = CLib.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

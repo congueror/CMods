@@ -1,6 +1,6 @@
 package com.congueror.cgalaxy.network;
 
-import com.congueror.cgalaxy.gui.GalaxyMapGuiOLD;
+import com.congueror.cgalaxy.gui.galaxy_map.GalaxyMapGuiOLD;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;

@@ -147,7 +147,6 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.0.52")
 
     compile project(':CLib')
-    compile project(':COres')
     compile project(':CGalaxy')
 }
 // Example for how to get properties into the manifest for reading by the runtime..

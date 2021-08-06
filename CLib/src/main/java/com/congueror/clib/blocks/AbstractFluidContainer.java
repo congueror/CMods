@@ -3,30 +3,24 @@ package com.congueror.clib.blocks;
 import com.congueror.clib.util.ModEnergyStorage;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.*;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
 
-public abstract class AbstractFluidContainer<T extends AbstractFluidTileEntity> extends Container {
+public abstract class AbstractFluidContainer<T extends AbstractFluidTileEntity> extends AbstractInventoryContainer {
     T tile;
     IIntArray data;
-    IItemHandler playerInventory;
     protected NonNullList<FluidStack> fluidLastTick = NonNullList.create();
 
     public AbstractFluidContainer(@Nullable ContainerType<?> type, int id, PlayerInventory playerInventory, T tile, IIntArray dataIn) {
-        super(type, id);
+        super(type, id, playerInventory);
         this.tile = tile;
         this.data = dataIn;
-        this.playerInventory = new InvWrapper(playerInventory);
 
         trackPower();
         layoutPlayerInventorySlots(28, 84);
@@ -37,33 +31,6 @@ public abstract class AbstractFluidContainer<T extends AbstractFluidTileEntity> 
     public abstract int getEnergyUsage();
 
     public abstract void updateTanks(ResourceLocation rl, int amount, int tankId);
-
-    private void layoutPlayerInventorySlots(int leftCol, int topRow) {
-        // Player inventory
-        addSlotBox(playerInventory, 9, leftCol, topRow, 9, 18, 3, 18);
-
-        // Hotbar
-        topRow += 58;
-        addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
-    }
-
-    protected int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
-        for (int i = 0; i < amount; i++) {
-            addSlot(new SlotItemHandler(handler, index, x, y));
-            x += dx;
-            index++;
-        }
-        return index;
-    }
-
-    protected int addSlotBox(IItemHandler handler, int index, int x, int y, int horAmount, int dx, int verAmount,
-                             int dy) {
-        for (int j = 0; j < verAmount; j++) {
-            index = addSlotRange(handler, index, x, y, horAmount, dx);
-            y += dy;
-        }
-        return index;
-    }
 
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {

@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "item": "cores:opal_ore"
-  },
-  "result": "cores:opal",
-  "experience": 0.7,
-  "cookingtime": 400
-}

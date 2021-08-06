@@ -1,8 +1,6 @@
 package com.congueror.cgalaxy.commands;
 
-import com.congueror.cgalaxy.gui.GalaxyMapContainer;
-import com.congueror.cgalaxy.network.Networking;
-import com.congueror.cgalaxy.network.PacketOpenGalaxyMap;
+import com.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;

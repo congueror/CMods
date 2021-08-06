@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "cores:copper_dust"
-  },
-  "result": "cores:copper_ingot",
-  "experience": 0.7,
-  "cookingtime": 200
-}

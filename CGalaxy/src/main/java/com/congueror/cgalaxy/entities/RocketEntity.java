@@ -101,7 +101,7 @@ public abstract class RocketEntity extends CreatureEntity {
         super.baseTick();
         if (this.getPersistentData().getInt("Powered") == 2) {
             if (world instanceof ServerWorld) {
-                if (this.isBeingRidden() && world.canBlockSeeSky(this.getPosition().down())) {
+                if (this.isBeingRidden()) {
                     i++;
                     ServerPlayerEntity player = (ServerPlayerEntity) world.getClosestPlayer(this, 1);
                     if (player != null) {

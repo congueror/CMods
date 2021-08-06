@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "item": "cores:titanium_ore"
-  },
-  "result": "cores:titanium_scrap",
-  "experience": 6.9,
-  "cookingtime": 800
-}

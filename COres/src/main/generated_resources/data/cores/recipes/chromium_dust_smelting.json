@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "cores:chromium_dust"
-  },
-  "result": "cores:chromium_ingot",
-  "experience": 0.7,
-  "cookingtime": 200
-}

@@ -5,7 +5,7 @@ import net.minecraft.item.Item;
 public class UpgradeItem extends Item {
     UpgradeType type;
     public UpgradeItem(Properties properties, UpgradeType type) {
-        super(properties);
+        super(properties.maxStackSize(4));
         this.type = type;
     }
 

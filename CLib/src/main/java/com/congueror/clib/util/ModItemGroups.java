@@ -19,13 +19,7 @@ public class ModItemGroups {
 
         @Override
         public ItemStack createIcon() {
-            Item logo;
-            if (CLib.isCOresLoaded()) {
-                logo = ForgeRegistries.ITEMS.getValue(new ResourceLocation("cores:tin_ingot"));
-            } else {
-                logo = Items.BARRIER;
-            }
-            return new ItemStack(logo);
+            return new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("clib:tin_ingot")));
         }
 
         @Override
@@ -54,13 +48,7 @@ public class ModItemGroups {
 
         @Override
         public ItemStack createIcon() {
-            Item logo;
-            if (CLib.isCOresLoaded()) {
-                logo = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("cores:tin_ore")).asItem();
-            } else {
-                logo = Items.BARRIER;
-            }
-            return new ItemStack(logo);
+            return new ItemStack(ForgeRegistries.BLOCKS.getValue(new ResourceLocation("clib:tin_ore")).asItem());
         }
 
         @Override

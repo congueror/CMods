@@ -23,10 +23,20 @@ public class WorldHelper {
     public static final RuleTest nether = OreFeatureConfig.FillerBlockType.BASE_STONE_NETHER;
     public static final RuleTest end = new TagMatchRuleTest(Tags.Blocks.END_STONES);
 
+    /**
+     * A new Rule Test for blocks to use in ore generation
+     * @param block The Block to test
+     * @return a new block rule test
+     */
     public static RuleTest blockRuleTest(Block block) {
         return new BlockMatchRuleTest(block);
     }
 
+    /**
+     * A new Rule Test for block tags to use in ore generation
+     * @param tag The block tag to test
+     * @return a new block tag rule test
+     */
     public static RuleTest tagRuleTest(ITag<Block> tag) {
         return new TagMatchRuleTest(tag);
     }

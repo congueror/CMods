@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:tin_gear"
+    ]
+  },
+  "criteria": {
+    "tin_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/tin"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:tin_gear"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "tin_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}
