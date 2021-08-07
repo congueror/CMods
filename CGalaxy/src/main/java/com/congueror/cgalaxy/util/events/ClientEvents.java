@@ -3,7 +3,8 @@ package com.congueror.cgalaxy.util.events;
 import com.congueror.cgalaxy.CGalaxy;
 import com.congueror.cgalaxy.block.fuel_loader.FuelLoaderScreen;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryScreen;
-import com.congueror.cgalaxy.client.renderers.MoonSkyRenderer;
+import com.congueror.cgalaxy.client.MoonSkyRenderer;
+import com.congueror.cgalaxy.client.SpaceSuitLayer;
 import com.congueror.cgalaxy.entities.RocketEntity;
 import com.congueror.cgalaxy.entities.rockets.RocketTier1Renderer;
 import com.congueror.cgalaxy.gui.galaxy_map.GalaxyMapScreen;
@@ -20,23 +21,28 @@ import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.stream.Stream;
 
 public class ClientEvents {
     @Mod.EventBusSubscriber(modid = CGalaxy.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -58,12 +64,26 @@ public class ClientEvents {
                 }
             });
 
+            Stream.of("default", "slim").map(s -> Minecraft.getInstance().getRenderManager().getSkinMap().get(s)).forEach(playerRenderer ->
+                    playerRenderer.addLayer(new SpaceSuitLayer<>(playerRenderer)));
+            addOxygenLayerToEntity(EntityType.ZOMBIE, ZombieRenderer.class);
+            addOxygenLayerToEntity(EntityType.ENDERMAN, EndermanRenderer.class);
+
             MoonSkyRenderer.render();
+        }
+    }
+
+    @SubscribeEvent
+    public static void textureStitch(TextureStitchEvent.Pre e) {
+        if (e.getMap().getTextureLocation() == PlayerContainer.LOCATION_BLOCKS_TEXTURE) {
+            e.addSprite(new ResourceLocation(CGalaxy.MODID, "gui/oxygen_tank_slot"));
+            e.addSprite(new ResourceLocation(CGalaxy.MODID, "gui/oxygen_gear_slot"));
         }
     }
 
     @Mod.EventBusSubscriber(modid = CGalaxy.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class ForgeClientEvents {
+
         @SubscribeEvent
         public static void onKeyInput(InputEvent.KeyInputEvent e) {
             if (Minecraft.getInstance().currentScreen == null) {
@@ -93,9 +113,9 @@ public class ClientEvents {
                         if (y <= 400 && y >= 48) {
                             mc.ingameGUI.blit(mStack, 3, 202 - (int) (y / 4), 16, 0, 10, 10, 26, 102);
                         } else if (y >= 400) {
-                            mc.ingameGUI.blit(mStack, 3, 202 - (400 / 4), 16, 0, 10, 10, 26, 102);
+                            mc.ingameGUI.blit(mStack, 3, 202 - (400 / 4), 16, 10, 10, 10, 26, 102);
                         } else if (y <= 48) {
-                            mc.ingameGUI.blit(mStack, 3, 202 - (48 / 4), 16, 0, 10, 10, 26, 102);
+                            mc.ingameGUI.blit(mStack, 3, 202 - (48 / 4), 16, 20, 10, 10, 26, 102);
                         }
                     }
                 }
@@ -127,5 +147,18 @@ public class ClientEvents {
                 }
             }
         }
+    }
+
+    private static <T extends LivingEntity, M extends BipedModel<T>, R extends LivingRenderer<? super T, M>> void addOxygenLayerToEntity(EntityType<? extends T> entityType, Class<R> rendererClass) {
+        EntityRenderer<?> renderer = Minecraft.getInstance().getRenderManager().renderers.get(entityType);
+        if (!rendererClass.isInstance(renderer)) {
+            throw new IllegalStateException("Mismatched renderer class?!");
+        }
+        if (!(((LivingRenderer<?, ?>) renderer).getEntityModel() instanceof BipedModel)) {
+            throw new IllegalStateException("Wrong model type, renderer for entity " + entityType.getRegistryName() + " needs to use a BipedModel.");
+        }
+        //noinspection unchecked
+        LivingRenderer<T, M> bipedRenderer = (LivingRenderer<T, M>) renderer;
+        bipedRenderer.addLayer(new SpaceSuitLayer<>(bipedRenderer));
     }
 }

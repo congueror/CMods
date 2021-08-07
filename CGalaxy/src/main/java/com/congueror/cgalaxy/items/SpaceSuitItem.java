@@ -1,7 +1,7 @@
 package com.congueror.cgalaxy.items;
 
 import com.congueror.cgalaxy.CGalaxy;
-import com.congueror.cgalaxy.client.renderers.SpaceSuitRenderer;
+import com.congueror.cgalaxy.client.SpaceSuitModel;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -32,7 +32,7 @@ public class SpaceSuitItem extends ArmorItem {
     @Override
     public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
         //noinspection unchecked
-        return (A) new SpaceSuitRenderer();
+        return (A) new SpaceSuitModel();
     }
 
     public enum SpaceSuitMaterial implements IArmorMaterial {

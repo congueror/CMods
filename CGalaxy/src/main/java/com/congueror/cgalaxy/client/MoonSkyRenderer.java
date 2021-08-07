@@ -1,4 +1,4 @@
-package com.congueror.cgalaxy.client.renderers;
+package com.congueror.cgalaxy.client;
 
 import com.congueror.cgalaxy.CGalaxy;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -79,6 +79,7 @@ public class MoonSkyRenderer {
 
                             matrixStack.push();
 
+                            //Sun
                             matrixStack.push();
                             RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
                             matrixStack.rotate(Vector3f.YP.rotationDegrees(-90.0F));
@@ -95,6 +96,7 @@ public class MoonSkyRenderer {
                             WorldVertexBufferUploader.draw(bufferbuilder);
                             matrixStack.pop();
 
+                            //Earth
                             matrixStack.push();
                             RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
                             matrixStack.rotate(Vector3f.YP.rotationDegrees(-100.0F));

@@ -130,6 +130,11 @@ repositories {
     maven {
         url 'https://modmaven.dev/'
     }
+
+    maven {
+        //Curios
+        url = "https://maven.theillusivec4.top/"
+    }
 }
 
 dependencies {
@@ -142,6 +147,8 @@ dependencies {
     implementation fg.deobf("curse.maven:solar_flux_reborn-246974:3273858")
     compile fg.deobf('slimeknights.tconstruct:TConstruct:1.16.5-3.1.0.231')
     compile fg.deobf('slimeknights.mantle:Mantle:1.16.5-1.6.114')
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2:api")
 
     compileOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.0.52:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.0.52")

@@ -41,41 +41,91 @@ public class WorldHelper {
         return new TagMatchRuleTest(tag);
     }
 
+    /**
+     * Used to register a dimension world key to the {@link Registry}.
+     * @param modid Your mod id
+     * @param name The id of the dimension
+     * @return The registry key
+     */
     public static RegistryKey<World> registerDim(String modid, String name) {
         return RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(modid, name));
     }
 
+    /**
+     * Used to register a configured tree feature to the {@link WorldGenRegistries}
+     * @param modid Your mod id
+     * @param name The id of your feature
+     * @param feature The Tree Feature
+     */
     public static <FC extends IFeatureConfig> ConfiguredFeature<FC, ?> registerTree(String modid, String name, ConfiguredFeature<FC, ?> feature) {
         return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, new ResourceLocation(modid, name), feature);
     }
 
+    /**
+     * Used to register a configured ore feature to the {@link WorldGenRegistries}
+     * @param filler The block that will be replaced by the ore. See {@link #blockRuleTest(Block)} or {@link #tagRuleTest(ITag)}
+     * @param block The ore block
+     * @param veinSize The maximum amount of blocks that will be adjacent to the ore
+     * @param maxHeight The maximum y value that the ore can spawn at. (Minimum is always 0)
+     * @param count How many attempts it will make to spawn the ore each chunk.
+     */
     public static ConfiguredFeature<?, ?> registerConfiguredOre(RuleTest filler, Block block, int veinSize, int maxHeight, int count) {
         return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, block.getRegistryName(), Feature.ORE.withConfiguration(
                 new OreFeatureConfig(filler, block.getDefaultState(), veinSize)).range(maxHeight).square().count(count));
     }
 
+    /**
+     * Used to register a configured disk feature to the {@link WorldGenRegistries}. (Similar to clay)
+     * @param block The disk block
+     */
     public static ConfiguredFeature<?, ?> registerConfiguredDisk(Block block) {
         return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, block.getRegistryName(), Feature.DISK.withConfiguration(
                 new SphereReplaceConfig(block.getDefaultState(), FeatureSpread.create(2, 1), 1, ImmutableList.of(Blocks.DIRT.getDefaultState(), block.getDefaultState())))
                 .withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT));
     }
 
+    /**
+     * Generates the configured feature in the world. Use in a {@link BiomeLoadingEvent}.
+     * @param e The biome loading event
+     * @param feature The configured feature to be generated.
+     */
     public static void genOre(BiomeLoadingEvent e, ConfiguredFeature<?, ?> feature) {
         e.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, feature);
     }
 
+    /**
+     * Checks whether the event is in the overworld. Use inside a {@link BiomeLoadingEvent}
+     * @param e The biome loading event
+     * @return True if overworld
+     */
     public static boolean isOverworld(BiomeLoadingEvent e) {
         return !e.getCategory().equals(Biome.Category.NETHER) && !e.getCategory().equals(Biome.Category.THEEND);
     }
 
+    /**
+     * Checks whether the event is in the nether. Use inside a {@link BiomeLoadingEvent}
+     * @param e The biome loading event
+     * @return True if nether
+     */
     public static boolean isNether(BiomeLoadingEvent e) {
         return e.getCategory().equals(Biome.Category.NETHER);
     }
 
+    /**
+     * Checks whether the event is in the end. Use inside a {@link BiomeLoadingEvent}
+     * @param e The biome loading event
+     * @return True if the end
+     */
     public static boolean isEnd(BiomeLoadingEvent e) {
         return e.getCategory().equals(Biome.Category.THEEND);
     }
 
+    /**
+     * Checks whether the event is in the given biome. Use inside a {@link BiomeLoadingEvent}
+     * @param e The biome loading event
+     * @param name The resource location of the custom biome.
+     * @return True if given biome.
+     */
     public static boolean isBiome(BiomeLoadingEvent e, ResourceLocation name) {
         if (e.getName() != null) {
             if (e.getName().equals(name)) {

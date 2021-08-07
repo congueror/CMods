@@ -1,20 +1,18 @@
-package com.congueror.cgalaxy.client.renderers;
+package com.congueror.cgalaxy.client;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 
-public class SpaceSuitRenderer extends BipedModel<PlayerEntity> {
+public class SpaceSuitModel extends BipedModel<PlayerEntity> {
     private final ModelRenderer Head;
     private final ModelRenderer Body;
     private final ModelRenderer RightArm;
     private final ModelRenderer LeftArm;
     private final ModelRenderer RightLeg;
     private final ModelRenderer LeftLeg;
-    private final ModelRenderer Tanks;
-    private final ModelRenderer Gear;
 
-    public SpaceSuitRenderer() {
+    public SpaceSuitModel() {
         super(0, 0, 64, 64);
 
         Body = new ModelRenderer(this);
@@ -46,22 +44,5 @@ public class SpaceSuitRenderer extends BipedModel<PlayerEntity> {
         Body.addChild(LeftLeg);
         LeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
         LeftLeg.setTextureOffset(0, 32).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, false);
-
-        Tanks = new ModelRenderer(this);
-        Body.addChild(Tanks);
-        Tanks.setRotationPoint(0.0F, 24.0F, 0.0F);
-        Tanks.setTextureOffset(0, 48).addBox(-4.0F, -20.0F, 2.0F, 3.0F, 4.0F, 3.0F, 0.0F, false);
-        Tanks.setTextureOffset(0, 48).addBox(1.0F, -20.0F, 2.0F, 3.0F, 4.0F, 3.0F, 0.0F, false);
-        Tanks.setTextureOffset(32, 32).addBox(1.0F, -22.0F, 2.0F, 3.0F, 2.0F, 3.0F, 0.0F, false);
-        Tanks.setTextureOffset(32, 32).addBox(-4.0F, -22.0F, 2.0F, 3.0F, 2.0F, 3.0F, 0.0F, false);
-        this.bipedBody.addChild(Tanks);
-
-
-        Gear = new ModelRenderer(this);
-        Body.addChild(Gear);
-        Gear.setRotationPoint(0.0F, 24.0F, 0.0F);
-        Gear.setTextureOffset(32, 37).addBox(-3.0F, -23.0F, 3.0F, 6.0F, 1.0F, 1.0F, 0.0F, false);
-        Gear.setTextureOffset(32, 37).addBox(-1.0F, -24.0F, 3.0F, 2.0F, 1.0F, 1.0F, 0.0F, false);
-        this.bipedHead.addChild(Gear);
     }
 }
