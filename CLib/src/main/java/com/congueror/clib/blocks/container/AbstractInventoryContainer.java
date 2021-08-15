@@ -1,4 +1,4 @@
-package com.congueror.clib.blocks;
+package com.congueror.clib.blocks.container;
 
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;

@@ -4,6 +4,7 @@ import com.congueror.cgalaxy.CGalaxy;
 import com.congueror.cgalaxy.block.fuel_loader.FuelLoaderBlock;
 import com.congueror.cgalaxy.block.launch_pad.LaunchPadBlock;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryBlock;
+import com.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.common.ToolType;
@@ -35,6 +36,8 @@ public class BlockInit {
     public static final RegistryObject<Block> FUEL_REFINERY = BLOCKS.register("fuel_refinery", () -> new FuelRefineryBlock(AbstractBlock.Properties.create(Material.IRON)
             .hardnessAndResistance(6f).sound(SoundType.METAL)));
     public static final RegistryObject<Block> FUEL_LOADER = BLOCKS.register("fuel_loader", () -> new FuelLoaderBlock(AbstractBlock.Properties.create(Material.IRON)
+            .hardnessAndResistance(6f).sound(SoundType.METAL)));
+    public static final RegistryObject<Block> OXYGEN_COMPRESSOR = BLOCKS.register("oxygen_compressor", () -> new OxygenCompressorBlock(AbstractBlock.Properties.create(Material.IRON)
             .hardnessAndResistance(6f).sound(SoundType.METAL)));
 
     public static final RegistryObject<FlowingFluidBlock> KEROSENE = BLOCKS.register("kerosene", () -> new FlowingFluidBlock(FluidInit.KEROSENE, AbstractBlock.Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(100.0F).noDrops()));

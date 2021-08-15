@@ -3,6 +3,20 @@
 
   "item.cgalaxy.kerosene_bucket": "Kerosene Bucket",
   "item.cgalaxy.oil_bucket": "Oil Bucket",
+  "item.cgalaxy.oxygen_bucket": "Oxygen Bucket",
+
+  "fluid.cgalaxy.kerosene_still": "Kerosene",
+  "fluid.cgalaxy.oil_still": "Oil",
+  "fluid.cgalaxy.oxygen_still": "Oxygen",
+
+  "item.cgalaxy.rocket_tier_1": "Tier 1 Rocket",
+
+  "item.cgalaxy.light_oxygen_tank": "Light Oxygen Tank",
+  "item.cgalaxy.oxygen_gear": "Oxygen Gear",
+  "item.cgalaxy.space_suit_helm": "Oxygen Mask",
+  "item.cgalaxy.space_suit_chest": "Space Suit Body",
+  "item.cgalaxy.space_suit_legs": "Space Suit Legs",
+  "item.cgalaxy.space_suit_boots": "Space Suit Boots",
 
   "block.cgalaxy.moon_turf": "Moon Turf",
   "block.cgalaxy.moon_stone": "Moon Stone",
@@ -13,13 +27,27 @@
   "block.cgalaxy.launch_pad": "Launch Pad",
   "block.cgalaxy.fuel_refinery": "Fuel Refinery",
   "block.cgalaxy.fuel_loader": "Fuel Loader",
+  "block.cgalaxy.oxygen_compressor": "Oxygen Compressor",
+
+  "recipe.cgalaxy.fuel_refining": "Fuel Refining",
+  "recipe.cgalaxy.fuel_loading": "Fuel Loading",
+  "recipe.cgalaxy.oxygen_compressing": "Oxygen Compressing",
 
   "key.cgalaxy.empty": "Empty",
+  "tooltip.cgalaxy.screen.energy_percent": "Energy",
+  "tooltip.cgalaxy.screen.energy_usage": "Energy Usage",
 
   "text.cgalaxy.about_to_launch": "You are about to go to space. Are you sure you wish to proceed?",
   "text.cgalaxy.about_to_launch1": "Press launch to continue.",
 
   "key.cgalaxy.rocket_launch": "Launch Rocket",
+
+  "death.attack.noOxygen0": "%1$s thought he could breath in space.",
+  "death.attack.noOxygen1": "No one heard %1$s scream.",
+  "death.attack.noOxygen2": "%1$s forgot his oxygen gear.",
+  "death.attack.noOxygen3": "%1$s suffocated in space.",
+
+  "enchantment.cgalaxy.airtight": "Airtight",
 
   "gui.cgalaxy.hover_tip1": "Hover over a location on map",
   "gui.cgalaxy.hover_tip2": "and left click to select it",
@@ -80,5 +108,8 @@
   "gui.cgalaxy.deimos.age": "Age: 4.5B Y",
   "gui.cgalaxy.deimos.moons": "Moons: 0",
   "gui.cgalaxy.deimos.gravity": "Gravity: 0.003 m/s²",
-  "gui.cgalaxy.deimos.tier": "Tier: 3"
+  "gui.cgalaxy.deimos.tier": "Tier: 3",
+
+  "curios.identifier.oxygen_tank": "Oxygen Tank",
+  "curios.identifier.oxygen_gear": "Oxygen Gear"
 }

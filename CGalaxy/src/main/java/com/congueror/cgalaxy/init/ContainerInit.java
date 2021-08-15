@@ -5,6 +5,8 @@ import com.congueror.cgalaxy.block.fuel_loader.FuelLoaderContainer;
 import com.congueror.cgalaxy.block.fuel_loader.FuelLoaderTileEntity;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryContainer;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryTileEntity;
+import com.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorContainer;
+import com.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorTileEntity;
 import com.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntity;
@@ -32,6 +34,14 @@ public class ContainerInit {
                 TileEntity tile = inv.player.getEntityWorld().getTileEntity(pos);
                 FuelLoaderTileEntity te = (FuelLoaderTileEntity) tile;
                 return new FuelLoaderContainer(windowId, inv, te, new IntArray(FuelLoaderTileEntity.FIELDS_COUNT));
+            }));
+
+    public static final RegistryObject<ContainerType<OxygenCompressorContainer>> OXYGEN_COMPRESSOR = CONTAINER_TYPES.register("oxygen_compressor", () ->
+            IForgeContainerType.create((windowId, inv, data) -> {
+                BlockPos pos = data.readBlockPos();
+                TileEntity tile = inv.player.getEntityWorld().getTileEntity(pos);
+                OxygenCompressorTileEntity te = (OxygenCompressorTileEntity) tile;
+                return new OxygenCompressorContainer(windowId, inv, te, new IntArray(FuelLoaderTileEntity.FIELDS_COUNT));
             }));
 
     public static final RegistryObject<ContainerType<GalaxyMapContainer>> GALAXY_MAP = CONTAINER_TYPES.register("galaxy_map", () ->

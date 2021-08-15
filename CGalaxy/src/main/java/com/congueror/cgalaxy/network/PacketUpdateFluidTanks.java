@@ -1,7 +1,6 @@
 package com.congueror.cgalaxy.network;
 
-import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryContainer;
-import com.congueror.clib.blocks.AbstractFluidContainer;
+import com.congueror.clib.blocks.container.AbstractFluidContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;

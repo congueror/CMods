@@ -25,7 +25,7 @@ public class BlockModelDataGen extends BlockModelDataGenerator {
         logBlock(BlockInit.RUBBER_LOG.get());
         logBlock(BlockInit.RUBBER_STRIPPED_LOG.get());
         axisBlock(BlockInit.RUBBER_WOOD.get(), "rubber_log");
-        axisBlock(BlockInit.RUBBER_STRIPPED_WOOD.get(), "rubber_log");
+        axisBlock(BlockInit.RUBBER_STRIPPED_WOOD.get(), "stripped_rubber_log");
         crossBlock(BlockInit.RUBBER_SAPLING.get());
     }
 }

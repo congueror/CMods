@@ -3,7 +3,7 @@ package com.congueror.cgalaxy.block.fuel_loader;
 import com.congueror.cgalaxy.init.ContainerInit;
 import com.congueror.cgalaxy.network.Networking;
 import com.congueror.cgalaxy.network.PacketUpdateFluidTanks;
-import com.congueror.clib.blocks.AbstractFluidContainer;
+import com.congueror.clib.blocks.container.AbstractFluidContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -33,11 +33,12 @@ public class FuelLoaderContainer extends AbstractFluidContainer<FuelLoaderTileEn
         }
 
         tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-            addSlot(new SlotItemHandler(iItemHandler, 0, 120, 18));
-            addSlot(new SlotItemHandler(iItemHandler, 1, 4, 4));
-            addSlot(new SlotItemHandler(iItemHandler, 2, 4, 22));
-            addSlot(new SlotItemHandler(iItemHandler, 3, 4, 40));
-            addSlot(new SlotItemHandler(iItemHandler, 4, 4, 58));
+            addSlot(new SlotItemHandler(iItemHandler, 0, 120, 17));
+            addSlot(new SlotItemHandler(iItemHandler, 1, 120, 53));
+            addSlot(new SlotItemHandler(iItemHandler, 2, 4, 4));
+            addSlot(new SlotItemHandler(iItemHandler, 3, 4, 22));
+            addSlot(new SlotItemHandler(iItemHandler, 4, 4, 40));
+            addSlot(new SlotItemHandler(iItemHandler, 5, 4, 58));
         });
 
         trackIntArray(te.data);

@@ -29,6 +29,8 @@ public class CGalaxy {
         TileEntityInit.TILE_ENTITY_TYPES.register(modEventBus);
         ContainerInit.CONTAINER_TYPES.register(modEventBus);
         CarverInit.WORLD_CARVERS.register(modEventBus);
+        RecipeSerializerInit.RECIPE_SERIALIZERS.register(modEventBus);
+        EnchantmentInit.ENCHANTMENTS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(KeyBindings.class);

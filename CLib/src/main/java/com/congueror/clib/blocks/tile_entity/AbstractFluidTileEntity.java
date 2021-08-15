@@ -1,10 +1,11 @@
-package com.congueror.clib.blocks;
+package com.congueror.clib.blocks.tile_entity;
 
 import com.congueror.clib.items.UpgradeItem;
+import com.congueror.clib.recipe.FluidRecipeWrapper;
+import com.congueror.clib.recipe.IFluidRecipe;
 import com.congueror.clib.util.ModEnergyStorage;
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BucketItem;
@@ -30,20 +31,21 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Objects;
 
 public abstract class AbstractFluidTileEntity extends TileEntity implements IFluidHandler, ITickableTileEntity, INamedContainerProvider {
     protected ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+    protected FluidRecipeWrapper wrapper = new FluidRecipeWrapper(itemHandler, this);
 
     /**
-     * Initialization in subclass constructor like so:
-     * tanks = IntStream.range(0, [Amount of tanks]).mapToObj(k -> new FluidTank([Capacity])).toArray(FluidTank[]::new);
+     * Initialization in subclass constructor like so:<p>
+     * <pre>tanks = IntStream.range(0, [Amount of tanks]).mapToObj(k -> new FluidTank([Capacity])).toArray(FluidTank[]::new);</pre>
      */
     public FluidTank[] tanks;
     private final LazyOptional<IFluidHandler> fluidHandler;
@@ -94,6 +96,13 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
     }
 
     /**
+     * The recipe that the tile entity uses. This can be acquired by using the recipe manager like so:
+     * <pre>world.getRecipeManager().getRecipe([RECIPE], wrapper, world).orElse(null)</pre>
+     */
+    @Nullable
+    public abstract IFluidRecipe<?> getRecipe();
+
+    /**
      * An array of numbers that represent slots. Must start at 0. Must include 4 additional slots at the end for upgrades.
      */
     public abstract int[] invSize();
@@ -105,7 +114,6 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
 
     /**
      * Check whether an item can fit in the given slot.
-     *
      * @param slot  The slot of the item
      * @param stack The ItemStack in the slot.
      */
@@ -122,19 +130,34 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
     public abstract int getEnergyCapacity();
 
     /**
-     * The maximum FE/t that the machine can receive.
-     */
-    public abstract int getEnergyMaxReceive();
-
-    /**
      * The amount of ticks it takes for the machine to complete a process
      */
     public abstract int getProcessTime();
 
     /**
-     * A collection of acceptable fluids
+     * The fluid results of the given recipe.
+     *
+     * @param recipe The recipe
+     * @return A {@link Collection} of {@link FluidStack}s.
      */
-    public abstract Collection<Fluid> fluidIngredients();
+    @Nullable
+    public abstract Collection<FluidStack> getFluidResults(IFluidRecipe<?> recipe);
+
+    /**
+     * The item results of the given recipe.
+     *
+     * @param recipe The recipe
+     * @return A {@link Collection} of {@link ItemStack}s.
+     */
+    @Nullable
+    public abstract Collection<ItemStack> getItemResults(IFluidRecipe<?> recipe);
+
+    /**
+     * The type of operation that this tile entity will execute.
+     *
+     * @return An {@link OperationType}.
+     */
+    public abstract OperationType getOperation();
 
     /**
      * Here you can add any additional requirements for the machine to start
@@ -159,8 +182,9 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
             return;
         }
 
-        FluidStack tank1 = tanks[0].getFluid();
-        if (tank1.getFluid() != Fluids.EMPTY && tank1.getAmount() >= 100 && fluidIngredients().contains(tank1.getFluid())) {
+        FluidStack tank = tanks[0].getFluid();
+        IFluidRecipe<?> recipe = getRecipe();
+        if (recipe != null && shouldRun()) {
             if (energyStorage.getEnergyStored() >= getEnergyUsage() && requisites()) {
                 processTime = getProcessTime();
                 progress += getProgressSpeed();
@@ -169,33 +193,67 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
                 if (progress >= processTime) {
                     execute();
                     progress = 0;
-                    sendUpdate(getActiveState(), false);
+                    sendUpdate(getActiveState());
                     markDirty();
                 } else {
-                    sendUpdate(getActiveState(), false);
+                    sendUpdate(getActiveState());
                 }
             } else {
-                if (progress >= 0) {
+                if (progress > 0) {
                     progress--;
                 }
             }
         } else {
-            if (tank1.getAmount() < 100) {
+            if (tank.getAmount() < 100) {
                 progress = 0;
             }
-            sendUpdate(getInactiveState(), false);
+            sendUpdate(getInactiveState());
         }
 
         sendOutFluid(outputSlotsAndTanks().get("tanks"));
         executeSlot();
     }
 
+    /**
+     * Checks whether the tile entity should run based on the operation type.
+     */
+    public boolean shouldRun() {
+        boolean flag = false;
+        boolean flag1 = false;
+        for (int i : outputSlotsAndTanks().get("tanks")) {
+            flag = tanks[i].getFluidAmount() + getFluidProcessSize() <= tanks[i].getCapacity();
+        }
+        for (int i : outputSlotsAndTanks().get("slots")) {
+            flag1 = itemHandler.getStackInSlot(i).getCount() < itemHandler.getStackInSlot(i).getMaxStackSize();
+        }
+        return flag || flag1;
+    }
+
+    /**
+     * Puts the resulting fluid stack in the output tanks.
+     * @param result The resulting {@link FluidStack}. Should be used like so:
+     * <pre>getFluidResults(getRecipe()).forEach(this::storeResultFluid)</pre>
+     */
+    protected void storeResultFluid(FluidStack result) {
+        for (int i : outputSlotsAndTanks().get("tanks")) {
+            FluidStack output = tanks[i].getFluid();
+            if (getFluidProcessSize() + output.getAmount() <= tanks[i].getCapacity()) {
+                tanks[i].fill(result, FluidAction.EXECUTE);
+            }
+        }
+    }
+
+    /**
+     * Calculates how much the {@link #progress} will be increased each tick.
+     *
+     * @return the progress per tick.
+     */
     public float getProgressSpeed() {
         int[] slots = new int[]{invSize().length - 1, invSize().length - 2, invSize().length - 3, invSize().length - 4};
         int progress = 1;
         for (int i = 0; i < slots.length; i++) {
             if (itemHandler.getStackInSlot(i).getItem() instanceof UpgradeItem) {
-                if (((UpgradeItem)itemHandler.getStackInSlot(i).getItem()).getType().equals(UpgradeItem.UpgradeType.SPEED)) {
+                if (((UpgradeItem) itemHandler.getStackInSlot(i).getItem()).getType().equals(UpgradeItem.UpgradeType.SPEED)) {
                     progress += 1;
                 }
             }
@@ -203,12 +261,20 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
         return progress;
     }
 
-    public int getProcessSize() {
+    /**
+     * Calculates how many mB per operation will be consumed.
+     *
+     * @return The mB per operation.
+     */
+    public int getFluidProcessSize() {
         int[] slots = new int[]{invSize().length - 1, invSize().length - 2, invSize().length - 3, invSize().length - 4};
-        int stack = 100;
+        int stack = 0;
+        for (FluidStack i : Objects.requireNonNull(getFluidResults(getRecipe()))) {
+            stack = i.getAmount();
+        }
         for (int i = 0; i < slots.length; i++) {
             if (itemHandler.getStackInSlot(i).getItem() instanceof UpgradeItem) {
-                if (((UpgradeItem)itemHandler.getStackInSlot(i).getItem()).getType().equals(UpgradeItem.UpgradeType.STACK)) {
+                if (((UpgradeItem) itemHandler.getStackInSlot(i).getItem()).getType().equals(UpgradeItem.UpgradeType.STACK)) {
                     stack += 100;
                 }
             }
@@ -234,11 +300,17 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
         return drops;
     }
 
+    /**
+     * Sends the fluid in the given tanks to other tile entities that have the {@link IFluidHandler} capability around it.
+     *
+     * @param tank The tanks whose fluid will be extracted.
+     */
     public void sendOutFluid(int... tank) {
         for (int i : tank) {
             FluidStack fluidStack = tanks[i].getFluid();
             if (fluidStack.getAmount() > 0 && !fluidStack.isEmpty()) {
                 for (Direction direction : Direction.values()) {
+                    assert world != null;
                     TileEntity te = world.getTileEntity(pos.offset(direction));
                     if (te != null) {
                         boolean doContinue = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction).map(handler -> {
@@ -262,40 +334,69 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
         }
     }
 
-    public void emptyBucketSlot(int... slots) {
+    /**
+     * Empties the bucket at the given slots in the given tank. Usually used with {@link #executeSlot()}
+     *
+     * @param tank  The tank to be filled
+     * @param slots The slots to be emptied
+     */
+    public void emptyBucketSlot(int tank, int... slots) {
         for (int i : slots) {
             ItemStack slot = itemHandler.getStackInSlot(i);
             if (slot.getItem() instanceof BucketItem) {
                 if (((BucketItem) slot.getItem()).getFluid() != Fluids.EMPTY) {
-                    if (tanks[i].isEmpty()) {
-                        tanks[i].setFluid(new FluidStack(((BucketItem) slot.getItem()).getFluid(), 1000));
-                    } else if (tanks[i].getFluid().getFluid().equals(((BucketItem) slot.getItem()).getFluid())) {
-                        tanks[i].getFluid().grow(1000);
+                    if (tanks[tank].isEmpty()) {
+                        tanks[tank].setFluid(new FluidStack(((BucketItem) slot.getItem()).getFluid(), 1000));
+                    } else if (tanks[tank].getFluid().getFluid().equals(((BucketItem) slot.getItem()).getFluid())) {
+                        tanks[tank].getFluid().grow(1000);
                     } else {
                         return;
                     }
-                    itemHandler.setStackInSlot(0, new ItemStack(Items.BUCKET));
+                    itemHandler.setStackInSlot(i, new ItemStack(Items.BUCKET));
                 }
             }
         }
     }
 
-    public void fillBucketSlot(int... slots) {
+    /**
+     * Fills the bucket at the given slots with the fluid in the given tank.
+     *
+     * @param tank  The tank to be emptied.
+     * @param slots The slots to be filled
+     */
+    public void fillBucketSlot(int tank, int... slots) {
         for (int i : slots) {
             ItemStack slot1 = itemHandler.getStackInSlot(i);
             if (slot1.getItem().equals(Items.BUCKET)) {
-                if (tanks[i].isEmpty()) {
-                    return;
-                } else if (tanks[i].getFluid().getAmount() >= 1000) {
-                    tanks[i].getFluid().shrink(1000);
+                if (tanks[tank].getFluid().getAmount() > 1000) {
+                    itemHandler.setStackInSlot(i, tanks[tank].getFluid().getFluid().getAttributes().getBucket(tanks[tank].getFluid()));
+                    tanks[tank].getFluid().shrink(1000);
+                } else if (tanks[tank].getFluid().getAmount() == 1000) {
+                    itemHandler.setStackInSlot(i, tanks[tank].getFluid().getFluid().getAttributes().getBucket(tanks[tank].getFluid()));
+                    tanks[tank].setFluid(FluidStack.EMPTY);
+                } else if (tanks[tank].getFluid().getAmount() < 1000) {
+                    break;
                 }
-                itemHandler.setStackInSlot(1, tanks[i].getFluid().getFluid().getAttributes().getBucket(tanks[i].getFluid()));
             }
         }
     }
 
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return handler.cast();
+        }
+        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            return fluidHandler.cast();
+        }
+        if (cap == CapabilityEnergy.ENERGY) {
+            return energy.cast();
+        }
+        return super.getCapability(cap, side);//TODO: Change which side can accept a capability
+    }
+
     private ModEnergyStorage createEnergy() {
-        return new ModEnergyStorage(getEnergyCapacity(), getEnergyMaxReceive(), 0);
+        return new ModEnergyStorage(getEnergyCapacity(), 1000, 0);
     }
 
     private ItemStackHandler createHandler() {
@@ -372,11 +473,11 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
         return super.write(tag);
     }
 
-    protected void sendUpdate(BlockState newState, boolean force) {
+    protected void sendUpdate(BlockState newState) {
         if (world == null)
             return;
         BlockState oldState = world.getBlockState(pos);
-        if (oldState != newState || force) {
+        if (oldState != newState) {
             world.setBlockState(pos, newState, 3);
             world.notifyBlockUpdate(pos, oldState, newState, 3);
         }
@@ -414,7 +515,7 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
 
     @Override
     public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
-        if (tank < 0 || tank >= tanks.length || !fluidIngredients().contains(stack.getFluid())) {
+        if (tank < 0 || tank >= tanks.length) {
             return false;
         }
         return tanks[tank].isFluidValid(stack);
@@ -422,7 +523,7 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
 
     @Override
     public int fill(FluidStack resource, FluidAction action) {
-        for (int i = 0; i < 1; ++i) {
+        for (int i = 0; i < tanks.length; ++i) {
             FluidStack fluidInTank = tanks[i].getFluid();
             if (isFluidValid(i, resource) && (fluidInTank.isEmpty() || resource.isFluidEqual(fluidInTank))) {
                 return tanks[i].fill(resource, action);
@@ -457,17 +558,13 @@ public abstract class AbstractFluidTileEntity extends TileEntity implements IFlu
         return FluidStack.EMPTY;
     }
 
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return handler.cast();
-        }
-        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            return fluidHandler.cast();
-        }
-        if (cap == CapabilityEnergy.ENERGY) {
-            return energy.cast();
-        }
-        return super.getCapability(cap, side);//TODO: Change which side can accept a capability
+    /**
+     * Used by the tick method to avoid having multiple classes for each operation type
+     */
+    public enum OperationType {
+        FLUID_TO_ITEM,
+        ITEM_TO_FLUID,
+        FLUID_TO_FLUID,
+        FLUID_TO_WORLD
     }
 }

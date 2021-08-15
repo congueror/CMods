@@ -1,5 +1,6 @@
-package com.congueror.clib.blocks;
+package com.congueror.clib.blocks.container;
 
+import com.congueror.clib.blocks.tile_entity.AbstractFluidTileEntity;
 import com.congueror.clib.util.ModEnergyStorage;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -29,6 +30,12 @@ public abstract class AbstractFluidContainer<T extends AbstractFluidTileEntity> 
     public abstract FluidTank[] getFluidTanks();
 
     public abstract int getEnergyUsage();
+
+    public abstract int getMaxEnergy();
+
+    public abstract int getProgress();
+
+    public abstract int getProcessTime();
 
     public abstract void updateTanks(ResourceLocation rl, int amount, int tankId);
 

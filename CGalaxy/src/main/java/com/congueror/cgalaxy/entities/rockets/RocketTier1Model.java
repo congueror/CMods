@@ -7,10 +7,10 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 
-public class RocketTier1Renderer extends EntityModel<Entity> {
+public class RocketTier1Model<T extends Entity> extends EntityModel<T> {
     private final ModelRenderer Rocket;
 
-    public RocketTier1Renderer() {
+    public RocketTier1Model() {
         textureWidth = 512;
         textureHeight = 256;
         Rocket = new ModelRenderer(this);
@@ -94,11 +94,5 @@ public class RocketTier1Renderer extends EntityModel<Entity> {
     @Override
     public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
         Rocket.render(matrixStack, buffer, packedLight, packedOverlay);
-    }
-
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
     }
 }

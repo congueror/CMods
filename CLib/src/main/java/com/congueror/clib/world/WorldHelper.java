@@ -3,6 +3,7 @@ package com.congueror.clib.world;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
@@ -15,6 +16,8 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.template.BlockMatchRuleTest;
 import net.minecraft.world.gen.feature.template.RuleTest;
 import net.minecraft.world.gen.feature.template.TagMatchRuleTest;
+import net.minecraft.world.gen.placement.ChanceConfig;
+import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 
@@ -65,7 +68,7 @@ public class WorldHelper {
      * Used to register a configured ore feature to the {@link WorldGenRegistries}
      * @param filler The block that will be replaced by the ore. See {@link #blockRuleTest(Block)} or {@link #tagRuleTest(ITag)}
      * @param block The ore block
-     * @param veinSize The maximum amount of blocks that will be adjacent to the ore
+     * @param veinSize The maximum amount of blocks that will be adjacent to the ore. Must be greater than 1 for some reason
      * @param maxHeight The maximum y value that the ore can spawn at. (Minimum is always 0)
      * @param count How many attempts it will make to spawn the ore each chunk.
      */
@@ -82,6 +85,18 @@ public class WorldHelper {
         return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, block.getRegistryName(), Feature.DISK.withConfiguration(
                 new SphereReplaceConfig(block.getDefaultState(), FeatureSpread.create(2, 1), 1, ImmutableList.of(Blocks.DIRT.getDefaultState(), block.getDefaultState())))
                 .withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT));
+    }
+
+    /**
+     * Used to register a configured lake feature to the {@link WorldGenRegistries}.
+     * @param fluid The fluid's block you want the lake to be filled with.
+     * @param maxHeight The maximum height the lake will spawn at.
+     * @param chance The chance that this lake has to spawn. The greater the number the more rare it is.
+     */
+    public static ConfiguredFeature<?, ?> registerConfiguredLake(Block fluid, int maxHeight, int chance) {
+        return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, fluid.getRegistryName() + "_lake", Feature.LAKE.withConfiguration(
+                new BlockStateFeatureConfig(fluid.getDefaultState())
+        ).withPlacement(Placement.LAVA_LAKE.configure(new ChanceConfig(chance))).range(maxHeight).square());
     }
 
     /**

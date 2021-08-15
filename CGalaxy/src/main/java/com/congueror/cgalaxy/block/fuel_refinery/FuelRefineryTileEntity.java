@@ -1,12 +1,12 @@
 package com.congueror.cgalaxy.block.fuel_refinery;
 
-import com.congueror.cgalaxy.init.FluidInit;
+import com.congueror.cgalaxy.init.RecipeSerializerInit;
 import com.congueror.cgalaxy.init.TileEntityInit;
-import com.congueror.clib.blocks.AbstractFluidTileEntity;
+import com.congueror.clib.blocks.tile_entity.AbstractFluidTileEntity;
 import com.congueror.clib.items.UpgradeItem;
+import com.congueror.clib.recipe.IFluidRecipe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
@@ -15,9 +15,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 public class FuelRefineryTileEntity extends AbstractFluidTileEntity {
@@ -28,6 +28,13 @@ public class FuelRefineryTileEntity extends AbstractFluidTileEntity {
         this.tanks = IntStream.range(0, 2).mapToObj(k -> new FluidTank(15000)).toArray(FluidTank[]::new);
     }
 
+    @Override
+    public IFluidRecipe<?> getRecipe() {
+        assert world != null;
+        return world.getRecipeManager().getRecipe(RecipeSerializerInit.Types.FUEL_REFINING, wrapper, world).orElse(null);
+    }
+
+    @Override
     public int[] invSize() {
         return new int[]{0, 1, 2, 3, 4, 5};
     }
@@ -35,7 +42,8 @@ public class FuelRefineryTileEntity extends AbstractFluidTileEntity {
     @Override
     public HashMap<String, int[]> outputSlotsAndTanks() {
         HashMap<String, int[]> map = new HashMap<>();
-        map.put("tanks", new int[] {1});
+        map.put("tanks", new int[]{1});
+        map.put("slots", new int[]{1});
         return map;
     }
 
@@ -53,27 +61,36 @@ public class FuelRefineryTileEntity extends AbstractFluidTileEntity {
         return false;
     }
 
+    @Override
     public int getEnergyUsage() {
         return 60;
     }
 
+    @Override
     public int getEnergyCapacity() {
         return 40000;
     }
 
-    public int getEnergyMaxReceive() {
-        return 1000;
+    @Override
+    public int getProcessTime() {
+        return Objects.requireNonNull(getRecipe()).getProcessTime();
     }
 
-    public int getProcessTime() {
-        return 1000;
+    @Nullable
+    @Override
+    public Collection<FluidStack> getFluidResults(IFluidRecipe<?> recipe) {
+        return recipe.getFluidResults();
+    }
+
+    @Nullable
+    @Override
+    public Collection<ItemStack> getItemResults(IFluidRecipe<?> recipe) {
+        return recipe.getItemResults();
     }
 
     @Override
-    public Collection<Fluid> fluidIngredients() {
-        Collection<Fluid> collection = new ArrayList<>();
-        collection.add(FluidInit.OIL.get());
-        return collection;
+    public OperationType getOperation() {
+        return OperationType.FLUID_TO_FLUID;
     }
 
     @Override
@@ -81,22 +98,16 @@ public class FuelRefineryTileEntity extends AbstractFluidTileEntity {
         return true;
     }
 
+    @Override
     public void execute() {
-        if (tanks[1].getFluid().isEmpty()) {
-            tanks[1].setFluid(new FluidStack(FluidInit.KEROSENE.get(), 100));//TODO recipe plz
-        } else {
-            tanks[1].getFluid().grow(100);
-        }
-        if (tanks[0].getFluid().getAmount() == getProcessSize()) {
-            tanks[0].setFluid(FluidStack.EMPTY);
-        } else {
-            tanks[0].getFluid().shrink(100);
-        }
+        Objects.requireNonNull(getFluidResults(Objects.requireNonNull(getRecipe()))).forEach(this::storeResultFluid);
+        tanks[0].drain(getFluidProcessSize(), FluidAction.EXECUTE);
     }
 
+    @Override
     public void executeSlot() {
-        emptyBucketSlot(0);
-        fillBucketSlot(1);
+        emptyBucketSlot(0, 0);
+        fillBucketSlot(1, 1);
     }
 
     @Nullable

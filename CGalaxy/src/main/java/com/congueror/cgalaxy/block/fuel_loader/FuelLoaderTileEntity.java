@@ -3,27 +3,26 @@ package com.congueror.cgalaxy.block.fuel_loader;
 import com.congueror.cgalaxy.block.launch_pad.LaunchPadBlock;
 import com.congueror.cgalaxy.entities.RocketEntity;
 import com.congueror.cgalaxy.init.BlockInit;
-import com.congueror.cgalaxy.init.FluidInit;
+import com.congueror.cgalaxy.init.RecipeSerializerInit;
 import com.congueror.cgalaxy.init.TileEntityInit;
-import com.congueror.clib.blocks.AbstractFluidTileEntity;
+import com.congueror.cgalaxy.recipes.FuelLoaderRecipe;
+import com.congueror.clib.blocks.tile_entity.AbstractFluidTileEntity;
 import com.congueror.clib.items.UpgradeItem;
-import net.minecraft.block.BlockState;
+import com.congueror.clib.recipe.IFluidRecipe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 public class FuelLoaderTileEntity extends AbstractFluidTileEntity {
@@ -35,23 +34,31 @@ public class FuelLoaderTileEntity extends AbstractFluidTileEntity {
         this.tanks = IntStream.range(0, 1).mapToObj(k -> new FluidTank(15000)).toArray(FluidTank[]::new);
     }
 
+    @Nullable
+    @Override
+    public IFluidRecipe<?> getRecipe() {
+        assert world != null;
+        return world.getRecipeManager().getRecipe(RecipeSerializerInit.Types.FUEL_LOADING, wrapper, world).orElse(null);
+    }
+
     @Override
     public int[] invSize() {
-        return new int[]{0, 1, 2, 3, 4};
+        return new int[]{0, 1, 2, 3, 4, 5};
     }
 
     @Override
     public HashMap<String, int[]> outputSlotsAndTanks() {
         HashMap<String, int[]> map = new HashMap<>();
         map.put("tanks", new int[]{0});
+        map.put("slots", new int[]{1});
         return map;
     }
 
     @Override
     public boolean canItemFit(int slot, ItemStack stack) {
-        if (slot == 0) {
+        if (slot == 0 || slot == 1) {
             return stack.getItem() instanceof BucketItem;
-        } else if (slot >= 1) {
+        } else if (slot >= 2) {
             return stack.getItem() instanceof UpgradeItem;
         }
         return false;
@@ -64,24 +71,29 @@ public class FuelLoaderTileEntity extends AbstractFluidTileEntity {
 
     @Override
     public int getEnergyCapacity() {
-        return 1000;
-    }
-
-    @Override
-    public int getEnergyMaxReceive() {
-        return 40;
+        return 40000;
     }
 
     @Override
     public int getProcessTime() {
-        return 600;
+        return Objects.requireNonNull(getRecipe()).getProcessTime();
+    }
+
+    @Nullable
+    @Override
+    public Collection<FluidStack> getFluidResults(IFluidRecipe<?> recipe) {
+        return recipe.getFluidResults();
+    }
+
+    @Nullable
+    @Override
+    public Collection<ItemStack> getItemResults(IFluidRecipe<?> recipe) {
+        return recipe.getItemResults();
     }
 
     @Override
-    public Collection<Fluid> fluidIngredients() {
-        Collection<Fluid> collection = new ArrayList<>();
-        collection.add(FluidInit.KEROSENE.get());
-        return collection;
+    public OperationType getOperation() {
+        return OperationType.FLUID_TO_WORLD;
     }
 
     @Override
@@ -91,6 +103,7 @@ public class FuelLoaderTileEntity extends AbstractFluidTileEntity {
                 continue;
             }
             BlockPos pos = getPos().offset(dir);
+            assert world != null;
             if (world.getBlockState(pos).matchesBlock(BlockInit.LAUNCH_PAD.get())) {
                 LaunchPadBlock pad = (LaunchPadBlock) world.getBlockState(pos).getBlock();
                 if (pad.getMidBlock(world, pos) != null) {
@@ -108,18 +121,18 @@ public class FuelLoaderTileEntity extends AbstractFluidTileEntity {
     @Override
     public void execute() {
         if (entity.getFuel() < entity.getFuelCapacity()) {
-            int fill = entity.fill(Math.min(tanks[0].getFluidAmount(), getProcessSize()));
-            if (tanks[0].getFluid().getAmount() == fill) {
-                tanks[0].setFluid(FluidStack.EMPTY);
-            } else {
-                tanks[0].getFluid().shrink(fill);
-            }
+            FuelLoaderRecipe recipe = (FuelLoaderRecipe) getRecipe();
+            assert recipe != null;
+            int amount = recipe.getIngredient().getFluidStacks().get(0).getAmount();
+            int fill = entity.fill(Math.min(tanks[0].getFluidAmount(), amount + getFluidProcessSize()));
+            tanks[0].drain(fill, FluidAction.EXECUTE);
         }
     }
 
     @Override
     public void executeSlot() {
-        emptyBucketSlot(0);
+        emptyBucketSlot(0, 0);
+        fillBucketSlot(0, 1);
     }
 
     @Nullable
