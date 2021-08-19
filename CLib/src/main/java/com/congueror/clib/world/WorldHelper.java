@@ -114,7 +114,7 @@ public class WorldHelper {
      * @return True if overworld
      */
     public static boolean isOverworld(BiomeLoadingEvent e) {
-        return !e.getCategory().equals(Biome.Category.NETHER) && !e.getCategory().equals(Biome.Category.THEEND);
+        return !e.getCategory().equals(Biome.Category.NETHER) && !e.getCategory().equals(Biome.Category.THEEND) && !e.getCategory().equals(Biome.Category.NONE);
     }
 
     /**

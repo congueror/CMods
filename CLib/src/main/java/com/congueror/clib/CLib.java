@@ -4,6 +4,7 @@ import com.congueror.clib.compat.tconstruct.ModifierInit;
 import com.congueror.clib.init.BlockInit;
 import com.congueror.clib.init.FluidInit;
 import com.congueror.clib.init.ItemInit;
+import com.congueror.clib.util.CLTags;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;

@@ -4,10 +4,12 @@ import com.congueror.cgalaxy.CGalaxy;
 import com.congueror.cgalaxy.block.fuel_loader.FuelLoaderScreen;
 import com.congueror.cgalaxy.block.fuel_refinery.FuelRefineryScreen;
 import com.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorScreen;
-import com.congueror.cgalaxy.client.MoonSkyRenderer;
-import com.congueror.cgalaxy.client.SpaceSuitLayer;
+import com.congueror.cgalaxy.client.entity_renderers.AstroEndermanRenderer;
+import com.congueror.cgalaxy.client.entity_renderers.AstroZombieRenderer;
+import com.congueror.cgalaxy.client.sky_renderers.MoonSkyRenderer;
+import com.congueror.cgalaxy.client.entity_renderers.SpaceSuitLayer;
 import com.congueror.cgalaxy.entities.RocketEntity;
-import com.congueror.cgalaxy.entities.rockets.RocketTier1Model;
+import com.congueror.cgalaxy.client.entity_renderers.models.RocketTier1Model;
 import com.congueror.cgalaxy.gui.galaxy_map.GalaxyMapScreen;
 import com.congueror.cgalaxy.init.ContainerInit;
 import com.congueror.cgalaxy.init.EntityTypeInit;
@@ -22,11 +24,10 @@ import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
@@ -59,16 +60,16 @@ public class ClientEvents {
             ScreenManager.registerFactory(ContainerInit.GALAXY_MAP.get(), GalaxyMapScreen::new);
             ScreenManager.registerFactory(ContainerInit.OXYGEN_COMPRESSOR.get(), OxygenCompressorScreen::new);
 
-            RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.ROCKET_TIER_1.get(), renderManager -> new MobRenderer(renderManager, new RocketTier1Model(), 0.5f) {
+            RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.ROCKET_TIER_1.get(), manager -> new MobRenderer(manager, new RocketTier1Model(), 0.5f) {
                 @Override
                 public ResourceLocation getEntityTexture(Entity entity) {
                     return new ResourceLocation(CGalaxy.MODID, "textures/entity/rocket_tier_1.png");
                 }
             });
+            RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.ASTRO_ENDERMAN.get(), AstroEndermanRenderer::new);
+            RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.ASTRO_ZOMBIE.get(), AstroZombieRenderer::new);
 
             Stream.of("default", "slim").map(s -> Minecraft.getInstance().getRenderManager().getSkinMap().get(s)).forEach(playerRenderer -> playerRenderer.addLayer(new SpaceSuitLayer<>(playerRenderer)));
-            addOxygenLayerToEntity(EntityType.ZOMBIE, ZombieRenderer.class);
-            addOxygenLayerToEntity(EntityType.ENDERMAN, EndermanRenderer.class);
 
             MoonSkyRenderer.render();
         }
@@ -119,6 +120,8 @@ public class ClientEvents {
                             mc.ingameGUI.blit(mStack, 3, 202 - (48 / 4), 16, 20, 10, 10, 26, 102);
                         }
                     }
+
+
                 }
             }
         }
@@ -149,16 +152,4 @@ public class ClientEvents {
             }
         }
     }//ForgeClientEvents END
-
-    private static <T extends LivingEntity, M extends BipedModel<T>, R extends LivingRenderer<? super T, M>> void addOxygenLayerToEntity(EntityType<? extends T> entityType, Class<R> rendererClass) {
-        EntityRenderer<?> renderer = Minecraft.getInstance().getRenderManager().renderers.get(entityType);
-        if (!rendererClass.isInstance(renderer)) {
-            throw new IllegalStateException("Mismatched renderer class?!");
-        }
-        if (!(((LivingRenderer<?, ?>) renderer).getEntityModel() instanceof BipedModel)) {
-            throw new IllegalStateException("Wrong model type, renderer for entity " + entityType.getRegistryName() + " needs to use a BipedModel.");
-        }
-        LivingRenderer<T, M> bipedRenderer = (LivingRenderer<T, M>) renderer;
-        bipedRenderer.addLayer(new SpaceSuitLayer<>(bipedRenderer));
-    }
 }

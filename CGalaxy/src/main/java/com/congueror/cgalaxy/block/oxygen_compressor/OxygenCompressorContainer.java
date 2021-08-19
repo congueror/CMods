@@ -3,7 +3,7 @@ package com.congueror.cgalaxy.block.oxygen_compressor;
 import com.congueror.cgalaxy.init.ContainerInit;
 import com.congueror.cgalaxy.network.Networking;
 import com.congueror.cgalaxy.network.PacketUpdateFluidTanks;
-import com.congueror.clib.blocks.container.AbstractFluidContainer;
+import com.congueror.clib.api.machines.fluid_machine.AbstractFluidContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;

@@ -4,13 +4,11 @@
   "item.cgalaxy.kerosene_bucket": "Kerosene Bucket",
   "item.cgalaxy.oil_bucket": "Oil Bucket",
   "item.cgalaxy.oxygen_bucket": "Oxygen Bucket",
-
   "fluid.cgalaxy.kerosene_still": "Kerosene",
   "fluid.cgalaxy.oil_still": "Oil",
   "fluid.cgalaxy.oxygen_still": "Oxygen",
 
   "item.cgalaxy.rocket_tier_1": "Tier 1 Rocket",
-
   "item.cgalaxy.light_oxygen_tank": "Light Oxygen Tank",
   "item.cgalaxy.oxygen_gear": "Oxygen Gear",
   "item.cgalaxy.space_suit_helm": "Oxygen Mask",
@@ -20,6 +18,16 @@
 
   "block.cgalaxy.moon_turf": "Moon Turf",
   "block.cgalaxy.moon_stone": "Moon Stone",
+  "block.cgalaxy.moon_cobblestone": "Moon Cobblestone",
+  "block.cgalaxy.moon_stone_bricks": "Moon Stone Bricks",
+  "block.cgalaxy.smooth_moon_stone": "Smooth Moon Stone",
+  "block.cgalaxy.chiseled_moon_stone_bricks": "Chiseled Moon Stone Bricks",
+  "block.cgalaxy.moon_stone_slab": "Moon Stone Slab",
+  "block.cgalaxy.moon_stone_stairs": "Moon Stone Stairs",
+  "block.cgalaxy.moon_stone_bricks_slab": "Moon Stone Brick Slab",
+  "block.cgalaxy.moon_stone_bricks_stairs": "Moon Stone Brick Stairs",
+  "block.cgalaxy.moon_cobblestone_slab": "Moon Cobblestone Slab",
+  "block.cgalaxy.moon_cobblestone_stairs": "Moon Cobblestone Stairs",
   "block.cgalaxy.moon_iron_ore": "Moon Iron Ore",
   "block.cgalaxy.moon_silicon_ore": "Moon Silicon Ore",
   "block.cgalaxy.moon_aluminum_ore": "Moon Aluminum Ore",
@@ -33,19 +41,23 @@
   "recipe.cgalaxy.fuel_loading": "Fuel Loading",
   "recipe.cgalaxy.oxygen_compressing": "Oxygen Compressing",
 
-  "key.cgalaxy.empty": "Empty",
   "tooltip.cgalaxy.screen.energy_percent": "Energy",
   "tooltip.cgalaxy.screen.energy_usage": "Energy Usage",
 
   "text.cgalaxy.about_to_launch": "You are about to go to space. Are you sure you wish to proceed?",
   "text.cgalaxy.about_to_launch1": "Press launch to continue.",
 
+  "key.cgalaxy.empty": "Empty",
   "key.cgalaxy.rocket_launch": "Launch Rocket",
 
   "death.attack.noOxygen0": "%1$s thought he could breath in space.",
   "death.attack.noOxygen1": "No one heard %1$s scream.",
   "death.attack.noOxygen2": "%1$s forgot his oxygen gear.",
   "death.attack.noOxygen3": "%1$s suffocated in space.",
+
+  "entity.cgalaxy.rocket_tier_1": "Rocket Tier 1",
+  "entity.cgalaxy.astro_enderman": "Astro-Enderman",
+  "entity.cgalaxy.astro_zombie": "Astro-Zombie",
 
   "enchantment.cgalaxy.airtight": "Airtight",
 

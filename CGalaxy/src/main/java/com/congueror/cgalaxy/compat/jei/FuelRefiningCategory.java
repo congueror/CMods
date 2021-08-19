@@ -16,6 +16,7 @@ import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -33,6 +34,7 @@ public class FuelRefiningCategory implements IRecipeCategory<FuelRefineryRecipe>
     private final IDrawableAnimated arrow;
     private final IDrawableStatic energy_glass;
     private final IDrawableAnimated energy;
+    private final String localized;
 
     public FuelRefiningCategory(IGuiHelper helper) {
         this.helper = helper;
@@ -40,6 +42,7 @@ public class FuelRefiningCategory implements IRecipeCategory<FuelRefineryRecipe>
         arrow = helper.drawableBuilder(FuelRefineryScreen.GUI, 196, 0, 24, 17).buildAnimated(processTime, IDrawableAnimated.StartDirection.LEFT, false);
         energy_glass = helper.drawableBuilder(FuelRefineryScreen.GUI, 212, 17, 16, 60).build();
         energy = helper.drawableBuilder(FuelRefineryScreen.GUI, 196, 17, 16, 60).buildAnimated(666, IDrawableAnimated.StartDirection.TOP, true);
+        localized = I18n.format("recipe.cgalaxy.fuel_refining");
     }
 
     @Override
@@ -54,7 +57,7 @@ public class FuelRefiningCategory implements IRecipeCategory<FuelRefineryRecipe>
 
     @Override
     public String getTitle() {
-        return "Fuel Refining";//TODO: Translation
+        return localized;
     }
 
     @Override
@@ -76,8 +79,8 @@ public class FuelRefiningCategory implements IRecipeCategory<FuelRefineryRecipe>
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, FuelRefineryRecipe recipe, IIngredients ingredients) {
         IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
-        fluidStacks.init(0, true, 45, 11, 16, 50, 15000, true, null);
-        fluidStacks.init(1, false, 90, 11, 16, 50, 15000, true, null);
+        fluidStacks.init(0, true, 45, 11, 16, 50, 1000, false, null);
+        fluidStacks.init(1, false, 90, 11, 16, 50, 1000, false, null);
 
         fluidStacks.set(0, ingredients.getInputs(VanillaTypes.FLUID).get(0));
         List<List<FluidStack>> outputs = ingredients.getOutputs(VanillaTypes.FLUID);

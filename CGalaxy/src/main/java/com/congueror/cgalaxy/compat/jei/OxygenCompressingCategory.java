@@ -6,9 +6,7 @@ import com.congueror.cgalaxy.init.BlockInit;
 import com.congueror.cgalaxy.init.RecipeSerializerInit;
 import com.congueror.cgalaxy.recipes.FuelRefineryRecipe;
 import com.congueror.cgalaxy.recipes.OxygenCompressorRecipe;
-import com.congueror.clib.recipe.FluidIngredient;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import it.unimi.dsi.fastutil.floats.Float2CharArrayMap;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -24,13 +22,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class OxygenCompressingCategory implements IRecipeCategory<OxygenCompressorRecipe> {
 
@@ -42,7 +37,7 @@ public class OxygenCompressingCategory implements IRecipeCategory<OxygenCompress
 
     public OxygenCompressingCategory(IGuiHelper helper) {
         this.helper = helper;
-        int processTime = ((FuelRefineryRecipe) JeiCompat.getRecipes(RecipeSerializerInit.Types.FUEL_REFINING).get(0)).getProcessTime();
+        int processTime = ((OxygenCompressorRecipe) JeiCompat.getRecipes(RecipeSerializerInit.Types.OXYGEN_COMPRESSING).get(0)).getProcessTime();
         arrow = helper.drawableBuilder(FuelRefineryScreen.GUI, 196, 0, 24, 17).buildAnimated(processTime, IDrawableAnimated.StartDirection.LEFT, false);
         energy_glass = helper.drawableBuilder(FuelRefineryScreen.GUI, 212, 17, 16, 60).build();
         energy = helper.drawableBuilder(FuelRefineryScreen.GUI, 196, 17, 16, 60).buildAnimated(800, IDrawableAnimated.StartDirection.TOP, true);
@@ -77,10 +72,7 @@ public class OxygenCompressingCategory implements IRecipeCategory<OxygenCompress
     @Override
     public void setIngredients(OxygenCompressorRecipe recipe, IIngredients ingredients) {
         ingredients.setInputIngredients(Collections.singletonList(recipe.getIngredient()));
-        ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
-
-        ingredients.setInputLists(VanillaTypes.FLUID, Collections.emptyList());
-        ingredients.setOutputLists(VanillaTypes.FLUID, recipe.getFluidResults().stream().map(Collections::singletonList).collect(Collectors.toList()));
+        ingredients.setOutputs(VanillaTypes.FLUID, new ArrayList<>(recipe.getFluidResults()));
     }
 
     @Override
@@ -88,17 +80,11 @@ public class OxygenCompressingCategory implements IRecipeCategory<OxygenCompress
         IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
         IGuiItemStackGroup itemStacks = recipeLayout.getItemStacks();
 
-        itemStacks.init(0, true, 36, 31);
-        //itemStacks.init(1, false, 36, 31);
-        itemStacks.set(0, Arrays.asList(recipe.getIngredient().getMatchingStacks()));
+        itemStacks.init(0, true, 35, 30);
+        itemStacks.set(0, ingredients.getInputs(VanillaTypes.ITEM).get(0));
 
-        fluidStacks.init(0, false, 81, 11, 16, 50, 15000, true, null);
-        //fluidStacks.init(1, true, 81, 11, 1, 1, 1, false, null);
-        //fluidStacks.set(1, Collections.singletonList(FluidStack.EMPTY));
-        List<List<FluidStack>> outputs = ingredients.getOutputs(VanillaTypes.FLUID);
-        for (int i = 0; i < outputs.size(); ++i) {
-            fluidStacks.set(i + 1, outputs.get(i));
-        }
+        fluidStacks.init(0, false, 81, 11, 16, 50, 1000, false, null);
+        fluidStacks.set(0, ingredients.getOutputs(VanillaTypes.FLUID).get(0));
     }
 
     @Override

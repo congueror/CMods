@@ -2,6 +2,7 @@ package com.congueror.clib.util.events;
 
 import com.congueror.clib.CLib;
 import com.congueror.clib.init.BlockInit;
+import com.congueror.clib.util.CLTags;
 import com.congueror.clib.util.ModItemGroups;
 import com.congueror.clib.util.Strippables;
 import com.congueror.clib.world.OreGen;

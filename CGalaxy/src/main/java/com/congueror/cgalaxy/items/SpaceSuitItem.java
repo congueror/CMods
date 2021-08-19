@@ -1,7 +1,7 @@
 package com.congueror.cgalaxy.items;
 
 import com.congueror.cgalaxy.CGalaxy;
-import com.congueror.cgalaxy.client.SpaceSuitModel;
+import com.congueror.cgalaxy.client.entity_renderers.models.SpaceSuitModel;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

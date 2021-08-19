@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:ores/iron",
+    "#forge:ores/aluminum",
+    "#forge:ores/titanium",
+    "#forge:ores/silicon"
+  ]
+}

@@ -27,7 +27,13 @@
   "spawners": {
     "monster": [
       {
-        "type": "minecraft:enderman",
+        "type": "cgalaxy:astro_enderman",
+        "weight": 1,
+        "minCount": 0,
+        "maxCount": 1
+      },
+      {
+        "type": "cgalaxy:astro_zombie",
         "weight": 1,
         "minCount": 0,
         "maxCount": 1

@@ -31,6 +31,7 @@ public class CGalaxy {
         CarverInit.WORLD_CARVERS.register(modEventBus);
         RecipeSerializerInit.RECIPE_SERIALIZERS.register(modEventBus);
         EnchantmentInit.ENCHANTMENTS.register(modEventBus);
+        FeatureInit.FEATURES.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(KeyBindings.class);

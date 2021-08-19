@@ -1,6 +1,7 @@
 package com.congueror.clib.data.gen;
 
 import com.congueror.clib.CLib;
+import com.congueror.clib.util.CLTags;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

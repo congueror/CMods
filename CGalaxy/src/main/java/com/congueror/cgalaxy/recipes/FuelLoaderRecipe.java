@@ -1,9 +1,9 @@
 package com.congueror.cgalaxy.recipes;
 
 import com.congueror.cgalaxy.init.RecipeSerializerInit;
-import com.congueror.clib.recipe.FluidIngredient;
-import com.congueror.clib.recipe.IFluidRecipe;
-import com.congueror.clib.recipe.IItemFluidInventory;
+import com.congueror.clib.api.recipe.FluidIngredient;
+import com.congueror.clib.api.recipe.IFluidRecipe;
+import com.congueror.clib.api.recipe.IItemFluidInventory;
 import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;

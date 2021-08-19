@@ -1,6 +1,7 @@
 package com.congueror.cgalaxy.data;
 
 import com.congueror.cgalaxy.CGalaxy;
+import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -15,10 +16,10 @@ public class DataGenerators
         DataGenerator generator = event.getGenerator();
 
         if (event.includeServer()) {
-            //BlockTagsProvider blockTags = new BlockTagsDataGen(generator, event.getExistingFileHelper());
+            BlockTagsProvider blockTags = new BlockTagsDataGen(generator, event.getExistingFileHelper());
             //generator.addProvider(new RecipeDataGen(generator));
-            //generator.addProvider(blockTags);
-            //generator.addProvider(new ItemTagsDataGen(generator, blockTags, event.getExistingFileHelper()));
+            generator.addProvider(blockTags);
+            generator.addProvider(new ItemTagsDataGen(generator, blockTags, event.getExistingFileHelper()));
             //generator.addProvider(new LootTableDataGen(generator));
         }
         if (event.includeClient()) {

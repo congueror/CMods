@@ -1,6 +1,6 @@
 package com.congueror.cgalaxy.network;
 
-import com.congueror.clib.blocks.container.AbstractFluidContainer;
+import com.congueror.clib.api.machines.fluid_machine.AbstractFluidContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;

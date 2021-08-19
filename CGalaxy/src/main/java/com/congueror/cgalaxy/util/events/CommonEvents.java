@@ -3,6 +3,8 @@ package com.congueror.cgalaxy.util.events;
 import com.congueror.cgalaxy.CGalaxy;
 import com.congueror.cgalaxy.commands.ModCommands;
 import com.congueror.cgalaxy.compat.curios.CuriosCompat;
+import com.congueror.cgalaxy.entities.AstroEndermanEntity;
+import com.congueror.cgalaxy.entities.AstroZombieEntity;
 import com.congueror.cgalaxy.entities.RocketEntity;
 import com.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
 import com.congueror.cgalaxy.init.BlockInit;
@@ -16,6 +18,7 @@ import com.congueror.cgalaxy.network.Networking;
 import com.congueror.cgalaxy.util.DamageSources;
 import com.congueror.cgalaxy.world.FeatureGen;
 import com.congueror.cgalaxy.world.dimension.Dimensions;
+import com.congueror.clib.util.CLTags;
 import com.congueror.clib.util.ModItemGroups;
 import net.minecraft.block.Block;
 import net.minecraft.block.FlowingFluidBlock;
@@ -24,9 +27,11 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierManager;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -106,6 +111,8 @@ public class CommonEvents {
             e.put(EntityTypeInit.ROCKET_TIER_1.get(), CreatureEntity.func_233666_p_()
                     .createMutableAttribute(Attributes.MAX_HEALTH, 1)
                     .create());
+            e.put(EntityTypeInit.ASTRO_ENDERMAN.get(), AstroEndermanEntity.func_234287_m_().create());
+            e.put(EntityTypeInit.ASTRO_ZOMBIE.get(), AstroZombieEntity.entityAttributes().create());
         }
     }//ModCommonEvents END
 
@@ -117,6 +124,7 @@ public class CommonEvents {
         }
 
         static int i;
+        static boolean hasOxygen;
 
         @SubscribeEvent
         public static void onPlayerTick(TickEvent.PlayerTickEvent e) {
@@ -127,9 +135,10 @@ public class CommonEvents {
             double y = player.getPosY();
             double z = player.getPosZ();
 
+            //Tries to drain the player's oxygen tank every ~1 second
             i++;
             ArrayList<ItemStack> items = CuriosCompat.getAllCuriosItemStacks(player);
-            boolean hasOxygen = hasOxygen(player, items);
+            hasOxygen = hasOxygen(player, items);
             if (hasOxygen) {
                 ItemStack stack = items.stream()
                         .filter(stack1 -> stack1.getItem() instanceof OxygenTankItem && ((OxygenTankItem) stack1.getItem()).getOxygen(stack1) > 0).findFirst().orElse(ItemStack.EMPTY);
@@ -139,6 +148,7 @@ public class CommonEvents {
                 }
             }
 
+            //Gets every entity around the player.
             List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(x - (192 / 2d), y - (192 / 2d), z - (192 / 2d), x + (192 / 2d), y + (192 / 2d), z + (192 / 2d)), null);
             for (Entity entity : entities) {
                 if (entity instanceof LivingEntity) {
@@ -146,9 +156,12 @@ public class CommonEvents {
                     if (world.getDimensionKey() == Dimensions.MOON) {
                         Objects.requireNonNull(manager.createInstanceIfAbsent(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(0.0162);
                         entity.fallDistance = 1;
-                        boolean hasOxygen1 = hasOxygen((LivingEntity) entity, items);
-                        if (!hasOxygen1) {
-                            entity.attackEntityFrom(DamageSources.NO_OXYGEN, 1.0f);
+                        if (!hasOxygen) {
+                            if (entity instanceof AstroEndermanEntity ||
+                                    entity instanceof AstroZombieEntity ||
+                                    entity instanceof RocketEntity) {} else {
+                                entity.attackEntityFrom(DamageSources.NO_OXYGEN, 1.0f);
+                            }
                         }
                     } else {
                         Objects.requireNonNull(manager.createInstanceIfAbsent(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(ForgeMod.ENTITY_GRAVITY.get().getDefaultValue());

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "side": "cgalaxy:block/moon_stone_bricks",
+    "bottom": "cgalaxy:block/moon_stone_bricks",
+    "top": "cgalaxy:block/moon_stone_bricks"
+  }
+}

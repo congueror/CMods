@@ -1,7 +1,7 @@
 package com.congueror.clib.data.gen;
 
 import com.congueror.clib.CLib;
-import com.congueror.clib.data.ItemModelDataGenerator;
+import com.congueror.clib.api.data.ItemModelDataGenerator;
 import com.congueror.clib.init.ItemInit;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;

@@ -1,6 +1,6 @@
 package com.congueror.cgalaxy.block.fuel_loader;
 
-import com.congueror.clib.blocks.block.AbstractFluidBlock;
+import com.congueror.clib.api.machines.fluid_machine.AbstractFluidBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;

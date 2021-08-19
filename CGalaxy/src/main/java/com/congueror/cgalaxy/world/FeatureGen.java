@@ -2,13 +2,20 @@ package com.congueror.cgalaxy.world;
 
 import com.congueror.cgalaxy.CGalaxy;
 import com.congueror.cgalaxy.init.BlockInit;
+import com.congueror.cgalaxy.init.FeatureInit;
 import com.congueror.clib.world.WorldHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.template.RuleTest;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 
 import static com.congueror.clib.world.WorldHelper.*;
@@ -22,6 +29,8 @@ public class FeatureGen {
     public static ConfiguredFeature<?, ?> MOON_TITANIUM;
 
     public static ConfiguredFeature<?, ?> OIL_LAKE;
+    public static ConfiguredFeature<?, ?> TEST;
+    public static Feature<BlockStateFeatureConfig> METEORITE;
 
     public static void registerFeatures() {
         RuleTest moon = blockRuleTest(BlockInit.MOON_STONE.get());
@@ -31,6 +40,7 @@ public class FeatureGen {
         MOON_TITANIUM = registerConfiguredOre(moon, BlockInit.MOON_TITANIUM_ORE.get(), 2, 16, 1);
 
         OIL_LAKE = registerConfiguredLake(BlockInit.OIL.get(), 34, 100);
+        TEST = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, new ResourceLocation(CGalaxy.MODID, "test"), FeatureInit.METEORITE.get().withConfiguration(new BlockStateFeatureConfig(BlockInit.MOON_CHISELED_STONE_BRICKS.get().getDefaultState())).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).variableCount(1));
     }
 
     @SubscribeEvent
@@ -43,6 +53,8 @@ public class FeatureGen {
             genOre(e, MOON_SILICON);
             genOre(e, MOON_ALUMINUM);
             genOre(e, MOON_TITANIUM);
+
+            e.getGeneration().withFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TEST);
         }
     }
 }
