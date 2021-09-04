@@ -6,12 +6,14 @@
     ]
   },
   "criteria": {
-    "rubber_log": {
+    "has_rubber_log": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:rubber_log"
+            "items": [
+              "clib:rubber_log"
+            ]
           }
         ]
       }
@@ -25,7 +27,7 @@
   },
   "requirements": [
     [
-      "rubber_log",
+      "has_rubber_log",
       "has_the_recipe"
     ]
   ]

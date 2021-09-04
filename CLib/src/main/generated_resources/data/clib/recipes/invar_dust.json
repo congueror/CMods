@@ -5,7 +5,7 @@
       "tag": "forge:ingots/invar"
     },
     {
-      "item": "clib:iron_hammer"
+      "tag": "clib:hammer"
     }
   ],
   "result": {

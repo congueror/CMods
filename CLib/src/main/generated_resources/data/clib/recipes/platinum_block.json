@@ -1,15 +1,34 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "aaa",
-    "aaa",
-    "aaa"
-  ],
-  "key": {
-    "a": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/platinum"
+    },
+    {
+      "tag": "forge:ingots/platinum"
+    },
+    {
+      "tag": "forge:ingots/platinum"
+    },
+    {
+      "tag": "forge:ingots/platinum"
+    },
+    {
+      "tag": "forge:ingots/platinum"
+    },
+    {
+      "tag": "forge:ingots/platinum"
+    },
+    {
+      "tag": "forge:ingots/platinum"
+    },
+    {
+      "tag": "forge:ingots/platinum"
+    },
+    {
       "tag": "forge:ingots/platinum"
     }
-  },
+  ],
   "result": {
     "item": "clib:platinum_block"
   }

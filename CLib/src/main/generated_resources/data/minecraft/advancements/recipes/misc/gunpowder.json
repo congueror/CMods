@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "saltpetre_dust": {
+    "has_dusts/saltpetre": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:saltpetre_dust"
+            "tag": "forge:dusts/saltpetre"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "saltpetre_dust",
+      "has_dusts/saltpetre",
       "has_the_recipe"
     ]
   ]

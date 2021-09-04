@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "netherite_ingot": {
+    "has_dusts/netherite": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/netherite"
+            "tag": "forge:dusts/netherite"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "netherite_ingot",
+      "has_dusts/netherite",
       "has_the_recipe"
     ]
   ]

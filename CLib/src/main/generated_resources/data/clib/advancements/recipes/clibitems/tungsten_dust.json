@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "tungsten_ingot": {
+    "has_dusts/tungsten": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:tungsten_ingot"
+            "tag": "forge:dusts/tungsten"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "tungsten_ingot",
+      "has_dusts/tungsten",
       "has_the_recipe"
     ]
   ]

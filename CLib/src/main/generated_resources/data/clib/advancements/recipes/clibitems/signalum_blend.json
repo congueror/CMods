@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "silver_ingot": {
+    "has_ingots/copper": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/silver"
+            "tag": "forge:ingots/copper"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "silver_ingot",
+      "has_ingots/copper",
       "has_the_recipe"
     ]
   ]

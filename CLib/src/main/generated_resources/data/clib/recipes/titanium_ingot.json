@@ -1,16 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "aaa",
-    "aaa",
-    "aaa"
-  ],
-  "key": {
-    "a": {
-      "item": "clib:titanium_scrap"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/titanium"
     }
-  },
+  ],
   "result": {
-    "item": "clib:titanium_ingot"
+    "item": "clib:titanium_ingot",
+    "count": 9
   }
 }

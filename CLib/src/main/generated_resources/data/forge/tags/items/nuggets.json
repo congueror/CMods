@@ -5,7 +5,6 @@
     "#forge:nuggets/steel",
     "#forge:nuggets/aluminum",
     "#forge:nuggets/lead",
-    "#forge:nuggets/copper",
     "#forge:nuggets/silver",
     "#forge:nuggets/lumium",
     "#forge:nuggets/nickel",
@@ -22,6 +21,7 @@
     "#forge:nuggets/zinc",
     "#forge:nuggets/brass",
     "#forge:nuggets/chromium",
-    "#forge:nuggets/thorium"
+    "#forge:nuggets/thorium",
+    "#forge:nuggets/coal"
   ]
 }

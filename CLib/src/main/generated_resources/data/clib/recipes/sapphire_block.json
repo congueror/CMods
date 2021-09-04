@@ -1,13 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "aaa",
-    "aaa",
-    "aaa"
+    "aa ",
+    "aa ",
+    "   "
   ],
   "key": {
     "a": {
-      "tag": "forge:gems/sapphire"
+      "tag": "forge:shards/sapphire"
     }
   },
   "result": {

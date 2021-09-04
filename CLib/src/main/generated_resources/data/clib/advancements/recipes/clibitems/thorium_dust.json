@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "thorium_ingot": {
+    "has_dusts/thorium": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:thorium_ingot"
+            "tag": "forge:dusts/thorium"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "thorium_ingot",
+      "has_dusts/thorium",
       "has_the_recipe"
     ]
   ]

@@ -1,20 +1,18 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ip ",
-    "p  ",
-    "   "
-  ],
-  "key": {
-    "i": {
-      "tag": "forge:ingots/copper"
-    },
-    "p": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
       "tag": "forge:ingots/tin"
+    },
+    {
+      "tag": "forge:ingots/tin"
+    },
+    {
+      "tag": "forge:ingots/copper"
     }
-  },
+  ],
   "result": {
     "item": "clib:bronze_blend",
-    "count": 2
+    "count": 3
   }
 }

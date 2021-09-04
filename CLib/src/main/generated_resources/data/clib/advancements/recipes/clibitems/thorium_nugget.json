@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "thorium_ingot": {
+    "has_ingots/thorium": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "thorium_ingot",
+      "has_ingots/thorium",
       "has_the_recipe"
     ]
   ]

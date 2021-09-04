@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "stone": {
+    "has_gems/quartz": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "stone",
+      "has_gems/quartz",
       "has_the_recipe"
     ]
   ]

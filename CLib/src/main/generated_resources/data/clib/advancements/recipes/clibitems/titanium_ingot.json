@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "titanium_scrap": {
+    "has_dusts/titanium": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:titanium_scrap"
+            "tag": "forge:dusts/titanium"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "titanium_scrap",
+      "has_dusts/titanium",
       "has_the_recipe"
     ]
   ]

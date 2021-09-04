@@ -7,7 +7,7 @@
   ],
   "key": {
     "a": {
-      "item": "clib:titanium_ingot"
+      "tag": "forge:ingots/titanium"
     }
   },
   "result": {

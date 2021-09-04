@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "copper_ingot": {
+    "has_dusts/copper": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:copper_ingot"
+            "tag": "forge:dusts/copper"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "copper_ingot",
+      "has_dusts/copper",
       "has_the_recipe"
     ]
   ]

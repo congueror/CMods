@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "brass_ingot": {
+    "has_ingots/brass": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "brass_ingot",
+      "has_ingots/brass",
       "has_the_recipe"
     ]
   ]

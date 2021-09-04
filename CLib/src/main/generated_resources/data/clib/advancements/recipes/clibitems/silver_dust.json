@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "silver_ingot": {
+    "has_dusts/silver": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:silver_ingot"
+            "tag": "forge:dusts/silver"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "silver_ingot",
+      "has_dusts/silver",
       "has_the_recipe"
     ]
   ]

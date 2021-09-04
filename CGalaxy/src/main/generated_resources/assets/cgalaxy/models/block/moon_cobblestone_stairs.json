@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "side": "cgalaxy:block/moon_cobblestone",
-    "bottom": "cgalaxy:block/moon_cobblestone",
-    "top": "cgalaxy:block/moon_cobblestone"
-  }
-}

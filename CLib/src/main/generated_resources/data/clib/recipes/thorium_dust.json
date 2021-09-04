@@ -5,7 +5,7 @@
       "tag": "forge:ingots/thorium"
     },
     {
-      "item": "clib:iron_hammer"
+      "tag": "clib:hammer"
     }
   ],
   "result": {

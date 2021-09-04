@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "lumium_ingot": {
+    "has_dusts/lumium": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:lumium_ingot"
+            "tag": "forge:dusts/lumium"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "lumium_ingot",
+      "has_dusts/lumium",
       "has_the_recipe"
     ]
   ]

@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "netherite_ingot": {
+    "has_ingots/netherite": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "netherite_ingot",
+      "has_ingots/netherite",
       "has_the_recipe"
     ]
   ]

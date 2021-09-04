@@ -1,36 +1,30 @@
-modLoader="javafml" #mandatory
-loaderVersion="[36,)" #mandatory
-license="All rights reserved"
-#issueTrackerURL="http://my.issue.tracker/" #optional
-[[mods]] #mandatory
-modId="clib" #mandatory
-version="2.0.0" #mandatory
-displayName="CLib" #mandatory
-updateJSONURL="http://myurl.me/" #optional
-displayURL="http://example.com/" #optional
-logoFile="CLib.png" #optional
-credits="Thanks for this example mod goes to Java" #optional
-authors="Congueror" #optional
+modLoader="javafml"
+loaderVersion="[37,)"
+license="MIT"
+
+#issueTrackerURL="http://my.issue.tracker/"
+
+[[mods]]
+modId="clib"
+version="${file.jarVersion}"
+displayName="CLib"
+#updateJSONURL="http://myurl.me/"
+#displayURL="http://example.com/"
+#logoFile="CLib.png"
+#credits="Thanks for this example mod goes to Java"
+#authors="Love, Cheese and small house plants"
 description='''
 
 '''
-# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.CLib]] #optional
-   # the modid of the dependency
-   modId="forge" #mandatory
-   # Does this dependency have to exist - if not, ordering below must be specified
-   mandatory=true #mandatory
-   # The version range of the dependency
-   versionRange="[36,)" #mandatory
-   # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+[[dependencies.CLib]]
+   modId="forge"
+   mandatory=true
+   versionRange="[37,)"
    ordering="NONE"
-   # Side this dependency is applied on - BOTH, CLIENT or SERVER
    side="BOTH"
-# Here's another dependency
 [[dependencies.CLib]]
    modId="minecraft"
    mandatory=true
-   # This version range declares a minimum of the current minecraft version up to but not including the next major version
-   versionRange="[1.16.3,1.16.5]"
+   versionRange="[1.17.1,1.18)"
    ordering="NONE"
    side="BOTH"

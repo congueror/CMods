@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "logs": {
+    "has_dusts/wood": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "minecraft:logs"
+            "tag": "forge:dusts/wood"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "logs",
+      "has_dusts/wood",
       "has_the_recipe"
     ]
   ]

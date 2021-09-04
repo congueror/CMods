@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "chromium_ingot": {
+    "has_dusts/chromium": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:chromium_ingot"
+            "tag": "forge:dusts/chromium"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "chromium_ingot",
+      "has_dusts/chromium",
       "has_the_recipe"
     ]
   ]

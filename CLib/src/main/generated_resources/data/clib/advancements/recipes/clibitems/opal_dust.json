@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "opal": {
+    "has_dusts/opal": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:opal"
+            "tag": "forge:dusts/opal"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "opal",
+      "has_dusts/opal",
       "has_the_recipe"
     ]
   ]

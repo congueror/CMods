@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "emerald": {
+    "has_dusts/emerald": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:gems/emerald"
+            "tag": "forge:dusts/emerald"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "emerald",
+      "has_dusts/emerald",
       "has_the_recipe"
     ]
   ]

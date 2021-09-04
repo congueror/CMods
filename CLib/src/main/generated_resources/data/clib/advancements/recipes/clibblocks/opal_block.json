@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "opal": {
+    "has_gems/opal": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "opal",
+      "has_gems/opal",
       "has_the_recipe"
     ]
   ]

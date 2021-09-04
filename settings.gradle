@@ -1,4 +1,2 @@
-rootProject.name = 'CMods 1.16.5'
-include 'src:untitled'
-findProject(':src:untitled')?.name = 'untitled'
+rootProject.name = 'CMods 1.17.1'
 include 'CLib', 'CGalaxy', 'Workspace'

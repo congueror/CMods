@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "uranium_ingot": {
+    "has_ingots/uranium": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "uranium_ingot",
+      "has_ingots/uranium",
       "has_the_recipe"
     ]
   ]

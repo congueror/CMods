@@ -5,7 +5,7 @@
       "tag": "forge:ingots/tungsten"
     },
     {
-      "item": "clib:iron_hammer"
+      "tag": "clib:hammer"
     }
   ],
   "result": {

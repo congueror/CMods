@@ -1,18 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " i ",
-    "c  ",
-    "   "
-  ],
-  "key": {
-    "i": {
-      "tag": "forge:ingots/gold"
-    },
-    "c": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
       "tag": "forge:ingots/silver"
+    },
+    {
+      "tag": "forge:ingots/gold"
     }
-  },
+  ],
   "result": {
     "item": "clib:electrum_blend",
     "count": 2

@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "planks": {
+    "has_logs": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "minecraft:planks"
+            "tag": "minecraft:logs"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "planks",
+      "has_logs",
       "has_the_recipe"
     ]
   ]

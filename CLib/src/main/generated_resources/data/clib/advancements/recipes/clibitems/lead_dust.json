@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "lead_ingot": {
+    "has_dusts/lead": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:lead_ingot"
+            "tag": "forge:dusts/lead"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "lead_ingot",
+      "has_dusts/lead",
       "has_the_recipe"
     ]
   ]

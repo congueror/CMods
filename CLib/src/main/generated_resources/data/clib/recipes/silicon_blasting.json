@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "item": "clib:silica"
-  },
-  "result": "clib:silicon",
-  "experience": 0.7,
-  "cookingtime": 400
-}

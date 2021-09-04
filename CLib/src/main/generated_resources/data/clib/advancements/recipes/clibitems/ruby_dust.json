@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "ruby": {
+    "has_dusts/ruby": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:ruby"
+            "tag": "forge:dusts/ruby"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "ruby",
+      "has_dusts/ruby",
       "has_the_recipe"
     ]
   ]

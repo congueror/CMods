@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "titanium_ingot": {
+    "has_ingots/titanium": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:titanium_ingot"
+            "tag": "forge:ingots/titanium"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "titanium_ingot",
+      "has_ingots/titanium",
       "has_the_recipe"
     ]
   ]

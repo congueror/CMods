@@ -5,7 +5,7 @@
       "tag": "forge:ingots/bronze"
     },
     {
-      "item": "clib:iron_hammer"
+      "tag": "clib:hammer"
     }
   ],
   "result": {

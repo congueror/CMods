@@ -1,12 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "pp ",
-    "pp ",
+    "aa ",
+    "aa ",
     "   "
   ],
   "key": {
-    "p": {
+    "a": {
       "tag": "forge:dusts/salt"
     }
   },

@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "iron_ingot": {
+    "has_dusts/iron": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/iron"
+            "tag": "forge:dusts/iron"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "iron_ingot",
+      "has_dusts/iron",
       "has_the_recipe"
     ]
   ]

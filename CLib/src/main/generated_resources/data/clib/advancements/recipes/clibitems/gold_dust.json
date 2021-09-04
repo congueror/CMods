@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "gold_ingot": {
+    "has_dusts/gold": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/gold"
+            "tag": "forge:dusts/gold"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "gold_ingot",
+      "has_dusts/gold",
       "has_the_recipe"
     ]
   ]

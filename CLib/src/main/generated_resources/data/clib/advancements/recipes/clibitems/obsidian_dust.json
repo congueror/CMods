@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "obsidian": {
+    "has_dusts/obsidian": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:obsidian"
+            "tag": "forge:dusts/obsidian"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "obsidian",
+      "has_dusts/obsidian",
       "has_the_recipe"
     ]
   ]

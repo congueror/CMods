@@ -1,18 +1,19 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "pp ",
-    "pi ",
-    "   "
-  ],
-  "key": {
-    "i": {
-      "tag": "forge:ingots/zinc"
-    },
-    "p": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
       "tag": "forge:ingots/copper"
+    },
+    {
+      "tag": "forge:ingots/copper"
+    },
+    {
+      "tag": "forge:ingots/copper"
+    },
+    {
+      "tag": "forge:ingots/zinc"
     }
-  },
+  ],
   "result": {
     "item": "clib:brass_blend",
     "count": 4

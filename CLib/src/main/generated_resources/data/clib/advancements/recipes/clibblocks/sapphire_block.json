@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "sapphire": {
+    "has_shards/sapphire": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:gems/sapphire"
+            "tag": "forge:shards/sapphire"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "sapphire",
+      "has_shards/sapphire",
       "has_the_recipe"
     ]
   ]

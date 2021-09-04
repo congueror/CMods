@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "sapphire": {
+    "has_dusts/sapphire": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:sapphire"
+            "tag": "forge:dusts/sapphire"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "sapphire",
+      "has_dusts/sapphire",
       "has_the_recipe"
     ]
   ]

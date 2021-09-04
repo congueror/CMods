@@ -5,7 +5,7 @@
       "tag": "forge:ingots/aluminum"
     },
     {
-      "item": "clib:iron_hammer"
+      "tag": "clib:hammer"
     }
   ],
   "result": {

@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "diamond": {
+    "has_dusts/diamond": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:gems/diamond"
+            "tag": "forge:dusts/diamond"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "diamond",
+      "has_dusts/diamond",
       "has_the_recipe"
     ]
   ]

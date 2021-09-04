@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "blaze_powder": {
+    "has_blaze_powder": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "minecraft:blaze_powder"
+            "tag": "forge:dusts/blaze_powder"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "blaze_powder",
+      "has_blaze_powder",
       "has_the_recipe"
     ]
   ]

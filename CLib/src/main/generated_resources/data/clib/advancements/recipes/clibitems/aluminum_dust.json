@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "aluminum_ingot": {
+    "has_dusts/aluminum": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:aluminum_ingot"
+            "tag": "forge:dusts/aluminum"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "aluminum_ingot",
+      "has_dusts/aluminum",
       "has_the_recipe"
     ]
   ]

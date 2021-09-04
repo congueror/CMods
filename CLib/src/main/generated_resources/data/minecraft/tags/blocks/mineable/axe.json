@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "clib:stripped_rubber_log",
+    "clib:stripped_rubber_wood",
+    "clib:rubber_log",
+    "clib:rubber_wood",
+    "clib:rubber_planks"
+  ]
+}

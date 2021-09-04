@@ -1,8 +1,0 @@
-{
-  "craftable": false,
-  "tier": 2,
-  "sortOrder": 2,
-  "fluid": "tconstruct:molten_nickel",
-  "fluidPerUnit": 144,
-  "textColor": "#F0E9AD"
-}

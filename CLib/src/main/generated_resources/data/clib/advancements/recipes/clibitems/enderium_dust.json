@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "enderium_ingot": {
+    "has_dusts/enderium": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:enderium_ingot"
+            "tag": "forge:dusts/enderium"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "enderium_ingot",
+      "has_dusts/enderium",
       "has_the_recipe"
     ]
   ]

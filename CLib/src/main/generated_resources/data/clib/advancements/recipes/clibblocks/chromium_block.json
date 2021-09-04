@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "chromium_ingot": {
+    "has_ingots/chromium": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "chromium_ingot",
+      "has_ingots/chromium",
       "has_the_recipe"
     ]
   ]

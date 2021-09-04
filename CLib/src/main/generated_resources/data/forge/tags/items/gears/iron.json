@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "clib:iron_gear"
+    "clib:iron_gear",
+    "clib:gold_gear"
   ]
 }

@@ -5,7 +5,7 @@
       "tag": "forge:gems/lapis"
     },
     {
-      "item": "clib:iron_hammer"
+      "tag": "clib:hammer"
     }
   ],
   "result": {

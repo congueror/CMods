@@ -1,22 +1,21 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ii ",
-    "cp ",
-    "   "
-  ],
-  "key": {
-    "i": {
-      "tag": "forge:ingots/tin"
-    },
-    "c": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
       "tag": "forge:ingots/silver"
     },
-    "p": {
+    {
       "tag": "forge:ingots/platinum"
+    },
+    {
+      "tag": "forge:ingots/tin"
+    },
+    {
+      "tag": "forge:ingots/tin"
     }
-  },
+  ],
   "result": {
-    "item": "clib:enderium_blend"
+    "item": "clib:enderium_blend",
+    "count": 2
   }
 }

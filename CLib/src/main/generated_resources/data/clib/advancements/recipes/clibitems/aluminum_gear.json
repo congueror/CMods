@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "aluminum_ingot": {
+    "has_ingots/aluminum": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "aluminum_ingot",
+      "has_ingots/aluminum",
       "has_the_recipe"
     ]
   ]

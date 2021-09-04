@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "invar_ingot": {
+    "has_dusts/invar": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:invar_ingot"
+            "tag": "forge:dusts/invar"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "invar_ingot",
+      "has_dusts/invar",
       "has_the_recipe"
     ]
   ]

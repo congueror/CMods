@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "iron_ingot": {
+    "has_ingots/iron": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "iron_ingot",
+      "has_ingots/iron",
       "has_the_recipe"
     ]
   ]

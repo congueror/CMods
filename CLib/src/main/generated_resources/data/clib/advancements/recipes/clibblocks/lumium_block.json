@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "lumium_ingot": {
+    "has_ingots/lumium": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "lumium_ingot",
+      "has_ingots/lumium",
       "has_the_recipe"
     ]
   ]

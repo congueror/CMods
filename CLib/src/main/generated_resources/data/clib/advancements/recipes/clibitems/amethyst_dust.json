@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "amethyst": {
+    "has_dusts/amethyst": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:amethyst"
+            "tag": "forge:dusts/amethyst"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "amethyst",
+      "has_dusts/amethyst",
       "has_the_recipe"
     ]
   ]

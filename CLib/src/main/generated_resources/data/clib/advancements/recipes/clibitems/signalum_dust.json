@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "signalum_ingot": {
+    "has_dusts/signalum": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:signalum_ingot"
+            "tag": "forge:dusts/signalum"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "signalum_ingot",
+      "has_dusts/signalum",
       "has_the_recipe"
     ]
   ]

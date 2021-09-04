@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "steel_ingot": {
+    "has_dusts/steel": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:steel_ingot"
+            "tag": "forge:dusts/steel"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "steel_ingot",
+      "has_dusts/steel",
       "has_the_recipe"
     ]
   ]

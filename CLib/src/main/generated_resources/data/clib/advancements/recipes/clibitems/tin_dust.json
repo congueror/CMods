@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "tin_ingot": {
+    "has_dusts/tin": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:tin_ingot"
+            "tag": "forge:dusts/tin"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "tin_ingot",
+      "has_dusts/tin",
       "has_the_recipe"
     ]
   ]

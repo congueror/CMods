@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "signalum_ingot": {
+    "has_ingots/signalum": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "signalum_ingot",
+      "has_ingots/signalum",
       "has_the_recipe"
     ]
   ]

@@ -1,9 +1,0 @@
-{
-  "type": "cgalaxy:fuel_refining",
-  "ingredient": {
-    "fluid": "cgalaxy:oil_still"
-  },
-  "result": {
-    "fluid": "cgalaxy:kerosene_still"
-  }
-}

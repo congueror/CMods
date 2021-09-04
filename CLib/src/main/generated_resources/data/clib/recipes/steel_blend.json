@@ -1,18 +1,16 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ci ",
-    "i  ",
-    "   "
-  ],
-  "key": {
-    "i": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
       "tag": "forge:ingots/iron"
     },
-    "c": {
-      "item": "minecraft:coal"
+    {
+      "tag": "forge:ingots/iron"
+    },
+    {
+      "tag": "minecraft:coals"
     }
-  },
+  ],
   "result": {
     "item": "clib:steel_blend",
     "count": 2

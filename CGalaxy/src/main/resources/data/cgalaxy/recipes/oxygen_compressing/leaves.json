@@ -1,9 +1,0 @@
-{
-  "type": "cgalaxy:oxygen_compressing",
-  "ingredient": {
-    "tag": "minecraft:leaves"
-  },
-  "result": {
-    "fluid": "cgalaxy:oxygen_still"
-  }
-}

@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "uranium_ingot": {
+    "has_dusts/uranium": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "clib:uranium_ingot"
+            "tag": "forge:dusts/uranium"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "uranium_ingot",
+      "has_dusts/uranium",
       "has_the_recipe"
     ]
   ]

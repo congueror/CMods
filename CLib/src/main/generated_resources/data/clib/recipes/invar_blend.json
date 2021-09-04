@@ -1,20 +1,18 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ci ",
-    "i  ",
-    "   "
-  ],
-  "key": {
-    "i": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/nickel"
+    },
+    {
       "tag": "forge:ingots/iron"
     },
-    "c": {
-      "tag": "forge:ingots/nickel"
+    {
+      "tag": "forge:ingots/iron"
     }
-  },
+  ],
   "result": {
     "item": "clib:invar_blend",
-    "count": 2
+    "count": 3
   }
 }

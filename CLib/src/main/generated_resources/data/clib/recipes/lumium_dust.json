@@ -5,7 +5,7 @@
       "tag": "forge:ingots/lumium"
     },
     {
-      "item": "clib:iron_hammer"
+      "tag": "clib:hammer"
     }
   ],
   "result": {

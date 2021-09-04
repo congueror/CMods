@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "rubber_log": {
+    "has_rubber_logs": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "rubber_log",
+      "has_rubber_logs",
       "has_the_recipe"
     ]
   ]

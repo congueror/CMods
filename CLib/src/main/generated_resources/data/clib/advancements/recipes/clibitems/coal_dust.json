@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "coal": {
+    "has_dusts/coal": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "minecraft:coal"
+            "tag": "forge:dusts/coal"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "coal",
+      "has_dusts/coal",
       "has_the_recipe"
     ]
   ]
