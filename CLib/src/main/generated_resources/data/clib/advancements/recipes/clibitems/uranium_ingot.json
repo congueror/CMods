@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:uranium_ingot"
+    ]
+  },
+  "criteria": {
+    "has_dusts/uranium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/uranium"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:uranium_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dusts/uranium",
+      "has_the_recipe"
+    ]
+  ]
+}

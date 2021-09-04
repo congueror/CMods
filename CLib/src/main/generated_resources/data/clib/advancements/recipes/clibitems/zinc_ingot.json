@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:zinc_ingot"
+    ]
+  },
+  "criteria": {
+    "has_dusts/zinc": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/zinc"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:zinc_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dusts/zinc",
+      "has_the_recipe"
+    ]
+  ]
+}

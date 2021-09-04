@@ -1,0 +1,26 @@
+{
+  "replace": false,
+  "values": [
+    "clib:steel_block",
+    "clib:aluminum_block",
+    "clib:aluminum_ore",
+    "clib:lead_block",
+    "clib:lead_ore",
+    "clib:ruby_block",
+    "clib:ruby_ore",
+    "clib:silver_block",
+    "clib:silver_ore",
+    "clib:lumium_block",
+    "clib:nickel_block",
+    "clib:nickel_ore",
+    "clib:invar_block",
+    "clib:electrum_block",
+    "clib:signalum_block",
+    "clib:bronze_block",
+    "clib:zinc_block",
+    "clib:zinc_ore",
+    "clib:brass_block",
+    "clib:chromium_block",
+    "clib:chromium_ore"
+  ]
+}

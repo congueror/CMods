@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:nuggets/lumium"
+    },
+    {
+      "tag": "forge:nuggets/lumium"
+    },
+    {
+      "tag": "forge:nuggets/lumium"
+    },
+    {
+      "tag": "forge:nuggets/lumium"
+    },
+    {
+      "tag": "forge:nuggets/lumium"
+    },
+    {
+      "tag": "forge:nuggets/lumium"
+    },
+    {
+      "tag": "forge:nuggets/lumium"
+    },
+    {
+      "tag": "forge:nuggets/lumium"
+    },
+    {
+      "tag": "forge:nuggets/lumium"
+    }
+  ],
+  "result": {
+    "item": "clib:lumium_ingot"
+  }
+}

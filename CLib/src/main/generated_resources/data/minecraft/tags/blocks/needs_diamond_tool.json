@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "clib:platinum_block",
+    "clib:platinum_ore",
+    "clib:enderium_block",
+    "clib:tungsten_block",
+    "clib:tungsten_ore",
+    "clib:opal_block",
+    "clib:opal_ore",
+    "clib:titanium_block",
+    "clib:titanium_ore",
+    "clib:uranium_ore",
+    "clib:cobalt_block",
+    "clib:cobalt_ore",
+    "clib:thorium_ore"
+  ]
+}

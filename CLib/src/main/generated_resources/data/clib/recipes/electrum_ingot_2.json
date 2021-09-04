@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "forge:ores/electrum"
+  },
+  "result": "clib:electrum_ingot",
+  "experience": 0.7,
+  "cookingtime": 400
+}

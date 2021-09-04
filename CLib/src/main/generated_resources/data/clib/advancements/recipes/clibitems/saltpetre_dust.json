@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:saltpetre_dust"
+    ]
+  },
+  "criteria": {
+    "has_ores/saltpetre": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ores/saltpetre"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:saltpetre_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ores/saltpetre",
+      "has_the_recipe"
+    ]
+  ]
+}

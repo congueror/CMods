@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "tag": "forge:ores/lumium"
+  },
+  "result": "clib:lumium_ingot",
+  "experience": 0.7,
+  "cookingtime": 800
+}

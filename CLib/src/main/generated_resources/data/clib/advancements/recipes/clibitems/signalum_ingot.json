@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:signalum_ingot"
+    ]
+  },
+  "criteria": {
+    "has_dusts/signalum": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/signalum"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:signalum_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dusts/signalum",
+      "has_the_recipe"
+    ]
+  ]
+}

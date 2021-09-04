@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:cobalt_ingot"
+    ]
+  },
+  "criteria": {
+    "has_dusts/cobalt": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/cobalt"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:cobalt_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dusts/cobalt",
+      "has_the_recipe"
+    ]
+  ]
+}

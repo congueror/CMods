@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:quartz"
+    ]
+  },
+  "criteria": {
+    "has_dusts/quartz": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/quartz"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:quartz"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dusts/quartz",
+      "has_the_recipe"
+    ]
+  ]
+}

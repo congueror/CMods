@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:ruby"
+    ]
+  },
+  "criteria": {
+    "has_dusts/ruby": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/ruby"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:ruby"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dusts/ruby",
+      "has_the_recipe"
+    ]
+  ]
+}

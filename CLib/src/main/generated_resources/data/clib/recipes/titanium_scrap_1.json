@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "tag": "forge:ores/titanium"
+  },
+  "result": "clib:titanium_scrap",
+  "experience": 0.7,
+  "cookingtime": 800
+}

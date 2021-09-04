@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:chromium_ingot"
+    ]
+  },
+  "criteria": {
+    "has_dusts/chromium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/chromium"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:chromium_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dusts/chromium",
+      "has_the_recipe"
+    ]
+  ]
+}

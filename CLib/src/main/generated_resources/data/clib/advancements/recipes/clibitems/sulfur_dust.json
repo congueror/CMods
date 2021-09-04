@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:sulfur_dust"
+    ]
+  },
+  "criteria": {
+    "has_ores/sulfur": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ores/sulfur"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:sulfur_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ores/sulfur",
+      "has_the_recipe"
+    ]
+  ]
+}

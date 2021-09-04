@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "forge:ores/opal"
+  },
+  "result": "clib:opal",
+  "experience": 0.7,
+  "cookingtime": 205
+}

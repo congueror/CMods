@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:tungsten_ingot"
+    ]
+  },
+  "criteria": {
+    "has_dusts/tungsten": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/tungsten"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:tungsten_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dusts/tungsten",
+      "has_the_recipe"
+    ]
+  ]
+}

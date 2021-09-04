@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:brass_ingot"
+    ]
+  },
+  "criteria": {
+    "has_dusts/brass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/brass"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:brass_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dusts/brass",
+      "has_the_recipe"
+    ]
+  ]
+}

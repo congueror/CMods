@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:lumium_ingot"
+    ]
+  },
+  "criteria": {
+    "has_dusts/lumium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/lumium"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:lumium_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dusts/lumium",
+      "has_the_recipe"
+    ]
+  ]
+}

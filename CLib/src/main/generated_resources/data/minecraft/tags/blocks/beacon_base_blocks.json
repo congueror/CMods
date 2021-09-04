@@ -1,0 +1,26 @@
+{
+  "replace": false,
+  "values": [
+    "clib:tin_block",
+    "clib:steel_block",
+    "clib:aluminum_block",
+    "clib:lead_block",
+    "clib:ruby_block",
+    "clib:silver_block",
+    "clib:lumium_block",
+    "clib:nickel_block",
+    "clib:invar_block",
+    "clib:electrum_block",
+    "clib:platinum_block",
+    "clib:enderium_block",
+    "clib:signalum_block",
+    "clib:tungsten_block",
+    "clib:bronze_block",
+    "clib:opal_block",
+    "clib:titanium_block",
+    "clib:cobalt_block",
+    "clib:zinc_block",
+    "clib:brass_block",
+    "clib:chromium_block"
+  ]
+}

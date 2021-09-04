@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:nickel_ingot"
+    ]
+  },
+  "criteria": {
+    "has_dusts/nickel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/nickel"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:nickel_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dusts/nickel",
+      "has_the_recipe"
+    ]
+  ]
+}
