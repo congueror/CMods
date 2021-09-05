@@ -37,7 +37,6 @@ public class ItemBuilder {
     public final Map<Tag.Named<Item>, Tag.Named<Item>> itemTagsGen = new HashMap<>();
     public final Map<String, Tag.Named<Item>> itemTags = new HashMap<>();
     public BiConsumer<ItemModelDataGenerator, Item> itemModel;
-    public String tranlsation;
     public final Map<String, String> locale = new HashMap<>();
 
     /**
