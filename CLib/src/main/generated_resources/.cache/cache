@@ -50,6 +50,7 @@ b942f127d162991429939be40cd1b1d20bd1d8aa assets/clib/blockstates/titanium_block.
 53bd7c2fd218e1f6bc07a9aafa19607e5514a48c assets/clib/blockstates/uranium_ore.json
 34d9d2ae693060620aae422f530710b04243b589 assets/clib/blockstates/zinc_block.json
 100d480616fee8ce78b24aeb618ef988c2f394e0 assets/clib/blockstates/zinc_ore.json
+aef96d3bcb687d3a6298da50e6962a746b512692 assets/clib/lang/en_us.json
 15934f1f2793bfbf64b8b497402353226b993bb9 assets/clib/models/block/aluminum_block.json
 59a2100b52f41db8c4c4b3b318e6de11ee5ab7e5 assets/clib/models/block/aluminum_ore.json
 61c034473af54e778b20e8e67ab3298d88bc865e assets/clib/models/block/brass_block.json
@@ -944,7 +945,7 @@ abc06c70468c664360e5aa3f53f3be8f50d0057d data/forge/tags/items/scraps.json
 edc50084817c1412f463ff6a1b3982223499481d data/forge/tags/items/scraps/titanium.json
 304306bb91be9296f7423dbb4eb70407328e4217 data/forge/tags/items/shards.json
 a4245f119ece142fe7d949d39fea50ae779459f7 data/forge/tags/items/shards/amethyst.json
-a9e8aba0fbefa04d052f1a0ba85df8649f63dcb4 data/forge/tags/items/shards/sapphire.json
+7d6d827b3c776db38e16a60799264fd4d7bb5d58 data/forge/tags/items/shards/sapphire.json
 29cec062e781f2ac83abbe181481e327fd1ddcd5 data/forge/tags/items/silicon.json
 232f2bfaf3571d31eb609ae23f57ce5f62a9633c data/forge/tags/items/sticks.json
 e3934dc78ff7b06e4669d5f4f8e6a5780ee37e75 data/forge/tags/items/storage_blocks.json

@@ -9,7 +9,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -21,14 +24,16 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public abstract class AbstractFluidContainer<T extends AbstractFluidTileEntity> extends AbstractInventoryContainer {
+public abstract class AbstractFluidContainer<T extends AbstractFluidBlockEntity> extends AbstractInventoryContainer {
     T tile;
     ContainerData data;
+    protected Player player;
     protected NonNullList<FluidStack> fluidLastTick = NonNullList.create();
 
-    public AbstractFluidContainer(@Nullable MenuType<?> type, int id, Inventory playerInventory, T tile, ContainerData dataIn) {
+    public AbstractFluidContainer(@Nullable MenuType<?> type, int id, Player player, Inventory playerInventory, T tile, ContainerData dataIn) {
         super(type, id, playerInventory);
         this.tile = tile;
+        this.player = player;
         this.data = dataIn;
 
         trackPower();
@@ -45,6 +50,9 @@ public abstract class AbstractFluidContainer<T extends AbstractFluidTileEntity> 
 
     public abstract int getProcessTime();
 
+    /**
+     * Called from the {@link PacketUpdateFluidTanks} packet to sync the fluid tanks.
+     */
     public void updateTanks(ResourceLocation rl, int amount, int tankId) {
         Fluid fluid = ForgeRegistries.FLUIDS.getValue(rl);
         if (fluid != null) {
@@ -54,6 +62,9 @@ public abstract class AbstractFluidContainer<T extends AbstractFluidTileEntity> 
         }
     }
 
+    /**
+     * Sends a packet to the player if the fluid tanks have changed.
+     */
     @Override
     public void broadcastChanges() {
         super.broadcastChanges();
@@ -65,12 +76,9 @@ public abstract class AbstractFluidContainer<T extends AbstractFluidTileEntity> 
                 FluidStack stack2 = stack.copy();
                 this.fluidLastTick.set(i, stack2);
                 if (stackChanged) {
-                    for (ContainerListener icontainerlistener : this.containerListeners) {
-                        if (icontainerlistener instanceof ServerPlayer) {
-                            CLNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) icontainerlistener),
-                                    new PacketUpdateFluidTanks(containerId, stack2.getFluid().getRegistryName(), stack2.getAmount(), i));
-                        }
-                    }
+                    if (player instanceof ServerPlayer)
+                        CLNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
+                                new PacketUpdateFluidTanks(containerId, stack2.getFluid().getRegistryName(), stack2.getAmount(), i));
                 }
             }
         }
@@ -87,7 +95,7 @@ public abstract class AbstractFluidContainer<T extends AbstractFluidTileEntity> 
     }
 
     // Setup syncing of power from server to client so that the GUI can show the
-    // amount of power in the block
+// amount of power in the block
     private void trackPower() {
         // Unfortunatelly on a dedicated server ints are actually truncated to short so
         // we need

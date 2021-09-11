@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    "cgalaxy:moon_stone",
+    "cgalaxy:moon_cobblestone",
+    "cgalaxy:moon_stone_bricks",
+    "cgalaxy:smooth_moon_stone",
+    "cgalaxy:chiseled_moon_stone_bricks",
+    "cgalaxy:moon_stone_slab",
+    "cgalaxy:moon_stone_stairs",
+    "cgalaxy:moon_cobblestone_slab",
+    "cgalaxy:moon_cobblestone_stairs",
+    "cgalaxy:moon_stone_bricks_slab",
+    "cgalaxy:moon_stone_bricks_stairs",
+    "cgalaxy:moon_iron_ore",
+    "cgalaxy:moon_silicon_ore",
+    "cgalaxy:moon_aluminum_ore",
+    "cgalaxy:moon_titanium_ore",
+    "cgalaxy:meteorite",
+    "cgalaxy:launch_pad",
+    "cgalaxy:fuel_loader",
+    "cgalaxy:fuel_refinery",
+    "cgalaxy:oxygen_compressor"
+  ]
+}

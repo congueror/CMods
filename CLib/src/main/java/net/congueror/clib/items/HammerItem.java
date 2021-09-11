@@ -1,7 +1,7 @@
 package net.congueror.clib.items;
 
 import net.congueror.clib.api.objects.items.CLItem;
-import net.congueror.clib.init.ItemInit;
+import net.congueror.clib.init.CLItemInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -26,7 +26,7 @@ public class HammerItem extends CLItem {
         if (state.getBlock().equals(Blocks.SAND)) {
             stack.setDamageValue(stack.getDamageValue() + 2);
             if (rand.nextDouble() >= 0.5) {
-                worldIn.addFreshEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ItemInit.SILICA.get())));
+                worldIn.addFreshEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(CLItemInit.SILICA.get())));
             }
             if (stack.getDamageValue() == stack.getMaxDamage()) {
                 stack.shrink(1);

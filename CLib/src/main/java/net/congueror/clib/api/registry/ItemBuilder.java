@@ -1,6 +1,6 @@
 package net.congueror.clib.api.registry;
 
-import net.congueror.clib.api.data.ItemModelDataGenerator;
+import net.congueror.clib.api.data.ItemModelDataProvider;
 import net.congueror.clib.api.objects.items.ICLibItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -15,13 +15,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 
 /**
  * A class that can be used for registering items to the game. This builder class provides many methods that can be used to ease the burden of registering items.
+ * <pre>
+ *  public static final RegistryObject<Item> TEST = new ItemBuilder("test",
+ *             new CLItem(new Item.Properties()
+ *                  .tab(ModItemGroups.ItemsIG.instance)))
+ *             .withTranslation("My Test")
+ *             .withExistingItemTags(Tags.Items.INGOTS)
+ *             .build(ITEMS);
+ * </pre>
  */
 @SuppressWarnings("unused")
 public class ItemBuilder {
-    private final ResourceLocation name;
+    private final String name;
     private final Item item;
 
     /**
@@ -29,55 +38,62 @@ public class ItemBuilder {
      */
     public static final Map<String, Tag.Named<Item>> ITEM_TAGS = new HashMap<>();
 
-    /**
-     * A list of all the built ItemBuilder objects. This is used to iterate through all the objects.
-     */
-    public static final List<ItemBuilder> OBJECTS = new ArrayList<>();
+    public static final Map<String, List<ItemBuilder>> OBJECTS = new HashMap<>();
 
     public final Map<Tag.Named<Item>, Tag.Named<Item>> itemTagsGen = new HashMap<>();
     public final Map<String, Tag.Named<Item>> itemTags = new HashMap<>();
-    public BiConsumer<ItemModelDataGenerator, Item> itemModel;
+    public BiConsumer<ItemModelDataProvider, Item> itemModel = (itemModelDataProvider, item1) -> itemModelDataProvider.texture(item1, "item/" + item1);
     public final Map<String, String> locale = new HashMap<>();
 
     /**
-     * Convenience constructor for those who don't want to make a new resource location object everytime.
-     * @param name The name of your item, this string MUST include a modid and a path like so: "modid:my_item"
-     * @param item See {@link #ItemBuilder(ResourceLocation, Item)}
-     */
-    public ItemBuilder(String name, Item item) {
-        this(new ResourceLocation(name), item);
-    }
-
-    /**
      * This is the main constructor of the builder.
+     *
      * @param name The {@link ResourceLocation} of the item, which includes your mod's id and the path.
      * @param item A new instance of a class which extends {@link Item}.
      */
-    public ItemBuilder(ResourceLocation name, Item item) {
+    public ItemBuilder(String name, Item item) {
         this.name = name;
         this.item = item;
     }
 
     /**
      * Getter for the item.
+     *
      * @return the item.
      */
     public Item getItem() {
         return item;
     }
 
+    private static Stream<ItemBuilder> stream() {
+        List<ItemBuilder> list = new ArrayList<>();
+        OBJECTS.values().forEach(list::addAll);
+        return list.stream();
+    }
+
     /**
      * Builds/Registers this ItemBuilder object to the DeferredRegister passed in.
+     *
      * @param register The item {@link DeferredRegister} of your mod.
      * @return The registered {@link RegistryObject}.
      */
     public RegistryObject<Item> build(DeferredRegister<Item> register) {
-        OBJECTS.add(this);
-        return register.register(name.getPath(), () -> item);
+        RegistryObject<Item> obj = register.register(name, () -> item);
+        String modId = obj.getId().getNamespace();
+        List<ItemBuilder> newList;
+        if (OBJECTS.get(modId) != null) {
+            newList = new ArrayList<>(OBJECTS.get(modId));
+        } else {
+            newList = new ArrayList<>();
+        }
+        newList.add(this);
+        OBJECTS.put(modId, newList);
+        return obj;
     }
 
     /**
      * Adds an existing tag to this item, for example "minecraft:logs"
+     *
      * @param tags An array of tags to be added to the item.
      */
     @SafeVarargs
@@ -93,6 +109,7 @@ public class ItemBuilder {
      * Note that if the string has a Backslash("/") it will create and add 2 tags, e.g. Passing this string will add the following tags:
      * <p>
      * "forge:nuggets/my_nugget" -> "forge:nuggets", "forge:nuggets/my_nugget"
+     *
      * @param tagName The full name of the tag, e.g. "forge:ingots/my_ingot"
      */
     public ItemBuilder withNewItemTag(String tagName) {
@@ -109,16 +126,18 @@ public class ItemBuilder {
     /**
      * Generates a new item model for this item. By default, a single item texture model is created.
      * Passing null will be result in no model at all.
-     * @param ctx A {@link BiConsumer} of types {@link ItemModelDataGenerator} and {@link Item}.
-     *            You can find many useful methods for generating item models inside the {@link ItemModelDataGenerator} class
+     *
+     * @param ctx A {@link BiConsumer} of types {@link ItemModelDataProvider} and {@link Item}.
+     *            You can find many useful methods for generating item models inside the {@link ItemModelDataProvider} class
      */
-    public ItemBuilder withItemModel(BiConsumer<ItemModelDataGenerator, Item> ctx) {
+    public ItemBuilder withItemModel(BiConsumer<ItemModelDataProvider, Item> ctx) {
         this.itemModel = ctx;
         return this;
     }
 
     /**
      * Adds a translation to this item in the en_us locale. If you wish to use a different locale use {@link #withTranslation(String, String)}
+     *
      * @param translation The name of the translated item, e.g. "My Ingot"
      */
     public ItemBuilder withTranslation(String translation) {
@@ -128,8 +147,9 @@ public class ItemBuilder {
 
     /**
      * Adds a translation to this item in the given locale.
+     *
      * @param translation The name of the translated item, e.g. "My Ingot"
-     * @param locale The localization this translation will be added to, e.g. "en_us"
+     * @param locale      The localization this translation will be added to, e.g. "en_us"
      */
     public ItemBuilder withTranslation(String translation, String locale) {
         this.locale.put(locale, translation);
@@ -142,6 +162,7 @@ public class ItemBuilder {
      * Adds a burn time to the item so it can be used in a furnace as fuel.
      * <p>
      * This method is exclusive for items that implement {@link ICLibItem} interface.
+     *
      * @param burnTime The amount in ticks that the fuel will burn for.
      */
     public ItemBuilder withBurnTime(int burnTime) {

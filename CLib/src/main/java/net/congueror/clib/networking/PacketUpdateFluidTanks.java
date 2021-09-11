@@ -45,7 +45,7 @@ public class PacketUpdateFluidTanks {
                 if (windowId != -1 && player != null) {
                     if (windowId == player.containerMenu.containerId) {
                         if (player.containerMenu instanceof AbstractFluidContainer) {
-                            ((AbstractFluidContainer) player.containerMenu).updateTanks(fluid, amount, tankId);
+                            ((AbstractFluidContainer<?>) player.containerMenu).updateTanks(fluid, amount, tankId);
                         }
                     }
                 }

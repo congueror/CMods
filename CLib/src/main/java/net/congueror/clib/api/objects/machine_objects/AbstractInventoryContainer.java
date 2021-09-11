@@ -10,13 +10,18 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import javax.annotation.Nullable;
 
 public abstract class AbstractInventoryContainer extends AbstractContainerMenu {
-    IItemHandler playerInventory;
+    protected IItemHandler playerInventory;
 
     protected AbstractInventoryContainer(@Nullable MenuType<?> type, int id, Inventory playerInventory) {
         super(type, id);
         this.playerInventory = new InvWrapper(playerInventory);
     }
 
+    /**
+     * Lays out the player's inventory slots, call from constructor.
+     * @param leftCol
+     * @param topRow
+     */
     public void layoutPlayerInventorySlots(int leftCol, int topRow) {
         // Player inventory
         addSlotBox(playerInventory, 9, leftCol, topRow, 9, 18, 3, 18);

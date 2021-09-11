@@ -1,10 +1,11 @@
 package net.congueror.clib.datagen;
 
-import net.congueror.clib.api.data.LootTableDataGenerator;
+import net.congueror.clib.CLib;
+import net.congueror.clib.api.data.LootTableDataProvider;
 import net.minecraft.data.DataGenerator;
 
-public class LootTableDataGen extends LootTableDataGenerator {
+public class LootTableDataGen extends LootTableDataProvider {
     public LootTableDataGen(DataGenerator pGenerator) {
-        super(pGenerator);
+        super(pGenerator, CLib.MODID);
     }
 }

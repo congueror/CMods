@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "cgalaxy:block/meteorite"
+    },
+    "lit=true": {
+      "model": "cgalaxy:block/meteorite_ignited"
+    }
+  }
+}

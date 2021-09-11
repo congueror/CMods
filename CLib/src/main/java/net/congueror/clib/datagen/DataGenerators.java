@@ -1,6 +1,7 @@
 package net.congueror.clib.datagen;
 
 import net.congueror.clib.CLib;
+import net.congueror.clib.api.data.LangDataProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -25,6 +26,7 @@ public class DataGenerators {
             CLib.LOGGER.debug("Starting Client Data Generators for CLib");
             generator.addProvider(new ItemModelDataGen(generator, event.getExistingFileHelper()));
             generator.addProvider(new BlockModelDataGen(generator, event.getExistingFileHelper()));
+            LangDataProvider.create(generator, CLib.MODID);
             generator.addProvider(new LangDataGen(generator, "en_us"));
         }
     }

@@ -1,7 +1,7 @@
 package net.congueror.clib.util.events;
 
 import net.congueror.clib.CLib;
-import net.congueror.clib.init.BlockInit;
+import net.congueror.clib.init.CLBlockInit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -28,11 +28,11 @@ public class CLClientEvents {
     public static class ModClientEvents {
         @SubscribeEvent
         public static void clientSetup(final FMLClientSetupEvent event) {
-            ItemBlockRenderTypes.setRenderLayer(BlockInit.RUBBER_SAPLING.get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(BlockInit.SAPPHIRE_SMALL_BUD.get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(BlockInit.SAPPHIRE_MEDIUM_BUD.get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(BlockInit.SAPPHIRE_LARGE_BUD.get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(BlockInit.SAPPHIRE_CLUSTER.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(CLBlockInit.RUBBER_SAPLING.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(CLBlockInit.SAPPHIRE_SMALL_BUD.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(CLBlockInit.SAPPHIRE_MEDIUM_BUD.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(CLBlockInit.SAPPHIRE_LARGE_BUD.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(CLBlockInit.SAPPHIRE_CLUSTER.get(), RenderType.cutout());
         }
     }
 
@@ -61,7 +61,8 @@ public class CLClientEvents {
                             lines.add(new TextComponent("  ").append(nbt.toString()).withStyle(ChatFormatting.DARK_GRAY));
                         }
                     } else {
-                        lines.add(new TranslatableComponent("tooltip.clib.hold_ctrl_for_tags").withStyle(ChatFormatting.GRAY));
+                        lines.add(new TranslatableComponent("tooltip.clib.hold_ctrl_for_tags",
+                                new TextComponent("Ctrl").withStyle(ChatFormatting.RED)).withStyle(ChatFormatting.GRAY));
                     }
                 }
             }

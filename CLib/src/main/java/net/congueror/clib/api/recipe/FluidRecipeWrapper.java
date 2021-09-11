@@ -23,7 +23,7 @@ public class FluidRecipeWrapper implements IItemFluidInventory {
     }
 
     /*
-    =============================IInventory=============================
+    =============================Container=============================
      */
 
     @Override
@@ -40,17 +40,20 @@ public class FluidRecipeWrapper implements IItemFluidInventory {
         return true;
     }
 
+    @Nonnull
     @Override
     public ItemStack getItem(int index) {
         return inv.getStackInSlot(index);
     }
 
+    @Nonnull
     @Override
     public ItemStack removeItem(int index, int count) {
         ItemStack stack = inv.getStackInSlot(index);
         return stack.isEmpty() ? ItemStack.EMPTY : stack.split(count);
     }
 
+    @Nonnull
     @Override
     public ItemStack removeItemNoUpdate(int index) {
         ItemStack s = getItem(index);
@@ -60,7 +63,7 @@ public class FluidRecipeWrapper implements IItemFluidInventory {
     }
 
     @Override
-    public void setItem(int index, ItemStack stack) {
+    public void setItem(int index, @Nonnull ItemStack stack) {
         inv.setStackInSlot(index, stack);
     }
 
@@ -73,7 +76,7 @@ public class FluidRecipeWrapper implements IItemFluidInventory {
     }
 
     @Override
-    public boolean canPlaceItem(int index, ItemStack stack) {
+    public boolean canPlaceItem(int index, @Nonnull ItemStack stack) {
         return inv.isItemValid(index, stack);
     }
 
@@ -82,11 +85,11 @@ public class FluidRecipeWrapper implements IItemFluidInventory {
     @Override
     public void setChanged() {}
     @Override
-    public boolean stillValid(Player player) {return false;}
+    public boolean stillValid(@Nonnull Player player) {return false;}
     @Override
-    public void startOpen(Player player) {}
+    public void startOpen(@Nonnull Player player) {}
     @Override
-    public void stopOpen(Player player) {}
+    public void stopOpen(@Nonnull Player player) {}
 
     /*
     =============================IFluidHandler=============================
