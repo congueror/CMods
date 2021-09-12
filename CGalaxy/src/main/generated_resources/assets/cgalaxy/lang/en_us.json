@@ -21,8 +21,13 @@
   "block.cgalaxy.oxygen_compressor": "Oxygen Compressor",
   "block.cgalaxy.smooth_moon_stone": "Smooth Moon Stone",
   "chat.cgalaxy.launch_off": " is launching off to space!",
+  "item.cgalaxy.kerosene_bucket": "Kerosene Bucket",
   "item.cgalaxy.lunarite_ingot": "Lunarite Ingot",
   "item.cgalaxy.meteorite_chunk": "Meteorite Chunk",
+  "item.cgalaxy.oil_bucket": "Oil Bucket",
+  "item.cgalaxy.oxygen_bucket": "Oxygen Bucket",
   "item.cgalaxy.raw_lunarite": "Raw Lunarite",
-  "key.cgalaxy.empty": "Empty"
+  "key.cgalaxy.empty": "Empty",
+  "tooltip.cgalaxy.screen.energy_percent": "Energy",
+  "tooltip.cgalaxy.screen.energy_usage": "Usage"
 }

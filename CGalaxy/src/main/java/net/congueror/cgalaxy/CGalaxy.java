@@ -23,6 +23,7 @@ public class CGalaxy {
         CGContainerInit.MENU_TYPES.register(modEventBus);
         CGRecipeSerializerInit.RECIPE_SERIALIZERS.register(modEventBus);
         CGFluidInit.FLUIDS.register(modEventBus);
+        CGEntityTypeInit.ENTITY_TYPES.register(modEventBus);
         CGalaxy.instance = this;
 
         MinecraftForge.EVENT_BUS.register(this);

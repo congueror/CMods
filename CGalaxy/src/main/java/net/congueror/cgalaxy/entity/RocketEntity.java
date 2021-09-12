@@ -1,7 +1,6 @@
 package net.congueror.cgalaxy.entity;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.ChatType;
@@ -16,7 +15,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -32,7 +30,7 @@ public abstract class RocketEntity extends Entity {
     protected int capacity;
     int i, k = 0;
 
-    protected RocketEntity(EntityType<? extends LivingEntity> entity, Level level) {
+    protected RocketEntity(EntityType<? extends Entity> entity, Level level) {
         super(entity, level);
         this.blocksBuilding = true;
     }

@@ -20,6 +20,7 @@ public class DataGenerators {
             gen.addProvider(new RecipeDataGen(gen));
             gen.addProvider(blockTags);
             gen.addProvider(new ItemTagsDataGen(gen, blockTags, e.getExistingFileHelper()));
+            gen.addProvider(new FluidTagsDataGen(gen, e.getExistingFileHelper()));
             gen.addProvider(new LootTableDataGen(gen, CGalaxy.MODID));
         }
         if (e.includeClient()) {

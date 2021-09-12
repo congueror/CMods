@@ -84,7 +84,7 @@ public class BlockModelDataProvider extends BlockStateProvider {
             if (builder.blockModel != null) {
                 builder.blockModel.accept(this, builder.block);
             }
-            if (builder.itemModel == null) {
+            if (builder.itemModel == null && builder.generateBlockItem) {
                 basicBlockItem(builder.block);
             }
         });

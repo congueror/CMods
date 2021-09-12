@@ -1,18 +1,19 @@
 package net.congueror.clib.api.objects.items;
 
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.material.Fluid;
 
 import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
-public class CLItem extends Item implements ICLibItem {
+public class CLBucketItem extends BucketItem implements ICLibItem {
     protected int burnTime = -1;
     protected int containerType;
 
-    public CLItem(Properties pProperties) {
-        super(pProperties);
+    public CLBucketItem(Supplier<? extends Fluid> supplier, Properties builder) {
+        super(supplier, builder.stacksTo(1));
     }
 
     @Override

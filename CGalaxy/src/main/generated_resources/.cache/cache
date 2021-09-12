@@ -14,7 +14,7 @@ c1001f7adbf452a93146a1993544c2e99d802b90 assets/cgalaxy/blockstates/moon_stone_s
 f3a25f78f743c693c14fdfc7453ef926cda382ff assets/cgalaxy/blockstates/moon_titanium_ore.json
 bd0909c26a55396ed30f2e13129e7617c768945e assets/cgalaxy/blockstates/moon_turf.json
 6b0ea1907637733483f339007ca23f6d41e23b98 assets/cgalaxy/blockstates/smooth_moon_stone.json
-a8542a62d2e5b7102c9f48ee255c204a5923ccd9 assets/cgalaxy/lang/en_us.json
+4dbfe77fd15088a192d4293c24fe05296a7f5a91 assets/cgalaxy/lang/en_us.json
 07078ac3a0895a0be77ec1be41541a1bbdde3053 assets/cgalaxy/models/block/chiseled_moon_stone_bricks.json
 bc919a1087f6fc53020eac9d48e2235c862a05d9 assets/cgalaxy/models/block/moon_aluminum_ore.json
 87f745612dbde3a40e67fe4a7c1731dad1b9e6bf assets/cgalaxy/models/block/moon_cobblestone.json
@@ -43,6 +43,7 @@ d6c2c5bbeb745169295b22c2c9a3e43567e6a59d assets/cgalaxy/models/block/smooth_moon
 1e54790a2927e53012c4eea4b8b8e0469cb69fa1 assets/cgalaxy/models/item/chiseled_moon_stone_bricks.json
 3a846baff421f8901347ce010d736549e240b630 assets/cgalaxy/models/item/fuel_loader.json
 d746b1d0245a9a1d3599249ea118396f5485410b assets/cgalaxy/models/item/fuel_refinery.json
+1d5e7b70b0c07dd27612e2ad497b5ba9268f53fd assets/cgalaxy/models/item/kerosene_bucket.json
 c67dac43763b2d2a9a5a1f48806dd21b28c3f621 assets/cgalaxy/models/item/launch_pad.json
 c0c099fb65794ea4b34253e504e6c588176d3553 assets/cgalaxy/models/item/lunarite_ingot.json
 b2d789777bfb5f04f9c07a1596e1c637c6ce013d assets/cgalaxy/models/item/meteorite.json
@@ -61,6 +62,8 @@ cdab68d80a4cc4c25fc61f678f54c6b70cb6aa3b assets/cgalaxy/models/item/moon_stone_b
 9e4006c5ba88ff49b1dffe688e516f9953b91991 assets/cgalaxy/models/item/moon_stone_stairs.json
 e2ade15f343e62e2507598c203c1ea278a6c209c assets/cgalaxy/models/item/moon_titanium_ore.json
 0a5f89ea39fb330af5223c2921ca26964d6adfd9 assets/cgalaxy/models/item/moon_turf.json
+151c3fb83f772a9e5699cc6b7c52a7ea645a7038 assets/cgalaxy/models/item/oil_bucket.json
+1ba895ed18e2e1c88728f0388f33a38b2cd11f4a assets/cgalaxy/models/item/oxygen_bucket.json
 d4fabd6295547abc7ec28380e1bdb501a780a390 assets/cgalaxy/models/item/oxygen_compressor.json
 eb434935213777b948406ca360bb758f39bacc16 assets/cgalaxy/models/item/raw_lunarite.json
 1d50260400b1428a6a96ca3721c6fba789748629 assets/cgalaxy/models/item/smooth_moon_stone.json
@@ -91,6 +94,9 @@ c42a7f09400c4fb0020aeb695314b01b0778b260 data/forge/tags/blocks/ores.json
 59a864de60fcfa93c75ff1dfb40f9eaa56575057 data/forge/tags/blocks/ores/silicon.json
 33818f31a6f2f15f223c8b4ccbed8fa635f6879a data/forge/tags/blocks/ores/titanium.json
 85c6daa87e24febe439abdef35ff80f76df36704 data/forge/tags/blocks/stone.json
+98cea43a4c458a0256ceaf28780af96c83166dd0 data/forge/tags/fluids/kerosene.json
+fa30b167404ca935a7d83e2ce8d4cbe1f64adb34 data/forge/tags/fluids/oil.json
+4ca646e0747c4478a45343304f2552d11ec452d2 data/forge/tags/fluids/oxygen.json
 84c25ba90804cc7bacf7974c9ffe88abf6226546 data/forge/tags/items/dusts.json
 713d0f95d8eff5e6408b732a7ad645bf929dd207 data/forge/tags/items/dusts/blaze_powder.json
 a4245f119ece142fe7d949d39fea50ae779459f7 data/forge/tags/items/gems/amethyst.json

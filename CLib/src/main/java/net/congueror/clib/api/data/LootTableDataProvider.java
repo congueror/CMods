@@ -73,8 +73,6 @@ public class LootTableDataProvider extends LootTableProvider implements DataProv
         BlockBuilder.OBJECTS.get(modid).forEach(builder -> {
             if (builder.lootTable != null) {
                 builder.lootTable.accept(this, builder.block);
-            } else {
-                createStandardBlockDrop(builder.block);
             }
         });
         return tables;

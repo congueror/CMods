@@ -9,10 +9,10 @@ import net.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorBlock;
 import net.congueror.clib.api.objects.blocks.CLBlock;
 import net.congueror.clib.api.registry.BlockBuilder;
 import net.congueror.clib.init.CLItemInit;
+import net.congueror.clib.util.ModItemGroups;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -130,6 +130,7 @@ public class CGBlockInit {
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withBlockModel(null)
             .withTranslation("Launch Pad")
+            .withCreativeTab(ModItemGroups.CGalaxyIG.instance)
             .build(BLOCKS);
 
     public static final RegistryObject<Block> FUEL_LOADER = new BlockBuilder("fuel_loader",
@@ -137,23 +138,30 @@ public class CGBlockInit {
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withBlockModel(null)
             .withTranslation("Fuel Loader")
+            .withCreativeTab(ModItemGroups.CGalaxyIG.instance)
             .build(BLOCKS);
     public static final RegistryObject<Block> FUEL_REFINERY = new BlockBuilder("fuel_refinery",
             new FuelRefineryBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withBlockModel(null)
             .withTranslation("Fuel Refinery")
+            .withCreativeTab(ModItemGroups.CGalaxyIG.instance)
             .build(BLOCKS);
     public static final RegistryObject<Block> OXYGEN_COMPRESSOR = new BlockBuilder("oxygen_compressor",
             new OxygenCompressorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withBlockModel(null)
             .withTranslation("Oxygen Compressor")
+            .withCreativeTab(ModItemGroups.CGalaxyIG.instance)
             .build(BLOCKS);
 
-    public static final RegistryObject<Block> KEROSENE = new BlockBuilder("kerosene",
-            new LiquidBlock(CGFluidInit.KEROSENE::getStill, BlockBehaviour.Properties.copy(Blocks.WATER)))
+    public static final RegistryObject<Block> KEROSENE = BlockBuilder.createFluid("kerosene",
+            new LiquidBlock(CGFluidInit.KEROSENE::getStill, BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops()))
             .build(BLOCKS);
+    public static final RegistryObject<Block> OIL = BlockBuilder.createFluid("oil",
+            new LiquidBlock(CGFluidInit.OIL::getStill, BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops()))
+            .build(BLOCKS);
+
     public static Block moonStoneBlock() {
         return new CLBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f, 6.5f).requiresCorrectToolForDrops());
     }

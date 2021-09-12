@@ -12,6 +12,7 @@ import net.minecraft.tags.Tag;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.event.RegistryEvent;
@@ -48,13 +49,20 @@ public class BlockBuilder {
     public final Map<String, Tag.Named<Block>> blockTags = new HashMap<>();
     @Nullable public BiConsumer<BlockModelDataProvider, Block> blockModel = BlockStateProvider::simpleBlock;
     @Nullable public BiConsumer<ItemModelDataProvider, Block> itemModel;
-    public BiConsumer<LootTableDataProvider, Block> lootTable;
+    public BiConsumer<LootTableDataProvider, Block> lootTable = LootTableDataProvider::createStandardBlockDrop;
     public final Map<String, String> locale = new HashMap<>();
 
     public boolean generateBlockItem = true;
     public CreativeModeTab tab = ModItemGroups.BlocksIG.instance;
     public int burnTime;
     public int containerType;
+
+    public static BlockBuilder createFluid(String name, LiquidBlock block) {
+        return new BlockBuilder(name, block)
+                .withLootTable(null)
+                .withBlockModel(null)
+                .withGeneratedBlockItem(false);
+    }
 
     /**
      * This is the main constructor of the builder.
