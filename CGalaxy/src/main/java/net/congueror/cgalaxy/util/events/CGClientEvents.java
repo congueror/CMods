@@ -26,9 +26,10 @@ public class CGClientEvents {
 
         @SubscribeEvent
         public static void registerRenderer(EntityRenderersEvent.RegisterRenderers e) {
-            e.registerEntityRenderer(CGEntityTypeInit.ROCKET_TIER_1.get(), RocketTier1Renderer::new);
+            e.registerEntityRenderer(CGEntityTypeInit.ROCKET_TIER_1.get(), p_174010_ -> new RocketTier1Renderer(p_174010_, new RocketTier1Model<>(p_174010_.bakeLayer(RocketTier1Model.LAYER_LOCATION))));
         }
 
+        @SubscribeEvent
         public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions e) {
             e.registerLayerDefinition(RocketTier1Model.LAYER_LOCATION, RocketTier1Model::createBodyLayer);
         }

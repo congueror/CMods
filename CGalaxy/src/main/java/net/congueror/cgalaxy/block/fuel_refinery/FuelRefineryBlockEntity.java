@@ -2,7 +2,7 @@ package net.congueror.cgalaxy.block.fuel_refinery;
 
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
-import net.congueror.clib.api.objects.machine_objects.fluid.AbstractFluidBlockEntity;
+import net.congueror.clib.api.machine.fluid.AbstractFluidBlockEntity;
 import net.congueror.clib.api.recipe.IFluidRecipe;
 import net.congueror.clib.items.UpgradeItem;
 import net.minecraft.core.BlockPos;

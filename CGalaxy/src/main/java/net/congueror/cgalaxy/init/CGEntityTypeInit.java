@@ -1,7 +1,6 @@
 package net.congueror.cgalaxy.init;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.entity.RocketEntity;
 import net.congueror.cgalaxy.entity.rockets.RocketTier1Entity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;

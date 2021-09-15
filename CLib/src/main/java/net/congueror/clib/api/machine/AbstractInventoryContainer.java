@@ -1,4 +1,4 @@
-package net.congueror.clib.api.objects.machine_objects;
+package net.congueror.clib.api.machine;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;

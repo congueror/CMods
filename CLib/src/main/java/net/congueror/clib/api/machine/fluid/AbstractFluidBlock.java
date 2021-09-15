@@ -1,10 +1,9 @@
-package net.congueror.clib.api.objects.machine_objects.fluid;
+package net.congueror.clib.api.machine.fluid;
 
-import net.congueror.clib.api.objects.machine_objects.tickable.AbstractTickableBlock;
+import net.congueror.clib.api.machine.tickable.AbstractTickableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -20,14 +19,16 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public abstract class AbstractFluidBlock extends AbstractTickableBlock {
+
+    public int teEnergy;
 
     public AbstractFluidBlock(Properties properties) {
         super(properties);
@@ -57,8 +58,11 @@ public abstract class AbstractFluidBlock extends AbstractTickableBlock {
         return willHarvest || super.removedByPlayer(state, world, pos, player, false, fluid);
     }
 
+    public void setTeEnergy(int energy) {
+        this.teEnergy = energy;
+    }
     @Override
-    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, @Nonnull Level worldIn, @Nonnull BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity tileentity = worldIn.getBlockEntity(pos);
             if (tileentity instanceof AbstractFluidBlockEntity) {
@@ -70,7 +74,7 @@ public abstract class AbstractFluidBlock extends AbstractTickableBlock {
     }
 
     @Override
-    public void playerDestroy(Level worldIn, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack) {
+    public void playerDestroy(@Nonnull Level worldIn, @Nonnull Player player, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable BlockEntity te, @Nonnull ItemStack stack) {
         super.playerDestroy(worldIn, player, pos, state, te, stack);
         worldIn.removeBlock(pos, false);
     }

@@ -2,18 +2,23 @@ package net.congueror.cgalaxy.util.events;
 
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.init.CGBlockInit;
+import net.congueror.cgalaxy.init.CGEntityTypeInit;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.world.Dimensions;
 import net.congueror.clib.api.registry.BlockBuilder;
 import net.congueror.clib.api.registry.FluidBuilder;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import org.stringtemplate.v4.debug.AddAttributeEvent;
 
 public class CGCommonEvents {
     @Mod.EventBusSubscriber(modid = CGalaxy.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)

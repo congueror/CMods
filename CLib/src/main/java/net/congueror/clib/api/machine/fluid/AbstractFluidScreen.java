@@ -1,4 +1,4 @@
-package net.congueror.clib.api.objects.machine_objects.fluid;
+package net.congueror.clib.api.machine.fluid;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;

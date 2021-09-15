@@ -2,7 +2,7 @@ package net.congueror.cgalaxy.block.fuel_refinery;
 
 
 import net.congueror.cgalaxy.block.fuel_loader.FuelLoaderBlockEntity;
-import net.congueror.clib.api.objects.machine_objects.fluid.AbstractFluidBlock;
+import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -38,7 +38,7 @@ public class FuelRefineryBlock extends AbstractFluidBlock {
         if (!pLevel.isClientSide) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
             if (blockEntity instanceof FuelLoaderBlockEntity te) {
-                this.blockRightClick(pPlayer, te);
+                return this.blockRightClick(pPlayer, te);
             } else {
                 throw new IllegalStateException("Named container provider is missing!");
             }

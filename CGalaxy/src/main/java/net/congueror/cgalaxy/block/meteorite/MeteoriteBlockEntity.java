@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.block.meteorite;
 
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
-import net.congueror.clib.api.objects.machine_objects.tickable.AbstractTickableBlockEntity;
+import net.congueror.clib.api.machine.tickable.AbstractTickableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;

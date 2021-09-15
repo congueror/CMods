@@ -1,7 +1,7 @@
-package net.congueror.clib.api.objects.machine_objects.fluid;
+package net.congueror.clib.api.machine.fluid;
 
-import net.congueror.clib.api.objects.machine_objects.ModEnergyStorage;
-import net.congueror.clib.api.objects.machine_objects.tickable.AbstractTickableBlockEntity;
+import net.congueror.clib.api.machine.ModEnergyStorage;
+import net.congueror.clib.api.machine.tickable.AbstractTickableBlockEntity;
 import net.congueror.clib.api.recipe.FluidRecipeWrapper;
 import net.congueror.clib.api.recipe.IFluidRecipe;
 import net.congueror.clib.items.UpgradeItem;
@@ -417,6 +417,10 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
 
     @Override
     public void setRemoved() {
+        assert level != null;
+        if (!level.isClientSide && getBlockState().getBlock() instanceof AbstractFluidBlock block) {
+            block.setTeEnergy(energyStorage.getEnergyStored());
+        }
         super.setRemoved();
         handler.invalidate();
         fluidHandler.invalidate();
@@ -545,15 +549,5 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
             }
         }
         return FluidStack.EMPTY;
-    }
-
-    /**
-     * Used by the tick method to avoid having multiple classes for each operation type
-     */
-    public enum OperationType {
-        FLUID_TO_ITEM,
-        ITEM_TO_FLUID,
-        FLUID_TO_FLUID,
-        FLUID_TO_WORLD
     }
 }

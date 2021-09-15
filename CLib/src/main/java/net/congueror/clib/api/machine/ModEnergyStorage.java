@@ -1,4 +1,4 @@
-package net.congueror.clib.api.objects.machine_objects;
+package net.congueror.clib.api.machine;
 
 
 import net.minecraft.nbt.CompoundTag;

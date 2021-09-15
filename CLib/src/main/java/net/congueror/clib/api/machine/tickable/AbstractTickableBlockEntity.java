@@ -1,4 +1,4 @@
-package net.congueror.clib.api.objects.machine_objects.tickable;
+package net.congueror.clib.api.machine.tickable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;

@@ -6,6 +6,7 @@ import net.congueror.cgalaxy.block.fuel_refinery.FuelRefineryBlock;
 import net.congueror.cgalaxy.block.launch_pad.LaunchPadBlock;
 import net.congueror.cgalaxy.block.meteorite.MeteoriteBlock;
 import net.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorBlock;
+import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
 import net.congueror.clib.api.objects.blocks.CLBlock;
 import net.congueror.clib.api.registry.BlockBuilder;
 import net.congueror.clib.init.CLItemInit;
@@ -139,6 +140,7 @@ public class CGBlockInit {
             .withBlockModel(null)
             .withTranslation("Fuel Loader")
             .withCreativeTab(ModItemGroups.CGalaxyIG.instance)
+            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createFluidMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);
     public static final RegistryObject<Block> FUEL_REFINERY = new BlockBuilder("fuel_refinery",
             new FuelRefineryBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
@@ -146,6 +148,7 @@ public class CGBlockInit {
             .withBlockModel(null)
             .withTranslation("Fuel Refinery")
             .withCreativeTab(ModItemGroups.CGalaxyIG.instance)
+            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createFluidMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);
     public static final RegistryObject<Block> OXYGEN_COMPRESSOR = new BlockBuilder("oxygen_compressor",
             new OxygenCompressorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
@@ -153,6 +156,7 @@ public class CGBlockInit {
             .withBlockModel(null)
             .withTranslation("Oxygen Compressor")
             .withCreativeTab(ModItemGroups.CGalaxyIG.instance)
+            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createFluidMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);
 
     public static final RegistryObject<Block> KEROSENE = BlockBuilder.createFluid("kerosene",

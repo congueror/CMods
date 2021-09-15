@@ -1,6 +1,6 @@
 package net.congueror.cgalaxy.block.fuel_loader;
 
-import net.congueror.clib.api.objects.machine_objects.fluid.AbstractFluidBlock;
+import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -30,7 +30,7 @@ public class FuelLoaderBlock extends AbstractFluidBlock {
         if (!pLevel.isClientSide) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
             if (blockEntity instanceof FuelLoaderBlockEntity te) {
-                this.blockRightClick(pPlayer, te);
+                return this.blockRightClick(pPlayer, te);
             } else {
                 throw new IllegalStateException("Named container provider is missing!");
             }
