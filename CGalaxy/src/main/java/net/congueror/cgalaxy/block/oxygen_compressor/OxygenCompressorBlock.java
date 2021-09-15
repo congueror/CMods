@@ -1,6 +1,6 @@
 package net.congueror.cgalaxy.block.oxygen_compressor;
 
-import net.congueror.clib.api.objects.machine_objects.fluid.AbstractFluidBlock;
+import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -30,7 +30,7 @@ public class OxygenCompressorBlock extends AbstractFluidBlock {
         if (!levelIn.isClientSide) {
             BlockEntity blockEntity = levelIn.getBlockEntity(pos);
             if (blockEntity instanceof OxygenCompressorBlockEntity te) {
-                this.blockRightClick(player, te);
+                return this.blockRightClick(player, te);
             } else {
                 throw new IllegalStateException("Named container provider is missing!");
             }

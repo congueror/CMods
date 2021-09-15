@@ -2,7 +2,9 @@ package net.congueror.clib.api.data;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
+import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
 import net.congueror.clib.api.registry.BlockBuilder;
+import net.minecraft.Util;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
@@ -10,6 +12,7 @@ import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
@@ -25,10 +28,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
-import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay;
-import net.minecraft.world.level.storage.loot.functions.FunctionUserBuilder;
-import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.*;
@@ -101,6 +101,16 @@ public class LootTableDataProvider extends LootTableProvider implements DataProv
                         .add(LootItem.lootTableItem(b))), LootContextParamSets.BLOCK);
     }
 
+    public void createFluidMachineDrop(AbstractFluidBlock b) {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("Energy", b.teEnergy);
+
+        addTable(b.getLootTable(), LootTable.lootTable().withPool(
+                LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(ExplosionCondition.survivesExplosion())
+                        .add(LootItem.lootTableItem(b).apply(SetNbtFunction.setTag(tag)))
+        ), LootContextParamSets.BLOCK);
+    }
+
     /**
      * Creates a loot table that drops a single Item/Block.
      *
@@ -154,7 +164,7 @@ public class LootTableDataProvider extends LootTableProvider implements DataProv
      */
     public void createSilkTouchOnlyDrop(Block block, ItemLike drop) {
         addTable(block.getLootTable(), LootTable.lootTable().withPool(LootPool.lootPool()
-                .when(HAS_SILK_TOUCH).setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(drop))), LootContextParamSets.BLOCK);
+                .when(HAS_SILK_TOUCH).setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(drop))), LootContextParamSets.BLOCK);
     }
 
     /**
@@ -164,9 +174,9 @@ public class LootTableDataProvider extends LootTableProvider implements DataProv
      * @param drop  The {@link Item} or {@link Block} which results from this loot table.
      */
     public void createClusterDrop(Block block, ItemLike drop) {
-        addTable(block.getLootTable(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+        addTable(block.getLootTable(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                 .add(LootItem.lootTableItem(block).when(HAS_SILK_TOUCH).otherwise(LootItem.lootTableItem(drop)
-                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(4.0F)))
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(4)))
                         .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))
                         .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ItemTags.CLUSTER_MAX_HARVESTABLES)))
                         .otherwise(applyExplosionDecay(block, LootItem.lootTableItem(drop).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2.0F)))))))), LootContextParamSets.BLOCK);

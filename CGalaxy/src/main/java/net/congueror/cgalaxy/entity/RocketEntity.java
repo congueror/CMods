@@ -145,8 +145,8 @@ public abstract class RocketEntity extends Entity {
     }
 
     @Override
-    public boolean canCollideWith(Entity pEntity) {
-        return false;
+    protected void defineSynchedData() {
+
     }
 
     @Override
@@ -163,18 +163,18 @@ public abstract class RocketEntity extends Entity {
     public void push(@Nonnull Entity pEntity) {}
 
     @Override
-    protected void defineSynchedData() {
-
+    public boolean isPickable() {
+        return false;
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag pCompound) {
+    public void readAdditionalSaveData(CompoundTag pCompound) {
         fuel = pCompound.getInt("Fuel");
         capacity = pCompound.getInt("Capacity");
     }
 
     @Override
-    protected void addAdditionalSaveData(@Nonnull CompoundTag pCompound) {
+    public void addAdditionalSaveData(@Nonnull CompoundTag pCompound) {
         pCompound.putInt("Fuel", fuel);
         pCompound.putInt("Capacity", capacity);
     }

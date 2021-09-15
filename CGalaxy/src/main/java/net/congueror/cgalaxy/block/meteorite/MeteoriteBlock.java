@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.block.meteorite;
 
 import net.congueror.cgalaxy.util.DamageSources;
-import net.congueror.clib.api.objects.machine_objects.tickable.AbstractTickableBlock;
+import net.congueror.clib.api.machine.tickable.AbstractTickableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

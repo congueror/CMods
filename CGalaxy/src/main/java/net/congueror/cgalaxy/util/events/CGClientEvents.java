@@ -29,6 +29,7 @@ public class CGClientEvents {
             e.registerEntityRenderer(CGEntityTypeInit.ROCKET_TIER_1.get(), RocketTier1Renderer::new);
         }
 
+        @SubscribeEvent
         public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions e) {
             e.registerLayerDefinition(RocketTier1Model.LAYER_LOCATION, RocketTier1Model::createBodyLayer);
         }

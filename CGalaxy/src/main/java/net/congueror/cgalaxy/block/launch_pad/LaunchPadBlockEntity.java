@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.block.launch_pad;
 
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
-import net.congueror.clib.api.objects.machine_objects.tickable.AbstractTickableBlockEntity;
+import net.congueror.clib.api.machine.tickable.AbstractTickableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;

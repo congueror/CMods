@@ -2,7 +2,7 @@ package net.congueror.cgalaxy.block.fuel_loader;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.clib.api.objects.machine_objects.fluid.AbstractFluidScreen;
+import net.congueror.clib.api.machine.fluid.AbstractFluidScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;

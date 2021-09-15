@@ -1,7 +1,7 @@
-package net.congueror.clib.api.objects.machine_objects.fluid;
+package net.congueror.clib.api.machine.fluid;
 
-import net.congueror.clib.api.objects.machine_objects.AbstractInventoryContainer;
-import net.congueror.clib.api.objects.machine_objects.ModEnergyStorage;
+import net.congueror.clib.api.machine.AbstractInventoryContainer;
+import net.congueror.clib.api.machine.ModEnergyStorage;
 import net.congueror.clib.networking.CLNetwork;
 import net.congueror.clib.networking.PacketUpdateFluidTanks;
 import net.minecraft.core.NonNullList;
