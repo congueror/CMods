@@ -1,11 +1,13 @@
 package net.congueror.clib.api.machine.fluid;
 
+import net.congueror.clib.api.machine.ModEnergyStorage;
 import net.congueror.clib.api.machine.tickable.AbstractTickableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
@@ -19,16 +21,18 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import org.lwjgl.system.CallbackI;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.security.DrbgParameters;
 
-public abstract class AbstractFluidBlock extends AbstractTickableBlock {
-
-    public int teEnergy;
+public abstract class AbstractFluidBlock extends AbstractTickableBlock {//TODO: Energy nbt when block is broken.
 
     public AbstractFluidBlock(Properties properties) {
         super(properties);
@@ -58,9 +62,6 @@ public abstract class AbstractFluidBlock extends AbstractTickableBlock {
         return willHarvest || super.removedByPlayer(state, world, pos, player, false, fluid);
     }
 
-    public void setTeEnergy(int energy) {
-        this.teEnergy = energy;
-    }
     @Override
     public void onRemove(BlockState state, @Nonnull Level worldIn, @Nonnull BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
@@ -77,6 +78,22 @@ public abstract class AbstractFluidBlock extends AbstractTickableBlock {
     public void playerDestroy(@Nonnull Level worldIn, @Nonnull Player player, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable BlockEntity te, @Nonnull ItemStack stack) {
         super.playerDestroy(worldIn, player, pos, state, te, stack);
         worldIn.removeBlock(pos, false);
+    }
+
+    @Override
+    public void setPlacedBy(Level pLevel, @Nonnull BlockPos pPos, @Nonnull BlockState pState, @Nullable LivingEntity pPlacer, @Nonnull ItemStack pStack) {
+        if (pLevel.isClientSide) {
+            return;
+        }
+        AbstractFluidBlockEntity be = (AbstractFluidBlockEntity) pLevel.getBlockEntity(pPos);
+        if (pStack.hasTag()) {
+            assert be != null;
+            be.getCapability(CapabilityEnergy.ENERGY).map(iEnergyStorage -> (ModEnergyStorage) iEnergyStorage).ifPresent(modEnergyStorage -> {
+                assert pStack.getTag() != null;
+                modEnergyStorage.setEnergy(pStack.getTag().getInt("Energy"));
+            });
+        }
+        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
     }
 
     @Nullable

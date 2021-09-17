@@ -37,7 +37,7 @@ public class FuelRefineryBlock extends AbstractFluidBlock {
     public InteractionResult use(@Nonnull BlockState pState, Level pLevel, @Nonnull BlockPos pPos, @Nonnull Player pPlayer, @Nonnull InteractionHand pHand, @Nonnull BlockHitResult pHit) {
         if (!pLevel.isClientSide) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof FuelLoaderBlockEntity te) {
+            if (blockEntity instanceof FuelRefineryBlockEntity te) {
                 return this.blockRightClick(pPlayer, te);
             } else {
                 throw new IllegalStateException("Named container provider is missing!");

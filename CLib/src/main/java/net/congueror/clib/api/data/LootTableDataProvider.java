@@ -102,12 +102,9 @@ public class LootTableDataProvider extends LootTableProvider implements DataProv
     }
 
     public void createFluidMachineDrop(AbstractFluidBlock b) {
-        CompoundTag tag = new CompoundTag();
-        tag.putInt("Energy", b.teEnergy);
-
         addTable(b.getLootTable(), LootTable.lootTable().withPool(
                 LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(ExplosionCondition.survivesExplosion())
-                        .add(LootItem.lootTableItem(b).apply(SetNbtFunction.setTag(tag)))
+                        .add(LootItem.lootTableItem(b))
         ), LootContextParamSets.BLOCK);
     }
 

@@ -1,12 +1,16 @@
 package net.congueror.cgalaxy.client.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.entity.rockets.RocketTier1Entity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
@@ -22,6 +26,14 @@ public class RocketTier1Renderer extends EntityRenderer<RocketTier1Entity> {
 
     @Override
     public void render(@Nonnull RocketTier1Entity pEntity, float pEntityYaw, float pPartialTicks, @Nonnull PoseStack pMatrixStack, @Nonnull MultiBufferSource pBuffer, int pPackedLight) {
+        VertexConsumer consumer = pBuffer.getBuffer(this.model.renderType(TEXTURE));
+        model.setupAnim(pEntity, pPartialTicks, 0, 0, 0, 0);
+        pMatrixStack.pushPose();
+        pMatrixStack.translate(0.0f, 1.5f, 0.0f);
+        pMatrixStack.mulPose(Vector3f.XN.rotationDegrees(180));
+        pMatrixStack.mulPose(Vector3f.YP.rotationDegrees(pEntityYaw));
+        model.renderToBuffer(pMatrixStack, consumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
+        pMatrixStack.popPose();
         super.render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight);
     }
 

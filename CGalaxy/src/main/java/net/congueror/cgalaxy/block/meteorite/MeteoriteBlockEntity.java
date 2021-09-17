@@ -21,22 +21,12 @@ public class MeteoriteBlockEntity extends AbstractTickableBlockEntity {
         super(CGBlockEntityInit.METEORITE.get(), pWorldPosition, pBlockState);
     }
 
-
     @Override
     public void tick() {
-        assert level != null;
-        if (isFree(level.getBlockState(worldPosition.below())) && worldPosition.getY() >= 0) {
-            FallingBlockEntity fallingblockentity = new FallingBlockEntity(level, (double)worldPosition.getX() + 0.5D, worldPosition.getY(), (double)worldPosition.getZ() + 0.5D, level.getBlockState(worldPosition));
-            level.addFreshEntity(fallingblockentity);
-        }
-
         if (getBlockState().getValue(BlockStateProperties.LIT)) {
             BlockPos pos = getBlockPos();
-            assert level != null;
-            if (level.isClientSide) {
-                Random random = new Random();
-                level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, true, (double) pos.getX() + 0.5D, (double) pos.getY() + random.nextDouble() + random.nextDouble(), (double) pos.getZ() + 0.5D, 0.0D, 0.07D, 0.0D);
-            } else {
+            level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 0.0D, 0.1D, 0.0D);
+            {
                 time++;
                 setChanged();
                 if (time >= 2400) {

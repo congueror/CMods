@@ -417,10 +417,6 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
 
     @Override
     public void setRemoved() {
-        assert level != null;
-        if (!level.isClientSide && getBlockState().getBlock() instanceof AbstractFluidBlock block) {
-            block.setTeEnergy(energyStorage.getEnergyStored());
-        }
         super.setRemoved();
         handler.invalidate();
         fluidHandler.invalidate();

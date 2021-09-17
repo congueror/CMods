@@ -1,8 +1,6 @@
 package net.congueror.cgalaxy.init;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.entity.rockets.RocketTier1Entity;
-import net.congueror.cgalaxy.item.RocketItem;
 import net.congueror.cgalaxy.item.RocketTier1Item;
 import net.congueror.clib.api.objects.items.CLBucketItem;
 import net.congueror.clib.api.objects.items.CLItem;
