@@ -95,7 +95,7 @@ public class LaunchPadBlock extends AbstractTickableBlock {
      * @param world  World
      * @param pos    Position of middle block
      * @param entity The rocket entity
-     * @return true if no rocket is present and if the multiblock is complete, otherwise false.
+     * @return true if the rocket spawns successfully, otherwise false.
      */
     public boolean spawnRocket(Level world, BlockPos pos, RocketEntity entity, int fuel) {
         if (this.is3x3(pos, world) && this.getRocket(world, pos) == null) {

@@ -19,6 +19,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -43,6 +44,7 @@ public abstract class RocketEntity extends Entity {
     protected RocketEntity(EntityType<? extends Entity> entity, Level level) {
         super(entity, level);
         this.blocksBuilding = true;
+        this.setNoGravity(false);
     }
 
     public abstract Item getItem();
@@ -95,6 +97,16 @@ public abstract class RocketEntity extends Entity {
         }
         pPlayer.startRiding(this);
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.isNoGravity()) {
+            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.04D, 0.0D));
+        }
+        this.move(MoverType.SELF, this.getDeltaMovement());
+        this.setDeltaMovement(this.getDeltaMovement().scale(0.98D));
     }
 
     @Override
@@ -186,11 +198,6 @@ public abstract class RocketEntity extends Entity {
             }
         }
         return super.hurt(pSource, pAmount);
-    }
-
-    @Override
-    public boolean isNoGravity() {
-        return false;
     }
 
     @Override

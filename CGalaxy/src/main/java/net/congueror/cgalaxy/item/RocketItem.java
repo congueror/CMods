@@ -33,19 +33,18 @@ public abstract class RocketItem extends CLItem {
         BlockPos pos = pContext.getClickedPos();
         BlockState state = level.getBlockState(pos);
         Player player = pContext.getPlayer();
-        if (state.is(CGBlockInit.LAUNCH_PAD.get())) {
+        if (state.is(CGBlockInit.LAUNCH_PAD.get()) && player != null) {
             LaunchPadBlock launchPad = (LaunchPadBlock) (state.getBlock());
             ItemStack stack = pContext.getItemInHand();
             RocketEntity entity = rocketEntity(level);
             float rot = 0.0f;
-            assert player != null;
             switch (player.getDirection()) {
                 case EAST -> rot = -90.0f;
                 case NORTH -> rot = 0.0f;
                 case WEST -> rot = 90.0f;
                 case SOUTH -> rot = 180.0f;
             }
-            entity.setXRot(rot);
+            entity.setYRot(rot);
             int fuel = stack.getOrCreateTag().getInt("Fuel");
             if (launchPad.spawnRocket(level, pos, entity, fuel)) {
                 stack.shrink(1);
