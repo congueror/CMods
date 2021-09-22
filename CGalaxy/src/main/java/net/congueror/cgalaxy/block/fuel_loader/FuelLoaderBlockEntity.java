@@ -48,6 +48,14 @@ public class FuelLoaderBlockEntity extends AbstractFluidBlockEntity {
     }
 
     @Override
+    public HashMap<String, int[]> inputSlotsAndTanks() {
+        HashMap<String, int[]> map = new HashMap<>();
+        map.put("tanks", new int[]{0});
+        map.put("slots", new int[]{0});
+        return map;
+    }
+
+    @Override
     public HashMap<String, int[]> outputSlotsAndTanks() {
         HashMap<String, int[]> map = new HashMap<>();
         map.put("tanks", new int[]{0});
@@ -107,7 +115,11 @@ public class FuelLoaderBlockEntity extends AbstractFluidBlockEntity {
                     if (((LaunchPadBlock) level.getBlockState(mid).getBlock()).getRocket(level, mid) != null) {
                         entity = ((LaunchPadBlock) level.getBlockState(mid).getBlock()).getRocket(level, mid);
                         return true;
+                    } else {
+                        info = "key.cgalaxy.error_missing_rocket";
                     }
+                } else {
+                    info = "key.cgalaxy.error_incomplete_pad";
                 }
             }
         }
@@ -122,6 +134,8 @@ public class FuelLoaderBlockEntity extends AbstractFluidBlockEntity {
             int amount = recipe.getIngredient().getFluidStacks().get(0).getAmount();
             int fill = entity.fill(Math.min(tanks[0].getFluidAmount(), amount + getFluidProcessSize()));
             tanks[0].drain(fill, FluidAction.EXECUTE);
+        } else {
+            info = "key.cgalaxy.idle_rocket_full";
         }
     }
 

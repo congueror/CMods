@@ -3,6 +3,7 @@ package net.congueror.clib.api.machine.fluid;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
+import net.congueror.clib.CLib;
 import net.congueror.clib.util.MathHelper;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -30,6 +31,28 @@ public abstract class AbstractFluidScreen<T extends AbstractFluidContainer<?>> e
      * The name that will be displayed on the screen.
      */
     public abstract String getKey();
+
+    /**
+     * Renders a tooltip that gives information about the status of the machine at the coordinates given.
+     *
+     * @param x The starting x position of the status light
+     * @param y The starting y position (bottom) of the status light
+     */
+    public void renderStatusTooltip(PoseStack pPoseStack, int pMouseX, int pMouseY, int x, int y) {
+        List<Component> status = new ArrayList<>();
+        status.add(new TranslatableComponent(container.getInfo()));
+        this.renderTooltip(pPoseStack, pMouseX, pMouseY);
+        if (pMouseX > leftPos + x && pMouseX < leftPos + (x + 7) && pMouseY > topPos + y && pMouseY < topPos + (y + 7)) {
+            this.renderComponentTooltip(pPoseStack, status, pMouseX, pMouseY);
+        }
+    }
+
+    /**
+     * Renders a tooltip that gives information about the status of the machine at the default location, also see {@link #renderEnergyTooltip(PoseStack, int, int, int, int)}
+     */
+    public void renderStatusTooltip(PoseStack poseStack, int pMouseX, int pMouseY) {
+        renderStatusTooltip(poseStack, pMouseX, pMouseY, 153, 7);
+    }
 
     /**
      * Renders a tooltip consisting of the energy buffer's energy and usage at the coordinates given.
@@ -83,6 +106,22 @@ public abstract class AbstractFluidScreen<T extends AbstractFluidContainer<?>> e
         RenderSystem.setShaderColor(1, 1, 1, 1);
         RenderSystem.setShaderTexture(0, gui);
         this.blit(poseStack, this.leftPos, this.topPos, 0, 0, this.imageWidth + 20, this.imageHeight);
+    }
+
+    /**
+     * Renders the color of the status light.
+     *
+     * @param x The starting x position of the light.
+     * @param y The starting y position of the light.
+     */
+    public void renderStatusLight(PoseStack poseStack, int x, int y, int uOffset, int vOffset) {
+        if (container.getInfo().contains("working")) {
+            this.blit(poseStack, this.leftPos + x, this.topPos + y, uOffset, vOffset, 7, 7);
+        } else if (container.getInfo().contains("idle")) {
+            this.blit(poseStack, this.leftPos + x, this.topPos + y, uOffset, vOffset + 14, 7, 7);
+        } else if (container.getInfo().contains("error")) {
+            this.blit(poseStack, this.leftPos + x, this.topPos + y, uOffset, vOffset + 7, 7, 7);
+        }
     }
 
     /**

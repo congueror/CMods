@@ -101,7 +101,7 @@ public class LootTableDataProvider extends LootTableProvider implements DataProv
                         .add(LootItem.lootTableItem(b))), LootContextParamSets.BLOCK);
     }
 
-    public void createFluidMachineDrop(AbstractFluidBlock b) {
+    public void createFluidMachineDrop(AbstractFluidBlock b) {//TODO
         addTable(b.getLootTable(), LootTable.lootTable().withPool(
                 LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(ExplosionCondition.survivesExplosion())
                         .add(LootItem.lootTableItem(b))

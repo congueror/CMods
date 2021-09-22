@@ -15,12 +15,17 @@ public class LangDataGen extends LangDataProvider {
         add("itemGroup.clibitems", "CLItems");
         add("itemGroup.clibblocks", "CLBlocks");
         add("itemGroup.cgalaxy", "CGalaxy");
-        add("itemGroup.cmachines", "CMachines");
+        add("itemGroup.cmachinery", "CMachinery");
 
         add("tooltip.clib.block_tags", "Block Tags");
         add("tooltip.clib.item_tags", "Item Tags");
         add("tooltip.clib.nbt_tags", "NBT Tags");
         add("tooltip.clib.hold_ctrl_for_tags", "Hold %1$s for Tags");
+
+        add("key.clib.working", "Working...");
+        add("key.clib.idle", "Idle.");
+        add("key.clib.error_invalid_recipe", "Invalid Recipe!");
+        add("key.clib.error_insufficient_energy", "Insufficient Energy!");
 
         add("material.clib.tin", "Tin");
         add("material.clib.aluminum", "Aluminum");

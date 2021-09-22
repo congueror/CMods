@@ -30,6 +30,7 @@ public class FuelRefineryScreen extends AbstractFluidScreen<FuelRefineryContaine
         renderEnergyTooltip(pMatrixStack, pMouseX, pMouseY);
         renderFluidTankTooltip(pMatrixStack, pMouseX, pMouseY, 65, 16, 0);
         renderFluidTankTooltip(pMatrixStack, pMouseX, pMouseY, 109, 16, 1);
+        renderStatusTooltip(pMatrixStack, pMouseX, pMouseY);
     }
 
     @Override
@@ -39,5 +40,6 @@ public class FuelRefineryScreen extends AbstractFluidScreen<FuelRefineryContaine
         renderEnergyBuffer(pPoseStack, 172, 9, 196, 17, 212, 17);
         renderFluidTank(pPoseStack, 66, 18, 0);
         renderFluidTank(pPoseStack, 111, 18, 1);
+        renderStatusLight(pPoseStack, 154, 8, 228, 17);
     }
 }

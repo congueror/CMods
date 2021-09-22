@@ -5,6 +5,7 @@ import net.congueror.cgalaxy.block.fuel_loader.FuelLoaderScreen;
 import net.congueror.cgalaxy.block.fuel_refinery.FuelRefineryScreen;
 import net.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorScreen;
 import net.congueror.cgalaxy.client.models.RocketTier1Model;
+import net.congueror.cgalaxy.client.models.SpaceSuitModel;
 import net.congueror.cgalaxy.client.renderers.RocketTier1Renderer;
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;

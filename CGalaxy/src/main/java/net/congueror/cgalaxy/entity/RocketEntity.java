@@ -37,6 +37,7 @@ public abstract class RocketEntity extends Entity {
      */
     protected int capacity;
     int i, k = 0;
+    public float yRotation;
 
     private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> DATA_ID_DROPS = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.BOOLEAN);
@@ -44,7 +45,6 @@ public abstract class RocketEntity extends Entity {
     protected RocketEntity(EntityType<? extends Entity> entity, Level level) {
         super(entity, level);
         this.blocksBuilding = true;
-        this.setNoGravity(false);
     }
 
     public abstract Item getItem();
@@ -106,7 +106,6 @@ public abstract class RocketEntity extends Entity {
             this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.04D, 0.0D));
         }
         this.move(MoverType.SELF, this.getDeltaMovement());
-        this.setDeltaMovement(this.getDeltaMovement().scale(0.98D));
     }
 
     @Override

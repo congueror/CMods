@@ -50,7 +50,7 @@ b942f127d162991429939be40cd1b1d20bd1d8aa assets/clib/blockstates/titanium_block.
 53bd7c2fd218e1f6bc07a9aafa19607e5514a48c assets/clib/blockstates/uranium_ore.json
 34d9d2ae693060620aae422f530710b04243b589 assets/clib/blockstates/zinc_block.json
 100d480616fee8ce78b24aeb618ef988c2f394e0 assets/clib/blockstates/zinc_ore.json
-aef96d3bcb687d3a6298da50e6962a746b512692 assets/clib/lang/en_us.json
+7b51826464a08481897215885c78885d83575457 assets/clib/lang/en_us.json
 15934f1f2793bfbf64b8b497402353226b993bb9 assets/clib/models/block/aluminum_block.json
 59a2100b52f41db8c4c4b3b318e6de11ee5ab7e5 assets/clib/models/block/aluminum_ore.json
 61c034473af54e778b20e8e67ab3298d88bc865e assets/clib/models/block/brass_block.json
@@ -449,7 +449,6 @@ fc6f34ecfaf0b3ac1e6e4b8b5d1e5ed7569fc375 data/clib/loot_tables/blocks/aluminum_b
 e32a332b3563e66d67f3ec43b731e32b41bb0393 data/clib/loot_tables/blocks/aluminum_ore.json
 52bb3c1f3a4aa506928afbe37a59202009963974 data/clib/loot_tables/blocks/brass_block.json
 ffc8ca23f1024351af191905c079c591590f2efc data/clib/loot_tables/blocks/bronze_block.json
-1164e774762b71b5a42befbf7318ae0318e01023 data/clib/loot_tables/blocks/budding_sapphire.json
 7812e5b618a98aa821e12ed9e352308908e040c1 data/clib/loot_tables/blocks/chromium_block.json
 ff88a12835fec12f319128b04bec5fc2df20541a data/clib/loot_tables/blocks/chromium_ore.json
 6d2eab0843799f7bc54a79705ef6797b82ae7a34 data/clib/loot_tables/blocks/cobalt_block.json

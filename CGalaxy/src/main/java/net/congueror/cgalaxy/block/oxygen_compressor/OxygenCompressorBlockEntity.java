@@ -39,7 +39,15 @@ public class OxygenCompressorBlockEntity extends AbstractFluidBlockEntity {
 
     @Override
     public int[] invSize() {
-        return new int[] {0, 1, 2, 3, 4, 5, 6};
+        return new int[]{0, 1, 2, 3, 4, 5, 6};
+    }
+
+    @Override
+    public HashMap<String, int[]> inputSlotsAndTanks() {
+        HashMap<String, int[]> map = new HashMap<>();
+        map.put("tanks", new int[]{});
+        map.put("slots", new int[]{0, 1});
+        return map;
     }
 
     @Override
@@ -53,9 +61,7 @@ public class OxygenCompressorBlockEntity extends AbstractFluidBlockEntity {
     @Override
     public boolean canItemFit(int slot, ItemStack stack) {
         if (slot == 0) {
-            if (getRecipe() == null || !(getRecipe() instanceof OxygenCompressorRecipe recipe)) return false;
-            assert level != null;
-            return recipe.ingredient.test(stack);
+            return true;
         }
         if (slot == 1) {
             return stack.getItem() instanceof BucketItem;

@@ -16,5 +16,8 @@ public class LangDataGen extends LangDataProvider {
         add("key.cgalaxy.empty", "Empty");
         add("tooltip.cgalaxy.screen.energy_percent", "Energy");
         add("tooltip.cgalaxy.screen.energy_usage", "Usage");
+        add("key.cgalaxy.error_incomplete_pad", "The Launch Pad must be 3x3!");
+        add("key.cgalaxy.error_missing_rocket", "No viable rocket detected!");
+        add("key.cgalaxy.idle_rocket_full", "Rocket is full.");
     }
 }

@@ -22,6 +22,11 @@ public class CLNetwork {
                 .decoder(PacketUpdateFluidTanks::new)
                 .consumer(PacketUpdateFluidTanks::handle)
                 .add();
+        INSTANCE.messageBuilder(PacketUpdateInfo.class, nextID())
+                .encoder(PacketUpdateInfo::toBytes)
+                .decoder(PacketUpdateInfo::new)
+                .consumer(PacketUpdateInfo::handle)
+                .add();
     }
 
     public static void sendToClient(Object packet, ServerPlayer player) {

@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,7 @@ public class FluidBuilder {
      */
     public static final Map<String, Tag.Named<Fluid>> FLUID_TAGS = new HashMap<>();
     public final Map<String, Tag.Named<Fluid>> fluidTags = new HashMap<>();
+    public final Map<String, String> locale = new HashMap<>();
 
     private Supplier<? extends LiquidBlock> block;
     private Supplier<? extends Item> bucket;
@@ -64,7 +66,7 @@ public class FluidBuilder {
      * @param stillFluid A new instance of your fluid source class. Use the given properties.
      * @param flowingFluid A new instance of your fluid flowing class. Use the given properties.
      */
-    public FluidBuilder(String name, Function<ForgeFlowingFluid.Properties, FlowingFluid> stillFluid, Function<ForgeFlowingFluid.Properties, FlowingFluid> flowingFluid) {
+    public FluidBuilder(@Nonnull String name, @Nonnull Function<ForgeFlowingFluid.Properties, FlowingFluid> stillFluid, @Nonnull Function<ForgeFlowingFluid.Properties, FlowingFluid> flowingFluid) {
         this.name = name;
         this.stillFluid = stillFluid;
         this.flowingFluid = flowingFluid;
@@ -78,7 +80,7 @@ public class FluidBuilder {
         return flowing;
     }
 
-    public ForgeFlowingFluid.Properties properties() {
+    private ForgeFlowingFluid.Properties properties() {
         FluidAttributes.Builder attributes = FluidAttributes.builder(stillTexture, flowingTexture)
                 .color(color)
                 .density(density)
@@ -346,6 +348,25 @@ public class FluidBuilder {
         Tag.Named<Fluid> tag = FluidTags.createOptional(new ResourceLocation(tagName));
         fluidTags.put(tagName, tag);
         FLUID_TAGS.put(tagName, tag);
+        return this;
+    }
+
+    /**
+     * Adds a translation to this fluid in the en_us locale. If you wish to change locale use {@link #withTranslation(String, String)}
+     * @param translation The name of the translated fluid, e.g. "My Fluid"
+     */
+    public FluidBuilder withTranslation(String translation) {
+        this.locale.put("en_us", translation);
+        return this;
+    }
+
+    /**
+     * Adds a translation to this fluid in the given locale.
+     * @param translation The name of the translated block, e.g. "My Fluid"
+     * @param locale The localization this translation will be added to, e.g. "en_us"
+     */
+    public FluidBuilder withTranslation(String translation, String locale) {
+        this.locale.put(locale, translation);
         return this;
     }
 

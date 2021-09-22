@@ -37,6 +37,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEntity implements IFluidHandler, MenuProvider {
@@ -54,8 +55,11 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
     protected ModEnergyStorage energyStorage;
     protected LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
 
+    protected boolean sendOutFluid = true;
+
     protected float progress;
     protected int processTime;
+    public String info = "";
     public static final int FIELDS_COUNT = 2;
     public final ContainerData data = new ContainerData() {
 
@@ -101,12 +105,18 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
     public abstract int[] invSize();
 
     /**
+     * A map of all input slot and tank indexes. String should be either "tanks" or "slots" and the array of integers should be the indexes of all input slots/tanks.
+     */
+    public abstract HashMap<String, int[]> inputSlotsAndTanks();
+
+    /**
      * A map of all output slot and tank indexes. String should be either "tanks" or "slots" and the array of integers should be the indexes of all output slots/tanks.
      */
     public abstract HashMap<String, int[]> outputSlotsAndTanks();
 
     /**
      * Check whether an item can fit in the given slot.
+     *
      * @param slot  The slot of the item
      * @param stack The ItemStack in the slot.
      */
@@ -175,6 +185,7 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
                 processTime = getProcessTime();
                 progress += getProgressSpeed();
                 energyStorage.consumeEnergy(getEnergyUsage());
+                info = "key.clib.working";
                 setChanged();
                 if (progress >= processTime) {
                     execute();
@@ -185,18 +196,37 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
                     sendUpdate(getActiveState());
                 }
             } else {
+                if (energyStorage.getEnergyStored() <= getEnergyUsage()) {
+                    info = "key.clib.error_insufficient_energy";
+                }
                 if (progress > 0) {
                     progress--;
                 }
             }
         } else {
+            if (recipe == null) {
+                for (Map.Entry<String, int[]> entry : inputSlotsAndTanks().entrySet()) {
+                    boolean flag = false;
+                    boolean flag1 = false;
+                    for (int i : entry.getValue()) {
+                        if (entry.getKey().equals("slots") && !wrapper.getItem(i).isEmpty()) {
+                            flag = true;
+                        }
+                        if (entry.getKey().equals("tanks") && !tanks[i].isEmpty()) {
+                            flag1 = true;
+                        }
+                    }
+                    info = flag || flag1 ? "key.clib.error_invalid_recipe" : "key.clib.idle";
+                }
+            }
             if (tank.getAmount() < 100) {
                 progress = 0;
             }
             sendUpdate(getInactiveState());
         }
 
-        sendOutFluid(outputSlotsAndTanks().get("tanks"));
+        if (sendOutFluid)
+            sendOutFluid(outputSlotsAndTanks().get("tanks"));
         executeSlot();
     }
 
@@ -217,8 +247,9 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
 
     /**
      * Puts the resulting fluid stack in the output tanks.
+     *
      * @param result The resulting {@link FluidStack}. Should be used like so:
-     * <pre>getFluidResults(getRecipe()).forEach(this::storeResultFluid)</pre>
+     *               <pre>getFluidResults(getRecipe()).forEach(this::storeResultFluid)</pre>
      */
     protected void storeResultFluid(FluidStack result) {
         for (int i : outputSlotsAndTanks().get("tanks")) {
@@ -287,7 +318,7 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
     }
 
     /**
-     * Sends the fluid in the given tanks to other tile entities that have the {@link IFluidHandler} capability around it.
+     * Sends the fluid in the given tanks to other block entities that have the {@link IFluidHandler} capability around it.
      *
      * @param tank The tanks whose fluid will be extracted.
      */

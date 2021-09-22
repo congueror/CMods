@@ -4,6 +4,7 @@ import net.congueror.clib.api.machine.AbstractInventoryContainer;
 import net.congueror.clib.api.machine.ModEnergyStorage;
 import net.congueror.clib.networking.CLNetwork;
 import net.congueror.clib.networking.PacketUpdateFluidTanks;
+import net.congueror.clib.networking.PacketUpdateInfo;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,12 +24,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public abstract class AbstractFluidContainer<T extends AbstractFluidBlockEntity> extends AbstractInventoryContainer {
     T tile;
     ContainerData data;
     protected Player player;
     protected NonNullList<FluidStack> fluidLastTick = NonNullList.create();
+    protected String infoLastTick;
 
     public AbstractFluidContainer(@Nullable MenuType<?> type, int id, Player player, Inventory playerInventory, T tile, ContainerData dataIn) {
         super(type, id, playerInventory);
@@ -50,6 +53,10 @@ public abstract class AbstractFluidContainer<T extends AbstractFluidBlockEntity>
 
     public abstract int getProcessTime();
 
+    public String getInfo() {
+        return tile.info;
+    }
+
     /**
      * Called from the {@link PacketUpdateFluidTanks} packet to sync the fluid tanks.
      */
@@ -63,7 +70,14 @@ public abstract class AbstractFluidContainer<T extends AbstractFluidBlockEntity>
     }
 
     /**
-     * Sends a packet to the player if the fluid tanks have changed.
+     * Called from the {@link PacketUpdateInfo} packet to sync info field.
+     */
+    public void updateInfo(String info) {
+        tile.info = info;
+    }
+
+    /**
+     * Used to synchronize various information between the server and client.
      */
     @Override
     public void broadcastChanges() {
@@ -80,6 +94,13 @@ public abstract class AbstractFluidContainer<T extends AbstractFluidBlockEntity>
                         CLNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
                                 new PacketUpdateFluidTanks(containerId, stack2.getFluid().getRegistryName(), stack2.getAmount(), i));
                 }
+            }
+        }
+        if (!tile.info.equals(infoLastTick)) {
+            infoLastTick = tile.info;
+            if (player instanceof ServerPlayer) {
+                CLNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
+                        new PacketUpdateInfo(containerId, tile.info));
             }
         }
     }

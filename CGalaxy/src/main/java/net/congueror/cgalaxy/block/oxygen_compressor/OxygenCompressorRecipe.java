@@ -52,7 +52,7 @@ public class OxygenCompressorRecipe implements IFluidRecipe<IItemFluidInventory>
     }
 
     @Override
-    public boolean matches(IItemFluidInventory pContainer, Level pLevel) {
+    public boolean matches(IItemFluidInventory pContainer, @Nonnull Level pLevel) {
         return this.ingredient.test(pContainer.getItem(0));
     }
 

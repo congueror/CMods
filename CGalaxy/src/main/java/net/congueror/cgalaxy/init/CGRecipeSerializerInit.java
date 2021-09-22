@@ -18,7 +18,7 @@ public class CGRecipeSerializerInit {
 
     public static final RegistryObject<RecipeSerializer<?>> FUEL_LOADING = RECIPE_SERIALIZERS.register("fuel_loading", FuelLoaderRecipe.Serializer::new);
     public static final RegistryObject<RecipeSerializer<?>> FUEL_REFINING = RECIPE_SERIALIZERS.register("fuel_refining", FuelRefineryRecipe.Serializer::new);
-    public static final RegistryObject<RecipeSerializer<?>> OXYGEN_COMPRESSING = RECIPE_SERIALIZERS.register("oxygen_compressing", FuelRefineryRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<?>> OXYGEN_COMPRESSING = RECIPE_SERIALIZERS.register("oxygen_compressing", OxygenCompressorRecipe.Serializer::new);
 
     public static final class Types {
         public static final RecipeType<FuelLoaderRecipe> FUEL_LOADING = registerType("fuel_loading");

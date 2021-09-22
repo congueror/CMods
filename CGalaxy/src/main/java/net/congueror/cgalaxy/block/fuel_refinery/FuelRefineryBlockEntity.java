@@ -42,6 +42,14 @@ public class FuelRefineryBlockEntity extends AbstractFluidBlockEntity {
     }
 
     @Override
+    public HashMap<String, int[]> inputSlotsAndTanks() {
+        HashMap<String, int[]> map = new HashMap<>();
+        map.put("tanks", new int[]{0});
+        map.put("slots", new int[]{0});
+        return map;
+    }
+
+    @Override
     public HashMap<String, int[]> outputSlotsAndTanks() {
         HashMap<String, int[]> map = new HashMap<>();
         map.put("tanks", new int[]{1});

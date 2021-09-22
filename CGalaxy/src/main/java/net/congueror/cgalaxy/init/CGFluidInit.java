@@ -20,6 +20,7 @@ public class CGFluidInit {
             .withBlock(() -> (LiquidBlock) CGBlockInit.KEROSENE.get())
             .withTickRate(2)
             .withNewFluidTag("forge:kerosene")
+            .withTranslation("Kerosene")
             .build(FLUIDS);
 
     public static final FluidBuilder.FluidObject OIL = new FluidBuilder("oil", ForgeFlowingFluid.Source::new, ForgeFlowingFluid.Flowing::new)
@@ -31,6 +32,7 @@ public class CGFluidInit {
             .withBlock(() -> (LiquidBlock) CGBlockInit.OIL.get())
             .withTickRate(20)
             .withNewFluidTag("forge:oil")
+            .withTranslation("Oil")
             .build(FLUIDS);
 
     public static final FluidBuilder.FluidObject OXYGEN = new FluidBuilder("oxygen", ForgeFlowingFluid.Source::new, ForgeFlowingFluid.Flowing::new)
@@ -40,5 +42,6 @@ public class CGFluidInit {
             .withTemperature(437)
             .withBucket(CGItemInit.OXYGEN_BUCKET)
             .withNewFluidTag("forge:oxygen")
+            .withTranslation("Oxygen")
             .build(FLUIDS);
 }

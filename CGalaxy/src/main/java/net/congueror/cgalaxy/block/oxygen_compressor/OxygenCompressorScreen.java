@@ -29,6 +29,7 @@ public class OxygenCompressorScreen extends AbstractFluidScreen<OxygenCompressor
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTicks);
         renderEnergyTooltip(pPoseStack, pMouseX, pMouseY);
         renderFluidTankTooltip(pPoseStack, pMouseX, pMouseY, 101, 17, 0);
+        renderStatusTooltip(pPoseStack, pMouseX, pMouseY);
     }
 
     @Override
@@ -37,5 +38,6 @@ public class OxygenCompressorScreen extends AbstractFluidScreen<OxygenCompressor
         renderHorizontalArrow(pPoseStack, 77, 38, 196, 0);
         renderEnergyBuffer(pPoseStack, 172, 9, 196, 17, 212, 17);
         renderFluidTank(pPoseStack, 102, 18, 0);
+        renderStatusLight(pPoseStack, 154, 8, 228, 17);
     }
 }

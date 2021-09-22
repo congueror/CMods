@@ -125,7 +125,7 @@ public class ItemBuilder {
 
     /**
      * Generates a new item model for this item. By default, a single item texture model is created.
-     * Passing null will be result in no model at all.
+     * Passing null will result in no model at all.
      *
      * @param ctx A {@link BiConsumer} of types {@link ItemModelDataProvider} and {@link Item}.
      *            You can find many useful methods for generating item models inside the {@link ItemModelDataProvider} class

@@ -97,9 +97,10 @@ public class LaunchPadBlock extends AbstractTickableBlock {
      * @param entity The rocket entity
      * @return true if the rocket spawns successfully, otherwise false.
      */
-    public boolean spawnRocket(Level world, BlockPos pos, RocketEntity entity, int fuel) {
+    public boolean spawnRocket(Level world, BlockPos pos, RocketEntity entity, int fuel, float rotation) {
         if (this.is3x3(pos, world) && this.getRocket(world, pos) == null) {
             entity.moveTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 0, 0);
+            entity.setYRot(rotation);
             world.addFreshEntity(entity);
             entity.fill(fuel);
             return true;

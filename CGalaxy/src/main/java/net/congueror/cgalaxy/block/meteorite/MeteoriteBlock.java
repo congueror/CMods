@@ -46,10 +46,7 @@ public class MeteoriteBlock extends FallingBlock implements EntityBlock {//TODO:
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, @Nonnull BlockState pState, @Nonnull BlockEntityType<T> pBlockEntityType) {
-        if (pLevel.isClientSide) {
-            return null;
-        }
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@Nonnull Level pLevel, @Nonnull BlockState pState, @Nonnull BlockEntityType<T> pBlockEntityType) {
         return (pLevel1, pPos, pState1, pBlockEntity) -> {
             if (pBlockEntity instanceof MeteoriteBlockEntity tile) {
                 tile.tick();
@@ -66,7 +63,7 @@ public class MeteoriteBlock extends FallingBlock implements EntityBlock {//TODO:
     @Override
     public void stepOn(@Nonnull Level pLevel, @Nonnull BlockPos pPos, @Nonnull BlockState pState, Entity pEntity) {
         if (!pEntity.fireImmune() && pEntity instanceof LivingEntity && pLevel.getBlockState(pPos).getValue(BlockStateProperties.LIT)) {
-            pEntity.hurt(DamageSources.HOT_FLOOR, 1.0f);
+            pEntity.hurt(DamageSources.ON_FIRE, 1.0f);
         }
         super.stepOn(pLevel, pPos, pState, pEntity);
     }

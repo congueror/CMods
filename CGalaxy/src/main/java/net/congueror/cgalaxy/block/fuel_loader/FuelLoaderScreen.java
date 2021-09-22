@@ -29,6 +29,7 @@ public class FuelLoaderScreen extends AbstractFluidScreen<FuelLoaderContainer> {
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTicks);
         renderEnergyTooltip(pPoseStack, pMouseX, pMouseY);
         renderFluidTankTooltip(pPoseStack, pMouseX, pMouseY, 99, 16, 0);
+        renderStatusTooltip(pPoseStack, pMouseX, pMouseY);
     }
 
     @Override
@@ -37,5 +38,6 @@ public class FuelLoaderScreen extends AbstractFluidScreen<FuelLoaderContainer> {
         renderVerticalArrow(pPoseStack, 82, 59, 228, 30);
         renderEnergyBuffer(pPoseStack, 172, 9, 196, 0, 212, 0);
         renderFluidTank(pPoseStack, 100, 18, 0);
+        renderStatusLight(pPoseStack, 154, 8, 245, 0);
     }
 }
