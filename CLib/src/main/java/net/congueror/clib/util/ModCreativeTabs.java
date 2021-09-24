@@ -2,7 +2,7 @@ package net.congueror.clib.util;
 
 import net.minecraft.world.item.CreativeModeTab;
 
-public class ModItemGroups {
+public class ModCreativeTabs {
     public static class ItemsIG extends ModCreativeModeTab {
 
         public static final ItemsIG instance = new ItemsIG(CreativeModeTab.TABS.length, "clibitems");

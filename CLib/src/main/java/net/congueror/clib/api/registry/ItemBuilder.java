@@ -22,7 +22,7 @@ import java.util.stream.Stream;
  * <pre>
  *  public static final RegistryObject<Item> TEST = new ItemBuilder("test",
  *             new CLItem(new Item.Properties()
- *                  .tab(ModItemGroups.ItemsIG.instance)))
+ *                  .tab(ModCreativeModeTabs.ItemsIG.instance)))
  *             .withTranslation("My Test")
  *             .withExistingItemTags(Tags.Items.INGOTS)
  *             .build(ITEMS);

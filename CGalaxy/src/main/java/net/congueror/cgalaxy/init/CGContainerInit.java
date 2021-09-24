@@ -7,7 +7,9 @@ import net.congueror.cgalaxy.block.fuel_refinery.FuelRefineryBlockEntity;
 import net.congueror.cgalaxy.block.fuel_refinery.FuelRefineryContainer;
 import net.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorBlockEntity;
 import net.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorContainer;
+import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -40,4 +42,7 @@ public class CGContainerInit {
                 OxygenCompressorBlockEntity te = (OxygenCompressorBlockEntity) tile;
                 return new OxygenCompressorContainer(windowId, inv.player, inv, te, new SimpleContainerData(FuelLoaderBlockEntity.FIELDS_COUNT));
             }));
+
+    public static final RegistryObject<MenuType<GalaxyMapContainer>> GALAXY_MAP = MENU_TYPES.register("galaxy_map", () ->
+            IForgeContainerType.create((windowId, inv, data) -> new GalaxyMapContainer(windowId, (ServerPlayer) inv.player, false)));
 }

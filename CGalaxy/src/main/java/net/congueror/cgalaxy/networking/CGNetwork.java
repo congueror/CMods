@@ -19,6 +19,16 @@ public class CGNetwork {
 
     public static void registerMessages() {
         INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(CGalaxy.MODID, "cgalaxy"), () -> "1.0", s -> true, s -> true);
+        INSTANCE.messageBuilder(PacketUnlockMap.class, nextID())
+                .encoder(PacketUnlockMap::toBytes)
+                .decoder(PacketUnlockMap::new)
+                .consumer(PacketUnlockMap::handle)
+                .add();
+        INSTANCE.messageBuilder(PacketTeleport.class, nextID())
+                .encoder(PacketTeleport::toBytes)
+                .decoder(PacketTeleport::new)
+                .consumer(PacketTeleport::handle)
+                .add();
     }
 
     public static void sendToClient(Object packet, ServerPlayer player) {

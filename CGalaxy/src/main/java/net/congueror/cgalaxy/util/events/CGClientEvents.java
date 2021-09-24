@@ -7,6 +7,7 @@ import net.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorScreen;
 import net.congueror.cgalaxy.client.models.RocketTier1Model;
 import net.congueror.cgalaxy.client.models.SpaceSuitModel;
 import net.congueror.cgalaxy.client.renderers.RocketTier1Renderer;
+import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapScreen;
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -23,6 +24,7 @@ public class CGClientEvents {
             MenuScreens.register(CGContainerInit.FUEL_LOADER.get(), FuelLoaderScreen::new);
             MenuScreens.register(CGContainerInit.FUEL_REFINERY.get(), FuelRefineryScreen::new);
             MenuScreens.register(CGContainerInit.OXYGEN_COMPRESSOR.get(), OxygenCompressorScreen::new);
+            MenuScreens.register(CGContainerInit.GALAXY_MAP.get(), GalaxyMapScreen::new);
         }
 
         @SubscribeEvent

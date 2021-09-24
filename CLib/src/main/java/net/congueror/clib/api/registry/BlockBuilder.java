@@ -4,7 +4,7 @@ import net.congueror.clib.api.data.BlockModelDataProvider;
 import net.congueror.clib.api.data.ItemModelDataProvider;
 import net.congueror.clib.api.data.LootTableDataProvider;
 import net.congueror.clib.api.objects.blocks.ICLibBlock;
-import net.congueror.clib.util.ModItemGroups;
+import net.congueror.clib.util.ModCreativeTabs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -53,7 +53,7 @@ public class BlockBuilder {
     public final Map<String, String> locale = new HashMap<>();
 
     public boolean generateBlockItem = true;
-    public CreativeModeTab tab = ModItemGroups.BlocksIG.instance;
+    public CreativeModeTab tab = ModCreativeTabs.BlocksIG.instance;
     public int burnTime;
     public int containerType;
 
@@ -261,7 +261,7 @@ public class BlockBuilder {
     }
 
     /**
-     * Adds this block to the given creative tab. If you do not use this method the default will be {@link ModItemGroups.BlocksIG}.
+     * Adds this block to the given creative tab. If you do not use this method the default will be {@link ModCreativeTabs.BlocksIG}.
      * <p><strong>
      * Requires {@link #withGeneratedBlockItem(boolean)} method.
      * </p></strong>

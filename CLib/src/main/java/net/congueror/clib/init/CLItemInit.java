@@ -4,7 +4,7 @@ import net.congueror.clib.CLib;
 import net.congueror.clib.api.objects.items.CLItem;
 import net.congueror.clib.api.registry.ItemBuilder;
 import net.congueror.clib.items.HammerItem;
-import net.congueror.clib.util.ModItemGroups;
+import net.congueror.clib.util.ModCreativeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -333,6 +333,6 @@ public class CLItemInit {
     }
 
     public static Item.Properties properties() {
-        return new Item.Properties().tab(ModItemGroups.ItemsIG.instance);
+        return new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance);
     }
 }

@@ -10,7 +10,7 @@ import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
 import net.congueror.clib.api.objects.blocks.CLBlock;
 import net.congueror.clib.api.registry.BlockBuilder;
 import net.congueror.clib.init.CLItemInit;
-import net.congueror.clib.util.ModItemGroups;
+import net.congueror.clib.util.ModCreativeTabs;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -131,7 +131,7 @@ public class CGBlockInit {
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withBlockModel(null)
             .withTranslation("Launch Pad")
-            .withCreativeTab(ModItemGroups.CGalaxyIG.instance)
+            .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
             .build(BLOCKS);
 
     public static final RegistryObject<Block> FUEL_LOADER = new BlockBuilder("fuel_loader",
@@ -139,7 +139,7 @@ public class CGBlockInit {
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withBlockModel(null)
             .withTranslation("Fuel Loader")
-            .withCreativeTab(ModItemGroups.CGalaxyIG.instance)
+            .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
             .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createFluidMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);
     public static final RegistryObject<Block> FUEL_REFINERY = new BlockBuilder("fuel_refinery",
@@ -147,7 +147,7 @@ public class CGBlockInit {
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withBlockModel(null)
             .withTranslation("Fuel Refinery")
-            .withCreativeTab(ModItemGroups.CGalaxyIG.instance)
+            .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
             .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createFluidMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);
     public static final RegistryObject<Block> OXYGEN_COMPRESSOR = new BlockBuilder("oxygen_compressor",
@@ -155,7 +155,7 @@ public class CGBlockInit {
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withBlockModel(null)
             .withTranslation("Oxygen Compressor")
-            .withCreativeTab(ModItemGroups.CGalaxyIG.instance)
+            .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
             .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createFluidMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);
 
