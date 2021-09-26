@@ -1,0 +1,29 @@
+{
+  "depth": 0.025,
+  "scale": 0.05,
+  "precipitation": "none",
+  "category": "none",
+  "temperature": 0.48,
+  "downfall": 0,
+  "player_spawn_friendly": true,
+  "creature_spawn_probability": 0,
+  "effects": {
+    "sky_color": 0,
+    "fog_color": 0,
+    "water_color": 4869496,
+    "water_fog_color": 329011,
+    "grass_color": 2842157,
+    "foliage_color": 3888192,
+    "grass_color_modifier": "none"
+  },
+  "surface_builder": "cgalaxy:moon",
+  "carvers": {
+    "air": [
+      "cgalaxy:moon_carver"
+    ]
+  },
+  "features": [],
+  "starts": [],
+  "spawners": {},
+  "spawn_costs": {}
+}

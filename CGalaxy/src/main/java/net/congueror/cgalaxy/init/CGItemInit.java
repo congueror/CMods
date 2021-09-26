@@ -41,6 +41,7 @@ public class CGItemInit {
             new RocketTier1Item(new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
             .withTranslation("Rocket Tier 1")
             .withItemModel(null)
+            .withNewItemTag("cgalaxy:rocket")
             .build(ITEMS);
 
     public static final RegistryObject<Item> METEORITE_CHUNK = new ItemBuilder("meteorite_chunk",

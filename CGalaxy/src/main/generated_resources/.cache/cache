@@ -14,7 +14,7 @@ c1001f7adbf452a93146a1993544c2e99d802b90 assets/cgalaxy/blockstates/moon_stone_s
 f3a25f78f743c693c14fdfc7453ef926cda382ff assets/cgalaxy/blockstates/moon_titanium_ore.json
 bd0909c26a55396ed30f2e13129e7617c768945e assets/cgalaxy/blockstates/moon_turf.json
 6b0ea1907637733483f339007ca23f6d41e23b98 assets/cgalaxy/blockstates/smooth_moon_stone.json
-62e2c349d703ea1374c8d439d9d76cf300ac2d5f assets/cgalaxy/lang/en_us.json
+c7a0c88e2580f25d66e3dc1b1b9b64f576af8dd4 assets/cgalaxy/lang/en_us.json
 07078ac3a0895a0be77ec1be41541a1bbdde3053 assets/cgalaxy/models/block/chiseled_moon_stone_bricks.json
 bc919a1087f6fc53020eac9d48e2235c862a05d9 assets/cgalaxy/models/block/moon_aluminum_ore.json
 87f745612dbde3a40e67fe4a7c1731dad1b9e6bf assets/cgalaxy/models/block/moon_cobblestone.json
@@ -95,6 +95,7 @@ ceace9d765261747cedd9aa05d8ebe7ccee46bf2 data/cgalaxy/loot_tables/blocks/moon_ti
 ada3127e24a1e8b42c907c4a3a1ddabf21511740 data/cgalaxy/loot_tables/blocks/moon_turf.json
 1575c0d7d05adb6317c939ad578db1fac762161a data/cgalaxy/loot_tables/blocks/oxygen_compressor.json
 38e67b5dcd0d5e40909fd369ae97c488f48af865 data/cgalaxy/loot_tables/blocks/smooth_moon_stone.json
+ce775b711203a0a36d7fbd6085ebf50c7a3abe03 data/cgalaxy/tags/items/rocket.json
 c42a7f09400c4fb0020aeb695314b01b0778b260 data/forge/tags/blocks/ores.json
 5f321b0aa5b1a2f2c7b7b3f1006c7798a4032cbf data/forge/tags/blocks/ores/aluminum.json
 9f1b243b98cf528173c36d1fde7b4618b9fa4b8e data/forge/tags/blocks/ores/iron.json

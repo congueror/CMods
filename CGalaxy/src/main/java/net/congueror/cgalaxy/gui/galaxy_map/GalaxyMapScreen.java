@@ -64,6 +64,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
     Minecraft mc = Minecraft.getInstance();
     LocalPlayer player = mc.player;
     Entity entity = player != null ? player.getVehicle() : null;
+    GalaxyMapContainer container;
 
     boolean unlocked;
     boolean tier0 = entity instanceof RocketEntity || unlocked;
@@ -78,6 +79,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
         this.imageWidth = 528;
         this.imageHeight = 498;
         this.unlocked = pMenu.unlocked;
+        this.container = pMenu;
     }
 
     @Override
@@ -124,6 +126,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
         int width = mc.getWindow().getGuiScaledWidth();
         int height = mc.getWindow().getGuiScaledHeight();
         int infoColor = MathHelper.calculateRGB(0, 150, 255);
+        this.unlocked = this.container.unlocked;
 
         SOLAR_SYSTEM.visible = false;
 
@@ -344,7 +347,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
 
             drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.mercury.type"), this.leftPos - 25, this.topPos + 230, infoColor);
             drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.mercury.diameter"), this.leftPos - 25, this.topPos + 240, infoColor);
-            drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.mercury.age"), this.leftPos - 25, this.topPos + 250, infoColor);
+            drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.mercury.atmosphere"), this.leftPos - 25, this.topPos + 250, infoColor);
             drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.mercury.moons"), this.leftPos - 25, this.topPos + 260, infoColor);
             drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.mercury.gravity"), this.leftPos - 25, this.topPos + 270, infoColor);
             drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.mercury.tier"), this.leftPos - 25, this.topPos + 280, infoColor);
@@ -382,7 +385,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
 
             drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.venus.type"), this.leftPos - 25, this.topPos + 230, infoColor);
             drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.venus.diameter"), this.leftPos - 25, this.topPos + 240, infoColor);
-            drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.venus.age"), this.leftPos - 25, this.topPos + 250, infoColor);
+            drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.venus.atmosphere"), this.leftPos - 25, this.topPos + 250, infoColor);
             drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.venus.moons"), this.leftPos - 25, this.topPos + 260, infoColor);
             drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.venus.gravity"), this.leftPos - 25, this.topPos + 270, infoColor);
             drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.venus.tier"), this.leftPos - 25, this.topPos + 280, infoColor);
@@ -437,7 +440,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
 
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.moon.type"), this.leftPos - 25, this.topPos + 230, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.moon.diameter"), this.leftPos - 25, this.topPos + 240, infoColor);
-                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.moon.age"), this.leftPos - 25, this.topPos + 250, infoColor);
+                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.moon.atmosphere"), this.leftPos - 25, this.topPos + 250, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.moon.moons"), this.leftPos - 25, this.topPos + 260, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.moon.gravity"), this.leftPos - 25, this.topPos + 270, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.moon.tier"), this.leftPos - 25, this.topPos + 280, infoColor);
@@ -449,7 +452,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
 
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.earth.type"), this.leftPos - 25, this.topPos + 230, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.earth.diameter"), this.leftPos - 25, this.topPos + 240, infoColor);
-                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.earth.age"), this.leftPos - 25, this.topPos + 250, infoColor);
+                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.earth.atmosphere"), this.leftPos - 25, this.topPos + 250, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.earth.moons"), this.leftPos - 25, this.topPos + 260, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.earth.gravity"), this.leftPos - 25, this.topPos + 270, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.earth.tier"), this.leftPos - 25, this.topPos + 280, infoColor);
@@ -521,7 +524,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
 
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.phobos.type"), this.leftPos - 25, this.topPos + 230, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.phobos.diameter"), this.leftPos - 25, this.topPos + 240, infoColor);
-                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.phobos.age"), this.leftPos - 25, this.topPos + 250, infoColor);
+                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.phobos.atmosphere"), this.leftPos - 25, this.topPos + 250, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.phobos.moons"), this.leftPos - 25, this.topPos + 260, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.phobos.gravity"), this.leftPos - 25, this.topPos + 270, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.phobos.tier"), this.leftPos - 25, this.topPos + 280, infoColor);
@@ -533,7 +536,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
 
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.deimos.type"), this.leftPos - 25, this.topPos + 230, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.deimos.diameter"), this.leftPos - 25, this.topPos + 240, infoColor);
-                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.deimos.age"), this.leftPos - 25, this.topPos + 250, infoColor);
+                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.deimos.atmosphere"), this.leftPos - 25, this.topPos + 250, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.deimos.moons"), this.leftPos - 25, this.topPos + 260, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.deimos.gravity"), this.leftPos - 25, this.topPos + 270, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.deimos.tier"), this.leftPos - 25, this.topPos + 280, infoColor);
@@ -545,7 +548,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
 
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.mars.type"), this.leftPos - 25, this.topPos + 230, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.mars.diameter"), this.leftPos - 25, this.topPos + 240, infoColor);
-                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.mars.age"), this.leftPos - 25, this.topPos + 250, infoColor);
+                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.mars.atmosphere"), this.leftPos - 25, this.topPos + 250, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.mars.moons"), this.leftPos - 25, this.topPos + 260, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.mars.gravity"), this.leftPos - 25, this.topPos + 270, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.mars.tier"), this.leftPos - 25, this.topPos + 280, infoColor);

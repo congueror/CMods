@@ -1,7 +1,9 @@
 package net.congueror.cgalaxy.util.events;
 
 import net.congueror.cgalaxy.CGalaxy;
+import net.congueror.cgalaxy.commands.CGCommands;
 import net.congueror.cgalaxy.init.CGBlockInit;
+import net.congueror.cgalaxy.init.CGCarverInit;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.world.Dimensions;
@@ -11,6 +13,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,7 +29,10 @@ public class CGCommonEvents {
         @SubscribeEvent
         public static void commonSetup(FMLCommonSetupEvent e) {
             CGNetwork.registerMessages();
-            e.enqueueWork(Dimensions::setupDims);
+            e.enqueueWork(() -> {
+                Dimensions.setupDims();
+                CGCarverInit.registerCarvers();
+            });
         }
 
         @SubscribeEvent
@@ -37,6 +43,9 @@ public class CGCommonEvents {
 
     @Mod.EventBusSubscriber(modid = CGalaxy.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class ForgeCommonEvents {
-
+        @SubscribeEvent
+        public static void registerCommands(RegisterCommandsEvent e) {
+            CGCommands.register(e.getDispatcher());
+        }
     }
 }

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:default",
+  "config": {
+    "top_material": {
+      "Name": "cgalaxy:moon_turf"
+    },
+    "under_material": {
+      "Name": "cgalaxy:moon_turf"
+    },
+    "underwater_material": {
+      "Name": "cgalaxy:moon_turf"
+    }
+  }
+}

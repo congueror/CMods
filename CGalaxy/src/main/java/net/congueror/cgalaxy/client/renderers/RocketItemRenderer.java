@@ -2,10 +2,10 @@ package net.congueror.cgalaxy.client.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
 import net.congueror.cgalaxy.client.models.RocketTier1Model;
 import net.congueror.cgalaxy.entity.rockets.RocketTier1Entity;
 import net.congueror.cgalaxy.item.RocketTier1Item;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,32 +18,28 @@ import net.minecraftforge.client.IItemRenderProperties;
 
 import javax.annotation.Nonnull;
 
-public class RocketItemRenderer extends BlockEntityWithoutLevelRenderer implements IItemRenderProperties {
+public class RocketItemRenderer extends BlockEntityWithoutLevelRenderer {
 
     RocketTier1Model<RocketTier1Entity> model;
 
     public RocketItemRenderer(BlockEntityRenderDispatcher p_172550_, EntityModelSet entityModelSet) {
         super(p_172550_, entityModelSet);
-    }
-
-    @Override
-    public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-        return this;
+        this.model = new RocketTier1Model<>(entityModelSet.bakeLayer(RocketTier1Model.LAYER_LOCATION));
     }
 
     @Override
     public void onResourceManagerReload(@Nonnull ResourceManager p_172555_) {
-        model = new RocketTier1Model<>(Minecraft.getInstance().getEntityModels().bakeLayer(RocketTier1Model.LAYER_LOCATION));
+        super.onResourceManagerReload(p_172555_);
     }
 
     @Override
     public void renderByItem(@Nonnull ItemStack itemStack, @Nonnull ItemTransforms.TransformType type, @Nonnull PoseStack poseStack, @Nonnull MultiBufferSource bufferSource, int p_108834_, int p_108835_) {
         if (itemStack.getItem() instanceof RocketTier1Item) {
-            poseStack.pushPose();
-            poseStack.scale(1.0F, -1.0F, -1.0F);
+            poseStack.pushPose();//TODO: Player hand rotation
             VertexConsumer vertexconsumer = ItemRenderer.getFoilBufferDirect(bufferSource, this.model.renderType(RocketTier1Renderer.TEXTURE), false, itemStack.hasFoil());
-            this.model.renderToBuffer(poseStack, vertexconsumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
+            this.model.renderItemToBuffer(poseStack, vertexconsumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F, type);
             poseStack.popPose();
         }
+        super.renderByItem(itemStack, type, poseStack, bufferSource, p_108834_, p_108835_);
     }
 }

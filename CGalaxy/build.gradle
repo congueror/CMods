@@ -84,7 +84,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.53'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.71'
 
     compileOnly fg.deobf("mezz.jei:jei-1.17.1:8.0.0.16:api")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.17.1-5.0.0.1:api")

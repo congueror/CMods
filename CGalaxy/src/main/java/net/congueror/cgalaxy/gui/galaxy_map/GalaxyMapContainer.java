@@ -11,12 +11,26 @@ import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import javax.annotation.Nonnull;
 
 public class GalaxyMapContainer extends AbstractContainerMenu {
-    boolean unlocked;
+    public boolean unlocked;
+    private boolean unlockedLastTick;
+    Player player;
 
-    public GalaxyMapContainer(int id, ServerPlayer player, boolean unlocked) {
+    public GalaxyMapContainer(int id, Player player, boolean unlocked) {
         super(CGContainerInit.GALAXY_MAP.get(), id);
-        CGNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player),
-                new PacketUnlockMap(unlocked));
+        this.player = player;
+        this.unlocked = unlocked;
+    }
+
+    @Override
+    public void broadcastChanges() {
+        super.broadcastChanges();
+        if (this.unlocked != this.unlockedLastTick) {
+            this.unlockedLastTick = this.unlocked;
+            if (player instanceof ServerPlayer player1) {
+                CGNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player1),
+                        new PacketUnlockMap(containerId, unlocked));
+            }
+        }
     }
 
     public void setUnlocked(boolean unlocked) {

@@ -109,7 +109,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.53'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.71'
 
     //implementation fg.deobf("curse.maven:world-stripper-250603:3400494")
     //implementation fg.deobf("curse.maven:solargeneration-336538:3418138")
