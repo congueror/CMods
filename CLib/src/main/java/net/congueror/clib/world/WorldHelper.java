@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
+import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.placement.ChanceDecoratorConfiguration;
 import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
@@ -109,14 +110,15 @@ public class WorldHelper {
 
     /**
      * Used to register a configured geode feature to the {@link BuiltinRegistries}. (Similar to amethyst)
-     * @param block The main block.
+     *
+     * @param block   The main block.
      * @param budding The block the cluster will generate on
-     * @param small Small bud block
-     * @param medium Medium bud block
-     * @param large Large bud block
+     * @param small   Small bud block
+     * @param medium  Medium bud block
+     * @param large   Large bud block
      * @param cluster Cluster block
-     * @param maxY Maximum Y value this feature will generate at.
-     * @param rarity The rarity of this geode. The greater the number the more rare it is.
+     * @param maxY    Maximum Y value this feature will generate at.
+     * @param rarity  The rarity of this geode. The greater the number the more rare it is.
      */
     public static ConfiguredFeature<?, ?> registerConfiguredGeode(Block block, Block budding, Block small, Block medium, Block large, Block cluster, int maxY, int rarity) {
         return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, block.getRegistryName() + "_geode", Feature.GEODE.configured(
@@ -138,7 +140,7 @@ public class WorldHelper {
     public static ConfiguredFeature<?, ?> registerConfiguredLake(Block fluid, int maxHeight, int chance) {
         return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, fluid.getRegistryName() + "_lake", Feature.LAKE.configured(
                         new BlockStateConfiguration(fluid.defaultBlockState()))
-                .decorated(FeatureDecorator.LAVA_LAKE.configured(new ChanceDecoratorConfiguration(chance))).range(new RangeDecoratorConfiguration(ConstantHeight.of(VerticalAnchor.belowTop(maxHeight)))).squared());
+                .rarity(chance).range(new RangeDecoratorConfiguration(UniformHeight.of(VerticalAnchor.bottom(), VerticalAnchor.absolute(maxHeight)))).squared());
     }
 
     /**
@@ -168,7 +170,7 @@ public class WorldHelper {
     /**
      * Generates a local modification feature in the world. Use in a {@link BiomeLoadingEvent}.
      *
-     * @param e The {@link BiomeLoadingEvent}
+     * @param e       The {@link BiomeLoadingEvent}
      * @param feature The local modification configured feature to be generated.
      */
     public static void addLocalMod(BiomeLoadingEvent e, ConfiguredFeature<?, ?>... feature) {

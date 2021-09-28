@@ -4,9 +4,15 @@ import net.congueror.cgalaxy.block.launch_pad.LaunchPadBlock;
 import net.congueror.cgalaxy.entity.RocketEntity;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.clib.api.objects.items.CLItem;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -42,7 +48,7 @@ public abstract class RocketItem extends CLItem {
                 case WEST -> rot = -90.0f;
                 case SOUTH -> rot = 180.0f;
             }
-            RocketEntity entity = rocketEntity(level);
+            RocketEntity entity = newRocketEntity(level);
             int fuel = stack.getOrCreateTag().getInt("Fuel");
             if (launchPad.spawnRocket(level, pos, entity, fuel, rot)) {
                 stack.shrink(1);
@@ -52,5 +58,29 @@ public abstract class RocketItem extends CLItem {
         return InteractionResult.PASS;
     }
 
-    public abstract RocketEntity rocketEntity(Level level);
+    @Override
+    public void fillItemCategory(@Nonnull CreativeModeTab pCategory, @Nonnull NonNullList<ItemStack> pItems) {
+        ItemStack stack = new ItemStack(this);
+        stack.getOrCreateTag().putInt("Fuel", 1000);
+        if (this.allowdedIn(pCategory)) {
+            pItems.add(new ItemStack(this));
+            pItems.add(stack);
+        }
+    }
+
+    @Override
+    public void initializeClient(@Nonnull Consumer<IItemRenderProperties> consumer) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc != null)
+            consumer.accept(new IItemRenderProperties() {
+                @Override
+                public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+                    return newBlockEntityWithoutLevelRenderer(mc.getBlockEntityRenderDispatcher(), mc.getEntityModels());
+                }
+            });
+    }
+
+    public abstract RocketEntity newRocketEntity(Level level);
+
+    public abstract BlockEntityWithoutLevelRenderer newBlockEntityWithoutLevelRenderer(BlockEntityRenderDispatcher dispatcher, EntityModelSet modelSet);
 }

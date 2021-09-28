@@ -34,8 +34,10 @@ public class PacketTeleport {
             if (player != null) {
                 ResourceKey<Level> dim = ResourceKey.create(Registry.DIMENSION_REGISTRY, level);
                 ServerLevel world = Objects.requireNonNull(player.level.getServer()).getLevel(dim);
-                if (world != null && player.getVehicle() != null) {
-                    player.getVehicle().remove(Entity.RemovalReason.UNLOADED_WITH_PLAYER);
+                if (world != null) {
+                    if (player.getVehicle() != null) {
+                        player.getVehicle().remove(Entity.RemovalReason.UNLOADED_WITH_PLAYER);
+                    }
                     player.teleportTo(world, player.blockPosition().getX(), player.blockPosition().getY(), player.blockPosition().getZ(), 0, 0);
                 }
             }

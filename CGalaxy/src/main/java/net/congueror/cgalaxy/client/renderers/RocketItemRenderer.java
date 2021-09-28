@@ -20,16 +20,11 @@ import javax.annotation.Nonnull;
 
 public class RocketItemRenderer extends BlockEntityWithoutLevelRenderer {
 
-    RocketTier1Model<RocketTier1Entity> model;
+    RocketTier1Model model;
 
     public RocketItemRenderer(BlockEntityRenderDispatcher p_172550_, EntityModelSet entityModelSet) {
         super(p_172550_, entityModelSet);
-        this.model = new RocketTier1Model<>(entityModelSet.bakeLayer(RocketTier1Model.LAYER_LOCATION));
-    }
-
-    @Override
-    public void onResourceManagerReload(@Nonnull ResourceManager p_172555_) {
-        super.onResourceManagerReload(p_172555_);
+        this.model = new RocketTier1Model(entityModelSet.bakeLayer(RocketTier1Model.LAYER_LOCATION));
     }
 
     @Override

@@ -115,7 +115,7 @@ public class MoonSkyRenderer {
                             FogRenderer.setupNoFog();
                             assert GameRenderer.getPositionShader() != null;
                             assert mc.levelRenderer.starBuffer != null;
-                            mc.levelRenderer.starBuffer.drawWithShader(poseStack.last().pose(), poseStack.last().pose(), GameRenderer.getPositionShader());
+                            mc.levelRenderer.starBuffer.drawWithShader(poseStack.last().pose(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
 
                             RenderSystem.disableBlend();
                             if (level.effects().hasGround()) {

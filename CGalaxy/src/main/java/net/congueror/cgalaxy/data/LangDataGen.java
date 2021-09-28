@@ -21,6 +21,10 @@ public class LangDataGen extends LangDataProvider {
         add("key.cgalaxy.idle_rocket_full", "Rocket is full.");
         add("gui.cgalaxy.galaxy_map", "Galaxy Map");
 
+        add("text.cgalaxy.insufficient_fuel", "Insufficient Fuel!");
+        add("text.cgalaxy.about_to_launch", "You are about to go to space. Are you sure you wish to proceed?");
+        add("text.cgalaxy.about_to_launch1", "Press launch to continue.");
+
         add("gui.cgalaxy.milky_way", "Milky Way");
         add("gui.cgalaxy.milky_way.diameter", "Diameter: 105,700 LY");
         add("gui.cgalaxy.milky_way.age", "Age: 13.51B Y");

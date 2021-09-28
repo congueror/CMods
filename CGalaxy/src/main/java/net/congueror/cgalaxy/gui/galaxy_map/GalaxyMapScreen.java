@@ -23,6 +23,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer> {
     /**
@@ -63,15 +66,12 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
 
     Minecraft mc = Minecraft.getInstance();
     LocalPlayer player = mc.player;
+    @Nullable
     Entity entity = player != null ? player.getVehicle() : null;
     GalaxyMapContainer container;
 
     boolean unlocked;
-    boolean tier0 = entity instanceof RocketEntity || unlocked;
-    boolean tier1 = entity instanceof RocketTier1Entity || unlocked;
-    boolean tier2 = entity instanceof RocketTier1Entity || unlocked;//TODO: Tier 2 check
-    boolean tier3 = entity instanceof RocketTier1Entity || unlocked;//TODO: Tier 3 check
-    boolean tier4 = entity instanceof RocketTier1Entity || unlocked;//TODO: Tier 4 check
+    Map<Integer, Boolean> tiers = new HashMap<>();
 
     public GalaxyMapScreen(GalaxyMapContainer pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -91,24 +91,24 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
         BACK_PLANET = blankMapButton(this.leftPos - 25, this.topPos + 320, 15, 10, 2);
         {
             MERCURY = blankMapButton(this.leftPos + 349, this.topPos + 241, 16, 16, 2.1);
-            LAUNCH_MERCURY = launchButton(tier3, null);
+            LAUNCH_MERCURY = launchButton(3, null);
         }
         {
             VENUS = blankMapButton(this.leftPos + 240, this.topPos + 280, 16, 16, 2.2);
-            LAUNCH_VENUS = launchButton(tier4, null);
+            LAUNCH_VENUS = launchButton(4, null);
         }
         {
             EARTH = blankMapButton(this.leftPos + 433, this.topPos + 281, 16, 16, 2.3);
-            LAUNCH_EARTH = launchButton(tier0, Level.OVERWORLD);
-            LAUNCH_MOON = launchButton(tier1, Dimensions.MOON);
+            LAUNCH_EARTH = launchButton(0, Level.OVERWORLD);
+            LAUNCH_MOON = launchButton(1, Dimensions.MOON);
             EARTH_SEL = blankMapButton(this.leftPos + 275, this.topPos + 213, 96, 96, 2.3);
             MOON_SEL = blankMapButton(this.leftPos + 245, this.topPos + 340, 32, 32, 2.31);
         }
         {
             MARS = blankMapButton(this.leftPos + 195, this.topPos + 180, 16, 16, 2.4);
-            LAUNCH_MARS = launchButton(tier2, null);
-            LAUNCH_DEIMOS = launchButton(tier2, null);
-            LAUNCH_PHOBOS = launchButton(tier2, null);
+            LAUNCH_MARS = launchButton(2, null);
+            LAUNCH_DEIMOS = launchButton(2, null);
+            LAUNCH_PHOBOS = launchButton(2, null);
             MARS_SEL = blankMapButton(this.leftPos + 275, this.topPos + 213, 96, 96, 2.4);
             PHOBOS_SEL = blankMapButton(this.leftPos + 245, this.topPos + 335, 32, 32, 2.41);
             DEIMOS_SEL = blankMapButton(this.leftPos + 460, this.topPos + 300, 32, 32, 2.42);
@@ -126,7 +126,13 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
         int width = mc.getWindow().getGuiScaledWidth();
         int height = mc.getWindow().getGuiScaledHeight();
         int infoColor = MathHelper.calculateRGB(0, 150, 255);
-        this.unlocked = this.container.unlocked;
+
+        this.unlocked = container.unlocked;
+        tiers.put(0, entity instanceof RocketEntity || unlocked);
+        tiers.put(1, entity instanceof RocketTier1Entity || unlocked);
+        tiers.put(2, entity instanceof RocketTier1Entity || unlocked);//TODO: Tier 2 check
+        tiers.put(3, entity instanceof RocketTier1Entity || unlocked);//TODO: Tier 3 check
+        tiers.put(4, entity instanceof RocketTier1Entity || unlocked);//TODO: Tier 4 check
 
         SOLAR_SYSTEM.visible = false;
 
@@ -211,28 +217,28 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
             //RINGS START
             shaderTexture("textures/gui/galaxy_map/rings/galaxy_map_ring1.png");
             blit(pPoseStack, this.leftPos + 145, this.topPos + 160, 0, 0, 350, 200, 350, 200);
-            if (tier3) {
+            if (tiers.get(3)) {
                 shaderTexture("textures/gui/galaxy_map/rings/galaxy_map_ring1_ul.png");
                 blit(pPoseStack, this.leftPos + 145, this.topPos + 160, 0, 0, 350, 200, 350, 200);
             }
 
             shaderTexture("textures/gui/galaxy_map/rings/galaxy_map_ring2.png");
             blit(pPoseStack, this.leftPos + 145, this.topPos + 160, 0, 0, 350, 200, 350, 200);
-            if (tier4) {
+            if (tiers.get(4)) {
                 shaderTexture("textures/gui/galaxy_map/rings/galaxy_map_ring2_ul.png");
                 blit(pPoseStack, this.leftPos + 145, this.topPos + 160, 0, 0, 350, 200, 350, 200);
             }
 
             shaderTexture("textures/gui/galaxy_map/rings/galaxy_map_ring3.png");
             blit(pPoseStack, this.leftPos + 145, this.topPos + 160, 0, 0, 350, 200, 350, 200);
-            if (tier1) {
+            if (tiers.get(1)) {
                 shaderTexture("textures/gui/galaxy_map/rings/galaxy_map_ring3_ul.png");
                 blit(pPoseStack, this.leftPos + 145, this.topPos + 160, 0, 0, 350, 200, 350, 200);
             }
 
             shaderTexture("textures/gui/galaxy_map/rings/galaxy_map_ring4.png");
             blit(pPoseStack, this.leftPos + 145, this.topPos + 160, 0, 0, 350, 200, 350, 200);
-            if (tier2) {
+            if (tiers.get(2)) {
                 shaderTexture("textures/gui/galaxy_map/rings/galaxy_map_ring4_ul.png");
                 blit(pPoseStack, this.leftPos + 145, this.topPos + 160, 0, 0, 350, 200, 350, 200);
             }
@@ -333,7 +339,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
             blit(pPoseStack, this.leftPos - 25, this.topPos + 320, 0, 0, 15, 10, 15, 10);
 
             //Launch Button
-            if (tier3) {
+            if (tiers.get(3)) {
                 shaderTexture("textures/gui/galaxy_map/launch_button_ul.png");
             } else {
                 shaderTexture("textures/gui/galaxy_map/launch_button.png");
@@ -371,7 +377,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
             blit(pPoseStack, this.leftPos - 25, this.topPos + 320, 0, 0, 15, 10, 15, 10);
 
             //Launch Button
-            if (tier4) {
+            if (tiers.get(4)) {
                 shaderTexture("textures/gui/galaxy_map/launch_button_ul.png");
             } else {
                 shaderTexture("textures/gui/galaxy_map/launch_button.png");
@@ -399,7 +405,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
             BACK_PLANET.visible = true;
             EARTH_SEL.visible = true;
             MOON_SEL.visible = true;
-            drawBackground1(pPoseStack, tier1);
+            drawBackground1(pPoseStack, tiers.get(1));
 
             shaderTexture("textures/gui/galaxy_map/earth_big.png");
             blit(pPoseStack, this.leftPos + 275, this.topPos + 213, 0, 0, 96, 96, 96, 96);
@@ -425,7 +431,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
             blit(pPoseStack, this.leftPos - 25, this.topPos + 320, 0, 0, 15, 10, 15, 10);
 
             //Launch Button
-            if ((CURRENT_MAP == 2.3 && tier0) || (CURRENT_MAP == 2.31 && tier1)) {
+            if ((CURRENT_MAP == 2.3 && tiers.get(0)) || (CURRENT_MAP == 2.31 && tiers.get(1))) {
                 shaderTexture("textures/gui/galaxy_map/launch_button_ul.png");
             } else {
                 shaderTexture("textures/gui/galaxy_map/launch_button.png");
@@ -470,11 +476,11 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
             MARS_SEL.visible = true;
             PHOBOS_SEL.visible = true;
             DEIMOS_SEL.visible = true;
-            drawBackground1(pPoseStack, tier2);
+            drawBackground1(pPoseStack, tiers.get(2));
 
             shaderTexture("textures/gui/galaxy_map/rings/galaxy_map_ring3.png");
             blit(pPoseStack, this.leftPos + 130, this.topPos + 165, 0, 0, 400, 250, 400, 250);
-            if (tier2) {
+            if (tiers.get(2)) {
                 shaderTexture("textures/gui/galaxy_map/rings/galaxy_map_ring3_ul.png");
                 blit(pPoseStack, this.leftPos + 130, this.topPos + 165, 0, 0, 400, 250, 400, 250);
             }
@@ -509,7 +515,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
             blit(pPoseStack, this.leftPos - 25, this.topPos + 320, 0, 0, 15, 10, 15, 10);
 
             //Launch Button
-            if ((CURRENT_MAP == 2.4 && tier2) || (CURRENT_MAP == 2.41 && tier2) || (CURRENT_MAP == 2.42 && tier2)) {
+            if ((CURRENT_MAP == 2.4 && tiers.get(2)) || (CURRENT_MAP == 2.41 && tiers.get(2)) || (CURRENT_MAP == 2.42 && tiers.get(2))) {
                 shaderTexture("textures/gui/galaxy_map/launch_button_ul.png");
             } else {
                 shaderTexture("textures/gui/galaxy_map/launch_button.png");
@@ -586,13 +592,17 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
         return addRenderableWidget(new ImageButton(x, y, width, height, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), width, height, p_onPress_1_ -> CURRENT_MAP = map));
     }
 
-    private Button launchButton(boolean tier, ResourceKey<Level> dimension) {
+    private Button launchButton(int tier, ResourceKey<Level> dimension) {
         return addRenderableWidget(new ImageButton(this.leftPos - 2, this.topPos + 313, 85, 20, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), 85, 20, p_onPress_1_ -> {
-            if (tier && player.clientLevel.dimension() != dimension) {
-                Minecraft.getInstance().setScreen(null);
-                CGNetwork.sendToServer(new PacketTeleport(dimension.location()));
-            }
+            tp(tier, dimension);
         }));
+    }
+
+    private void tp(int tier, ResourceKey<Level> dim) {
+        if (tiers.get(tier) && player.clientLevel.dimension() != dim) {
+            Minecraft.getInstance().setScreen(null);
+            CGNetwork.sendToServer(new PacketTeleport(dim.location()));
+        }
     }
 
     private void shaderTexture(String loc) {

@@ -102,10 +102,21 @@ public abstract class RocketEntity extends Entity {
     @Override
     public void tick() {
         super.tick();
-        if (!this.isNoGravity()) {
-            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.04D, 0.0D));
+        if (this.getPersistentData().getBoolean("Launch")) {
+            if (((this.getDeltaMovement().y()) <= 0.5)) {
+                this.setDeltaMovement((this.getDeltaMovement().x()), ((this.getDeltaMovement().y()) + 0.1), (this.getDeltaMovement().z()));
+            }
+            if (((this.getDeltaMovement().y()) >= 0.5)) {
+                this.setDeltaMovement((this.getDeltaMovement().x()), 0.65, (this.getDeltaMovement().z()));
+            }
+        } else {
+            if (!this.isNoGravity()) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.04D, 0.0D));
+            } else {
+                this.setDeltaMovement(0, 0, 0);
+            }
+            this.move(MoverType.SELF, this.getDeltaMovement());
         }
-        this.move(MoverType.SELF, this.getDeltaMovement());
     }
 
     @Override
@@ -168,19 +179,14 @@ public abstract class RocketEntity extends Entity {
                     }
                 }
                 if (i >= 200) {
-                    if (((this.getDeltaMovement().y()) <= 0.5)) {
-                        this.setDeltaMovement((this.getDeltaMovement().x()), ((this.getDeltaMovement().y()) + 0.1), (this.getDeltaMovement().z()));
-                    }
-                    if (((this.getDeltaMovement().y()) >= 0.5)) {
-                        this.setDeltaMovement((this.getDeltaMovement().x()), 0.63, (this.getDeltaMovement().z()));
-                    }
-
+                    this.getPersistentData().putBoolean("Launch", true);
                     ((ServerLevel) level).sendParticles(ParticleTypes.FLAME, this.getX(), this.getY() - 2.2, this.getZ(), 100, 0.1, 0.1, 0.1, 0.001);
                     ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, this.getX(), this.getY() - 3.2, this.getZ(), 50, 0.1, 0.1, 0.1, 0.04);
                 }
             } else {
                 i = 0;
                 this.getPersistentData().putInt("Powered", 0);
+                this.getPersistentData().putBoolean("Launch", false);
             }
         }
     }

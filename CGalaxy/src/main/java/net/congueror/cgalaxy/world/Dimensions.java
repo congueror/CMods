@@ -11,5 +11,5 @@ public class Dimensions {
     /**
      * Called from an {@link net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent#enqueueWork(Runnable)}
      */
-    public static void setupDims() {}
+    public static void registerDimensions() {}
 }
