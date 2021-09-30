@@ -1,9 +1,9 @@
 package net.congueror.cgalaxy.init;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.block.fuel_loader.FuelLoaderRecipe;
-import net.congueror.cgalaxy.block.fuel_refinery.FuelRefineryRecipe;
-import net.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorRecipe;
+import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderRecipe;
+import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryRecipe;
+import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorRecipe;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;

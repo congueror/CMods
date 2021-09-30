@@ -39,7 +39,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
      * 2.41 = Phobos,
      * 2.42 = Deimos
      */
-    public static double CURRENT_MAP;
+    public double CURRENT_MAP;
 
     private Button BACK_SOLAR_SYSTEM;
     private Button BACK_PLANET;
@@ -593,9 +593,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
     }
 
     private Button launchButton(int tier, ResourceKey<Level> dimension) {
-        return addRenderableWidget(new ImageButton(this.leftPos - 2, this.topPos + 313, 85, 20, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), 85, 20, p_onPress_1_ -> {
-            tp(tier, dimension);
-        }));
+        return addRenderableWidget(new ImageButton(this.leftPos - 2, this.topPos + 313, 85, 20, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), 85, 20, p_onPress_1_ -> tp(tier, dimension)));
     }
 
     private void tp(int tier, ResourceKey<Level> dim) {

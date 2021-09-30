@@ -1,4 +1,4 @@
-package net.congueror.cgalaxy.block.fuel_refinery;
+package net.congueror.cgalaxy.blocks.fuel_refinery;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.congueror.cgalaxy.CGalaxy;

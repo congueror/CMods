@@ -1,6 +1,6 @@
-package net.congueror.cgalaxy.block.fuel_loader;
+package net.congueror.cgalaxy.blocks.fuel_loader;
 
-import net.congueror.cgalaxy.block.launch_pad.LaunchPadBlock;
+import net.congueror.cgalaxy.blocks.launch_pad.LaunchPadBlock;
 import net.congueror.cgalaxy.entity.RocketEntity;
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGBlockInit;

@@ -1,11 +1,11 @@
 package net.congueror.cgalaxy.init;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.block.fuel_loader.FuelLoaderBlock;
-import net.congueror.cgalaxy.block.fuel_refinery.FuelRefineryBlock;
-import net.congueror.cgalaxy.block.launch_pad.LaunchPadBlock;
-import net.congueror.cgalaxy.block.meteorite.MeteoriteBlock;
-import net.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorBlock;
+import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderBlock;
+import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryBlock;
+import net.congueror.cgalaxy.blocks.launch_pad.LaunchPadBlock;
+import net.congueror.cgalaxy.blocks.meteorite.MeteoriteBlock;
+import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorBlock;
 import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
 import net.congueror.clib.api.objects.blocks.CLBlock;
 import net.congueror.clib.api.registry.BlockBuilder;

@@ -1,4 +1,4 @@
-package net.congueror.cgalaxy.block.oxygen_compressor;
+package net.congueror.cgalaxy.blocks.oxygen_compressor;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

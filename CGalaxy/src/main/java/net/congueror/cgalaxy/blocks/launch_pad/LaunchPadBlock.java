@@ -1,4 +1,4 @@
-package net.congueror.cgalaxy.block.launch_pad;
+package net.congueror.cgalaxy.blocks.launch_pad;
 
 import net.congueror.cgalaxy.entity.RocketEntity;
 import net.congueror.cgalaxy.init.CGBlockInit;

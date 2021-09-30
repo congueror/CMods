@@ -1,15 +1,15 @@
 package net.congueror.cgalaxy.init;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.block.fuel_loader.FuelLoaderBlockEntity;
-import net.congueror.cgalaxy.block.fuel_loader.FuelLoaderContainer;
-import net.congueror.cgalaxy.block.fuel_refinery.FuelRefineryBlockEntity;
-import net.congueror.cgalaxy.block.fuel_refinery.FuelRefineryContainer;
-import net.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorBlockEntity;
-import net.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorContainer;
+import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderBlockEntity;
+import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderContainer;
+import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryBlockEntity;
+import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryContainer;
+import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorBlockEntity;
+import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorContainer;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
+import net.congueror.cgalaxy.gui.space_suit.SpaceSuitContainer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -45,4 +45,6 @@ public class CGContainerInit {
 
     public static final RegistryObject<MenuType<GalaxyMapContainer>> GALAXY_MAP = MENU_TYPES.register("galaxy_map", () ->
             IForgeContainerType.create((windowId, inv, data) -> new GalaxyMapContainer(windowId, inv.player, false)));
+    public static final RegistryObject<MenuType<SpaceSuitContainer>> SPACE_SUIT = MENU_TYPES.register("space_suit", () ->
+            IForgeContainerType.create((windowId, inv, data) -> new SpaceSuitContainer(windowId, inv)));
 }

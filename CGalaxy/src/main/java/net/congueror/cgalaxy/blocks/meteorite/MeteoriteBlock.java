@@ -1,9 +1,7 @@
-package net.congueror.cgalaxy.block.meteorite;
+package net.congueror.cgalaxy.blocks.meteorite;
 
 import net.congueror.cgalaxy.util.DamageSources;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;

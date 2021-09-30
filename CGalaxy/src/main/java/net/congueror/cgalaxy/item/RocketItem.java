@@ -1,6 +1,6 @@
 package net.congueror.cgalaxy.item;
 
-import net.congueror.cgalaxy.block.launch_pad.LaunchPadBlock;
+import net.congueror.cgalaxy.blocks.launch_pad.LaunchPadBlock;
 import net.congueror.cgalaxy.entity.RocketEntity;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.clib.api.objects.items.CLItem;

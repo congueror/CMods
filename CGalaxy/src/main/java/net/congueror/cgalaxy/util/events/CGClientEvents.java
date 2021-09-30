@@ -1,20 +1,22 @@
 package net.congueror.cgalaxy.util.events;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.block.fuel_loader.FuelLoaderScreen;
-import net.congueror.cgalaxy.block.fuel_refinery.FuelRefineryScreen;
-import net.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorScreen;
+import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderScreen;
+import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryScreen;
+import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorScreen;
 import net.congueror.cgalaxy.client.AbstractRocketModel;
 import net.congueror.cgalaxy.client.models.RocketTier1Model;
-import net.congueror.cgalaxy.client.models.SpaceSuitModel;
 import net.congueror.cgalaxy.client.overlays.RocketYOverlay;
 import net.congueror.cgalaxy.client.renderers.MoonSkyRenderer;
 import net.congueror.cgalaxy.client.renderers.RocketTier1Renderer;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapScreen;
+import net.congueror.cgalaxy.gui.space_suit.SpaceSuitScreen;
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
+import net.congueror.cgalaxy.item.SpaceSuitItem;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.networking.PacketLaunchSequence;
+import net.congueror.cgalaxy.networking.PacketOpenSpaceSuitMenu;
 import net.congueror.cgalaxy.util.KeyMappings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -27,6 +29,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fmlclient.registry.ClientRegistry;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import org.lwjgl.glfw.GLFW;
 
 public class CGClientEvents {
@@ -35,11 +38,13 @@ public class CGClientEvents {
         @SubscribeEvent
         public static void clientSetup(FMLClientSetupEvent e) {
             ClientRegistry.registerKeyBinding(KeyMappings.LAUNCH_ROCKET);
+            ClientRegistry.registerKeyBinding(KeyMappings.OPEN_SPACE_SUIT_MENU);
 
             MenuScreens.register(CGContainerInit.FUEL_LOADER.get(), FuelLoaderScreen::new);
             MenuScreens.register(CGContainerInit.FUEL_REFINERY.get(), FuelRefineryScreen::new);
             MenuScreens.register(CGContainerInit.OXYGEN_COMPRESSOR.get(), OxygenCompressorScreen::new);
             MenuScreens.register(CGContainerInit.GALAXY_MAP.get(), GalaxyMapScreen::new);
+            MenuScreens.register(CGContainerInit.SPACE_SUIT.get(), SpaceSuitScreen::new);
 
             OverlayRegistry.registerOverlayAbove(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, "cgalaxy_rocket_y_element", new RocketYOverlay());
 
@@ -67,9 +72,15 @@ public class CGClientEvents {
         @SubscribeEvent
         public static void onKeyInput(InputEvent.KeyInputEvent e) {
             if (Minecraft.getInstance().screen == null) {
-                if (e.getKey() == KeyMappings.LAUNCH_ROCKET.getKey().getValue()) {
-                    if (e.getAction() == GLFW.GLFW_PRESS) {
+                if (e.getAction() == GLFW.GLFW_PRESS) {
+                    if (e.getKey() == KeyMappings.LAUNCH_ROCKET.getKey().getValue()) {
                         CGNetwork.sendToServer(new PacketLaunchSequence());
+                    }
+                    if (e.getKey() == KeyMappings.OPEN_SPACE_SUIT_MENU.getKey().getValue()) {
+                        assert Minecraft.getInstance().player != null;
+                        if (SpaceSuitItem.isEquipped(Minecraft.getInstance().player)) {
+                            CGNetwork.sendToServer(new PacketOpenSpaceSuitMenu());
+                        }
                     }
                 }
             }

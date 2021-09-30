@@ -1,4 +1,4 @@
-package net.congueror.cgalaxy.block.oxygen_compressor;
+package net.congueror.cgalaxy.blocks.oxygen_compressor;
 
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.clib.api.machine.fluid.AbstractFluidContainer;

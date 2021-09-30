@@ -1,8 +1,7 @@
-package net.congueror.cgalaxy.block.oxygen_compressor;
+package net.congueror.cgalaxy.blocks.fuel_refinery;
 
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
-import net.congueror.cgalaxy.item.OxygenTankItem;
 import net.congueror.clib.api.machine.fluid.AbstractFluidBlockEntity;
 import net.congueror.clib.api.recipe.IFluidRecipe;
 import net.congueror.clib.items.UpgradeItem;
@@ -24,52 +23,49 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
-public class OxygenCompressorBlockEntity extends AbstractFluidBlockEntity {
-    public OxygenCompressorBlockEntity(BlockPos pos, BlockState state) {
-        super(CGBlockEntityInit.OXYGEN_COMPRESSOR.get(), pos, state);
-        this.tanks = IntStream.range(0, 1).mapToObj(k -> new FluidTank(10000)).toArray(FluidTank[]::new);
+public class FuelRefineryBlockEntity extends AbstractFluidBlockEntity {
+    public FuelRefineryBlockEntity(BlockPos pos, BlockState state) {
+        super(CGBlockEntityInit.FUEL_REFINERY.get(), pos, state);
+        this.tanks = IntStream.range(0, 2).mapToObj(k -> new FluidTank(15000)).toArray(FluidTank[]::new);
     }
 
     @Nullable
     @Override
     public IFluidRecipe<?> getRecipe() {
         assert level != null;
-        return level.getRecipeManager().getRecipeFor(CGRecipeSerializerInit.Types.OXYGEN_COMPRESSING, wrapper, level).orElse(null);
+        return level.getRecipeManager().getRecipeFor(CGRecipeSerializerInit.Types.FUEL_REFINING, wrapper, level).orElse(null);
     }
 
     @Override
     public int[] invSize() {
-        return new int[]{0, 1, 2, 3, 4, 5, 6};
+        return new int[] {0, 1, 2, 3, 4, 5};
     }
 
     @Override
     public HashMap<String, int[]> inputSlotsAndTanks() {
         HashMap<String, int[]> map = new HashMap<>();
-        map.put("tanks", new int[]{});
-        map.put("slots", new int[]{0, 1});
+        map.put("tanks", new int[]{0});
+        map.put("slots", new int[]{0});
         return map;
     }
 
     @Override
     public HashMap<String, int[]> outputSlotsAndTanks() {
         HashMap<String, int[]> map = new HashMap<>();
-        map.put("tanks", new int[]{0});
-        map.put("slots", new int[]{2});
+        map.put("tanks", new int[]{1});
+        map.put("slots", new int[]{1});
         return map;
     }
 
     @Override
     public boolean canItemFit(int slot, ItemStack stack) {
         if (slot == 0) {
-            return true;
-        }
-        if (slot == 1) {
             return stack.getItem() instanceof BucketItem;
         }
-        if (slot == 2) {
-            return stack.getItem().equals(Items.BUCKET) || stack.getItem() instanceof OxygenTankItem;
+        if (slot == 1) {
+            return stack.getItem().equals(Items.BUCKET);
         }
-        if (slot >= 3 && slot <= 6) {
+        if (slot >= 2 && slot <= 5) {
             return stack.getItem() instanceof UpgradeItem;
         }
         return false;
@@ -77,12 +73,12 @@ public class OxygenCompressorBlockEntity extends AbstractFluidBlockEntity {
 
     @Override
     public int getEnergyUsage() {
-        return 50;
+        return 60;
     }
 
     @Override
     public int getEnergyCapacity() {
-        return 40000;
+        return 10000;
     }
 
     @Override
@@ -110,25 +106,18 @@ public class OxygenCompressorBlockEntity extends AbstractFluidBlockEntity {
     @Override
     public void execute() {
         Objects.requireNonNull(getFluidResults(Objects.requireNonNull(getRecipe()))).forEach(this::storeResultFluid);
-        wrapper.getItem(0).shrink(1);
+        tanks[0].drain(getFluidProcessSize(), FluidAction.EXECUTE);
     }
 
     @Override
     public void executeSlot() {
-        emptyBucketSlot(0, 1);
-        fillBucketSlot(0, 2);
-        ItemStack slot1 = wrapper.getItem(2);
-        if (slot1.getItem() instanceof OxygenTankItem) {
-            if (tanks[0].getFluid().getAmount() > 0) {
-                int filled = ((OxygenTankItem) slot1.getItem()).fill(slot1, 1);
-                tanks[0].drain(filled, FluidAction.EXECUTE);
-            }
-        }
+        emptyBucketSlot(0, 0);
+        fillBucketSlot(1, 1);
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, @Nonnull Inventory pInventory, @Nonnull Player pPlayer) {
-        return new OxygenCompressorContainer(pContainerId, pPlayer, pInventory, this, this.data);
+        return new FuelRefineryContainer(pContainerId, pPlayer, pInventory, this, this.data);
     }
 }

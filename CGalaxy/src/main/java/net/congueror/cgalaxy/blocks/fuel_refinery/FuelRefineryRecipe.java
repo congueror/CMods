@@ -1,4 +1,4 @@
-package net.congueror.cgalaxy.block.fuel_refinery;
+package net.congueror.cgalaxy.blocks.fuel_refinery;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

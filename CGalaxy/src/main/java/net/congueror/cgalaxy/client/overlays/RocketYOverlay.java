@@ -4,7 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.entity.RocketEntity;
-import net.congueror.cgalaxy.item.SpaceSuitItem;
 import net.congueror.cgalaxy.world.Dimensions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;

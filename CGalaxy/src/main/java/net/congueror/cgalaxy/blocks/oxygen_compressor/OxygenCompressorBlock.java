@@ -1,4 +1,4 @@
-package net.congueror.cgalaxy.block.oxygen_compressor;
+package net.congueror.cgalaxy.blocks.oxygen_compressor;
 
 import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
 import net.minecraft.core.BlockPos;

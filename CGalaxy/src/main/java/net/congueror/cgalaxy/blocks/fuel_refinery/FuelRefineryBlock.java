@@ -1,7 +1,6 @@
-package net.congueror.cgalaxy.block.fuel_refinery;
+package net.congueror.cgalaxy.blocks.fuel_refinery;
 
 
-import net.congueror.cgalaxy.block.fuel_loader.FuelLoaderBlockEntity;
 import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

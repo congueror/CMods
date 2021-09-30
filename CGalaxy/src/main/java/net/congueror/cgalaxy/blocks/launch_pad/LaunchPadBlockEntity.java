@@ -1,4 +1,4 @@
-package net.congueror.cgalaxy.block.launch_pad;
+package net.congueror.cgalaxy.blocks.launch_pad;
 
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.clib.api.machine.tickable.AbstractTickableBlockEntity;

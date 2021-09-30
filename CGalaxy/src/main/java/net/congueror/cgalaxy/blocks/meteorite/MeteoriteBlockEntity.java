@@ -1,4 +1,4 @@
-package net.congueror.cgalaxy.block.meteorite;
+package net.congueror.cgalaxy.blocks.meteorite;
 
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.clib.api.machine.tickable.AbstractTickableBlockEntity;

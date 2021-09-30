@@ -34,6 +34,11 @@ public class CGNetwork {
                 .decoder(friendlyByteBuf -> new PacketLaunchSequence())
                 .consumer(PacketLaunchSequence::handle)
                 .add();
+        INSTANCE.messageBuilder(PacketOpenSpaceSuitMenu.class, nextID())
+                .encoder(PacketOpenSpaceSuitMenu::toBytes)
+                .decoder(PacketOpenSpaceSuitMenu::new)
+                .consumer(PacketOpenSpaceSuitMenu::handle)
+                .add();
     }
 
     public static void sendToClient(Object packet, ServerPlayer player) {

@@ -1,28 +1,59 @@
 package net.congueror.cgalaxy.item;
 
 import net.congueror.cgalaxy.CGalaxy;
+import net.congueror.cgalaxy.capabilities.ItemHandlerProvider;
 import net.congueror.cgalaxy.client.models.SpaceSuitModel;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 public class SpaceSuitItem extends ArmorItem {
-    //TODO: GUI that allows you to apply tank, which adds the tank model to the player.
+    protected ItemStackHandler itemHandler = createHandler();
+
     public SpaceSuitItem(EquipmentSlot slot, Properties builderIn) {
         super(SpaceSuitMaterial.SPACE_SUIT_MATERIAL, slot, builderIn);
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new ItemHandlerProvider(stack, nbt, itemHandler);
+    }
+
+    private ItemStackHandler createHandler() {
+        return new ItemStackHandler(1) {
+
+            @Override
+            protected void onContentsChanged(int slot) {
+                ItemStack stack = getStackInSlot(slot);
+                ItemStack stack1 = stack.copy();
+                stack1.getOrCreateTag().put("inventory", this.serializeNBT());
+            }
+
+            @Override
+            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+                return true;
+            }
+        };
     }
 
     @Nullable
@@ -66,9 +97,10 @@ public class SpaceSuitItem extends ArmorItem {
             return SoundEvents.ARMOR_EQUIP_LEATHER;
         }
 
+        @Nonnull
         @Override
         public Ingredient getRepairIngredient() {
-            return null;
+            return Ingredient.EMPTY;
         }
 
         @Nonnull
@@ -86,5 +118,12 @@ public class SpaceSuitItem extends ArmorItem {
         public float getKnockbackResistance() {
             return 0;
         }
+    }
+
+    public static boolean isEquipped(Player player) {
+        return player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof SpaceSuitItem &&
+                player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof SpaceSuitItem &&
+                player.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof SpaceSuitItem &&
+                player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof SpaceSuitItem;
     }
 }

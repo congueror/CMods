@@ -57,7 +57,7 @@ public class CLClientEvents {
                             lines.add(getTextComponent("tooltip.clib.item_tags").withStyle(ChatFormatting.RED));
                             itemTags.stream().map(Object::toString).map(a -> "  " + a).map(b -> getTextComponent(b).withStyle(ChatFormatting.DARK_GRAY)).forEach(lines::add);
                         }
-                        if (nbt != null) {//nbt.isEmpty() crashes game
+                        if (nbt != null) {
                             lines.add(getTextComponent("tooltip.clib.nbt_tags").withStyle(ChatFormatting.GREEN));
                             lines.add(new TextComponent("  ").append(nbt.toString()).withStyle(ChatFormatting.DARK_GRAY));
                         }

@@ -102,21 +102,20 @@ public abstract class RocketEntity extends Entity {
     @Override
     public void tick() {
         super.tick();
+
         if (this.getPersistentData().getBoolean("Launch")) {
             if (((this.getDeltaMovement().y()) <= 0.5)) {
-                this.setDeltaMovement((this.getDeltaMovement().x()), ((this.getDeltaMovement().y()) + 0.1), (this.getDeltaMovement().z()));
+                this.setDeltaMovement(this.getDeltaMovement().x, this.getDeltaMovement().y + 0.1, this.getDeltaMovement().z);
             }
             if (((this.getDeltaMovement().y()) >= 0.5)) {
-                this.setDeltaMovement((this.getDeltaMovement().x()), 0.65, (this.getDeltaMovement().z()));
+                this.setDeltaMovement(this.getDeltaMovement().x, 0.65, this.getDeltaMovement().z);
             }
-        } else {
+        } else if (this.getDeltaMovement().y <= 0) {
             if (!this.isNoGravity()) {
                 this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.04D, 0.0D));
-            } else {
-                this.setDeltaMovement(0, 0, 0);
             }
-            this.move(MoverType.SELF, this.getDeltaMovement());
         }
+        this.move(MoverType.SELF, this.getDeltaMovement());
     }
 
     @Override
@@ -185,6 +184,7 @@ public abstract class RocketEntity extends Entity {
                 }
             } else {
                 i = 0;
+                k = 0;
                 this.getPersistentData().putInt("Powered", 0);
                 this.getPersistentData().putBoolean("Launch", false);
             }

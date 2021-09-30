@@ -1,4 +1,4 @@
-package net.congueror.cgalaxy.block.fuel_loader;
+package net.congueror.cgalaxy.blocks.fuel_loader;
 
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.clib.api.machine.fluid.AbstractFluidContainer;

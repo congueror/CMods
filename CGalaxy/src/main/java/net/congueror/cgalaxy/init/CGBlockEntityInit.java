@@ -1,11 +1,11 @@
 package net.congueror.cgalaxy.init;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.block.fuel_loader.FuelLoaderBlockEntity;
-import net.congueror.cgalaxy.block.fuel_refinery.FuelRefineryBlockEntity;
-import net.congueror.cgalaxy.block.launch_pad.LaunchPadBlockEntity;
-import net.congueror.cgalaxy.block.meteorite.MeteoriteBlockEntity;
-import net.congueror.cgalaxy.block.oxygen_compressor.OxygenCompressorBlockEntity;
+import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderBlockEntity;
+import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryBlockEntity;
+import net.congueror.cgalaxy.blocks.launch_pad.LaunchPadBlockEntity;
+import net.congueror.cgalaxy.blocks.meteorite.MeteoriteBlockEntity;
+import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
