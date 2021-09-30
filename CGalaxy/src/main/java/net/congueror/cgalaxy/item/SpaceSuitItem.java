@@ -44,8 +44,8 @@ public class SpaceSuitItem extends ArmorItem {
 
             @Override
             protected void onContentsChanged(int slot) {
-                ItemStack stack = getStackInSlot(slot);
-                stack.getOrCreateTag().put("inventory", this.serializeNBT());
+                super.onContentsChanged(slot);
+                //stack.getOrCreateTag().put("inventory", this.serializeNBT());
             }
 
             @Override
