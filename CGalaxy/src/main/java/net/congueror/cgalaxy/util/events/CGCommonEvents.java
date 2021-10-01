@@ -2,11 +2,13 @@ package net.congueror.cgalaxy.util.events;
 
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.commands.CGCommands;
+import net.congueror.cgalaxy.entity.AstroEndermanEntity;
+import net.congueror.cgalaxy.entity.AstroZombieEntity;
 import net.congueror.cgalaxy.entity.RocketEntity;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
 import net.congueror.cgalaxy.init.CGCarverInit;
+import net.congueror.cgalaxy.init.CGEntityTypeInit;
 import net.congueror.cgalaxy.networking.CGNetwork;
-import net.congueror.cgalaxy.util.DamageSources;
 import net.congueror.cgalaxy.world.Dimensions;
 import net.congueror.cgalaxy.world.FeatureGen;
 import net.congueror.clib.api.registry.FluidBuilder;
@@ -14,7 +16,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,6 +29,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -49,6 +51,12 @@ public class CGCommonEvents {
                 FeatureGen.registerFeatures();
                 CGCarverInit.registerCarvers();
             });
+        }
+
+        @SubscribeEvent
+        public static void registerAttributes(EntityAttributeCreationEvent e) {
+            e.put(CGEntityTypeInit.ASTRO_ZOMBIE.get(), AstroZombieEntity.entityAttributes().build());
+            e.put(CGEntityTypeInit.ASTRO_ENDERMAN.get(), AstroEndermanEntity.createMonsterAttributes().build());
         }
 
         @SubscribeEvent

@@ -5,10 +5,16 @@ import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderScreen;
 import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryScreen;
 import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorScreen;
 import net.congueror.cgalaxy.client.AbstractRocketModel;
+import net.congueror.cgalaxy.client.models.OxygenGearModel;
+import net.congueror.cgalaxy.client.models.OxygenMaskModel;
+import net.congueror.cgalaxy.client.models.OxygenTankModel;
 import net.congueror.cgalaxy.client.models.RocketTier1Model;
 import net.congueror.cgalaxy.client.overlays.RocketYOverlay;
+import net.congueror.cgalaxy.client.renderers.AstroEndermanRenderer;
+import net.congueror.cgalaxy.client.renderers.AstroZombieRenderer;
 import net.congueror.cgalaxy.client.renderers.MoonSkyRenderer;
 import net.congueror.cgalaxy.client.renderers.RocketTier1Renderer;
+import net.congueror.cgalaxy.client.renderers.layers.SpaceSuitLayer;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapScreen;
 import net.congueror.cgalaxy.gui.space_suit.SpaceSuitScreen;
 import net.congueror.cgalaxy.init.CGContainerInit;
@@ -29,7 +35,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fmlclient.registry.ClientRegistry;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import org.lwjgl.glfw.GLFW;
 
 public class CGClientEvents {
@@ -54,11 +59,22 @@ public class CGClientEvents {
         @SubscribeEvent
         public static void registerRenderer(EntityRenderersEvent.RegisterRenderers e) {
             e.registerEntityRenderer(CGEntityTypeInit.ROCKET_TIER_1.get(), p_174010_ -> new RocketTier1Renderer(p_174010_, new RocketTier1Model(p_174010_.bakeLayer(RocketTier1Model.LAYER_LOCATION))));
+            e.registerEntityRenderer(CGEntityTypeInit.ASTRO_ENDERMAN.get(), AstroEndermanRenderer::new);
+            e.registerEntityRenderer(CGEntityTypeInit.ASTRO_ZOMBIE.get(), AstroZombieRenderer::new);
         }
 
         @SubscribeEvent
         public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions e) {
             e.registerLayerDefinition(RocketTier1Model.LAYER_LOCATION, RocketTier1Model::createBodyLayer);
+            e.registerLayerDefinition(OxygenTankModel.LAYER_LOCATION, OxygenTankModel::createBodyLayer);
+            e.registerLayerDefinition(OxygenGearModel.Body.LAYER_LOCATION, OxygenGearModel.Body::createBodyLayer);
+            e.registerLayerDefinition(OxygenGearModel.Head.LAYER_LOCATION, OxygenGearModel.Head::createBodyLayer);
+            e.registerLayerDefinition(OxygenMaskModel.LAYER_LOCATION, OxygenMaskModel::createBodyLayer);
+        }
+
+        @SubscribeEvent
+        public static void addLayers(EntityRenderersEvent.AddLayers e) {
+            e.getSkin("default").addLayer(new SpaceSuitLayer(e.getSkin("default")));
         }
     }
 

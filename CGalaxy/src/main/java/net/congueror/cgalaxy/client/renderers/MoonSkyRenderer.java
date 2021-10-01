@@ -72,6 +72,15 @@ public class MoonSkyRenderer {
                             RenderSystem.enableBlend();
                             RenderSystem.defaultBlendFunc();
 
+                            //Stars
+                            RenderSystem.disableTexture();
+                            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+                            FogRenderer.setupNoFog();
+                            assert GameRenderer.getPositionShader() != null;
+                            assert mc.levelRenderer.starBuffer != null;
+                            mc.levelRenderer.starBuffer.drawWithShader(poseStack.last().pose(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
+                            RenderSystem.enableTexture();
+
                             //Sun
                             RenderSystem.enableTexture();
                             RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
@@ -108,14 +117,6 @@ public class MoonSkyRenderer {
                             bufferbuilder.end();
                             BufferUploader.end(bufferbuilder);
                             poseStack.popPose();
-
-                            //Stars
-                            RenderSystem.disableTexture();
-                            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-                            FogRenderer.setupNoFog();
-                            assert GameRenderer.getPositionShader() != null;
-                            assert mc.levelRenderer.starBuffer != null;
-                            mc.levelRenderer.starBuffer.drawWithShader(poseStack.last().pose(), RenderSystem.getProjectionMatrix(), GameRenderer.getPositionShader());
 
                             RenderSystem.disableBlend();
                             if (level.effects().hasGround()) {

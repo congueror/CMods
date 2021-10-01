@@ -20,12 +20,29 @@ public class ItemHandlerProvider implements ICapabilityProvider {
     @Nullable
     private CompoundTag nbt;
 
-    public ItemHandlerProvider(ItemStack stack, @Nullable CompoundTag nbt, ItemStackHandler handler) {
+    public ItemHandlerProvider(ItemStack stack, @Nullable CompoundTag nbt) {
         this.stack = stack;
         this.nbt = nbt;
-        this.itemHandler = handler;
-
+        this.itemHandler = createHandler();
         this.handler = LazyOptional.of(() -> itemHandler);
+    }
+
+    private ItemStackHandler createHandler() {
+        return new ItemStackHandler(1) {
+
+            @Override
+            protected void onContentsChanged(int slot) {
+                super.onContentsChanged(slot);
+                if (slot == 0) {
+                    stack.getOrCreateTag().put("inventory", this.serializeNBT());
+                }
+            }
+
+            @Override
+            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+                return true;
+            }
+        };
     }
 
     @Nonnull

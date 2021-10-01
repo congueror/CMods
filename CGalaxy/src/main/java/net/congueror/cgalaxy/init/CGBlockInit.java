@@ -98,7 +98,7 @@ public class CGBlockInit {
     public static final RegistryObject<Block> MOON_SILICON_ORE = new BlockBuilder("moon_silicon_ore",
             moonStoneBlock())
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
-            .withTranslation("Moon Iron Ore")
+            .withTranslation("Moon Silicon Ore")
             .withNewBlockTag("forge:ores/silicon")
             .withNewItemTag("forge:ores/silicon")
             .build(BLOCKS);

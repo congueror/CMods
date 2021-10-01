@@ -1,6 +1,8 @@
 package net.congueror.cgalaxy.init;
 
 import net.congueror.cgalaxy.CGalaxy;
+import net.congueror.cgalaxy.entity.AstroEndermanEntity;
+import net.congueror.cgalaxy.entity.AstroZombieEntity;
 import net.congueror.cgalaxy.entity.rockets.RocketTier1Entity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -19,4 +21,15 @@ public class CGEntityTypeInit {
                     .setUpdateInterval(3)
                     .sized(1f, 3f)
                     .build(new ResourceLocation(CGalaxy.MODID, "rocket_tier_1").toString()));
+
+    public static final RegistryObject<EntityType<AstroEndermanEntity>> ASTRO_ENDERMAN = ENTITY_TYPES.register("astro_enderman", () ->
+            EntityType.Builder.of(AstroEndermanEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 2.9F)
+                    .clientTrackingRange(8)
+                    .build(new ResourceLocation(CGalaxy.MODID, "astro_enderman").toString()));
+    public static final RegistryObject<EntityType<AstroZombieEntity>> ASTRO_ZOMBIE = ENTITY_TYPES.register("astro_zombie", () ->
+            EntityType.Builder.of(AstroZombieEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(new ResourceLocation(CGalaxy.MODID, "astro_zombie").toString()));
 }

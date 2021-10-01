@@ -27,7 +27,6 @@ import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 public class SpaceSuitItem extends ArmorItem {
-    protected ItemStackHandler itemHandler = createHandler();
 
     public SpaceSuitItem(EquipmentSlot slot, Properties builderIn) {
         super(SpaceSuitMaterial.SPACE_SUIT_MATERIAL, slot, builderIn);
@@ -36,23 +35,7 @@ public class SpaceSuitItem extends ArmorItem {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new ItemHandlerProvider(stack, nbt, itemHandler);
-    }
-
-    private ItemStackHandler createHandler() {
-        return new ItemStackHandler(1) {
-
-            @Override
-            protected void onContentsChanged(int slot) {
-                super.onContentsChanged(slot);
-                //stack.getOrCreateTag().put("inventory", this.serializeNBT());
-            }
-
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return true;
-            }
-        };
+        return new ItemHandlerProvider(stack, nbt);
     }
 
     @Nullable
