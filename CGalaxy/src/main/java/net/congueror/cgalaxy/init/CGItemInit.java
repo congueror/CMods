@@ -1,10 +1,8 @@
 package net.congueror.cgalaxy.init;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.item.OxygenGearItem;
-import net.congueror.cgalaxy.item.OxygenTankItem;
-import net.congueror.cgalaxy.item.RocketTier1Item;
-import net.congueror.cgalaxy.item.SpaceSuitItem;
+import net.congueror.cgalaxy.client.models.OxygenTankModels;
+import net.congueror.cgalaxy.item.*;
 import net.congueror.clib.api.objects.items.CLBucketItem;
 import net.congueror.clib.api.objects.items.CLItem;
 import net.congueror.clib.api.registry.ItemBuilder;
@@ -76,11 +74,25 @@ public class CGItemInit {
             .build(ITEMS);
 
     public static final RegistryObject<Item> LIGHT_OXYGEN_TANK = new ItemBuilder("light_oxygen_tank",
-            new OxygenTankItem(new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance), 1000))
+            new OxygenTankItem(new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance), 1000,
+                    (entityModelSet, aBoolean) -> new OxygenTankModels.Light<>(entityModelSet.bakeLayer(OxygenTankModels.Light.LAYER_LOCATION), aBoolean)))
             .withTranslation("Light Oxygen Tank")
             .build(ITEMS);
     public static final RegistryObject<Item> OXYGEN_GEAR = new ItemBuilder("oxygen_gear",
             new OxygenGearItem(new Item.Properties()))
             .withTranslation("Oxygen Gear")
+            .build(ITEMS);
+
+    public static final RegistryObject<Item> HEAT_PROTECTION_1 = new ItemBuilder("heat_protection_unit_tier_1",
+            new HeatProtectionUnitItem(new Item.Properties(), 200))
+            .withTranslation("Tier 1 Heat Protection Unit")
+            .build(ITEMS);
+    public static final RegistryObject<Item> COLD_PROTECTION_1 = new ItemBuilder("cold_protection_unit_tier_1",
+            new ColdProtectionUnitItem(new Item.Properties(), 200))
+            .withTranslation("Tier 1 Cold Protection Unit")
+            .build(ITEMS);
+    public static final RegistryObject<Item> RADIATION_PROTECTION_1 = new ItemBuilder("radiation_protection_unit_tier_1",
+            new RadiationProtectionUnitItem(new Item.Properties(), 200))
+            .withTranslation("Tier 1 Radiation Protection Unit")
             .build(ITEMS);
 }

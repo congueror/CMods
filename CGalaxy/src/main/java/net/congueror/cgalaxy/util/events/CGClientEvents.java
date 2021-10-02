@@ -7,7 +7,7 @@ import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorScreen;
 import net.congueror.cgalaxy.client.AbstractRocketModel;
 import net.congueror.cgalaxy.client.models.OxygenGearModel;
 import net.congueror.cgalaxy.client.models.OxygenMaskModel;
-import net.congueror.cgalaxy.client.models.OxygenTankModel;
+import net.congueror.cgalaxy.client.models.OxygenTankModels;
 import net.congueror.cgalaxy.client.models.RocketTier1Model;
 import net.congueror.cgalaxy.client.overlays.RocketYOverlay;
 import net.congueror.cgalaxy.client.renderers.AstroEndermanRenderer;
@@ -19,11 +19,11 @@ import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapScreen;
 import net.congueror.cgalaxy.gui.space_suit.SpaceSuitScreen;
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
-import net.congueror.cgalaxy.item.SpaceSuitItem;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.networking.PacketLaunchSequence;
 import net.congueror.cgalaxy.networking.PacketOpenSpaceSuitMenu;
 import net.congueror.cgalaxy.util.KeyMappings;
+import net.congueror.cgalaxy.util.SpaceSuitUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -66,7 +66,9 @@ public class CGClientEvents {
         @SubscribeEvent
         public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions e) {
             e.registerLayerDefinition(RocketTier1Model.LAYER_LOCATION, RocketTier1Model::createBodyLayer);
-            e.registerLayerDefinition(OxygenTankModel.LAYER_LOCATION, OxygenTankModel::createBodyLayer);
+            e.registerLayerDefinition(OxygenTankModels.Light.LAYER_LOCATION, OxygenTankModels.Light::createBodyLayer);
+            e.registerLayerDefinition(OxygenTankModels.Medium.LAYER_LOCATION, OxygenTankModels.Medium::createBodyLayer);
+            e.registerLayerDefinition(OxygenTankModels.Heavy.LAYER_LOCATION, OxygenTankModels.Heavy::createBodyLayer);
             e.registerLayerDefinition(OxygenGearModel.Body.LAYER_LOCATION, OxygenGearModel.Body::createBodyLayer);
             e.registerLayerDefinition(OxygenGearModel.Head.LAYER_LOCATION, OxygenGearModel.Head::createBodyLayer);
             e.registerLayerDefinition(OxygenMaskModel.LAYER_LOCATION, OxygenMaskModel::createBodyLayer);
@@ -94,7 +96,7 @@ public class CGClientEvents {
                     }
                     if (e.getKey() == KeyMappings.OPEN_SPACE_SUIT_MENU.getKey().getValue()) {
                         assert Minecraft.getInstance().player != null;
-                        if (SpaceSuitItem.isEquipped(Minecraft.getInstance().player)) {
+                        if (SpaceSuitUtils.isEquipped(Minecraft.getInstance().player)) {
                             CGNetwork.sendToServer(new PacketOpenSpaceSuitMenu());
                         }
                     }

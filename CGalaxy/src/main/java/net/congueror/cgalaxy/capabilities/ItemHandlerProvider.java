@@ -1,10 +1,13 @@
 package net.congueror.cgalaxy.capabilities;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -12,35 +15,57 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.function.BiFunction;
 
 public class ItemHandlerProvider implements ICapabilityProvider {
+    private final int slotCount;
     protected final ItemStackHandler itemHandler;
     private final LazyOptional<IItemHandler> handler;
     private final ItemStack stack;
     @Nullable
-    private CompoundTag nbt;
+    private final CompoundTag nbt;
+    @Nullable
+    private final BiFunction<Integer, ItemStack, Boolean> isItemValid;
 
-    public ItemHandlerProvider(ItemStack stack, @Nullable CompoundTag nbt) {
+    public ItemHandlerProvider(ItemStack stack, @Nullable CompoundTag nbt, int slotCount) {
+        this.slotCount = slotCount;
         this.stack = stack;
         this.nbt = nbt;
         this.itemHandler = createHandler();
         this.handler = LazyOptional.of(() -> itemHandler);
+        this.isItemValid = null;
+    }
+
+    public ItemHandlerProvider(ItemStack stack, @Nullable CompoundTag nbt, int slotCount, @Nullable BiFunction<Integer, ItemStack, Boolean> isItemValid) {
+        this.slotCount = slotCount;
+        this.stack = stack;
+        this.nbt = nbt;
+        this.itemHandler = createHandler();
+        this.handler = LazyOptional.of(() -> itemHandler);
+        this.isItemValid = isItemValid;
     }
 
     private ItemStackHandler createHandler() {
-        return new ItemStackHandler(1) {
+        NonNullList<ItemStack> stacks = NonNullList.withSize(slotCount, ItemStack.EMPTY);
+        ListTag tagList = stack.getOrCreateTag().getCompound("inventory").getList("Items", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < tagList.size(); i++) {
+            CompoundTag itemTags = tagList.getCompound(i);
+            int slot = itemTags.getInt("Slot");
 
+            if (slot >= 0 && slot < stacks.size()) {
+                stacks.set(slot, ItemStack.of(itemTags));
+            }
+        }
+        return new ItemStackHandler(stacks) {
             @Override
             protected void onContentsChanged(int slot) {
                 super.onContentsChanged(slot);
-                if (slot == 0) {
-                    stack.getOrCreateTag().put("inventory", this.serializeNBT());
-                }
+                stack.getOrCreateTag().put("inventory", this.serializeNBT());
             }
 
             @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return true;
+            public boolean isItemValid(int slot, @Nonnull ItemStack stack1) {
+                return isItemValid != null ? isItemValid.apply(slot, stack1) : true;
             }
         };
     }

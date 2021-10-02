@@ -1,25 +1,44 @@
 package net.congueror.cgalaxy.item;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.function.BiFunction;
 
 public class OxygenTankItem extends Item {
-    int capacity;
+    protected final int capacity;
+    private int i;
+    protected final BiFunction<EntityModelSet, Boolean, EntityModel<? extends LivingEntity>> model;
 
-    public OxygenTankItem(Properties properties, int capacity) {
+    public OxygenTankItem(Properties properties, int capacity, BiFunction<EntityModelSet, Boolean, EntityModel<? extends LivingEntity>> model) {
         super(properties.stacksTo(1));
         this.capacity = capacity;
+        this.model = model;
     }
 
     public int getCapacity() {
         return capacity;
+    }
+
+    @Override
+    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
+        super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
+    }
+
+    public EntityModel<? extends LivingEntity> getModel(boolean twoTanks) {
+        return model.apply(Minecraft.getInstance().getEntityModels(), twoTanks);
     }
 
     public int getOxygen(ItemStack stack) {

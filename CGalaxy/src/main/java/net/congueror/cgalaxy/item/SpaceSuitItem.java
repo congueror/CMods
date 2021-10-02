@@ -11,16 +11,12 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,7 +31,29 @@ public class SpaceSuitItem extends ArmorItem {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new ItemHandlerProvider(stack, nbt);
+        if (slot.equals(EquipmentSlot.HEAD)) {
+            return new ItemHandlerProvider(stack, nbt, 1, (integer, itemStack) -> {
+                if (integer == 0) {
+                    return itemStack.getItem() instanceof OxygenGearItem;
+                }
+                return false;
+            });
+        } else if (slot.equals(EquipmentSlot.CHEST)) {
+            return new ItemHandlerProvider(stack, nbt, 2, (integer, itemStack) -> {
+                if (integer == 0 || integer == 1) {
+                    return itemStack.getItem() instanceof OxygenTankItem;
+                }
+                return false;
+            });
+        } else if (slot.equals(EquipmentSlot.LEGS)) {
+            return new ItemHandlerProvider(stack, nbt, 1, (integer, itemStack) -> {
+                return true;
+            });
+        } else {
+            return new ItemHandlerProvider(stack, nbt, 1, (integer, itemStack) -> {
+                return true;
+            });
+        }
     }
 
     @Nullable
@@ -100,12 +118,5 @@ public class SpaceSuitItem extends ArmorItem {
         public float getKnockbackResistance() {
             return 0;
         }
-    }
-
-    public static boolean isEquipped(Player player) {
-        return player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof SpaceSuitItem &&
-                player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof SpaceSuitItem &&
-                player.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof SpaceSuitItem &&
-                player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof SpaceSuitItem;
     }
 }

@@ -30,13 +30,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MeteoriteBlock extends FallingBlock implements EntityBlock {//TODO: Fix Particles
-    protected static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
-    protected static final VoxelShape SHAPE1 = Block.box(0.0D, 2.0D, 2.0D, 2.0D, 14.0D, 14.0D);
-    protected static final VoxelShape SHAPE2 = Block.box(2.0D, 2.0D, 0.0D, 14.0D, 14.0D, 2.0D);
-    protected static final VoxelShape SHAPE3 = Block.box(2.0D, 2.0D, 2.0D, 2.0D, 14.0D, 14.0D);
-    protected static final VoxelShape SHAPE4 = Block.box(2.0D, 2.0D, 2.0D, 14.0D, 14.0D, 2.0D);
-
+public class MeteoriteBlock extends FallingBlock implements EntityBlock {
     public MeteoriteBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.getStateDefinition().any().setValue(BlockStateProperties.LIT, false));

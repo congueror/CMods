@@ -19,7 +19,9 @@ public class LangDataGen extends LangDataProvider {
         add("key.cgalaxy.error_incomplete_pad", "The Launch Pad must be 3x3!");
         add("key.cgalaxy.error_missing_rocket", "No viable rocket detected!");
         add("key.cgalaxy.idle_rocket_full", "Rocket is full.");
+        add("key.cgalaxy.fuel_remaining", "Remaining Fuel");
         add("gui.cgalaxy.galaxy_map", "Galaxy Map");
+        add("gui.cgalaxy.space_suit", "Space Suit Menu");
 
         add("text.cgalaxy.insufficient_fuel", "Insufficient Fuel!");
         add("text.cgalaxy.about_to_launch", "You are about to go to space. Are you sure you wish to proceed?");

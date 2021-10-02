@@ -24,6 +24,21 @@
   },
   "features": [],
   "starts": [],
-  "spawners": {},
+  "spawners": {
+    "monster": [
+      {
+        "type": "cgalaxy:astro_enderman",
+        "weight": 1,
+        "minCount": 0,
+        "maxCount": 1
+      },
+      {
+        "type": "cgalaxy:astro_zombie",
+        "weight": 1,
+        "minCount": 0,
+        "maxCount": 1
+      }
+    ]
+  },
   "spawn_costs": {}
 }

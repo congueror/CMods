@@ -15,9 +15,19 @@ public class SpaceSuitContainer extends AbstractInventoryContainer {
         super(CGContainerInit.SPACE_SUIT.get(), pContainerId, inv);
 
         inv.player.getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-            addSlot(new SlotItemHandler(iItemHandler, 0, 40, 40));
+            addSlot(new SlotItemHandler(iItemHandler, 0, 44, 14));
         });
-        layoutPlayerInventorySlots(28, 84);
+        inv.player.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
+            addSlot(new SlotItemHandler(iItemHandler, 0, 44, 33));
+            addSlot(new SlotItemHandler(iItemHandler, 1, 63, 33));
+        });
+        inv.player.getItemBySlot(EquipmentSlot.LEGS).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
+            addSlot(new SlotItemHandler(iItemHandler, 0, 44, 52));
+        });
+        inv.player.getItemBySlot(EquipmentSlot.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
+            addSlot(new SlotItemHandler(iItemHandler, 0, 44, 71));
+        });
+        layoutPlayerInventorySlots(8, 96);
     }
 
     @Override

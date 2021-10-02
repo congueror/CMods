@@ -9,6 +9,8 @@ import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
 import net.congueror.cgalaxy.init.CGCarverInit;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
 import net.congueror.cgalaxy.networking.CGNetwork;
+import net.congueror.cgalaxy.util.DamageSources;
+import net.congueror.cgalaxy.util.SpaceSuitUtils;
 import net.congueror.cgalaxy.world.Dimensions;
 import net.congueror.cgalaxy.world.FeatureGen;
 import net.congueror.clib.api.registry.FluidBuilder;
@@ -81,45 +83,47 @@ public class CGCommonEvents {
             double y = player.getY();
             double z = player.getZ();
 
-            /*TODO
-            i++;
-            ArrayList<ItemStack> items = CuriosCompat.getAllCuriosItemStacks(player);
-            hasOxygen = hasOxygen(player, items);
-            if (hasOxygen) {
-                ItemStack stack = items.stream()
-                        .filter(stack1 -> stack1.getItem() instanceof OxygenTankItem && ((OxygenTankItem) stack1.getItem()).getOxygen(stack1) > 0).findFirst().orElse(ItemStack.EMPTY);
-                if (i > 80 && !player.abilities.instabuild) {
-                    ((OxygenTankItem) stack.getItem()).drain(stack, 1);
-                    i = 0;
-                }
-            }
-             */
+            int temperature = 0;
+
+            boolean hasOxygen = SpaceSuitUtils.hasOxygen(player);
+            SpaceSuitUtils.drainTanks(player);
 
             List<Entity> entities = level.getEntitiesOfClass(Entity.class, new AABB(x - (192 / 2d), y - (192 / 2d), z - (192 / 2d), x + (192 / 2d), y + (192 / 2d), z + (192 / 2d)));
             for (Entity entity : entities) {
-                if (entity instanceof LivingEntity) {
-                    AttributeMap manager = ((LivingEntity) entity).getAttributes();
-                    if (level.dimension() == Dimensions.MOON) {
-                        Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(0.0162);
-                        entity.fallDistance = 1;
-                        /*TODO
-                        if (!hasOxygen) {
-                            if (entity instanceof AstroEndermanEntity ||
-                                    entity instanceof AstroZombieEntity ||
-                                    entity instanceof RocketEntity) {} else {
-                                entity.hurt(DamageSources.NO_OXYGEN, 1.0f);
+                for (Dimensions.DimensionObject obj : Dimensions.CGDimensionBuilder.OBJECTS) {
+                    if (level.dimension().equals(obj.getDim())) {
+                        if (entity instanceof LivingEntity) {
+                            AttributeMap manager = ((LivingEntity) entity).getAttributes();
+                            Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(obj.getGravity());
+                            entity.fallDistance = 1;
+                            if (!obj.getBreathable()) {
+                                if (!hasOxygen) {
+                                    if (entity instanceof AstroEndermanEntity || entity instanceof AstroZombieEntity) {
+                                    } else {
+                                        entity.hurt(DamageSources.NO_OXYGEN, 1.0f);
+                                    }
+                                }
                             }
-                        }*/
+                            if (level.isDay()) {
+                                temperature = obj.getDayTemp();
+                            } else if (level.isNight()) {
+                                temperature = obj.getNightTemp();
+                            }
+                        }
+
+                        if (entity instanceof ItemEntity) {
+                            if (level.dimension() == Dimensions.MOON.getDim() && entity.getPersistentData().getDouble("ItemGravity") <= 1 && entity.getDeltaMovement().y() <= -0.1) {
+                                entity.getPersistentData().putDouble("ItemGravity", 2);
+                                entity.setDeltaMovement((entity.getDeltaMovement().x()), ((entity.getDeltaMovement().y()) + (obj.getGravity() * 2.5)),
+                                        (entity.getDeltaMovement().z()));
+                                entity.getPersistentData().putDouble("ItemGravity", 0);
+                            }
+                        }
                     } else {
-                        Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(ForgeMod.ENTITY_GRAVITY.get().getDefaultValue());
-                    }
-                }
-                if (entity instanceof ItemEntity) {
-                    if (level.dimension() == Dimensions.MOON && entity.getPersistentData().getDouble("ItemGravity") <= 1 && entity.getDeltaMovement().y() <= -0.1) {
-                        entity.getPersistentData().putDouble("ItemGravity", 2);
-                        entity.setDeltaMovement((entity.getDeltaMovement().x()), ((entity.getDeltaMovement().y()) + 0.04),
-                                (entity.getDeltaMovement().z()));
-                        entity.getPersistentData().putDouble("ItemGravity", 0);
+                        if (entity instanceof LivingEntity) {
+                            AttributeMap manager = ((LivingEntity) entity).getAttributes();
+                            Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(ForgeMod.ENTITY_GRAVITY.get().getDefaultValue());
+                        }
                     }
                 }
             }
@@ -141,5 +145,5 @@ public class CGCommonEvents {
                 }
             }
         }
-    }
+    }//ForgeCommonEvents End
 }
