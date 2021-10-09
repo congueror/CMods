@@ -2,10 +2,14 @@ package net.congueror.cgalaxy.blocks.oxygen_compressor;
 
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.clib.api.machine.fluid.AbstractFluidContainer;
+import net.congueror.clib.items.UpgradeItem;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -65,7 +69,48 @@ public class OxygenCompressorContainer extends AbstractFluidContainer<OxygenComp
 
     @Nonnull
     @Override
-    public ItemStack quickMoveStack(@Nonnull Player pPlayer, int pIndex) {
-        return super.quickMoveStack(pPlayer, pIndex);//TODO
+    public ItemStack quickMoveStack(@Nonnull Player pPlayer, int pIndex) {//TODO
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(pIndex);
+        if (slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            itemstack = itemstack1.copy();
+            if (pIndex > 35) {
+                if (!this.moveItemStackTo(itemstack1, 0, 36, true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (itemstack1.getItem() instanceof UpgradeItem) {
+                if (!this.moveItemStackTo(itemstack1, 39, 43, true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (itemstack1.getItem() instanceof BucketItem) {
+                if (((BucketItem) itemstack1.getItem()).getFluid().equals(Fluids.EMPTY)) {
+                    if (!this.moveItemStackTo(itemstack1, 38, 39, true)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else {
+                    if (!this.moveItemStackTo(itemstack1, 37, 38, true)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            } else {
+                if (!this.moveItemStackTo(itemstack1, 36, 17, true)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.set(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(pPlayer, itemstack1);
+        }
+        return itemstack;
     }
 }

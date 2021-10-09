@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.BiFunction;
 
-public class ItemHandlerProvider implements ICapabilityProvider {
+public class ItemItemHandlerWrapper implements ICapabilityProvider {
     private final int slotCount;
     protected final ItemStackHandler itemHandler;
     private final LazyOptional<IItemHandler> handler;
@@ -27,7 +27,7 @@ public class ItemHandlerProvider implements ICapabilityProvider {
     @Nullable
     private final BiFunction<Integer, ItemStack, Boolean> isItemValid;
 
-    public ItemHandlerProvider(ItemStack stack, @Nullable CompoundTag nbt, int slotCount) {
+    public ItemItemHandlerWrapper(ItemStack stack, @Nullable CompoundTag nbt, int slotCount) {
         this.slotCount = slotCount;
         this.stack = stack;
         this.nbt = nbt;
@@ -36,7 +36,7 @@ public class ItemHandlerProvider implements ICapabilityProvider {
         this.isItemValid = null;
     }
 
-    public ItemHandlerProvider(ItemStack stack, @Nullable CompoundTag nbt, int slotCount, @Nullable BiFunction<Integer, ItemStack, Boolean> isItemValid) {
+    public ItemItemHandlerWrapper(ItemStack stack, @Nullable CompoundTag nbt, int slotCount, @Nullable BiFunction<Integer, ItemStack, Boolean> isItemValid) {
         this.slotCount = slotCount;
         this.stack = stack;
         this.nbt = nbt;
@@ -73,9 +73,6 @@ public class ItemHandlerProvider implements ICapabilityProvider {
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)) {
-            return handler.cast();
-        }
-        return null;
+        return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, handler);
     }
 }

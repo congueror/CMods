@@ -1,8 +1,17 @@
 package net.congueror.cgalaxy.item;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.capabilities.ItemHandlerProvider;
+import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
+import net.congueror.cgalaxy.capabilities.ItemItemHandlerWrapper;
 import net.congueror.cgalaxy.client.models.SpaceSuitModel;
+import net.congueror.cgalaxy.init.CGFluidInit;
+import net.congueror.cgalaxy.util.SpaceSuitUtils;
+import net.congueror.clib.util.MathHelper;
+import net.congueror.clib.util.RenderingHelper;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -11,15 +20,19 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class SpaceSuitItem extends ArmorItem {
@@ -32,25 +45,34 @@ public class SpaceSuitItem extends ArmorItem {
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         if (slot.equals(EquipmentSlot.HEAD)) {
-            return new ItemHandlerProvider(stack, nbt, 1, (integer, itemStack) -> {
+            return new ItemItemHandlerWrapper(stack, nbt, 1, (integer, itemStack) -> {
                 if (integer == 0) {
                     return itemStack.getItem() instanceof OxygenGearItem;
                 }
                 return false;
             });
         } else if (slot.equals(EquipmentSlot.CHEST)) {
-            return new ItemHandlerProvider(stack, nbt, 2, (integer, itemStack) -> {
+            return new ItemItemHandlerWrapper(stack, nbt, 5, (integer, itemStack) -> {
                 if (integer == 0 || integer == 1) {
                     return itemStack.getItem() instanceof OxygenTankItem;
+                }
+                if (integer == 2) {
+                    return itemStack.getItem() instanceof HeatProtectionUnitItem;
+                }
+                if (integer == 3) {
+                    return itemStack.getItem() instanceof ColdProtectionUnitItem;
+                }
+                if (integer == 4) {
+                    return itemStack.getItem() instanceof RadiationProtectionUnitItem;
                 }
                 return false;
             });
         } else if (slot.equals(EquipmentSlot.LEGS)) {
-            return new ItemHandlerProvider(stack, nbt, 1, (integer, itemStack) -> {
+            return new ItemItemHandlerWrapper(stack, nbt, 1, (integer, itemStack) -> {
                 return true;
             });
         } else {
-            return new ItemHandlerProvider(stack, nbt, 1, (integer, itemStack) -> {
+            return new ItemItemHandlerWrapper(stack, nbt, 1, (integer, itemStack) -> {
                 return true;
             });
         }
@@ -70,6 +92,42 @@ public class SpaceSuitItem extends ArmorItem {
                 //noinspection unchecked
                 return (A) new SpaceSuitModel(SpaceSuitModel.createBodyLayer());
             }
+
+            @Override
+            public void renderHelmetOverlay(ItemStack stack, Player player, int width, int height, float partialTicks) {
+                Level level = player.level;
+                PoseStack poseStack = new PoseStack();
+                Matrix4f matrix = poseStack.last().pose();
+
+                //Tanks
+                ArrayList<Integer> tankAmount = new ArrayList<>();
+                ArrayList<Integer> tankCapacity = new ArrayList<>();
+                SpaceSuitUtils.deserializeContents(player).stream()
+                        .filter(itemStack -> itemStack.getItem() instanceof OxygenTankItem)
+                        .forEach(itemStack -> {
+                            tankAmount.add(((OxygenTankItem) itemStack.getItem()).getOxygen(itemStack));
+                            tankCapacity.add(((OxygenTankItem) itemStack.getItem()).getCapacity());
+                        });
+                if (!tankAmount.isEmpty()) {
+                    FluidStack stack1 = new FluidStack(CGFluidInit.OXYGEN.getStill(), tankAmount.get(0));
+                    int a = 50 - (50 * MathHelper.getPercent(tankAmount.get(0), tankCapacity.get(0)) / 100);
+                    int x1 = 1;
+                    int x2 = x1 + 16;
+                    int y1 = 32 + a;
+                    int y2 = y1 + (50 - a);
+                    RenderingHelper.renderFluid(matrix, stack1, x1, x2, y1, y2, 0);
+
+                    RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+                    RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, "textures/gui/oxygen_tank_gui.png"));
+                    GuiComponent.blit(poseStack, 0, 16, 18, 50, 0, 0, 18, 50, 18, 50);
+                }
+
+                for (CGDimensionBuilder.DimensionObject obj : CGDimensionBuilder.OBJECTS) {
+                    if (level.dimension().equals(obj.getDim())) {
+
+                    }
+                }
+            }
         });
     }
 
@@ -78,7 +136,7 @@ public class SpaceSuitItem extends ArmorItem {
 
         @Override
         public int getDurabilityForSlot(@Nonnull EquipmentSlot slotIn) {
-            return 1300;
+            return -1;
         }
 
         @Override

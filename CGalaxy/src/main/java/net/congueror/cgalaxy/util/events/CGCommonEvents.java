@@ -1,6 +1,7 @@
 package net.congueror.cgalaxy.util.events;
 
 import net.congueror.cgalaxy.CGalaxy;
+import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
 import net.congueror.cgalaxy.commands.CGCommands;
 import net.congueror.cgalaxy.entity.AstroEndermanEntity;
 import net.congueror.cgalaxy.entity.AstroZombieEntity;
@@ -13,7 +14,7 @@ import net.congueror.cgalaxy.util.DamageSources;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
 import net.congueror.cgalaxy.world.Dimensions;
 import net.congueror.cgalaxy.world.FeatureGen;
-import net.congueror.clib.api.registry.FluidBuilder;
+import net.congueror.clib.api.registry.BlockBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -26,16 +27,17 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
@@ -62,8 +64,8 @@ public class CGCommonEvents {
         }
 
         @SubscribeEvent
-        public static void interModProcess(InterModProcessEvent e) {
-            FluidBuilder.registerBlockFluidFix();
+        public static void onRegisterItem(final RegistryEvent.Register<Item> e) {
+            BlockBuilder.registerBlockItems(e, CGalaxy.MODID);
         }
     }
 
@@ -83,14 +85,13 @@ public class CGCommonEvents {
             double y = player.getY();
             double z = player.getZ();
 
-            int temperature = 0;
-
             boolean hasOxygen = SpaceSuitUtils.hasOxygen(player);
             SpaceSuitUtils.drainTanks(player);
+            SpaceSuitUtils.drainProtection(player, player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE), player.getPersistentData().getFloat(CGalaxy.PLAYER_RADIATION));
 
             List<Entity> entities = level.getEntitiesOfClass(Entity.class, new AABB(x - (192 / 2d), y - (192 / 2d), z - (192 / 2d), x + (192 / 2d), y + (192 / 2d), z + (192 / 2d)));
             for (Entity entity : entities) {
-                for (Dimensions.DimensionObject obj : Dimensions.CGDimensionBuilder.OBJECTS) {
+                for (CGDimensionBuilder.DimensionObject obj : CGDimensionBuilder.OBJECTS) {
                     if (level.dimension().equals(obj.getDim())) {
                         if (entity instanceof LivingEntity) {
                             AttributeMap manager = ((LivingEntity) entity).getAttributes();
@@ -105,24 +106,40 @@ public class CGCommonEvents {
                                 }
                             }
                             if (level.isDay()) {
-                                temperature = obj.getDayTemp();
+                                player.getPersistentData().putInt(CGalaxy.PLAYER_TEMPERATURE, obj.getDayTemp());
                             } else if (level.isNight()) {
-                                temperature = obj.getNightTemp();
+                                player.getPersistentData().putInt(CGalaxy.PLAYER_TEMPERATURE, obj.getNightTemp());
+                            }
+                            player.getPersistentData().putFloat(CGalaxy.PLAYER_RADIATION, obj.getRadiation());
+                            if (!SpaceSuitUtils.hasHeatProtection(player, player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE))) {
+                                player.hurt(DamageSources.NO_HEAT, 1.0f);
+                            }
+                            if (!SpaceSuitUtils.hasColdProtection(player, player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE))) {
+                                player.hurt(DamageSources.NO_COLD, 1.0f);
+                            }
+                            if (!SpaceSuitUtils.hasRadiationProtection(player, player.getPersistentData().getFloat(CGalaxy.PLAYER_RADIATION))) {
+                                player.hurt(DamageSources.NO_RADIATION, 1.0f);
                             }
                         }
 
                         if (entity instanceof ItemEntity) {
-                            if (level.dimension() == Dimensions.MOON.getDim() && entity.getPersistentData().getDouble("ItemGravity") <= 1 && entity.getDeltaMovement().y() <= -0.1) {
-                                entity.getPersistentData().putDouble("ItemGravity", 2);
+                            if (level.dimension() == Dimensions.MOON.getDim() && entity.getPersistentData().getDouble(CGalaxy.ITEM_GRAVITY) <= 1 && entity.getDeltaMovement().y() <= -0.1) {
+                                entity.getPersistentData().putDouble(CGalaxy.ITEM_GRAVITY, 2);
                                 entity.setDeltaMovement((entity.getDeltaMovement().x()), ((entity.getDeltaMovement().y()) + (obj.getGravity() * 2.5)),
                                         (entity.getDeltaMovement().z()));
-                                entity.getPersistentData().putDouble("ItemGravity", 0);
+                                entity.getPersistentData().putDouble(CGalaxy.ITEM_GRAVITY, 0);
                             }
                         }
                     } else {
                         if (entity instanceof LivingEntity) {
                             AttributeMap manager = ((LivingEntity) entity).getAttributes();
                             Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(ForgeMod.ENTITY_GRAVITY.get().getDefaultValue());
+                            entity.getPersistentData().putInt(CGalaxy.PLAYER_TEMPERATURE, 0);
+                            entity.getPersistentData().putFloat(CGalaxy.PLAYER_RADIATION, 0);
+                            entity.getPersistentData().putInt(CGalaxy.LIVING_RADIATION_TICK, 0);
+                            entity.getPersistentData().putInt(CGalaxy.LIVING_OXYGEN_TICK, 0);
+                            entity.getPersistentData().putInt(CGalaxy.LIVING_COLD_TICK, 0);
+                            entity.getPersistentData().putInt(CGalaxy.LIVING_HEAT_TICK, 0);
                         }
                     }
                 }

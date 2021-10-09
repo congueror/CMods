@@ -15,6 +15,26 @@ public class CGalaxy {
     public static final Logger LOGGER = LogManager.getLogger();
     public static CGalaxy instance;
 
+    //Persistent Data Constant Strings
+    /**Integer*/
+    public static final String PLAYER_TEMPERATURE = "Temperature";
+    /**Float*/
+    public static final String PLAYER_RADIATION = "Radiation";
+    /**Integer*/
+    public static final String LIVING_HEAT_TICK = "HeatTick";
+    /**Integer*/
+    public static final String LIVING_COLD_TICK = "ColdTick";
+    /**Integer*/
+    public static final String LIVING_OXYGEN_TICK = "OxygenTick";
+    /**Integer*/
+    public static final String LIVING_RADIATION_TICK = "RadiationTick";
+    /**Integer*/
+    public static final String ROCKET_POWERED = "Powered";
+    /**Boolean*/
+    public static final String ROCKET_LAUNCH = "Launch";
+    /**Integer*/
+    public static final String ITEM_GRAVITY = "ItemGravity";
+
     public CGalaxy() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         CGItemInit.ITEMS.register(modEventBus);

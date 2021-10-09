@@ -1,5 +1,6 @@
 package net.congueror.cgalaxy.entity;
 
+import net.congueror.cgalaxy.CGalaxy;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -103,7 +104,7 @@ public abstract class RocketEntity extends Entity {
     public void tick() {
         super.tick();
 
-        if (this.getPersistentData().getBoolean("Launch")) {
+        if (this.getPersistentData().getBoolean(CGalaxy.ROCKET_LAUNCH)) {
             if (((this.getDeltaMovement().y()) <= 0.5)) {
                 this.setDeltaMovement(this.getDeltaMovement().x, this.getDeltaMovement().y + 0.1, this.getDeltaMovement().z);
             }
@@ -132,7 +133,7 @@ public abstract class RocketEntity extends Entity {
             this.remove(RemovalReason.KILLED);
         }
 
-        if (this.getPersistentData().getInt("Powered") == 2) {
+        if (this.getPersistentData().getInt(CGalaxy.ROCKET_POWERED) == 2) {
             if (this.isVehicle()) {
                 i++;
                 ServerPlayer player = (ServerPlayer) level.getNearestPlayer(this, 1);
@@ -178,15 +179,15 @@ public abstract class RocketEntity extends Entity {
                     }
                 }
                 if (i >= 200) {
-                    this.getPersistentData().putBoolean("Launch", true);
+                    this.getPersistentData().putBoolean(CGalaxy.ROCKET_LAUNCH, true);
                     ((ServerLevel) level).sendParticles(ParticleTypes.FLAME, this.getX(), this.getY() - 2.2, this.getZ(), 100, 0.1, 0.1, 0.1, 0.001);
                     ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, this.getX(), this.getY() - 3.2, this.getZ(), 50, 0.1, 0.1, 0.1, 0.04);
                 }
             } else {
                 i = 0;
                 k = 0;
-                this.getPersistentData().putInt("Powered", 0);
-                this.getPersistentData().putBoolean("Launch", false);
+                this.getPersistentData().putInt(CGalaxy.ROCKET_POWERED, 0);
+                this.getPersistentData().putBoolean(CGalaxy.ROCKET_LAUNCH, false);
             }
         }
     }

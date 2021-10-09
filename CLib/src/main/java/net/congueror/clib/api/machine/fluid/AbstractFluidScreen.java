@@ -1,17 +1,15 @@
 package net.congueror.clib.api.machine.fluid;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
-import net.congueror.clib.CLib;
 import net.congueror.clib.util.MathHelper;
+import net.congueror.clib.util.RenderingHelper;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nonnull;
@@ -178,31 +176,13 @@ public abstract class AbstractFluidScreen<T extends AbstractFluidContainer<?>> e
      */
     public void renderFluidTank(PoseStack pPoseStack, int x, int y, int tankIndex) {
         if (!container.getFluidTanks()[tankIndex].getFluid().isEmpty()) {
-            ResourceLocation texture = container.getFluidTanks()[tankIndex].getFluid().getFluid().getAttributes().getStillTexture();
-            assert minecraft != null;
-            TextureAtlasSprite sprite = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(texture);
-            int color = container.getFluidTanks()[tankIndex].getFluid().getFluid().getAttributes().getColor();
             Matrix4f matrix = pPoseStack.last().pose();
             int a = 50 - (50 * MathHelper.getPercent(container.getFluidTanks()[tankIndex].getFluidAmount(), container.getFluidTanks()[tankIndex].getCapacity()) / 100);
             int x1 = this.leftPos + x;
             int x2 = x1 + 16;
             int y1 = this.topPos + y + a;
             int y2 = y1 + (50 - a);
-            int blitOffset = this.getBlitOffset();
-            float r = MathHelper.getFluidColor(color).x();
-            float g = MathHelper.getFluidColor(color).y();
-            float b = MathHelper.getFluidColor(color).z();
-            RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
-            RenderSystem.setShaderColor(r, g, b, 1.0f);
-            RenderSystem.enableBlend();
-            BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-            bufferbuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_TEX);
-            bufferbuilder.vertex(matrix, (float) x1, (float) y2, (float) blitOffset).uv(sprite.getU0(), sprite.getV1()).endVertex();
-            bufferbuilder.vertex(matrix, (float) x2, (float) y2, (float) blitOffset).uv(sprite.getU1(), sprite.getV1()).endVertex();
-            bufferbuilder.vertex(matrix, (float) x2, (float) y1, (float) blitOffset).uv(sprite.getU1(), sprite.getV0()).endVertex();
-            bufferbuilder.vertex(matrix, (float) x1, (float) y1, (float) blitOffset).uv(sprite.getU0(), sprite.getV0()).endVertex();
-            bufferbuilder.end();
-            BufferUploader.end(bufferbuilder);
+            RenderingHelper.renderFluid(matrix, container.getFluidTanks()[tankIndex].getFluid(), x1, x2, y1, y2, this.getBlitOffset());
         }
     }
 

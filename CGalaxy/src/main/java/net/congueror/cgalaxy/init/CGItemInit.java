@@ -3,13 +3,16 @@ package net.congueror.cgalaxy.init;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.client.models.OxygenTankModels;
 import net.congueror.cgalaxy.item.*;
+import net.congueror.clib.api.data.ItemModelDataProvider;
 import net.congueror.clib.api.objects.items.CLBucketItem;
 import net.congueror.clib.api.objects.items.CLItem;
 import net.congueror.clib.api.registry.ItemBuilder;
 import net.congueror.clib.items.UpgradeItem;
+import net.congueror.clib.util.MathHelper;
 import net.congueror.clib.util.ModCreativeTabs;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -21,7 +24,6 @@ public class CGItemInit {
             new UpgradeItem(new Item.Properties().tab(ModCreativeTabs.MachinesIG.instance), UpgradeItem.UpgradeType.SPEED))
             .withTranslation("Speed Upgrade")
             .build(ITEMS);
-
     public static final RegistryObject<Item> KEROSENE_BUCKET = new ItemBuilder("kerosene_bucket",
             new CLBucketItem(CGFluidInit.KEROSENE::getStill, new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
             .withTranslation("Kerosene Bucket")
@@ -33,6 +35,19 @@ public class CGItemInit {
     public static final RegistryObject<Item> OXYGEN_BUCKET = new ItemBuilder("oxygen_bucket",
             new CLBucketItem(CGFluidInit.OXYGEN::getStill, new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
             .withTranslation("Oxygen Bucket")
+            .build(ITEMS);
+
+    public static final RegistryObject<Item> ASTRO_ENDERMAN_EGG = new ItemBuilder("astro_enderman_spawn_egg",
+            new ForgeSpawnEggItem(CGEntityTypeInit.ASTRO_ENDERMAN, MathHelper.calculateRGB(0, 0, 139), 0,
+                    new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
+            .withTranslation("Astro Enderman Spawn Egg")
+            .withItemModel(ItemModelDataProvider::spawnEggTexture)
+            .build(ITEMS);
+    public static final RegistryObject<Item> ASTRO_ZOMBIE_EGG = new ItemBuilder("astro_zombie_spawn_egg",
+            new ForgeSpawnEggItem(CGEntityTypeInit.ASTRO_ZOMBIE, MathHelper.calculateRGB(0, 0, 139), 7969893,
+                    new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
+            .withTranslation("Astro Zombie Spawn Egg")
+            .withItemModel(ItemModelDataProvider::spawnEggTexture)
             .build(ITEMS);
 
     public static final RegistryObject<Item> ROCKET_TIER_1 = new ItemBuilder("rocket_tier_1",

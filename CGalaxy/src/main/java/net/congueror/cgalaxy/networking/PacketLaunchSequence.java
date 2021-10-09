@@ -1,5 +1,6 @@
 package net.congueror.cgalaxy.networking;
 
+import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.entity.RocketEntity;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,12 +19,12 @@ public class PacketLaunchSequence {
                     if (((RocketEntity) entity).getFuel() < 500) {
                         player.displayClientMessage(new TranslatableComponent("text.cgalaxy.insufficient_fuel"), false);
                     } else {
-                        if (entity.getPersistentData().getInt("Powered") < 1) {
+                        if (entity.getPersistentData().getInt(CGalaxy.ROCKET_POWERED) < 1) {
                             player.displayClientMessage(new TranslatableComponent("text.cgalaxy.about_to_launch"), false);
                             player.displayClientMessage(new TranslatableComponent("text.cgalaxy.about_to_launch1"), false);
                         }
                         if (((RocketEntity) entity).getFuel() >= 500) {
-                            entity.getPersistentData().putInt("Powered", entity.getPersistentData().getInt("Powered") + 1);
+                            entity.getPersistentData().putInt(CGalaxy.ROCKET_POWERED, entity.getPersistentData().getInt(CGalaxy.ROCKET_POWERED) + 1);
                         }
                     }
                 }

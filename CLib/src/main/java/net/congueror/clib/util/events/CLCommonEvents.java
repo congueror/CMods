@@ -2,13 +2,15 @@ package net.congueror.clib.util.events;
 
 import net.congueror.clib.CLib;
 import net.congueror.clib.api.registry.BlockBuilder;
+import net.congueror.clib.api.registry.FluidBuilder;
 import net.congueror.clib.networking.CLNetwork;
 import net.congueror.clib.world.FeatureGen;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 
 public class CLCommonEvents {
 
@@ -21,8 +23,13 @@ public class CLCommonEvents {
         }
 
         @SubscribeEvent
+        public static void interModProcess(InterModProcessEvent e) {
+            FluidBuilder.registerBlockFluidFix();
+        }
+
+        @SubscribeEvent
         public static void onRegisterItem(final RegistryEvent.Register<Item> e) {
-            BlockBuilder.registerBlockItems(e);
+            BlockBuilder.registerBlockItems(e, CLib.MODID);
         }
     }
 

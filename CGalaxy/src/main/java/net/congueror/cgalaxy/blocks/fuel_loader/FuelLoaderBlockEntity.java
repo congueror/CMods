@@ -35,6 +35,14 @@ public class FuelLoaderBlockEntity extends AbstractFluidBlockEntity {
         this.tanks = IntStream.range(0, 1).mapToObj(value -> new FluidTank(15000)).toArray(FluidTank[]::new);
     }
 
+    @Override
+    public int getSlotLimits(int slot) {
+        if (slot == 1) {
+            return 1;
+        }
+        return super.getSlotLimits(slot);
+    }
+
     @Nullable
     @Override
     public IFluidRecipe<?> getRecipe() {

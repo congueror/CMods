@@ -9,6 +9,7 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+@SuppressWarnings("ALL")
 public class CGFluidInit {
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, CGalaxy.MODID);
 
@@ -18,6 +19,7 @@ public class CGFluidInit {
             .withTemperature(437)
             .withSound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY)
             .withBlock(() -> (LiquidBlock) CGBlockInit.KEROSENE.get())
+            .withBucket(() -> CGItemInit.KEROSENE_BUCKET.get())
             .withTickRate(2)
             .withNewFluidTag("forge:kerosene")
             .withTranslation("Kerosene")
@@ -30,6 +32,7 @@ public class CGFluidInit {
             .withStillTexture("cgalaxy:block/oil_still")
             .withFlowingTexture("cgalaxy:block/oil_flow")
             .withBlock(() -> (LiquidBlock) CGBlockInit.OIL.get())
+            .withBucket(() -> CGItemInit.OIL_BUCKET.get())
             .withTickRate(20)
             .withNewFluidTag("forge:oil")
             .withTranslation("Oil")
@@ -40,7 +43,7 @@ public class CGFluidInit {
             .withGaseousForm()
             .withDensity(1)
             .withTemperature(437)
-            .withBucket(CGItemInit.OXYGEN_BUCKET)
+            .withBucket(() -> CGItemInit.OXYGEN_BUCKET.get())
             .withNewFluidTag("forge:oxygen")
             .withTranslation("Oxygen")
             .build(FLUIDS);

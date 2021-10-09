@@ -101,15 +101,10 @@ repositories {
     maven {
         url 'https://modmaven.dev/'
     }
-
-    maven {
-        //Curios
-        url = "https://maven.theillusivec4.top/"
-    }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.71'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.84'
 
     //implementation fg.deobf("curse.maven:world-stripper-250603:3400494")
     //implementation fg.deobf("curse.maven:solargeneration-336538:3418138")
@@ -118,7 +113,6 @@ dependencies {
     //compile fg.deobf('slimeknights.mantle:Mantle:1.16.5-1.6.114')
 
     runtimeOnly fg.deobf("mezz.jei:jei-1.17.1:8.0.0.16")
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.17.1-5.0.0.1")
 
     implementation project(':CLib')
     implementation project(':CGalaxy')

@@ -152,7 +152,7 @@ public class FluidBuilder {
     }
 
     /**
-     * The bucket item of the fluid.
+     * The bucket item of the fluid. Item must be called like so: () -> MyItems.FLUID_BUCKET.get()
      * @param bucket A {@link Supplier} of the bucket item.
      */
     public final FluidBuilder withBucket(Supplier<? extends Item> bucket) {

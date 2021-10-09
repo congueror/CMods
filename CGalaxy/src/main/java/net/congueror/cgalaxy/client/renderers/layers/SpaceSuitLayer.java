@@ -48,9 +48,15 @@ public class SpaceSuitLayer<T extends LivingEntity, M extends HumanoidModel<T>> 
             });
         }
         if (!(pLivingEntity instanceof Player)) {
+            pMatrixStack.pushPose();
+            if (pLivingEntity.isBaby()) {
+                pMatrixStack.translate(0.0f, 0.75f, 0.0f);
+                pMatrixStack.scale(0.75f, 0.75f, 0.75f);
+            }
             renderOxygenGear(pMatrixStack, pBuffer, pPackedLight, pLivingEntity);
             renderOxygenTank(new OxygenTankModels.Heavy<>(entityModelSet.bakeLayer(OxygenTankModels.Heavy.LAYER_LOCATION), true), pMatrixStack, pBuffer, pPackedLight, pLivingEntity);
             renderOxygenMask(pMatrixStack, pBuffer, pPackedLight, pLivingEntity);
+            pMatrixStack.popPose();
         }
     }
 

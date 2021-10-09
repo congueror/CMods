@@ -26,6 +26,7 @@ import net.congueror.cgalaxy.util.KeyMappings;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
@@ -76,6 +77,7 @@ public class CGClientEvents {
 
         @SubscribeEvent
         public static void addLayers(EntityRenderersEvent.AddLayers e) {
+            //noinspection ConstantConditions,unchecked,rawtypes
             e.getSkin("default").addLayer(new SpaceSuitLayer(e.getSkin("default")));
         }
     }
@@ -95,8 +97,9 @@ public class CGClientEvents {
                         CGNetwork.sendToServer(new PacketLaunchSequence());
                     }
                     if (e.getKey() == KeyMappings.OPEN_SPACE_SUIT_MENU.getKey().getValue()) {
-                        assert Minecraft.getInstance().player != null;
-                        if (SpaceSuitUtils.isEquipped(Minecraft.getInstance().player)) {
+                        LocalPlayer player = Minecraft.getInstance().player;
+                        assert player != null;
+                        if (SpaceSuitUtils.isEquipped(player)) {
                             CGNetwork.sendToServer(new PacketOpenSpaceSuitMenu());
                         }
                     }

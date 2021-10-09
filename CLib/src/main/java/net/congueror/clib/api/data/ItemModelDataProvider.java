@@ -4,15 +4,10 @@ import net.congueror.clib.api.registry.BlockBuilder;
 import net.congueror.clib.api.registry.ItemBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fmllegacy.RegistryObject;
-import net.minecraftforge.registries.DeferredRegister;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 public class ItemModelDataProvider extends ItemModelProvider {
@@ -29,6 +24,13 @@ public class ItemModelDataProvider extends ItemModelProvider {
      */
     public void texture(Item item, String texture) {
         singleTexture(Objects.requireNonNull(item.getRegistryName()).getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(modid, texture));
+    }
+
+    /**
+     * Simple spawn egg item.
+     */
+    public void spawnEggTexture(Item item) {
+        withExistingParent(Objects.requireNonNull(item.getRegistryName()).getPath(), "item/template_spawn_egg");
     }
 
     @Override

@@ -88,7 +88,6 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
 
     public AbstractFluidBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
         super(tileEntityTypeIn, pos, state);
-
         this.energyStorage = createEnergy();
     }
 
@@ -100,7 +99,7 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
     public abstract IFluidRecipe<?> getRecipe();
 
     /**
-     * An array of numbers that represent slots. Must start at 0. Must include 4 additional slots at the end for upgrades.
+     * An array of numbers that represent slots. Must start at 0. Must include 4 additional slots at the end for upgrade slots.
      */
     public abstract int[] invSize();
 
@@ -398,6 +397,18 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
         }
     }
 
+    /**
+     * Override for custom slot limits.
+     * @param slot The index of the slot.
+     */
+    public int getSlotLimits(int slot) {
+        if (slot >= invSize().length - 4) {
+            return 1;
+        } else {
+            return 64;
+        }
+    }
+
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
@@ -430,10 +441,9 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
                 return canItemFit(slot, stack);
             }
 
-            @Nonnull
             @Override
-            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                return super.insertItem(slot, stack, simulate);
+            public int getSlotLimit(int slot) {
+                return getSlotLimits(slot);
             }
 
             @Override

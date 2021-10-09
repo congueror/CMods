@@ -34,7 +34,7 @@ public class BlockBuilder {
     private final String name;
     public final Block block;
     @Nullable public RegistryObject<Block> regObject;
-    @Nullable public String modid;
+    public String modid;
 
     /**
      * All the block tags added via the {@link #withNewItemTag(String)} method. The string is simply the full name of the tag, e.g. "forge:storage_blocks/steel".
@@ -84,9 +84,9 @@ public class BlockBuilder {
      * Registers a block item only if the {@link #withGeneratedBlockItem(boolean)} is called. Otherwise, you need to register your block item manually (or not, it's your choice).
      * Must also be called from a {@link net.minecraftforge.event.RegistryEvent.Register} event.
      */
-    public static void registerBlockItems(final RegistryEvent.Register<Item> e) {
+    public static void registerBlockItems(final RegistryEvent.Register<Item> e, String modid) {
         final IForgeRegistry<Item> registry = e.getRegistry();
-        stream().filter(blockBuilder -> blockBuilder.generateBlockItem).forEach(builder -> {
+        stream().filter(blockBuilder -> blockBuilder.generateBlockItem && blockBuilder.modid.equals(modid)).forEach(builder -> {
             Block block = builder.block;
             Item.Properties properties = new Item.Properties().tab(builder.tab);
             BlockItem item = new BlockItem(block, properties) {

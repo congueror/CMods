@@ -30,6 +30,14 @@ public class OxygenCompressorBlockEntity extends AbstractFluidBlockEntity {
         this.tanks = IntStream.range(0, 1).mapToObj(k -> new FluidTank(10000)).toArray(FluidTank[]::new);
     }
 
+    @Override
+    public int getSlotLimits(int slot) {
+        if (slot == 2) {
+            return 1;
+        }
+        return super.getSlotLimits(slot);
+    }
+
     @Nullable
     @Override
     public IFluidRecipe<?> getRecipe() {

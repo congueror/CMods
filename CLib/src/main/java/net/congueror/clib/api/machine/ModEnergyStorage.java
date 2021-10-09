@@ -2,7 +2,6 @@ package net.congueror.clib.api.machine;
 
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.EnergyStorage;
@@ -13,8 +12,12 @@ public class ModEnergyStorage extends EnergyStorage implements INBTSerializable<
         super(capacity, maxTransfer);
     }
 
-    public ModEnergyStorage(int capacity, int maxReceive, int MaxExtract) {
-        super(capacity, maxReceive, 0);
+    public ModEnergyStorage(int capacity, int maxReceive, int maxExtract) {
+        super(capacity, maxReceive, maxExtract);
+    }
+
+    public ModEnergyStorage(int capacity, int maxReceive, int maxExtract, int energy) {
+        super(capacity, maxReceive, maxExtract, energy);
     }
 
     public void setEnergy(int energy) {
@@ -39,6 +42,7 @@ public class ModEnergyStorage extends EnergyStorage implements INBTSerializable<
         {
             this.energy = 0;
         }
+        onEnergyChanged();
     }
 
     public boolean isFullEnergy() {
