@@ -12,8 +12,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(BlockBehaviour.class)
 public class MixinBlockBehaviour {
 
-    @Inject(at = @At(value = "HEAD"), method = "onPlace")
+    @Inject(at = @At(value = "TAIL"), method = "onPlace", cancellable = true)
     private void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pIsMoving, CallbackInfo ci) {
+        BlockBehaviour c = (BlockBehaviour) ((Object) this);
         System.out.println("TEST");
     }
 }

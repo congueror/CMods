@@ -24,6 +24,10 @@ archivesBaseName = 'workspace'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
+sourceSets {
+    main.resources.srcDirs += "$rootProject/CLib/src/main/resources"
+}
+
 minecraft {
     mappings channel: 'parchment', version: '2021.08.15-1.17.1'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
