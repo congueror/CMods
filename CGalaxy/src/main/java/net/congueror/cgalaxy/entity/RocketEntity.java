@@ -2,6 +2,7 @@ package net.congueror.cgalaxy.entity;
 
 import net.congueror.cgalaxy.CGalaxy;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.ChatType;
@@ -38,7 +39,6 @@ public abstract class RocketEntity extends Entity {
      */
     protected int capacity;
     int i, k = 0;
-    public float yRotation;
 
     private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> DATA_ID_DROPS = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.BOOLEAN);
@@ -134,7 +134,7 @@ public abstract class RocketEntity extends Entity {
         }
 
         if (this.getPersistentData().getInt(CGalaxy.ROCKET_POWERED) == 2) {
-            if (this.isVehicle()) {
+            if (this.isVehicle() && this.canSeeSky()) {
                 i++;
                 ServerPlayer player = (ServerPlayer) level.getNearestPlayer(this, 1);
                 if (player != null) {
@@ -204,6 +204,16 @@ public abstract class RocketEntity extends Entity {
             }
         }
         return super.hurt(pSource, pAmount);
+    }
+
+    public boolean canSeeSky() {
+        if (this.level.isDay() && !this.level.isClientSide) {
+            float f = this.getBrightness();
+            BlockPos blockpos = new BlockPos(this.getX(), this.getEyeY(), this.getZ());
+            return f > 0.5F && this.random.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.level.canSeeSky(blockpos);
+        }
+
+        return false;
     }
 
     @Override

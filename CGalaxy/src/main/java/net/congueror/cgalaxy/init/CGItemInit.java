@@ -99,15 +99,15 @@ public class CGItemInit {
             .build(ITEMS);
 
     public static final RegistryObject<Item> HEAT_PROTECTION_1 = new ItemBuilder("heat_protection_unit_tier_1",
-            new HeatProtectionUnitItem(new Item.Properties(), 200))
+            new HeatProtectionUnitItem(new Item.Properties(), 1000))
             .withTranslation("Tier 1 Heat Protection Unit")
             .build(ITEMS);
     public static final RegistryObject<Item> COLD_PROTECTION_1 = new ItemBuilder("cold_protection_unit_tier_1",
-            new ColdProtectionUnitItem(new Item.Properties(), 200))
+            new ColdProtectionUnitItem(new Item.Properties(), 1000))
             .withTranslation("Tier 1 Cold Protection Unit")
             .build(ITEMS);
     public static final RegistryObject<Item> RADIATION_PROTECTION_1 = new ItemBuilder("radiation_protection_unit_tier_1",
-            new RadiationProtectionUnitItem(new Item.Properties(), 200))
+            new RadiationProtectionUnitItem(new Item.Properties(), 1000))
             .withTranslation("Tier 1 Radiation Protection Unit")
             .build(ITEMS);
 }

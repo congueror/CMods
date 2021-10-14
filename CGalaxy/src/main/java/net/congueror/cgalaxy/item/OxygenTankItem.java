@@ -4,9 +4,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -59,6 +61,16 @@ public class OxygenTankItem extends Item {
             stack.getOrCreateTag().putInt("Oxygen", capacity);
         }
         return filled;
+    }
+
+    @Override
+    public void fillItemCategory(CreativeModeTab pCategory, NonNullList<ItemStack> pItems) {
+        ItemStack stack = new ItemStack(this);
+        stack.getOrCreateTag().putInt("Oxygen", capacity);
+        if (this.allowdedIn(pCategory)) {
+            pItems.add(new ItemStack(this));
+            pItems.add(stack);
+        }
     }
 
     @Override

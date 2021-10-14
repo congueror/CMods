@@ -50,4 +50,7 @@ public class CGalaxy {
 
         MinecraftForge.EVENT_BUS.register(this);
     }
+//TODO: Lunar Crop
+//TODO: Moon Village/Villagers
+//TODO: Moon Boss
 }

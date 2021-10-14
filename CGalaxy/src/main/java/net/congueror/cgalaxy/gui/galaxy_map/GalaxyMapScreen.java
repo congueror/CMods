@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer> {
+public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer> {//TODO: API-fy somehow
     /**
      * 1 = Milky Way,
      * 2 = Solar System,

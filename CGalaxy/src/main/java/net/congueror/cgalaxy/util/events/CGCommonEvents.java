@@ -15,6 +15,7 @@ import net.congueror.cgalaxy.util.SpaceSuitUtils;
 import net.congueror.cgalaxy.world.Dimensions;
 import net.congueror.cgalaxy.world.FeatureGen;
 import net.congueror.clib.api.registry.BlockBuilder;
+import net.congueror.clib.util.RenderingHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -105,9 +106,9 @@ public class CGCommonEvents {
                                     }
                                 }
                             }
-                            if (level.isDay()) {
+                            if (RenderingHelper.isDayTime(level)) {
                                 player.getPersistentData().putInt(CGalaxy.PLAYER_TEMPERATURE, obj.getDayTemp());
-                            } else if (level.isNight()) {
+                            } else {
                                 player.getPersistentData().putInt(CGalaxy.PLAYER_TEMPERATURE, obj.getNightTemp());
                             }
                             player.getPersistentData().putFloat(CGalaxy.PLAYER_RADIATION, obj.getRadiation());
@@ -120,6 +121,19 @@ public class CGCommonEvents {
                             if (!SpaceSuitUtils.hasRadiationProtection(player, player.getPersistentData().getFloat(CGalaxy.PLAYER_RADIATION))) {
                                 player.hurt(DamageSources.NO_RADIATION, 1.0f);
                             }
+
+                            if (obj.getRadiation() < 100) {
+                                entity.getPersistentData().putInt(CGalaxy.LIVING_RADIATION_TICK, 0);
+                            }
+                            if (obj.getBreathable()) {
+                                entity.getPersistentData().putInt(CGalaxy.LIVING_OXYGEN_TICK, 0);
+                            }
+                            if (player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE) < 60) {
+                                entity.getPersistentData().putInt(CGalaxy.LIVING_HEAT_TICK, 0);
+                            }
+                            if (player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE) > -60) {
+                                entity.getPersistentData().putInt(CGalaxy.LIVING_COLD_TICK, 0);
+                            }
                         }
 
                         if (entity instanceof ItemEntity) {
@@ -129,17 +143,6 @@ public class CGCommonEvents {
                                         (entity.getDeltaMovement().z()));
                                 entity.getPersistentData().putDouble(CGalaxy.ITEM_GRAVITY, 0);
                             }
-                        }
-                    } else {
-                        if (entity instanceof LivingEntity) {
-                            AttributeMap manager = ((LivingEntity) entity).getAttributes();
-                            Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(ForgeMod.ENTITY_GRAVITY.get().getDefaultValue());
-                            entity.getPersistentData().putInt(CGalaxy.PLAYER_TEMPERATURE, 0);
-                            entity.getPersistentData().putFloat(CGalaxy.PLAYER_RADIATION, 0);
-                            entity.getPersistentData().putInt(CGalaxy.LIVING_RADIATION_TICK, 0);
-                            entity.getPersistentData().putInt(CGalaxy.LIVING_OXYGEN_TICK, 0);
-                            entity.getPersistentData().putInt(CGalaxy.LIVING_COLD_TICK, 0);
-                            entity.getPersistentData().putInt(CGalaxy.LIVING_HEAT_TICK, 0);
                         }
                     }
                 }

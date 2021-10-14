@@ -11,8 +11,10 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RenderingHelper {
@@ -82,5 +84,15 @@ public class RenderingHelper {
         bufferbuilder.vertex(matrix, (float) x1, (float) y1, (float) blitOffset).uv(sprite.getU0(), sprite.getV0()).endVertex();
         bufferbuilder.end();
         BufferUploader.end(bufferbuilder);
+    }
+
+    /**
+     * Checks whether it is day time. An improvement of {@link Level#isDay()} because it works in both client and server.
+     * @return True if day time, false if night.
+     */
+    public static boolean isDayTime(Level level) {
+        double d2 = 0.5D + 2.0D * Mth.clamp(Mth.cos(level.getTimeOfDay(1.0F) * ((float)Math.PI * 2F)), -0.25D, 0.25D);
+        int darkness = (int)((1.0D - d2) * 11.0D);
+        return darkness < 4;
     }
 }

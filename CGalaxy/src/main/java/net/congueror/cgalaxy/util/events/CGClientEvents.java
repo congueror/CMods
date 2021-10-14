@@ -10,10 +10,7 @@ import net.congueror.cgalaxy.client.models.OxygenMaskModel;
 import net.congueror.cgalaxy.client.models.OxygenTankModels;
 import net.congueror.cgalaxy.client.models.RocketTier1Model;
 import net.congueror.cgalaxy.client.overlays.RocketYOverlay;
-import net.congueror.cgalaxy.client.renderers.AstroEndermanRenderer;
-import net.congueror.cgalaxy.client.renderers.AstroZombieRenderer;
-import net.congueror.cgalaxy.client.renderers.MoonSkyRenderer;
-import net.congueror.cgalaxy.client.renderers.RocketTier1Renderer;
+import net.congueror.cgalaxy.client.renderers.*;
 import net.congueror.cgalaxy.client.renderers.layers.SpaceSuitLayer;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapScreen;
 import net.congueror.cgalaxy.gui.space_suit.SpaceSuitScreen;
@@ -67,6 +64,7 @@ public class CGClientEvents {
         @SubscribeEvent
         public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions e) {
             e.registerLayerDefinition(RocketTier1Model.LAYER_LOCATION, RocketTier1Model::createBodyLayer);
+
             e.registerLayerDefinition(OxygenTankModels.Light.LAYER_LOCATION, OxygenTankModels.Light::createBodyLayer);
             e.registerLayerDefinition(OxygenTankModels.Medium.LAYER_LOCATION, OxygenTankModels.Medium::createBodyLayer);
             e.registerLayerDefinition(OxygenTankModels.Heavy.LAYER_LOCATION, OxygenTankModels.Heavy::createBodyLayer);

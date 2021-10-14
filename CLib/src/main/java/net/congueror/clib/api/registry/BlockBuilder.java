@@ -14,6 +14,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -33,7 +34,8 @@ import java.util.stream.Stream;
 public class BlockBuilder {
     private final String name;
     public final Block block;
-    @Nullable public RegistryObject<Block> regObject;
+    @Nullable
+    public RegistryObject<Block> regObject;
     public String modid;
 
     /**
@@ -47,8 +49,10 @@ public class BlockBuilder {
     public final Map<String, Tag.Named<Item>> itemTags = new HashMap<>();
     public final Map<Tag.Named<Block>, Tag.Named<Block>> blockTagsGen = new HashMap<>();
     public final Map<String, Tag.Named<Block>> blockTags = new HashMap<>();
-    @Nullable public BiConsumer<BlockModelDataProvider, Block> blockModel = BlockStateProvider::simpleBlock;
-    @Nullable public BiConsumer<ItemModelDataProvider, Block> itemModel;
+    @Nullable
+    public BiConsumer<BlockModelDataProvider, Block> blockModel = BlockStateProvider::simpleBlock;
+    @Nullable
+    public BiConsumer<ItemModelDataProvider, Block> itemModel;
     public BiConsumer<LootTableDataProvider, Block> lootTable = LootTableDataProvider::createStandardBlockDrop;
     public final Map<String, String> locale = new HashMap<>();
 
@@ -57,6 +61,9 @@ public class BlockBuilder {
     public int burnTime;
     public int containerType;
 
+    /**
+     * Convenience method for creating a fluid block
+     */
     public static BlockBuilder createFluid(String name, LiquidBlock block) {
         return new BlockBuilder(name, block)
                 .withLootTable(null)
@@ -66,7 +73,8 @@ public class BlockBuilder {
 
     /**
      * This is the main constructor of the builder.
-     * @param name The name of the block. e.g. "my_ore"
+     *
+     * @param name  The name of the block. e.g. "my_ore"
      * @param block A new instance of a class which extends {@link Block}.
      */
     public BlockBuilder(String name, Block block) {
@@ -121,6 +129,7 @@ public class BlockBuilder {
 
     /**
      * Builds/Registers this BlockBuilder object to the DeferredRegister passed in.
+     *
      * @param register The block {@link DeferredRegister} of your mod.
      * @return The registered {@link RegistryObject}.
      */
@@ -141,6 +150,7 @@ public class BlockBuilder {
 
     /**
      * Adds an existing tag to this block's item, for example "minecraft:logs"
+     *
      * @param tags An array of tags to be added to the block's item.
      */
     @SafeVarargs
@@ -156,20 +166,22 @@ public class BlockBuilder {
      * Note that if the string has a Backslash("/") it will create and add 2 tags, e.g. Passing this string will add the following tags:
      * <p>
      * "forge:ores/my_ore" -> "forge:ores", "forge:ores/my_ore"
+     *
      * @param tagName The full name of the tag, e.g. "forge:ores/my_ore"
      */
     public BlockBuilder withNewItemTag(String tagName) {
-        itemTags.put(tagName, ItemTags.createOptional(new ResourceLocation(tagName)));
-        ItemBuilder.ITEM_TAGS.put(tagName, ItemTags.createOptional(new ResourceLocation(tagName)));
+        itemTags.putIfAbsent(tagName, ItemTags.createOptional(new ResourceLocation(tagName)));
+        ItemBuilder.ITEM_TAGS.putIfAbsent(tagName, ItemTags.createOptional(new ResourceLocation(tagName)));
         if (tagName.contains("/")) {
             String parent = tagName.substring(0, tagName.indexOf("/"));
-            itemTagsGen.put(ItemTags.createOptional(new ResourceLocation(parent)), ItemTags.createOptional(new ResourceLocation(tagName)));
+            itemTagsGen.putIfAbsent(ItemTags.createOptional(new ResourceLocation(parent)), ItemTags.createOptional(new ResourceLocation(tagName)));
         }
         return this;
     }
 
     /**
      * Adds an existing tag to this block, for example "minecraft:logs"
+     *
      * @param tags An array of tags to be added to the block.
      */
     @SafeVarargs
@@ -185,14 +197,16 @@ public class BlockBuilder {
      * Note that if the string has a Backslash("/") it will create and add 2 tags, e.g. Passing this string will add the following tags:
      * <p>
      * "forge:ores/my_ore" -> "forge:ores", "forge:ores/my_ore"
+     *
      * @param tagName The full name of the tag, e.g. "forge:ores/my_ore"
      */
     public BlockBuilder withNewBlockTag(String tagName) {
-        blockTags.put(tagName, BlockTags.createOptional(new ResourceLocation(tagName)));
-        BLOCK_TAGS.put(tagName, BlockTags.createOptional(new ResourceLocation(tagName)));
+        Tags.IOptionalNamedTag<Block> tag = BlockTags.createOptional(new ResourceLocation(tagName));
+        blockTags.putIfAbsent(tagName, tag);
+        BLOCK_TAGS.putIfAbsent(tagName, tag);
         if (tagName.contains("/")) {
             String parent = tagName.substring(0, tagName.indexOf("/"));
-            blockTagsGen.put(BlockTags.createOptional(new ResourceLocation(parent)), BlockTags.createOptional(new ResourceLocation(tagName)));
+            blockTagsGen.putIfAbsent(BlockTags.createOptional(new ResourceLocation(parent)), tag);
         }
         return this;
     }
@@ -200,6 +214,7 @@ public class BlockBuilder {
     /**
      * Allows you to generate a block state / model for this block. By default, a simple block and block item (only if {@link #generateBlockItem} is true) will be generated.
      * pass in null if you do not want to generate a block state at all.
+     *
      * @param ctx A {@link BiConsumer} of types {@link BlockModelDataProvider} and {@link Block}.
      *            You can find many useful methods for generating block states inside the {@link BlockModelDataProvider} class
      */
@@ -211,6 +226,7 @@ public class BlockBuilder {
     /**
      * Allows you to generate an item model for this block to be shown in the inventory. By default, unless this method is called, a simple block item model will be generated.
      * Passing null will create a block item model.
+     *
      * @param ctx A {@link BiConsumer} of types {@link ItemModelDataProvider} and {@link Block}.
      *            You can find many useful methods for generating item models inside the {@link ItemModelDataProvider} class
      */
@@ -221,6 +237,7 @@ public class BlockBuilder {
 
     /**
      * Allows you to add a custom loot table to this block. By default, unless this method is called, a simple self-drop loot table is generated.
+     *
      * @param ctx A {@link BiConsumer} of types {@link LootTableDataProvider} and {@link Block}.
      *            You can find many useful methods for generating item models inside the {@link LootTableDataProvider} class
      */
@@ -231,6 +248,7 @@ public class BlockBuilder {
 
     /**
      * Adds a translation to this block in the en_us locale. If you wish to change locale use {@link #withTranslation(String, String)}
+     *
      * @param translation The name of the translated block, e.g. "My Ore"
      */
     public BlockBuilder withTranslation(String translation) {
@@ -240,8 +258,9 @@ public class BlockBuilder {
 
     /**
      * Adds a translation to this block in the given locale.
+     *
      * @param translation The name of the translated block, e.g. "My Ore"
-     * @param locale The localization this translation will be added to, e.g. "en_us"
+     * @param locale      The localization this translation will be added to, e.g. "en_us"
      */
     public BlockBuilder withTranslation(String translation, String locale) {
         this.locale.put(locale, translation);
@@ -265,6 +284,7 @@ public class BlockBuilder {
      * <p><strong>
      * Requires {@link #withGeneratedBlockItem(boolean)} method.
      * </p></strong>
+     *
      * @param tab The {@link CreativeModeTab} you want your block in
      */
     public BlockBuilder withCreativeTab(CreativeModeTab tab) {
@@ -277,6 +297,7 @@ public class BlockBuilder {
      * <p><strong>
      * Requires {@link #withGeneratedBlockItem(boolean)} method.
      * </p></strong>
+     *
      * @param burnTime The amount in ticks that this item will burn for.
      */
     public BlockBuilder withBurnTime(int burnTime) {
@@ -313,8 +334,9 @@ public class BlockBuilder {
      * <p><strong>
      * This method is exclusive for blocks that implement {@link ICLibBlock} interface.
      * </strong></p>
+     *
      * @param action The {@link ToolAction} that must be used, for all vanilla tool actions see {@link net.minecraftforge.common.ToolActions}
-     * @param block The block that results from the tool action.
+     * @param block  The block that results from the tool action.
      */
     public BlockBuilder withModifiedState(ToolAction action, Supplier<? extends Block> block) {
         if (this.block instanceof ICLibBlock clBlock) {

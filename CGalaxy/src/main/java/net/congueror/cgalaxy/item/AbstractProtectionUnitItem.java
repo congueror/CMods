@@ -3,9 +3,11 @@ package net.congueror.cgalaxy.item;
 import net.congueror.cgalaxy.capabilities.ItemEnergyWrapper;
 import net.congueror.clib.api.machine.ModEnergyStorage;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -48,6 +50,16 @@ public abstract class AbstractProtectionUnitItem extends Item {
                 storage.consumeEnergy(amount);
             }
         });
+    }
+
+    @Override
+    public void fillItemCategory(@Nonnull CreativeModeTab pCategory, @Nonnull NonNullList<ItemStack> pItems) {
+        ItemStack stack = new ItemStack(this);
+        stack.getOrCreateTag().putInt("Energy", capacity);
+        if (this.allowdedIn(pCategory)) {
+            pItems.add(new ItemStack(this));
+            pItems.add(stack);
+        }
     }
 
     @Override

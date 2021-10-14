@@ -45,7 +45,7 @@ public class MeteoriteFeature extends Feature<BlockStateConfiguration> {
                         double d6 = y;
                         double d8 = z;
 
-                        for (float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
+                        for (; f > 0.0F; f -= 0.22500001F) {
                             BlockPos blockpos = new BlockPos(d4, d6, d8);
                             if (reader.getBlockState(blockpos).canOcclude()) {
                                 set.add(blockpos);
