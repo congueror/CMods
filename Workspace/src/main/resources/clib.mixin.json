@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "net.congueror.clib.mixins",
+  "compatibilityLevel": "JAVA_16",
+  "client": [
+
+  ],
+  "server": [
+    "MixinBlockBehaviour"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "clib.mixin-refmap.json"
+}
