@@ -7,6 +7,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.Features;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -19,12 +20,13 @@ import net.minecraftforge.fml.common.Mod;
 import static net.congueror.clib.world.WorldHelper.*;
 
 @Mod.EventBusSubscriber(modid = CGalaxy.MODID)
-public class FeatureGen {
+public class CGFeatureGen {
 
     public static ConfiguredFeature<?, ?> MOON_IRON;
     public static ConfiguredFeature<?, ?> MOON_SILICON;
     public static ConfiguredFeature<?, ?> MOON_ALUMINUM;
     public static ConfiguredFeature<?, ?> MOON_TITANIUM;
+    public static ConfiguredFeature<?, ?> MOON_ICE_CLUSTER;
 
     public static ConfiguredFeature<?, ?> OIL_LAKE;
     public static ConfiguredFeature<?, ?> METEORITE;
@@ -37,6 +39,8 @@ public class FeatureGen {
         MOON_SILICON = registerConfiguredOre(moon, CGBlockInit.MOON_ALUMINUM_ORE.get(), 7, 64, 10);
         MOON_ALUMINUM = registerConfiguredOre(moon, CGBlockInit.MOON_SILICON_ORE.get(), 4, 64, 8);
         MOON_TITANIUM = registerConfiguredOre(moon, CGBlockInit.MOON_TITANIUM_ORE.get(), 2, 16, 1);
+
+        MOON_ICE_CLUSTER = registerConfiguredOre(moon, Blocks.ICE, 3, 50, 70, 4);
 
         OIL_LAKE = registerConfiguredLake(CGBlockInit.OIL.get(), 34, 100);
 
@@ -65,11 +69,14 @@ public class FeatureGen {
             e.getGeneration().addFeature(GenerationStep.Decoration.LAKES, OIL_LAKE);
             e.getGeneration().addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, METEORITE_OVERWORLD);
         }
-        if (isBiome(e, new ResourceLocation(CGalaxy.MODID, "the_moon"))) {
+        if (isBiome(e, CGBiomes.THE_MOON)) {
             addOre(e, MOON_IRON, MOON_SILICON, MOON_ALUMINUM, MOON_TITANIUM);
 
             e.getGeneration().addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, METEORITE);
             e.getGeneration().addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, METEORITE_IGNITED);
+        }
+        if (isBiome(e, CGBiomes.THE_MOON_SOUTH)) {
+            addOre(e, MOON_ICE_CLUSTER);
         }
     }
 }

@@ -13,6 +13,7 @@ import net.congueror.clib.util.RenderingHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -27,6 +28,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -117,11 +119,6 @@ public class SpaceSuitItem extends ArmorItem {
                     int y1 = 128 + a;
                     int y2 = y1 + (50 - a);
                     RenderingHelper.renderFluid(matrix, stack1, x1, x2, y1, y2, 0);
-
-                    RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-                    RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, "textures/gui/oxygen_tank_gui.png"));
-                    GuiComponent.blit(poseStack, 0, 127, 18, 52, 0, 0, 18, 52, 18, 52);
-
                     if (tankAmount.size() >= 2) {
                         FluidStack stack2 = new FluidStack(CGFluidInit.OXYGEN.getStill(), tankAmount.get(1));
                         int a1 = 50 - (50 * MathHelper.getPercent(tankAmount.get(1), tankCapacity.get(1)) / 100);
@@ -130,37 +127,64 @@ public class SpaceSuitItem extends ArmorItem {
                         int y3 = 128 + a1;
                         int y4 = y3 + (50 - a1);
                         RenderingHelper.renderFluid(matrix, stack2, x3, x4, y3, y4, 0);
-
-                        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-                        RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, "textures/gui/oxygen_tank_gui.png"));
-                        GuiComponent.blit(poseStack, 17, 127, 18, 52, 0, 0, 18, 52, 18, 52);
                     }
                 }
+                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+                RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, "textures/gui/oxygen_tank_gui.png"));
+                GuiComponent.blit(poseStack, 0, 127, 18, 52, 0, 0, 18, 52, 18, 52);
+                GuiComponent.blit(poseStack, 17, 127, 18, 52, 0, 0, 18, 52, 18, 52);
 
                 //Radiation
-                String rad = "Radiation: " + player.getPersistentData().getFloat(CGalaxy.PLAYER_RADIATION) + " Sv/y";
-                int k = mc.font.width(rad);
-                int l = mc.getWindow().getGuiScaledWidth() - 2 - k;
-                GuiComponent.drawString(poseStack, mc.font, rad, l, 127, MathHelper.calculateRGB(223, 255, 0));
-
-                //Temperature
-                int pTemp = player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE);
-                int color = MathHelper.calculateRGB(240, 240, 255);
-                if (pTemp >= 30 && pTemp < 60) {
-                    color = MathHelper.calculateRGB(255, 105, 0);
-                } else if (pTemp >= 60) {
-                    color = MathHelper.calculateRGB(255, 0, 0);
-                } else if (pTemp <= 10 && pTemp > -60) {
-                    color = MathHelper.calculateRGB(149,214,220);
-                } else if (pTemp <= -60) {
-                    color = MathHelper.calculateRGB(0, 0, 237);
+                {
+                    String rad = "Radiation: " + player.getPersistentData().getFloat(CGalaxy.PLAYER_RADIATION) + " Sv/y";
+                    int k = mc.font.width(rad);
+                    int l = mc.getWindow().getGuiScaledWidth() - 2 - k;
+                    GuiComponent.drawString(poseStack, mc.font, rad, l, 127, MathHelper.calculateRGB(223, 255, 0));
                 }
 
-                String temp = "Temperature: " + pTemp + " \u00b0C";
-                int k1 = mc.font.width(temp);
-                int l1 = mc.getWindow().getGuiScaledWidth() - 2 - k1;
-                GuiComponent.drawString(poseStack, mc.font, temp, l1, 138, color);
-                //TODO: Compass, Coords, Planet Name/Info, Crack on screen if low
+                //Temperature
+                {
+                    int pTemp = player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE);
+                    int color = MathHelper.calculateRGB(240, 240, 255);
+                    if (pTemp >= 30 && pTemp < 60) {
+                        color = MathHelper.calculateRGB(255, 105, 0);
+                    } else if (pTemp >= 60) {
+                        color = MathHelper.calculateRGB(255, 0, 0);
+                    } else if (pTemp <= 10 && pTemp > -60) {
+                        color = MathHelper.calculateRGB(149, 214, 220);
+                    } else if (pTemp <= -60) {
+                        color = MathHelper.calculateRGB(0, 0, 237);
+                    }
+
+                    String temp = "Temperature: " + pTemp + " \u00b0C";
+                    int k = mc.font.width(temp);
+                    int l = mc.getWindow().getGuiScaledWidth() - 2 - k;
+                    GuiComponent.drawString(poseStack, mc.font, temp, l, 138, color);
+                }
+
+                //Coordinates
+                {
+                    String coords = "x: " + (int) player.getX() + ", y: " + (int) player.getY() + ", z:" + (int) player.getZ();
+                    int k = mc.font.width(coords);
+                    int l = mc.getWindow().getGuiScaledWidth() - 2 - k;
+                    GuiComponent.drawString(poseStack, mc.font, coords, l, 10, MathHelper.calculateRGB(91, 127, 0));
+                }
+
+                //Planet Info
+                {
+                    String locale = "dimension." + level.dimension().location().getNamespace() + "." + level.dimension().location().getPath();
+                    String planetName = "Planet: " + I18n.get(locale);
+                    GuiComponent.drawString(poseStack, mc.font, planetName, 2, 10, MathHelper.calculateRGB(91, 127, 0));
+
+                    String locale1 = "biome." + level.getBiome(player.blockPosition()).getRegistryName().getNamespace() + "." + level.getBiome(player.blockPosition()).getRegistryName().getPath();
+                    String biomeName = "Biome: " + I18n.get(locale1);
+                    GuiComponent.drawString(poseStack, mc.font, biomeName, 2, 20, MathHelper.calculateRGB(91, 127, 0));
+
+                    String grav = "Gravity: " + (String.format("%.02f", player.getAttributeValue(ForgeMod.ENTITY_GRAVITY.get()) * 100)) + "m/s\u00b2";
+                    GuiComponent.drawString(poseStack, mc.font, grav, 2, 30, MathHelper.calculateRGB(91, 127, 0));
+                    //Atmosphere?
+                }
+                //TODO: Planet Name/Info, Crack on screen if low, 3 Protection Bars(above hunger)
             }
         });
     }

@@ -7,7 +7,7 @@ import net.congueror.cgalaxy.entity.RocketEntity;
 import net.congueror.cgalaxy.entity.rockets.RocketTier1Entity;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.networking.PacketTeleport;
-import net.congueror.cgalaxy.world.Dimensions;
+import net.congueror.cgalaxy.world.CGDimensions;
 import net.congueror.clib.util.MathHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -100,7 +100,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
         {
             EARTH = blankMapButton(this.leftPos + 433, this.topPos + 281, 16, 16, 2.3);
             LAUNCH_EARTH = launchButton(0, Level.OVERWORLD);
-            LAUNCH_MOON = launchButton(1, Dimensions.MOON.getDim());
+            LAUNCH_MOON = launchButton(1, CGDimensions.MOON.getDim());
             EARTH_SEL = blankMapButton(this.leftPos + 275, this.topPos + 213, 96, 96, 2.3);
             MOON_SEL = blankMapButton(this.leftPos + 245, this.topPos + 340, 32, 32, 2.31);
         }

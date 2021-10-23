@@ -1,6 +1,7 @@
 package net.congueror.clib.world;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.Features;
@@ -11,6 +12,7 @@ import net.minecraft.tags.Tag;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.*;
@@ -18,10 +20,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
-import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
-import net.minecraft.world.level.levelgen.placement.ChanceDecoratorConfiguration;
-import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
@@ -61,7 +60,7 @@ public class WorldHelper {
     }
 
     /**
-     * Used to register a dimension world key to the {@link Registry}.
+     * Used to register a dimension resource key to the {@link Registry}.
      *
      * @param modid Your mod id
      * @param name  The id of the dimension
@@ -69,6 +68,28 @@ public class WorldHelper {
      */
     public static ResourceKey<Level> registerDim(String modid, String name) {
         return ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(modid, name));
+    }
+
+    /**
+     * Used to register a biome resource key to the {@link Registry}
+     *
+     * @param modid Your mod id
+     * @param name  The id of the dimension
+     * @return The registry key
+     */
+    public static ResourceKey<Biome> registerBiome(String modid, String name) {
+        return ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(modid, name));
+    }
+
+    /**
+     * Used to register a biome source to the {@link Registry}
+     *
+     * @param modid Your mod id
+     * @param name  The id of the biome source
+     * @param codec The codec field in your biome source
+     */
+    public static void registerBiomeSource(String modid, String name, Codec<? extends BiomeSource> codec) {
+        Registry.register(Registry.BIOME_SOURCE, new ResourceLocation(modid, name), codec);
     }
 
     /**
@@ -83,18 +104,34 @@ public class WorldHelper {
     }
 
     /**
-     * Used to register a configured ore feature to the {@link BuiltinRegistries}
+     * Used to register a configured ore feature to the {@link BuiltinRegistries}.
      *
      * @param filler    The block that will be replaced by the ore. See {@link #blockRuleTest(Block)} or {@link #tagRuleTest(Tag)}
      * @param block     The ore block
      * @param veinSize  The maximum amount of blocks that will be adjacent to the ore. Must be greater than 1 for some reason
-     * @param maxHeight The maximum y value that the ore can spawn at. (Minimum is always 0)
+     * @param maxHeight The maximum y value that the ore can spawn at. (Minimum is always the bottom)
      * @param count     How many attempts it will make to spawn the ore each chunk.
      */
     public static ConfiguredFeature<?, ?> registerConfiguredOre(RuleTest filler, Block block, int veinSize, int maxHeight, int count) {
         return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, Objects.requireNonNull(block.getRegistryName()), Feature.ORE.configured(
                         new OreConfiguration(filler, block.defaultBlockState(), veinSize))
                 .rangeUniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(maxHeight)).squared().count(count));
+    }
+
+    /**
+     * Used to register a configured ore feature to the {@link BuiltinRegistries}
+     *
+     * @param filler    The block that will be replaced by the ore. See {@link #blockRuleTest(Block)} or {@link #tagRuleTest(Tag)}
+     * @param block     The ore block
+     * @param veinSize  The maximum amount of blocks that will be adjacent to the ore. Must be greater than 1 for some reason
+     * @param minHeight The minimum y value that the ore can spawn at.
+     * @param maxHeight The maximum y value that the ore can spawn at.
+     * @param count     How many attempts it will make to spawn the ore each chunk.
+     */
+    public static ConfiguredFeature<?, ?> registerConfiguredOre(RuleTest filler, Block block, int veinSize, int minHeight, int maxHeight, int count) {
+        return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, Objects.requireNonNull(block.getRegistryName()), Feature.ORE.configured(
+                        new OreConfiguration(filler, block.defaultBlockState(), veinSize))
+                .rangeUniform(VerticalAnchor.absolute(minHeight), VerticalAnchor.absolute(maxHeight)).squared().count(count));
     }
 
     /**
@@ -219,6 +256,20 @@ public class WorldHelper {
     public static boolean isBiome(BiomeLoadingEvent e, ResourceLocation name) {
         if (e.getName() != null) {
             return e.getName().equals(name);
+        }
+        return false;
+    }
+
+    /**
+     * Checks whether the event is in the given biome. Use inside a {@link BiomeLoadingEvent}
+     *
+     * @param e     The biome loading event
+     * @param biome The resource key of the biome.
+     * @return True if given biome.
+     */
+    public static boolean isBiome(BiomeLoadingEvent e, ResourceKey<Biome> biome) {
+        if (e.getName() != null) {
+            return e.getName().equals(biome.getRegistryName());
         }
         return false;
     }

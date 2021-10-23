@@ -61,6 +61,16 @@ minecraft {
                 workspace {
                     source sourceSets.main
                 }
+                //MOD CLASSES:
+                // "workspace%%$PROJECT_DIR$/../CMods 1.17.1\Workspace\build\resources\main;workspace%%$PROJECT_DIR$/../CMods 1.17.1\Workspace\build\classes\java\main;clib%%$PROJECT_DIR$/../CMods 1.17.1\CLib\build\resources\main;clib%%$PROJECT_DIR$/../CMods 1.17.1\CLib\build\classes\java\main;cgalaxy%%$PROJECT_DIR$/../CMods 1.17.1\CGalaxy\build\resources\main;cgalaxy%%$PROJECT_DIR$/../CMods 1.17.1\CGalaxy\build\classes\java\main"
+
+                clib {
+                    source project(':CLib').sourceSets.main
+                }
+
+                cgalaxy {
+                    source project(':CGalaxy').sourceSets.main
+                }
             }
         }
     }
@@ -120,7 +130,10 @@ jar {
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 //"Implementation-Vendor": "workspace authors",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+                "TweakOrder": 0,
+                "MixinConfigs" : "clib.mixin.json"
         ])
     }
 }

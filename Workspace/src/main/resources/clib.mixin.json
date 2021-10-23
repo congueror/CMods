@@ -2,6 +2,7 @@
   "required": true,
   "package": "net.congueror.clib.mixins",
   "compatibilityLevel": "JAVA_16",
+  "minVersion": "0.8.4",
   "client": [
 
   ],

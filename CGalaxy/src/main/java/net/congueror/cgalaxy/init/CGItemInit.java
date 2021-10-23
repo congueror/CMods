@@ -3,6 +3,7 @@ package net.congueror.cgalaxy.init;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.client.models.OxygenTankModels;
 import net.congueror.cgalaxy.item.*;
+import net.congueror.cgalaxy.util.CGFoods;
 import net.congueror.clib.api.data.ItemModelDataProvider;
 import net.congueror.clib.api.objects.items.CLBucketItem;
 import net.congueror.clib.api.objects.items.CLItem;
@@ -12,6 +13,7 @@ import net.congueror.clib.util.MathHelper;
 import net.congueror.clib.util.ModCreativeTabs;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -48,6 +50,23 @@ public class CGItemInit {
                     new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
             .withTranslation("Astro Zombie Spawn Egg")
             .withItemModel(ItemModelDataProvider::spawnEggTexture)
+            .build(ITEMS);
+    public static final RegistryObject<Item> LUNAR_VILLAGER_EGG = new ItemBuilder("lunar_villager_spawn_egg",
+            new ForgeSpawnEggItem(CGEntityTypeInit.LUNAR_VILLAGER, MathHelper.calculateRGB(153,50,204), 12422002,
+                    new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
+            .withTranslation("Lunar Villager Spawn Egg")
+            .withItemModel(ItemModelDataProvider::spawnEggTexture)
+            .build(ITEMS);
+    public static final RegistryObject<Item> LUNAR_ZOMBIE_VILLAGER_EGG = new ItemBuilder("lunar_zombie_villager_spawn_egg",
+            new ForgeSpawnEggItem(CGEntityTypeInit.LUNAR_ZOMBIE_VILLAGER, MathHelper.calculateRGB(153,50,204), 7969893,
+                    new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
+            .withTranslation("Lunar Zombie Villager Spawn Egg")
+            .withItemModel(ItemModelDataProvider::spawnEggTexture)
+            .build(ITEMS);
+
+    public static final RegistryObject<Item> DIAMOND_APPLE = new ItemBuilder("diamond_apple",
+            new Item(new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance).food(CGFoods.DIAMOND_APPLE).rarity(Rarity.RARE)))
+            .withTranslation("Diamond Apple")
             .build(ITEMS);
 
     public static final RegistryObject<Item> ROCKET_TIER_1 = new ItemBuilder("rocket_tier_1",

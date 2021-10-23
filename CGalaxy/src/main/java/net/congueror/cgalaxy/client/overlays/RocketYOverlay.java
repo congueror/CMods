@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.entity.RocketEntity;
-import net.congueror.cgalaxy.world.Dimensions;
+import net.congueror.cgalaxy.world.CGDimensions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.player.LocalPlayer;
@@ -20,7 +20,7 @@ public class RocketYOverlay extends GuiComponent implements IIngameOverlay {
         if (player != null) {
             if (player.getVehicle() instanceof RocketEntity) {
                 String texture = "textures/gui/rocket_y_hud.png";
-                if (player.level.dimension().equals(Dimensions.MOON)) {
+                if (player.level.dimension().equals(CGDimensions.MOON)) {
                     texture = "textures/gui/rocket_y_hud_moon.png";
                 }
                 RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, texture));

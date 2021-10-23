@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class CGDimensionBuilder {
     public static final ArrayList<DimensionObject> OBJECTS = new ArrayList<>();
-    protected final ResourceKey<Level> dim;
+    private final ResourceKey<Level> dim;
     private boolean breathable = true;
     private double gravity = ForgeMod.ENTITY_GRAVITY.get().getDefaultValue();
     private int dayTemp = 30;
@@ -19,27 +19,22 @@ public class CGDimensionBuilder {
         this.dim = dim;
     }
 
-    public ResourceKey<Level> getDim() {
+    private ResourceKey<Level> getDim() {
         return dim;
     }
-
-    public boolean getIsBreathable() {
+    private boolean getIsBreathable() {
         return breathable;
     }
-
-    public double getGravity() {
+    private double getGravity() {
         return gravity;
     }
-
-    public int getDayTemp() {
+    private int getDayTemp() {
         return dayTemp;
     }
-
-    public int getNightTemp() {
+    private int getNightTemp() {
         return nightTemp;
     }
-
-    public float getRadiation() {
+    private float getRadiation() {
         return radiation;
     }
 
@@ -58,10 +53,10 @@ public class CGDimensionBuilder {
     }
 
     /**
-     * The gravity of the dimension in m/s^2, divided by 100, e.g. Earth Gravity: 9.81 m/s^2, Parameter: 9.81 / 100 = 0.0981.
+     * The gravity of the dimension in m/s^2, e.g. Earth Gravity: 9.81 m/s^2, Param: 9.81.
      */
     public CGDimensionBuilder withGravity(double gravity) {
-        this.gravity = gravity;
+        this.gravity = gravity / 100;
         return this;
     }
 

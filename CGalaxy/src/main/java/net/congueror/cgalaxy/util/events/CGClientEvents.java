@@ -5,10 +5,7 @@ import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderScreen;
 import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryScreen;
 import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorScreen;
 import net.congueror.cgalaxy.client.AbstractRocketModel;
-import net.congueror.cgalaxy.client.models.OxygenGearModel;
-import net.congueror.cgalaxy.client.models.OxygenMaskModel;
-import net.congueror.cgalaxy.client.models.OxygenTankModels;
-import net.congueror.cgalaxy.client.models.RocketTier1Model;
+import net.congueror.cgalaxy.client.models.*;
 import net.congueror.cgalaxy.client.overlays.RocketYOverlay;
 import net.congueror.cgalaxy.client.renderers.*;
 import net.congueror.cgalaxy.client.renderers.layers.SpaceSuitLayer;
@@ -59,11 +56,14 @@ public class CGClientEvents {
             e.registerEntityRenderer(CGEntityTypeInit.ROCKET_TIER_1.get(), p_174010_ -> new RocketTier1Renderer(p_174010_, new RocketTier1Model(p_174010_.bakeLayer(RocketTier1Model.LAYER_LOCATION))));
             e.registerEntityRenderer(CGEntityTypeInit.ASTRO_ENDERMAN.get(), AstroEndermanRenderer::new);
             e.registerEntityRenderer(CGEntityTypeInit.ASTRO_ZOMBIE.get(), AstroZombieRenderer::new);
+            e.registerEntityRenderer(CGEntityTypeInit.LUNAR_VILLAGER.get(), LunarVillagerRenderer::new);
         }
 
         @SubscribeEvent
         public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions e) {
             e.registerLayerDefinition(RocketTier1Model.LAYER_LOCATION, RocketTier1Model::createBodyLayer);
+            e.registerLayerDefinition(LunarVillagerModel.LAYER_LOCATION, LunarVillagerModel::createBodyLayer);
+            e.registerLayerDefinition(LunarZombieVillagerModel.LAYER_LOCATION, LunarZombieVillagerModel::createBodyLayer);
 
             e.registerLayerDefinition(OxygenTankModels.Light.LAYER_LOCATION, OxygenTankModels.Light::createBodyLayer);
             e.registerLayerDefinition(OxygenTankModels.Medium.LAYER_LOCATION, OxygenTankModels.Medium::createBodyLayer);

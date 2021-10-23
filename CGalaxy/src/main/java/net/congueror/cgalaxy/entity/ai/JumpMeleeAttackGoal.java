@@ -1,6 +1,6 @@
 package net.congueror.cgalaxy.entity.ai;
 
-import net.congueror.cgalaxy.entity.AstroEndermanEntity;
+import net.congueror.cgalaxy.entity.AstroEnderman;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -21,8 +21,8 @@ public class JumpMeleeAttackGoal extends MeleeAttackGoal {
                 ((int) enemy.getX() == (int) mob.getX()) && ((int) enemy.getZ() == (int) mob.getZ()) &&
                 getTicksUntilNextAttack() <= 0) {
             this.resetAttackCooldown();
-            if (this.mob instanceof AstroEndermanEntity && enemy instanceof Player) {
-                ((AstroEndermanEntity) this.mob).teleportToPlayer((Player) enemy);
+            if (this.mob instanceof AstroEnderman && enemy instanceof Player) {
+                ((AstroEnderman) this.mob).teleportToPlayer((Player) enemy);
                 this.mob.swing(InteractionHand.MAIN_HAND);
                 this.mob.doHurtTarget(enemy);
             }

@@ -12,14 +12,15 @@ import java.util.Map;
 
 public class LangDataProvider extends LanguageProvider {
 
-    String locale;
-    String modid;
+    protected String locale;
+    protected String modid;
+
+    protected static List<String> locales = new ArrayList<>();
 
     /**
      * Call this method from your data generation event to generate all the language files from the builders.
      */
     public static void create(DataGenerator gen, String modid) {
-        List<String> locales = new ArrayList<>();
         if (ItemBuilder.OBJECTS.get(modid) != null)
             ItemBuilder.OBJECTS.get(modid).stream().map(itemBuilder -> itemBuilder.locale).forEach(stringStringMap -> {
                 for (Map.Entry<String, String> string : stringStringMap.entrySet()) {

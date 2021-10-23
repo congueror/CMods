@@ -12,6 +12,13 @@ public class LangDataGen extends LangDataProvider {
     @Override
     protected void addTranslations() {
         super.addTranslations();
+        add("dimension.minecraft.overworld", "Overworld");
+        add("dimension.minecraft.the_nether", "The Nether");
+        add("dimension.minecraft.the_end", "The End");
+        add("dimension.cgalaxy.moon", "The Moon");
+        add("biome.cgalaxy.the_moon", "Moon Barren Plains");
+        add("biome.cgalaxy.the_moon_south", "Moon South Pole");
+
         add("chat.cgalaxy.launch_off", " is launching off to space!");
         add("key.cgalaxy.empty", "Empty");
         add("tooltip.cgalaxy.screen.energy_percent", "Energy");
