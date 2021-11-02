@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
+    "cgalaxy:astral_sapphire_ore",
+    "cgalaxy:astral_sapphire_block",
     "cgalaxy:meteorite"
   ]
 }

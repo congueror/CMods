@@ -31,7 +31,7 @@ import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 
-public abstract class RocketEntity extends Entity {
+public abstract class AbstractRocket extends Entity {
 
     protected int fuel;
     /**
@@ -40,10 +40,10 @@ public abstract class RocketEntity extends Entity {
     protected int capacity;
     int i, k = 0;
 
-    private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Boolean> DATA_ID_DROPS = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(AbstractRocket.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> DATA_ID_DROPS = SynchedEntityData.defineId(AbstractRocket.class, EntityDataSerializers.BOOLEAN);
 
-    protected RocketEntity(EntityType<? extends Entity> entity, Level level) {
+    protected AbstractRocket(EntityType<? extends Entity> entity, Level level) {
         super(entity, level);
         this.blocksBuilding = true;
     }

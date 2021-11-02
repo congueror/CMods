@@ -1,8 +1,8 @@
 package net.congueror.cgalaxy.item;
 
 import net.congueror.cgalaxy.client.renderers.RocketItemRenderer;
-import net.congueror.cgalaxy.entity.RocketEntity;
-import net.congueror.cgalaxy.entity.rockets.RocketTier1Entity;
+import net.congueror.cgalaxy.entity.AbstractRocket;
+import net.congueror.cgalaxy.entity.rockets.RocketTier1;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -17,8 +17,8 @@ public class RocketTier1Item extends RocketItem {
     }
 
     @Override
-    public RocketEntity newRocketEntity(Level level) {
-        return new RocketTier1Entity(CGEntityTypeInit.ROCKET_TIER_1.get(), level);
+    public AbstractRocket newRocketEntity(Level level) {
+        return new RocketTier1(CGEntityTypeInit.ROCKET_TIER_1.get(), level);
     }
 
     @Override

@@ -2,25 +2,18 @@ package net.congueror.cgalaxy.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.client.AbstractRocketModel;
-import net.congueror.cgalaxy.entity.rockets.RocketTier1Entity;
-import net.congueror.clib.api.registry.ItemBuilder;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.EntityModel;
+import net.congueror.cgalaxy.entity.rockets.RocketTier1;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 
 import javax.annotation.Nonnull;
 
-public class RocketTier1Model extends AbstractRocketModel<RocketTier1Entity> {
+public class RocketTier1Model extends AbstractRocketModel<RocketTier1> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(CGalaxy.MODID, "rocket_tier_1"), "main");
     private final ModelPart Rocket;
 
@@ -106,7 +99,7 @@ public class RocketTier1Model extends AbstractRocketModel<RocketTier1Entity> {
     }
 
     @Override
-    public void setupAnim(@Nonnull RocketTier1Entity pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
+    public void setupAnim(@Nonnull RocketTier1 pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
 
     }
 

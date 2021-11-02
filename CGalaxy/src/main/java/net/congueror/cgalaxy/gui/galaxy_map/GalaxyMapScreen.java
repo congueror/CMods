@@ -3,8 +3,8 @@ package net.congueror.cgalaxy.gui.galaxy_map;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.entity.RocketEntity;
-import net.congueror.cgalaxy.entity.rockets.RocketTier1Entity;
+import net.congueror.cgalaxy.entity.AbstractRocket;
+import net.congueror.cgalaxy.entity.rockets.RocketTier1;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.networking.PacketTeleport;
 import net.congueror.cgalaxy.world.CGDimensions;
@@ -128,11 +128,11 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
         int infoColor = MathHelper.calculateRGB(0, 150, 255);
 
         this.unlocked = container.unlocked;
-        tiers.put(0, entity instanceof RocketEntity || unlocked);
-        tiers.put(1, entity instanceof RocketTier1Entity || unlocked);
-        tiers.put(2, entity instanceof RocketTier1Entity || unlocked);//TODO: Tier 2 check
-        tiers.put(3, entity instanceof RocketTier1Entity || unlocked);//TODO: Tier 3 check
-        tiers.put(4, entity instanceof RocketTier1Entity || unlocked);//TODO: Tier 4 check
+        tiers.put(0, entity instanceof AbstractRocket || unlocked);
+        tiers.put(1, entity instanceof RocketTier1 || unlocked);
+        tiers.put(2, entity instanceof RocketTier1 || unlocked);//TODO: Tier 2 check
+        tiers.put(3, entity instanceof RocketTier1 || unlocked);//TODO: Tier 3 check
+        tiers.put(4, entity instanceof RocketTier1 || unlocked);//TODO: Tier 4 check
 
         SOLAR_SYSTEM.visible = false;
 

@@ -2,13 +2,13 @@
   "type": "minecraft:default",
   "config": {
     "top_material": {
-      "Name": "cgalaxy:moon_turf"
+      "Name": "cgalaxy:moon_regolith"
     },
     "under_material": {
-      "Name": "cgalaxy:moon_turf"
+      "Name": "cgalaxy:moon_regolith"
     },
     "underwater_material": {
-      "Name": "cgalaxy:moon_turf"
+      "Name": "cgalaxy:moon_regolith"
     }
   }
 }

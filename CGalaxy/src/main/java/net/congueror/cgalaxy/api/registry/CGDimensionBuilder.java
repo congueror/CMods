@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 public class CGDimensionBuilder {
@@ -14,6 +15,7 @@ public class CGDimensionBuilder {
     private int dayTemp = 30;
     private int nightTemp = 10;
     private float radiation = 2.4F;
+    private double airPressure = 101352.9D;
 
     public CGDimensionBuilder(ResourceKey<Level> dim) {
         this.dim = dim;
@@ -22,20 +24,38 @@ public class CGDimensionBuilder {
     private ResourceKey<Level> getDim() {
         return dim;
     }
+
     private boolean getIsBreathable() {
         return breathable;
     }
+
     private double getGravity() {
         return gravity;
     }
+
     private int getDayTemp() {
         return dayTemp;
     }
+
     private int getNightTemp() {
         return nightTemp;
     }
+
     private float getRadiation() {
         return radiation;
+    }
+
+    public double getAirPressure() {
+        return airPressure;
+    }
+
+    /**
+     * Gets the dimension object that matches the given key.
+     * @return A {@link DimensionObject} if key belongs to any of the registered objects, otherwise null.
+     */
+    @Nullable
+    public static DimensionObject getObjectFromKey(ResourceKey<Level> key) {
+        return OBJECTS.stream().filter(object -> object.getDim().equals(key)).findAny().orElse(null);
     }
 
     public final DimensionObject build() {
@@ -84,6 +104,14 @@ public class CGDimensionBuilder {
         return this;
     }
 
+    /**
+     * The atmospheric pressure of the dimension in Pascals(Pa)
+     */
+    public CGDimensionBuilder withAirPressure(double airPressure) {
+        this.airPressure = airPressure;
+        return this;
+    }
+
     public static class DimensionObject {
         private final CGDimensionBuilder builder;
 
@@ -113,6 +141,10 @@ public class CGDimensionBuilder {
 
         public float getRadiation() {
             return builder.getRadiation();
+        }
+
+        public double getAirPressure() {
+            return builder.getAirPressure();
         }
     }
 }

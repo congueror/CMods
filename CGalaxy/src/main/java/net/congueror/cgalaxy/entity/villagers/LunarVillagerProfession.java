@@ -28,7 +28,7 @@ public class LunarVillagerProfession {
         this.professionClothesTexture = professionClothesTexture;
     }
 
-    public static ArrayList<LunarVillagerProfession> registerProfessions() {
+    public static ArrayList<LunarVillagerProfession> registerProfessions() {//TODO: More Professions, More Trades
         ArrayList<LunarVillagerProfession> profs = new ArrayList<>();
         profs.add(new LunarVillagerProfession("cartographer", LunarVillagerTrades.toIntMap(ImmutableMap.of(
                 1, new VillagerTrades.ItemListing[]{
@@ -36,7 +36,9 @@ public class LunarVillagerProfession {
                         new LunarVillagerTrades.ItemsToEmeralds(Items.ANDESITE_STAIRS, 1, 1, 1)},
                 2, new VillagerTrades.ItemListing[]{
                         new LunarVillagerTrades.ItemsToEmeralds(Items.ACACIA_BOAT, 1, 1, 1)}
-        )), new ResourceLocation(CGalaxy.MODID, "textures/entity/lunar_villager_clothes.png"), new ResourceLocation(CGalaxy.MODID, "textures/entity/lunar_cartographer.png")));
+        )), new ResourceLocation(CGalaxy.MODID, "textures/entity/lunar_villager_clothes.png")
+                , new ResourceLocation(CGalaxy.MODID, "textures/entity/lunar_cartographer.png")));
+
         MinecraftForge.EVENT_BUS.post(new AddVillagerProfessionsEvent(profs));
         if (profs.stream().map(lunarVillagerProfession -> lunarVillagerProfession.name).anyMatch(s -> Collections.frequency(profs, s) > 1)) {
             throw new IllegalArgumentException("Duplicate lunar villager professions present!");

@@ -1,9 +1,12 @@
 package net.congueror.cgalaxy;
 
 import net.congueror.cgalaxy.init.*;
+import net.congueror.cgalaxy.util.CGConfig;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +23,8 @@ public class CGalaxy {
     public static final String PLAYER_TEMPERATURE = "Temperature";
     /**Float*/
     public static final String PLAYER_RADIATION = "Radiation";
+    /**Double*/
+    public static final String PLAYER_AIR_PRESSURE = "AirPressure";
     /**Integer*/
     public static final String LIVING_HEAT_TICK = "HeatTick";
     /**Integer*/
@@ -36,6 +41,9 @@ public class CGalaxy {
     public static final String ITEM_GRAVITY = "ItemGravity";
 
     public CGalaxy() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CGConfig.CLIENT_CONFIG);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, CGConfig.SERVER_CONFIG);
+
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         CGItemInit.ITEMS.register(modEventBus);
         CGBlockInit.BLOCKS.register(modEventBus);
@@ -46,6 +54,7 @@ public class CGalaxy {
         CGEntityTypeInit.ENTITY_TYPES.register(modEventBus);
         CGCarverInit.CARVERS.register(modEventBus);
         CGFeatureInit.FEATURES.register(modEventBus);
+        CGSoundInit.SOUNDS.register(modEventBus);
         CGalaxy.instance = this;
 
         MinecraftForge.EVENT_BUS.register(this);

@@ -57,6 +57,7 @@ public class CGClientEvents {
             e.registerEntityRenderer(CGEntityTypeInit.ASTRO_ENDERMAN.get(), AstroEndermanRenderer::new);
             e.registerEntityRenderer(CGEntityTypeInit.ASTRO_ZOMBIE.get(), AstroZombieRenderer::new);
             e.registerEntityRenderer(CGEntityTypeInit.LUNAR_VILLAGER.get(), LunarVillagerRenderer::new);
+            e.registerEntityRenderer(CGEntityTypeInit.LUNAR_ZOMBIE_VILLAGER.get(), LunarZombieVillagerRenderer::new);
         }
 
         @SubscribeEvent

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "cgalaxy:block/moon_turf"
+    "all": "cgalaxy:block/astral_sapphire_block"
   }
 }

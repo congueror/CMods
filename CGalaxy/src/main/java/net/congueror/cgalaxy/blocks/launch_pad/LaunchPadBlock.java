@@ -1,6 +1,6 @@
 package net.congueror.cgalaxy.blocks.launch_pad;
 
-import net.congueror.cgalaxy.entity.RocketEntity;
+import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.clib.api.machine.tickable.AbstractTickableBlock;
 import net.minecraft.core.BlockPos;
@@ -50,11 +50,11 @@ public class LaunchPadBlock extends AbstractTickableBlock {
      * @param pos   Position of middle block
      * @return rocket entity if found, otherwise null.
      */
-    public RocketEntity getRocket(LevelAccessor level, BlockPos pos) {
-        List<RocketEntity> rocket = level.getEntitiesOfClass(RocketEntity.class, new AABB(
+    public AbstractRocket getRocket(LevelAccessor level, BlockPos pos) {
+        List<AbstractRocket> rocket = level.getEntitiesOfClass(AbstractRocket.class, new AABB(
                 new BlockPos(pos.getX() - 1, pos.getY() + 1, pos.getZ() - 1),
                 new BlockPos(pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1)));
-        for (RocketEntity entity : rocket) {
+        for (AbstractRocket entity : rocket) {
             if (entity != null) {
                 return entity;
             }
@@ -97,7 +97,7 @@ public class LaunchPadBlock extends AbstractTickableBlock {
      * @param entity The rocket entity
      * @return true if the rocket spawns successfully, otherwise false.
      */
-    public boolean spawnRocket(Level world, BlockPos pos, RocketEntity entity, int fuel, float rotation) {
+    public boolean spawnRocket(Level world, BlockPos pos, AbstractRocket entity, int fuel, float rotation) {
         if (this.is3x3(pos, world) && this.getRocket(world, pos) == null) {
             entity.moveTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 0, 0);
             entity.setYRot(rotation);

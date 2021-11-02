@@ -8,7 +8,6 @@ import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.Features;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
@@ -30,10 +29,10 @@ public class CGFeatureGen {
 
     public static ConfiguredFeature<?, ?> OIL_LAKE;
     public static ConfiguredFeature<?, ?> METEORITE;
-    public static ConfiguredFeature<?, ?> METEORITE_IGNITED;
+    public static ConfiguredFeature<?, ?> SAPPHIRE_METEORITE;
     public static ConfiguredFeature<?, ?> METEORITE_OVERWORLD;
 
-    public static void registerFeatures() {
+    public static void registerFeatures() {//TODO: Cheese Ore
         RuleTest moon = blockRuleTest(CGBlockInit.MOON_STONE.get());
         MOON_IRON = registerConfiguredOre(moon, CGBlockInit.MOON_IRON_ORE.get(), 8, 64, 12);
         MOON_SILICON = registerConfiguredOre(moon, CGBlockInit.MOON_ALUMINUM_ORE.get(), 7, 64, 10);
@@ -50,7 +49,7 @@ public class CGFeatureGen {
                 .rarity(25)
                 .squared());
 
-        METEORITE_IGNITED = Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation(CGalaxy.MODID, "meteorite_ignited"), CGFeatureInit.METEORITE.get().configured(new BlockStateConfiguration(CGBlockInit.METEORITE.get().defaultBlockState().setValue(BlockStateProperties.LIT, true)))
+        SAPPHIRE_METEORITE = Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation(CGalaxy.MODID, "astral_sapphire_meteorite"), CGFeatureInit.METEORITE.get().configured(new BlockStateConfiguration(CGBlockInit.ASTRAL_SAPPHIRE_ORE.get().defaultBlockState()))
                 .decorated(Features.Decorators.HEIGHTMAP_WORLD_SURFACE)
                 .count(1)
                 .rarity(110)
@@ -73,7 +72,7 @@ public class CGFeatureGen {
             addOre(e, MOON_IRON, MOON_SILICON, MOON_ALUMINUM, MOON_TITANIUM);
 
             e.getGeneration().addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, METEORITE);
-            e.getGeneration().addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, METEORITE_IGNITED);
+            e.getGeneration().addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, SAPPHIRE_METEORITE);
         }
         if (isBiome(e, CGBiomes.THE_MOON_SOUTH)) {
             addOre(e, MOON_ICE_CLUSTER);

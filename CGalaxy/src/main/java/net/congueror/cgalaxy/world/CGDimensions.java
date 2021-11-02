@@ -19,6 +19,7 @@ public class CGDimensions {
             .withDayTemperature(127)
             .withNightTemperature(-173)
             .withRadiation(380.0F)
+            .withAirPressure(0.0000000003)
             .build();
 
     /**

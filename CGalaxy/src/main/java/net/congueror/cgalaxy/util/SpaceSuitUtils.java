@@ -9,6 +9,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,37 +45,43 @@ public class SpaceSuitUtils {
 
     public static boolean hasHeatProtection(LivingEntity entity, int temperature) {
         AtomicBoolean flag = new AtomicBoolean(false);
-        deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof HeatProtectionUnitItem).forEach(itemStack -> {
-            if (temperature < 60) {
-                flag.set(true);
-            } else if (((HeatProtectionUnitItem) itemStack.getItem()).getEnergy(itemStack) > 0) {
-                flag.set(true);
-            }
-        });
+        if (temperature < 60) {
+            flag.set(true);
+        } else {
+            deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof HeatProtectionUnitItem).forEach(itemStack -> {
+                if (((HeatProtectionUnitItem) itemStack.getItem()).getEnergy(itemStack) > 0) {
+                    flag.set(true);
+                }
+            });
+        }
         return flag.get();
     }
 
     public static boolean hasColdProtection(LivingEntity entity, int temperature) {
         AtomicBoolean flag = new AtomicBoolean(false);
-        deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof ColdProtectionUnitItem).forEach(itemStack -> {
-            if (temperature < -60) {
-                flag.set(true);
-            } else if (((ColdProtectionUnitItem) itemStack.getItem()).getEnergy(itemStack) > 0) {
-                flag.set(true);
-            }
-        });
+        if (temperature > -60) {
+            flag.set(true);
+        } else {
+            deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof ColdProtectionUnitItem).forEach(itemStack -> {
+                if (((ColdProtectionUnitItem) itemStack.getItem()).getEnergy(itemStack) > 0) {
+                    flag.set(true);
+                }
+            });
+        }
         return flag.get();
     }
 
     public static boolean hasRadiationProtection(LivingEntity entity, float radiation) {
         AtomicBoolean flag = new AtomicBoolean(false);
-        deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof RadiationProtectionUnitItem).forEach(itemStack -> {
-            if (radiation < 100) {
-                flag.set(true);
-            } else if (((RadiationProtectionUnitItem) itemStack.getItem()).getEnergy(itemStack) > 0) {
-                flag.set(true);
-            }
-        });
+        if (radiation < 100) {
+            flag.set(true);
+        } else {
+            deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof RadiationProtectionUnitItem).forEach(itemStack -> {
+                if (((RadiationProtectionUnitItem) itemStack.getItem()).getEnergy(itemStack) > 0) {
+                    flag.set(true);
+                }
+            });
+        }
         return flag.get();
     }
 
@@ -102,6 +110,16 @@ public class SpaceSuitUtils {
                             return;
                         } else {
                             item.drain(unit, 1 + (temperature / 80));
+                            entity.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
+                                int index = -1;
+                                if (iItemHandler.getStackInSlot(2).getItem() instanceof HeatProtectionUnitItem &&
+                                        ((HeatProtectionUnitItem) iItemHandler.getStackInSlot(2).getItem()).getEnergy(iItemHandler.getStackInSlot(2)) > 0) {
+                                    index = 2;
+                                }
+                                if (iItemHandler instanceof ItemStackHandler && index > -1) {
+                                    ((ItemStackHandler) iItemHandler).setStackInSlot(index, unit.copy());
+                                }
+                            });
                             entity.getPersistentData().putInt(CGalaxy.LIVING_HEAT_TICK, 0);
                         }
                     } else {
@@ -113,6 +131,16 @@ public class SpaceSuitUtils {
                             return;
                         } else {
                             item.drain(unit, 1 + (temperature / -80));
+                            entity.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
+                                int index = -1;
+                                if (iItemHandler.getStackInSlot(3).getItem() instanceof ColdProtectionUnitItem &&
+                                        ((ColdProtectionUnitItem) iItemHandler.getStackInSlot(3).getItem()).getEnergy(iItemHandler.getStackInSlot(3)) > 0) {
+                                    index = 3;
+                                }
+                                if (iItemHandler instanceof ItemStackHandler && index > -1) {
+                                    ((ItemStackHandler) iItemHandler).setStackInSlot(index, unit.copy());
+                                }
+                            });
                             entity.getPersistentData().putInt(CGalaxy.LIVING_COLD_TICK, 0);
                         }
                     } else {
@@ -126,6 +154,16 @@ public class SpaceSuitUtils {
                             return;
                         } else {
                             item.drain(unit, (int) (1 + (radiation / 120)));
+                            entity.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
+                                int index = -1;
+                                if (iItemHandler.getStackInSlot(4).getItem() instanceof RadiationProtectionUnitItem &&
+                                        ((RadiationProtectionUnitItem) iItemHandler.getStackInSlot(4).getItem()).getEnergy(iItemHandler.getStackInSlot(4)) > 0) {
+                                    index = 4;
+                                }
+                                if (iItemHandler instanceof ItemStackHandler && index > -1) {
+                                    ((ItemStackHandler) iItemHandler).setStackInSlot(index, unit.copy());
+                                }
+                            });
                             entity.getPersistentData().putInt(CGalaxy.LIVING_RADIATION_TICK, 0);
                         }
                     } else {
@@ -144,6 +182,21 @@ public class SpaceSuitUtils {
                     return;
                 } else {
                     ((OxygenTankItem) tank.getItem()).drain(tank, 1);
+                    entity.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
+                        int index = -1;
+                        if (iItemHandler.getStackInSlot(0).getItem() instanceof OxygenTankItem &&
+                                ((OxygenTankItem) iItemHandler.getStackInSlot(0).getItem()).getOxygen(iItemHandler.getStackInSlot(0)) > 0) {
+                            index = 0;
+                        } else if (iItemHandler.getStackInSlot(1).getItem() instanceof OxygenTankItem && (
+                                (OxygenTankItem) iItemHandler.getStackInSlot(1).getItem()).getOxygen(iItemHandler.getStackInSlot(1)) > 0) {
+                            index = 1;
+                        }
+
+                        if (iItemHandler instanceof ItemStackHandler && index > -1) {
+                            ((ItemStackHandler) iItemHandler).setStackInSlot(index, tank.copy());
+                        }
+                    });
+
                     entity.getPersistentData().putInt(CGalaxy.LIVING_OXYGEN_TICK, 0);
                 }
             } else {

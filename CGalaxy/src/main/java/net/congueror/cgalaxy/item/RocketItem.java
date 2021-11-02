@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.item;
 
 import net.congueror.cgalaxy.blocks.launch_pad.LaunchPadBlock;
-import net.congueror.cgalaxy.entity.RocketEntity;
+import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.clib.api.objects.items.CLItem;
 import net.minecraft.client.Minecraft;
@@ -48,7 +48,7 @@ public abstract class RocketItem extends CLItem {
                 case WEST -> rot = -90.0f;
                 case SOUTH -> rot = 180.0f;
             }
-            RocketEntity entity = newRocketEntity(level);
+            AbstractRocket entity = newRocketEntity(level);
             int fuel = stack.getOrCreateTag().getInt("Fuel");
             if (launchPad.spawnRocket(level, pos, entity, fuel, rot)) {
                 stack.shrink(1);
@@ -80,7 +80,7 @@ public abstract class RocketItem extends CLItem {
             });
     }
 
-    public abstract RocketEntity newRocketEntity(Level level);
+    public abstract AbstractRocket newRocketEntity(Level level);
 
     public abstract BlockEntityWithoutLevelRenderer newBlockEntityWithoutLevelRenderer(BlockEntityRenderDispatcher dispatcher, EntityModelSet modelSet);
 }

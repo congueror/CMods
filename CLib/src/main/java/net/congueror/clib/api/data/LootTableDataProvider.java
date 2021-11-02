@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
 import net.congueror.clib.api.registry.BlockBuilder;
-import net.minecraft.Util;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
@@ -12,7 +11,6 @@ import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.loot.LootTableProvider;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
@@ -22,13 +20,15 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.*;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay;
+import net.minecraft.world.level.storage.loot.functions.FunctionUserBuilder;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.*;
@@ -117,6 +117,18 @@ public class LootTableDataProvider extends LootTableProvider implements DataProv
     public void createSingleDrop(Block block, ItemLike item) {
         addTable(block.getLootTable(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(ExplosionCondition.survivesExplosion())
                 .add(LootItem.lootTableItem(item))), LootContextParamSets.BLOCK);
+    }
+
+    /**
+     * Creates a loot table that drops a single item/block, if silk touch is present then it will drop the block.
+     *
+     * @param block The {@link Block} which the loot table will be applied to
+     * @param item  An {@link Item} or {@link Block} which results from this loot table
+     */
+    public void createSingleDropWithSilkTouch(Block block, ItemLike item) {
+        addTable(block.getLootTable(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                .add(LootItem.lootTableItem(block).when(HAS_SILK_TOUCH)
+                        .otherwise(applyExplosionDecay(item, LootItem.lootTableItem(item))))), LootContextParamSets.BLOCK);
     }
 
     /**

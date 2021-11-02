@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "cgalaxy:block/meteorite_ignited",
+		"0": "cgalaxy:block/astral_sapphire_meteorite",
 		"particle": "cgalaxy:block/meteorite"
 	},
 	"elements": [

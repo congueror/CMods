@@ -4,7 +4,6 @@ import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderBlockEntity;
 import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryBlockEntity;
 import net.congueror.cgalaxy.blocks.launch_pad.LaunchPadBlockEntity;
-import net.congueror.cgalaxy.blocks.meteorite.MeteoriteBlockEntity;
 import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -14,9 +13,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 @SuppressWarnings("ConstantConditions")
 public class CGBlockEntityInit {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, CGalaxy.MODID);
-
-    public static final RegistryObject<BlockEntityType<MeteoriteBlockEntity>> METEORITE = BLOCK_ENTITY_TYPES.register("meteorite", () ->
-            BlockEntityType.Builder.of(MeteoriteBlockEntity::new, CGBlockInit.METEORITE.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<LaunchPadBlockEntity>> LAUNCH_PAD = BLOCK_ENTITY_TYPES.register("launch_pad", () ->
             BlockEntityType.Builder.of(LaunchPadBlockEntity::new, CGBlockInit.LAUNCH_PAD.get()).build(null));

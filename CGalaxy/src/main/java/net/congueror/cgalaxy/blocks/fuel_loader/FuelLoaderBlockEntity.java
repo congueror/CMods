@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.blocks.fuel_loader;
 
 import net.congueror.cgalaxy.blocks.launch_pad.LaunchPadBlock;
-import net.congueror.cgalaxy.entity.RocketEntity;
+import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
@@ -28,7 +28,7 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 
 public class FuelLoaderBlockEntity extends AbstractFluidBlockEntity {
-    RocketEntity entity;
+    AbstractRocket entity;
 
     public FuelLoaderBlockEntity(BlockPos pos, BlockState state) {
         super(CGBlockEntityInit.FUEL_LOADER.get(), pos, state);

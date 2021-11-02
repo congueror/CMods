@@ -2,6 +2,7 @@ package net.congueror.cgalaxy.entity.villagers;
 
 import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
 import net.congueror.cgalaxy.api.registry.CGEntity;
+import net.congueror.cgalaxy.init.CGEntityTypeInit;
 import net.congueror.cgalaxy.world.CGDimensions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -112,6 +113,14 @@ public class LunarVillager extends AbstractVillager implements CGEntity {
         return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.5D).add(Attributes.FOLLOW_RANGE, 48.0D);
     }
 
+    @Override
+    public void die(@Nonnull DamageSource pCause) {
+        super.die(pCause);
+        if (pCause.getEntity() instanceof Zombie) {
+            this.convertTo(CGEntityTypeInit.LUNAR_ZOMBIE_VILLAGER.get(), false);
+        }
+    }
+
     protected SoundEvent getAmbientSound() {
         return this.isTrading() ? SoundEvents.WANDERING_TRADER_TRADE : SoundEvents.WANDERING_TRADER_AMBIENT;
     }
@@ -158,12 +167,6 @@ public class LunarVillager extends AbstractVillager implements CGEntity {
         } else {
             return super.mobInteract(pPlayer, pHand);
         }
-    }
-
-    @Nullable
-    @Override
-    public <T extends Mob> T convertTo(@Nonnull EntityType<T> p_21407_, boolean p_21408_) {
-        return super.convertTo(p_21407_, p_21408_);
     }
 
     @Override

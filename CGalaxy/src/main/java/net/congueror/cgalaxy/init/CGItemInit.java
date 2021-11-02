@@ -90,20 +90,30 @@ public class CGItemInit {
             .withTranslation("Lunarite Ingot")
             .build(ITEMS);
 
+    public static final RegistryObject<Item> ASTRAL_SAPPHIRE = new ItemBuilder("astral_sapphire",
+            new CLItem(new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
+            .withTranslation("Astral Sapphire")
+            .build(ITEMS);
+    public static final RegistryObject<Item> ASTRAL_SAPPHIRE_DUST = new ItemBuilder("astral_sapphire_dust",
+            new CLItem(new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
+            .withTranslation("Astral Sapphire Dust")
+            .build(ITEMS);
+
     public static final RegistryObject<Item> SPACE_SUIT_HELM = new ItemBuilder("oxygen_mask",
-            new SpaceSuitItem(EquipmentSlot.HEAD, new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
+            new OxygenMaskItem(SpaceSuitItem.SpaceSuitMaterial.MNORMAL, EquipmentSlot.HEAD, new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
+            .withItemModel(null)
             .withTranslation("Oxygen Mask")
             .build(ITEMS);
     public static final RegistryObject<Item> SPACE_SUIT_CHEST = new ItemBuilder("space_suit_chest",
-            new SpaceSuitItem(EquipmentSlot.CHEST, new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
+            new SpaceSuitItem(SpaceSuitItem.SpaceSuitMaterial.NORMAL, EquipmentSlot.CHEST, new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
             .withTranslation("Space Suit Top")
             .build(ITEMS);
     public static final RegistryObject<Item> SPACE_SUIT_LEGS = new ItemBuilder("space_suit_legs",
-            new SpaceSuitItem(EquipmentSlot.LEGS, new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
+            new SpaceSuitItem(SpaceSuitItem.SpaceSuitMaterial.NORMAL, EquipmentSlot.LEGS, new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
             .withTranslation("Space Suit Bottom")
             .build(ITEMS);
     public static final RegistryObject<Item> SPACE_SUIT_BOOTS = new ItemBuilder("space_suit_boots",
-            new SpaceSuitItem(EquipmentSlot.FEET, new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
+            new SpaceSuitItem(SpaceSuitItem.SpaceSuitMaterial.NORMAL, EquipmentSlot.FEET, new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
             .withTranslation("Space Suit Boots")
             .build(ITEMS);
 
@@ -126,7 +136,7 @@ public class CGItemInit {
             .withTranslation("Tier 1 Cold Protection Unit")
             .build(ITEMS);
     public static final RegistryObject<Item> RADIATION_PROTECTION_1 = new ItemBuilder("radiation_protection_unit_tier_1",
-            new RadiationProtectionUnitItem(new Item.Properties(), 1000))
+            new RadiationProtectionUnitItem(new Item.Properties(), 1500))
             .withTranslation("Tier 1 Radiation Protection Unit")
             .build(ITEMS);
 }

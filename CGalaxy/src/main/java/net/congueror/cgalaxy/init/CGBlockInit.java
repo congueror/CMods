@@ -23,10 +23,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class CGBlockInit {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, CGalaxy.MODID);
 
-    public static final RegistryObject<Block> MOON_TURF = new BlockBuilder("moon_turf",
+    public static final RegistryObject<Block> MOON_REGOLITH = new BlockBuilder("moon_regolith",
             new FallingBlock(BlockBehaviour.Properties.of(Material.SAND).strength(1.0f).sound(SoundType.SAND)))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_SHOVEL)
-            .withTranslation("Moon Turf")
+            .withTranslation("Moon Regolith")
             .build(BLOCKS);
     public static final RegistryObject<Block> MOON_STONE = new BlockBuilder("moon_stone",
             moonStoneBlock())
@@ -118,12 +118,27 @@ public class CGBlockInit {
             .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createSingleDrop(block, CLItemInit.TITANIUM_SCRAP.get()))
             .build(BLOCKS);
 
+    public static final RegistryObject<Block> ASTRAL_SAPPHIRE_ORE = new BlockBuilder("astral_sapphire_ore",
+            new MeteoriteBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(45f, 600f).sound(SoundType.STONE)))
+            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_DIAMOND_TOOL)
+            .withBlockModel(null)
+            .withTranslation("Astral Sapphire Meteorite")
+            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createSingleDropWithSilkTouch(block, CGItemInit.ASTRAL_SAPPHIRE.get()))
+            .build(BLOCKS);
+    public static final RegistryObject<Block> ASTRAL_SAPPHIRE_BLOCK = new BlockBuilder("astral_sapphire_block",
+            new CLBlock(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(7.0F, 6.0f).sound(SoundType.METAL)))
+            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_DIAMOND_TOOL, BlockTags.BEACON_BASE_BLOCKS)
+            .withNewBlockTag("forge:storage_blocks/astral_sapphire")
+            .withNewItemTag("forge:storage_blocks/astral_sapphire")
+            .withTranslation("Block of Astral Sapphire")
+            .build(BLOCKS);
+
     public static final RegistryObject<Block> METEORITE = new BlockBuilder("meteorite",
             new MeteoriteBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(45f, 600f).sound(SoundType.STONE)))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_DIAMOND_TOOL)
             .withBlockModel(null)
             .withTranslation("Meteorite")
-            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createLitBlockStateDrop(block, CGItemInit.METEORITE_CHUNK.get(), CGItemInit.RAW_LUNARITE.get()))
+            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createSingleDropWithSilkTouch(block, CGItemInit.METEORITE_CHUNK.get()))
             .build(BLOCKS);
 
     public static final RegistryObject<Block> LAUNCH_PAD = new BlockBuilder("launch_pad",
@@ -166,7 +181,7 @@ public class CGBlockInit {
             new LiquidBlock(CGFluidInit.OIL::getStill, BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops()))
             .build(BLOCKS);
 
-    /*
+    /*TODO
     public static final RegistryObject<Block> COAL_TORCH = new BlockBuilder("coal_torch",
             new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 0)
                     .sound(SoundType.WOOD), ParticleTypes.FLAME))

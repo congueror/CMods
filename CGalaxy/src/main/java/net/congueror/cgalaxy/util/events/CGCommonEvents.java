@@ -7,7 +7,7 @@ import net.congueror.cgalaxy.api.registry.CGEntity;
 import net.congueror.cgalaxy.commands.CGCommands;
 import net.congueror.cgalaxy.entity.AstroEnderman;
 import net.congueror.cgalaxy.entity.AstroZombie;
-import net.congueror.cgalaxy.entity.RocketEntity;
+import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.entity.villagers.LunarVillager;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
 import net.congueror.cgalaxy.init.CGCarverInit;
@@ -100,65 +100,65 @@ public class CGCommonEvents {
 
             List<Entity> entities = level.getEntitiesOfClass(Entity.class, new AABB(x - (192 / 2d), y - (192 / 2d), z - (192 / 2d), x + (192 / 2d), y + (192 / 2d), z + (192 / 2d)));
             for (Entity entity : entities) {
-                for (CGDimensionBuilder.DimensionObject obj : CGDimensionBuilder.OBJECTS) {
-                    if (level.dimension().equals(obj.getDim())) {
-                        if (entity instanceof LivingEntity) {
-                            AttributeMap manager = ((LivingEntity) entity).getAttributes();
-                            Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(obj.getGravity());
-                            entity.fallDistance = 1;
-                            if (!obj.getBreathable()) {
-                                if (!hasOxygen) {
-                                    player.hurt(DamageSources.NO_OXYGEN, 2.0f);
+                CGDimensionBuilder.DimensionObject obj = CGDimensionBuilder.getObjectFromKey(level.dimension());
+                if (obj != null) {
+                    if (entity instanceof LivingEntity) {
+                        AttributeMap manager = ((LivingEntity) entity).getAttributes();
+                        Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(obj.getGravity());
+                        entity.fallDistance = 1;
+                        if (!obj.getBreathable()) {
+                            if (!hasOxygen) {
+                                player.hurt(DamageSources.NO_OXYGEN, 2.0f);
+                            }
+                            if (entity instanceof CGEntity i) {
+                                if (!i.canBreath(obj)) {
+                                    entity.hurt(DamageSources.NO_OXYGEN, 2.0f);
                                 }
-                                if (entity instanceof CGEntity i) {
-                                    if (!i.canBreath(obj)) {
-                                        entity.hurt(DamageSources.NO_OXYGEN, 2.0f);
-                                    }
-                                }
-                            }
-                            if (RenderingHelper.isDayTime(level)) {
-                                player.getPersistentData().putInt(CGalaxy.PLAYER_TEMPERATURE, obj.getDayTemp());
-                            } else {
-                                player.getPersistentData().putInt(CGalaxy.PLAYER_TEMPERATURE, obj.getNightTemp());
-                            }
-                            player.getPersistentData().putFloat(CGalaxy.PLAYER_RADIATION, obj.getRadiation());
-                            if (!SpaceSuitUtils.hasHeatProtection(player, player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE))) {
-                                player.hurt(DamageSources.NO_HEAT, 3.0f);
-                            }
-                            if (!SpaceSuitUtils.hasColdProtection(player, player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE))) {
-                                player.hurt(DamageSources.NO_COLD, 3.0f);
-                            }
-                            if (!SpaceSuitUtils.hasRadiationProtection(player, player.getPersistentData().getFloat(CGalaxy.PLAYER_RADIATION))) {
-                                player.hurt(DamageSources.NO_RADIATION, 1.0f);
-                            }
-
-                            if (obj.getRadiation() < 100) {
-                                entity.getPersistentData().putInt(CGalaxy.LIVING_RADIATION_TICK, 0);
-                            }
-                            if (obj.getBreathable()) {
-                                entity.getPersistentData().putInt(CGalaxy.LIVING_OXYGEN_TICK, 0);
-                            }
-                            if (player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE) < 60) {
-                                entity.getPersistentData().putInt(CGalaxy.LIVING_HEAT_TICK, 0);
-                            }
-                            if (player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE) > -60) {
-                                entity.getPersistentData().putInt(CGalaxy.LIVING_COLD_TICK, 0);
                             }
                         }
+                        player.getPersistentData().putDouble(CGalaxy.PLAYER_AIR_PRESSURE, obj.getAirPressure());
+                        if (RenderingHelper.isDayTime(level)) {
+                            player.getPersistentData().putInt(CGalaxy.PLAYER_TEMPERATURE, obj.getDayTemp());
+                        } else {
+                            player.getPersistentData().putInt(CGalaxy.PLAYER_TEMPERATURE, obj.getNightTemp());
+                        }
+                        player.getPersistentData().putFloat(CGalaxy.PLAYER_RADIATION, obj.getRadiation());
+                        if (!SpaceSuitUtils.hasHeatProtection(player, player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE))) {
+                            player.hurt(DamageSources.NO_HEAT, 3.0f);
+                        }
+                        if (!SpaceSuitUtils.hasColdProtection(player, player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE))) {
+                            player.hurt(DamageSources.NO_COLD, 3.0f);
+                        }
+                        if (!SpaceSuitUtils.hasRadiationProtection(player, player.getPersistentData().getFloat(CGalaxy.PLAYER_RADIATION))) {
+                            player.hurt(DamageSources.NO_RADIATION, 1.0f);
+                        }
 
-                        if (entity instanceof ItemEntity) {
-                            if (level.dimension() == CGDimensions.MOON.getDim() && entity.getPersistentData().getDouble(CGalaxy.ITEM_GRAVITY) <= 1 && entity.getDeltaMovement().y() <= -0.1) {
-                                entity.getPersistentData().putDouble(CGalaxy.ITEM_GRAVITY, 2);
-                                entity.setDeltaMovement((entity.getDeltaMovement().x()), ((entity.getDeltaMovement().y()) + (obj.getGravity() * 2.5)),
-                                        (entity.getDeltaMovement().z()));
-                                entity.getPersistentData().putDouble(CGalaxy.ITEM_GRAVITY, 0);
-                            }
+                        if (obj.getRadiation() < 100) {
+                            entity.getPersistentData().putInt(CGalaxy.LIVING_RADIATION_TICK, 0);
+                        }
+                        if (obj.getBreathable()) {
+                            entity.getPersistentData().putInt(CGalaxy.LIVING_OXYGEN_TICK, 0);
+                        }
+                        if (player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE) < 60) {
+                            entity.getPersistentData().putInt(CGalaxy.LIVING_HEAT_TICK, 0);
+                        }
+                        if (player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE) > -60) {
+                            entity.getPersistentData().putInt(CGalaxy.LIVING_COLD_TICK, 0);
+                        }
+                    }
+
+                    if (entity instanceof ItemEntity) {
+                        if (level.dimension() == CGDimensions.MOON.getDim() && entity.getPersistentData().getDouble(CGalaxy.ITEM_GRAVITY) <= 1 && entity.getDeltaMovement().y() <= -0.1) {
+                            entity.getPersistentData().putDouble(CGalaxy.ITEM_GRAVITY, 2);
+                            entity.setDeltaMovement((entity.getDeltaMovement().x()), ((entity.getDeltaMovement().y()) + (obj.getGravity() * 2.5)),
+                                    (entity.getDeltaMovement().z()));
+                            entity.getPersistentData().putDouble(CGalaxy.ITEM_GRAVITY, 0);
                         }
                     }
                 }
             }
 
-            if (player.getY() >= 600 && player.getVehicle() instanceof RocketEntity && mc.screen == null) {
+            if (player.getY() >= 600 && player.getVehicle() instanceof AbstractRocket && mc.screen == null) {
                 if (player instanceof ServerPlayer player1) {
                     NetworkHooks.openGui(player1, new MenuProvider() {
                         @Nonnull

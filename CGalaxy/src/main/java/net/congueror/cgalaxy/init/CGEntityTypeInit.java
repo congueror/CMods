@@ -3,7 +3,7 @@ package net.congueror.cgalaxy.init;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.entity.AstroEnderman;
 import net.congueror.cgalaxy.entity.AstroZombie;
-import net.congueror.cgalaxy.entity.rockets.RocketTier1Entity;
+import net.congueror.cgalaxy.entity.rockets.RocketTier1;
 import net.congueror.cgalaxy.entity.villagers.LunarVillager;
 import net.congueror.cgalaxy.entity.villagers.LunarZombieVillager;
 import net.minecraft.resources.ResourceLocation;
@@ -16,8 +16,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class CGEntityTypeInit {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, CGalaxy.MODID);
 
-    public static final RegistryObject<EntityType<RocketTier1Entity>> ROCKET_TIER_1 = ENTITY_TYPES.register("rocket_tier_1", () ->
-            EntityType.Builder.of(RocketTier1Entity::new, MobCategory.MISC)
+    public static final RegistryObject<EntityType<RocketTier1>> ROCKET_TIER_1 = ENTITY_TYPES.register("rocket_tier_1", () ->
+            EntityType.Builder.of(RocketTier1::new, MobCategory.MISC)
                     .setShouldReceiveVelocityUpdates(true)
                     .setTrackingRange(100)
                     .setUpdateInterval(3)

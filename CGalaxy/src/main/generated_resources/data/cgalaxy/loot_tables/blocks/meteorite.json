@@ -28,35 +28,17 @@
               "name": "cgalaxy:meteorite"
             },
             {
-              "type": "minecraft:alternatives",
-              "children": [
+              "type": "minecraft:item",
+              "functions": [
                 {
-                  "type": "minecraft:item",
-                  "conditions": [
-                    {
-                      "condition": "minecraft:block_state_property",
-                      "block": "cgalaxy:meteorite",
-                      "properties": {
-                        "lit": "true"
-                      }
-                    }
-                  ],
-                  "name": "cgalaxy:raw_lunarite"
-                },
-                {
-                  "type": "minecraft:item",
-                  "name": "cgalaxy:meteorite_chunk"
+                  "function": "minecraft:explosion_decay"
                 }
-              ]
+              ],
+              "name": "cgalaxy:meteorite_chunk"
             }
           ]
         }
       ]
-    }
-  ],
-  "functions": [
-    {
-      "function": "minecraft:explosion_decay"
     }
   ]
 }
