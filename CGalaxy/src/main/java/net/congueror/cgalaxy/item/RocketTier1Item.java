@@ -10,15 +10,17 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 
-public class RocketTier1Item extends RocketItem {
+public class RocketTier1Item extends AbstractRocketItem {
 
     public RocketTier1Item(Properties properties) {
         super(properties.stacksTo(1).rarity(Rarity.EPIC));
     }
 
     @Override
-    public AbstractRocket newRocketEntity(Level level) {
-        return new RocketTier1(CGEntityTypeInit.ROCKET_TIER_1.get(), level);
+    public AbstractRocket newRocketEntity(Level level, int fuel) {
+        RocketTier1 rocket = new RocketTier1(CGEntityTypeInit.ROCKET_TIER_1.get(), level);
+        rocket.fill(fuel);
+        return rocket;
     }
 
     @Override

@@ -1,11 +1,12 @@
 package net.congueror.cgalaxy.entity;
 
 import net.congueror.cgalaxy.CGalaxy;
+import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
@@ -30,6 +31,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 public abstract class AbstractRocket extends Entity {
 
@@ -38,14 +40,16 @@ public abstract class AbstractRocket extends Entity {
      * Set value in subclass constructor
      */
     protected int capacity;
+    public final int tier;
     int i, k = 0;
 
     private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(AbstractRocket.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> DATA_ID_DROPS = SynchedEntityData.defineId(AbstractRocket.class, EntityDataSerializers.BOOLEAN);
 
-    protected AbstractRocket(EntityType<? extends Entity> entity, Level level) {
+    protected AbstractRocket(EntityType<? extends Entity> entity, Level level, int tier) {
         super(entity, level);
         this.blocksBuilding = true;
+        this.tier = tier;
     }
 
     public abstract Item getItem();
@@ -56,6 +60,15 @@ public abstract class AbstractRocket extends Entity {
 
     public int getCapacity() {
         return capacity;
+    }
+
+    public int drain(int amount) {
+        int fuel = this.fuel;
+        if (fuel > 0 && fuel - amount >= 0) {
+            this.fuel = -amount;
+            return amount;
+        }
+        return 0;
     }
 
     public int fill(int amount) {
@@ -104,17 +117,22 @@ public abstract class AbstractRocket extends Entity {
     public void tick() {
         super.tick();
 
-        if (this.getPersistentData().getBoolean(CGalaxy.ROCKET_LAUNCH)) {
-            if (((this.getDeltaMovement().y()) <= 0.5)) {
-                this.setDeltaMovement(this.getDeltaMovement().x, this.getDeltaMovement().y + 0.1, this.getDeltaMovement().z);
+        if (this.getPersistentData().getInt(CGalaxy.ROCKET_POWERED) != 3) {
+            if (this.getPersistentData().getBoolean(CGalaxy.ROCKET_LAUNCH)) {
+                if (((this.getDeltaMovement().y()) <= 0.5)) {
+                    this.setDeltaMovement(this.getDeltaMovement().x, this.getDeltaMovement().y + 0.1, this.getDeltaMovement().z);
+                }
+                if (((this.getDeltaMovement().y()) >= 0.5)) {
+                    this.setDeltaMovement(this.getDeltaMovement().x, 0.65, this.getDeltaMovement().z);
+                }
+            } else if (this.getDeltaMovement().y <= 0) {
+                if (!this.isNoGravity()) {
+                    this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.04D, 0.0D));
+                }
             }
-            if (((this.getDeltaMovement().y()) >= 0.5)) {
-                this.setDeltaMovement(this.getDeltaMovement().x, 0.65, this.getDeltaMovement().z);
-            }
-        } else if (this.getDeltaMovement().y <= 0) {
-            if (!this.isNoGravity()) {
-                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.04D, 0.0D));
-            }
+        } else {
+            double d0 = -Objects.requireNonNull(CGDimensionBuilder.getObjectFromKey(this.level.dimension())).getGravity() / 4.0D;
+            this.setDeltaMovement(0.0d, -0.04D, 0.0d);
         }
         this.move(MoverType.SELF, this.getDeltaMovement());
     }
@@ -122,21 +140,31 @@ public abstract class AbstractRocket extends Entity {
     @Override
     public void baseTick() {
         super.baseTick();
-        if (level.isClientSide) {
+
+        if (this.level.isClientSide) {
             return;
         }
-
         if (entityData.get(DATA_ID_DAMAGE) >= 1.0f) {
             if (entityData.get(DATA_ID_DROPS)) {
                 level.addFreshEntity(new ItemEntity(level, this.getX(), this.getY(), this.getZ(), createItemStack()));
             }
             this.remove(RemovalReason.KILLED);
         }
+        ServerPlayer player = (ServerPlayer) level.getNearestPlayer(this, 1);
+
+        if (this.getPersistentData().getInt(CGalaxy.ROCKET_POWERED) == 3) {
+            if (this.isVehicle() && player != null) {
+                //player.connection.send(new ClientboundSetTitlesAnimationPacket(5, 10, 10));
+                //player.connection.send(new ClientboundSetTitleTextPacket(new TextComponent("10").withStyle(ChatFormatting.DARK_RED)));
+            }
+            if (this.getDeltaMovement().y == 0) {
+                this.getPersistentData().putInt(CGalaxy.ROCKET_POWERED, 0);
+            }
+        }
 
         if (this.getPersistentData().getInt(CGalaxy.ROCKET_POWERED) == 2) {
-            if (this.isVehicle() && this.canSeeSky()) {
+            if (this.isVehicle()) {
                 i++;
-                ServerPlayer player = (ServerPlayer) level.getNearestPlayer(this, 1);
                 if (player != null) {
                     switch (i) {
                         case 20 -> {
@@ -152,9 +180,12 @@ public abstract class AbstractRocket extends Entity {
                         case 160 -> player.connection.send(new ClientboundSetTitleTextPacket(new TextComponent("3").withStyle(ChatFormatting.DARK_RED)));
                         case 180 -> player.connection.send(new ClientboundSetTitleTextPacket(new TextComponent("2").withStyle(ChatFormatting.DARK_RED)));
                         case 200 -> player.connection.send(new ClientboundSetTitleTextPacket(new TextComponent("1").withStyle(ChatFormatting.DARK_RED)));
-                        case 210 -> ((ServerLevel) level).getServer().getPlayerList().broadcastMessage(
-                                new TextComponent(player.getDisplayName().getString())
-                                        .append(new TranslatableComponent("chat.cgalaxy.launch_off").withStyle(ChatFormatting.GOLD)), ChatType.GAME_INFO, player.getUUID());
+                        case 210 -> {
+                            for (ServerPlayer player1 : ((ServerLevel) level).getServer().getPlayerList().getPlayers()) {
+                                player1.sendMessage(new TextComponent(player.getDisplayName().getString())
+                                        .append(new TranslatableComponent("chat.cgalaxy.launch_off")).withStyle(ChatFormatting.GOLD), Util.NIL_UUID);
+                            }
+                        }
                     }
                 }
                 if (i <= 200) {
@@ -189,6 +220,9 @@ public abstract class AbstractRocket extends Entity {
                 this.getPersistentData().putInt(CGalaxy.ROCKET_POWERED, 0);
                 this.getPersistentData().putBoolean(CGalaxy.ROCKET_LAUNCH, false);
             }
+        } else {
+            i = 0;
+            k = 0;
         }
     }
 

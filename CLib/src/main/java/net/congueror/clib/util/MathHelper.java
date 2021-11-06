@@ -6,7 +6,7 @@ import java.text.DecimalFormat;
 
 public class MathHelper {
     /**
-     * Converts RGB to a hexadecimal
+     * Converts RGB to a decimal
      */
     public static int calculateRGB(int R, int G, int B) {
         return (R * 65536) + (G * 256) + B;

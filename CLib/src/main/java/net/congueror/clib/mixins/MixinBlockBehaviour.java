@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BlockBehaviour.BlockStateBase.class)
-public class MixinBlockBehaviour {
+public abstract class MixinBlockBehaviour {
 
     @Inject(at = @At(value = "TAIL"), method = "onPlace")
     private void onPlace(Level pLevel, BlockPos pPos, BlockState pOldState, boolean pIsMoving, CallbackInfo ci) {

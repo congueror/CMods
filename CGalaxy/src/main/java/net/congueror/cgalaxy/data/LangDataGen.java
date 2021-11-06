@@ -41,6 +41,10 @@ public class LangDataGen extends LangDataProvider {
         add("death.attack.noRadiation0", "%1$s got sick of the radiation.");
         add("death.attack.noRadiation1", "%1$s forgot his radiation protection.");
 
+        add("recipe.cgalaxy.fuel_refining", "Fuel Refining");
+        add("recipe.cgalaxy.fuel_loading", "Fuel Loading");
+        add("recipe.cgalaxy.oxygen_compressing", "Oxygen Compressing");
+
         add("text.cgalaxy.insufficient_fuel", "Insufficient Fuel!");
         add("text.cgalaxy.about_to_launch", "You are about to go to space. Are you sure you wish to proceed?");
         add("text.cgalaxy.about_to_launch1", "Press launch to continue.");

@@ -62,4 +62,5 @@ public class CGalaxy {
 //TODO: Lunar Crop
 //TODO: Moon Village/Villagers
 //TODO: Moon Boss
+//TODO: Space Station (Zero-G: 0 Gravity Attribute, delta movement x - 0.4 unless tethered or in air, ability to go up or down)
 }

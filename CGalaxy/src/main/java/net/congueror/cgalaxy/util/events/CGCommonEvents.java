@@ -5,9 +5,9 @@ import net.congueror.cgalaxy.api.events.AddVillagerProfessionsEvent;
 import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
 import net.congueror.cgalaxy.api.registry.CGEntity;
 import net.congueror.cgalaxy.commands.CGCommands;
+import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.entity.AstroEnderman;
 import net.congueror.cgalaxy.entity.AstroZombie;
-import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.entity.villagers.LunarVillager;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
 import net.congueror.cgalaxy.init.CGCarverInit;
@@ -35,12 +35,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -147,7 +150,9 @@ public class CGCommonEvents {
                         }
                     }
 
-                    if (entity instanceof ItemEntity) {
+                    if (entity instanceof ItemEntity) {//TODO: non-hardcoded item gravity
+
+                        //entity.setDeltaMovement(0.0D, -obj.getGravity() / 4.0D, 0.0D);
                         if (level.dimension() == CGDimensions.MOON.getDim() && entity.getPersistentData().getDouble(CGalaxy.ITEM_GRAVITY) <= 1 && entity.getDeltaMovement().y() <= -0.1) {
                             entity.getPersistentData().putDouble(CGalaxy.ITEM_GRAVITY, 2);
                             entity.setDeltaMovement((entity.getDeltaMovement().x()), ((entity.getDeltaMovement().y()) + (obj.getGravity() * 2.5)),
@@ -179,6 +184,13 @@ public class CGCommonEvents {
         @SubscribeEvent
         public static void addProfessions(AddVillagerProfessionsEvent e) {
 
+        }
+
+        @SubscribeEvent
+        public static void onEntityPlaceBlock(BlockEvent.EntityPlaceEvent e) {
+            if (e.getPlacedBlock().getBlock() instanceof TorchBlock) {
+                e.getWorld().setBlock(e.getBlockSnapshot().getPos(), Blocks.DIAMOND_BLOCK.defaultBlockState(), 1);
+            }
         }
     }//ForgeCommonEvents End
 }

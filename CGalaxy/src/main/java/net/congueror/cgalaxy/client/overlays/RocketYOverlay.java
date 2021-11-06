@@ -20,7 +20,7 @@ public class RocketYOverlay extends GuiComponent implements IIngameOverlay {
         if (player != null) {
             if (player.getVehicle() instanceof AbstractRocket) {
                 String texture = "textures/gui/rocket_y_hud.png";
-                if (player.level.dimension().equals(CGDimensions.MOON)) {
+                if (player.level.dimension().equals(CGDimensions.MOON.getDim())) {
                     texture = "textures/gui/rocket_y_hud_moon.png";
                 }
                 RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, texture));

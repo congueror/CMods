@@ -25,6 +25,9 @@ public class PacketLaunchSequence {
                         }
                         if (((AbstractRocket) entity).getFuel() >= 500) {
                             entity.getPersistentData().putInt(CGalaxy.ROCKET_POWERED, entity.getPersistentData().getInt(CGalaxy.ROCKET_POWERED) + 1);
+                            if (entity.getPersistentData().getInt(CGalaxy.ROCKET_POWERED) > 2) {
+                                entity.getPersistentData().putInt(CGalaxy.ROCKET_POWERED, 0);
+                            }
                         }
                     }
                 }

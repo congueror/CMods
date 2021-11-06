@@ -34,10 +34,18 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            arg "-mixin.config=clib.mixin.json"
+            //arg "-mixin.config=clib.mixin.json"
             mods {
                 workspace {
                     source sourceSets.main
+                }
+
+                clib {
+                    source project(':CLib').sourceSets.main
+                }
+
+                cgalaxy {
+                    source project(':CGalaxy').sourceSets.main
                 }
             }
         }
@@ -106,7 +114,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.84'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.104'
 
     //implementation fg.deobf("curse.maven:world-stripper-250603:3400494")
     //implementation fg.deobf("curse.maven:solargeneration-336538:3418138")
@@ -131,9 +139,9 @@ jar {
                 "Implementation-Version"  : project.jar.archiveVersion,
                 //"Implementation-Vendor": "workspace authors",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-                "TweakOrder": 0,
-                "MixinConfigs" : "clib.mixin.json"
+                //"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+                //"TweakOrder": 0,
+                //"MixinConfigs" : "clib.mixin.json"
         ])
     }
 }

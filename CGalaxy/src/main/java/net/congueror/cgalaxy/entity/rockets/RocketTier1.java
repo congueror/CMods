@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 
 public class RocketTier1 extends AbstractRocket {
     public RocketTier1(EntityType<? extends Entity> entity, Level level) {
-        super(entity, level);
+        super(entity, level, 1);
         capacity = 1000;
     }
 

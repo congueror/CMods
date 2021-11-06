@@ -14,7 +14,7 @@ public class CGFluidInit {
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, CGalaxy.MODID);
 
     public static final FluidBuilder.FluidObject KEROSENE = new FluidBuilder("kerosene", ForgeFlowingFluid.Source::new, ForgeFlowingFluid.Flowing::new)
-            .withColor(0xE5E5C0)
+            .withColor(0xFFE5E5C0)
             .withDensity(1)
             .withTemperature(437)
             .withSound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY)
@@ -39,7 +39,7 @@ public class CGFluidInit {
             .build(FLUIDS);
 
     public static final FluidBuilder.FluidObject OXYGEN = new FluidBuilder("oxygen", ForgeFlowingFluid.Source::new, ForgeFlowingFluid.Flowing::new)
-            .withColor(0xADD8E6)
+            .withColor(0xFFADD8E6)
             .withGaseousForm()
             .withDensity(1)
             .withTemperature(437)

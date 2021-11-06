@@ -100,7 +100,6 @@ public class RocketTier1Model extends AbstractRocketModel<RocketTier1> {
 
     @Override
     public void setupAnim(@Nonnull RocketTier1 pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
-
     }
 
     @Override

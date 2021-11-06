@@ -22,9 +22,9 @@ import net.minecraftforge.client.IItemRenderProperties;
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 
-public abstract class RocketItem extends CLItem {
+public abstract class AbstractRocketItem extends CLItem {
 
-    public RocketItem(Properties properties) {
+    public AbstractRocketItem(Properties properties) {
         super(properties);
     }
 
@@ -48,7 +48,7 @@ public abstract class RocketItem extends CLItem {
                 case WEST -> rot = -90.0f;
                 case SOUTH -> rot = 180.0f;
             }
-            AbstractRocket entity = newRocketEntity(level);
+            AbstractRocket entity = newRocketEntity(level, 0);
             int fuel = stack.getOrCreateTag().getInt("Fuel");
             if (launchPad.spawnRocket(level, pos, entity, fuel, rot)) {
                 stack.shrink(1);
@@ -80,7 +80,7 @@ public abstract class RocketItem extends CLItem {
             });
     }
 
-    public abstract AbstractRocket newRocketEntity(Level level);
+    public abstract AbstractRocket newRocketEntity(Level level, int fuel);
 
     public abstract BlockEntityWithoutLevelRenderer newBlockEntityWithoutLevelRenderer(BlockEntityRenderDispatcher dispatcher, EntityModelSet modelSet);
 }

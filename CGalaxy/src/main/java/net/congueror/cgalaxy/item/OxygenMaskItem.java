@@ -6,6 +6,7 @@ import com.mojang.math.Matrix4f;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.client.models.SpaceSuitModel;
 import net.congueror.cgalaxy.client.renderers.OxygenMaskItemRenderer;
+import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.init.CGFluidInit;
 import net.congueror.cgalaxy.util.CGConfig;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
@@ -41,6 +42,9 @@ public class OxygenMaskItem extends SpaceSuitItem {
         Minecraft mc = Minecraft.getInstance();
         if (mc != null) {
             consumer.accept(new IItemRenderProperties() {
+                int pTemp;
+                int i;
+
                 @Override
                 public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A _default) {
                     //noinspection unchecked
@@ -92,8 +96,12 @@ public class OxygenMaskItem extends SpaceSuitItem {
                         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                         String textureName = CGConfig.GUI_COLOR.get().toString().equals("GREEN") ? "oxygen_tank_gui.png" : CGConfig.GUI_COLOR.get().toString().toLowerCase() + "/" + CGConfig.GUI_COLOR.get().toString().toLowerCase() + "_oxygen_tank_gui.png";
                         RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, "textures/gui/space_suit/" + textureName));
-                        GuiComponent.blit(poseStack, 0, 127, 18, 52, 0, 0, 18, 52, 18, 52);
-                        GuiComponent.blit(poseStack, 17, 127, 18, 52, 0, 0, 18, 52, 18, 52);
+                        int x = 0;
+                        if (player.getVehicle() instanceof AbstractRocket) {
+                            x = 16;
+                        }
+                        GuiComponent.blit(poseStack, x, 127, 18, 52, 0, 0, 18, 52, 18, 52);
+                        GuiComponent.blit(poseStack, x + 17, 127, 18, 52, 0, 0, 18, 52, 18, 52);
                     }
 
                     //Protection Bars
@@ -159,7 +167,21 @@ public class OxygenMaskItem extends SpaceSuitItem {
 
                     //Temperature
                     {
-                        int pTemp = player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE);
+                        if (pTemp != player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE)) {
+                            i++;
+                            if (i == 20) {
+                                i = 0;
+                                if (pTemp > player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE)) {
+                                    pTemp--;
+                                } else if (pTemp <= player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE)) {
+                                    pTemp++;
+                                }
+                            }
+                        } else {
+                            i = 0;
+                        }
+
+                        //pTemp = player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE);
                         int color = MathHelper.calculateRGB(240, 240, 255);
                         if (pTemp >= 30 && pTemp < 60) {
                             color = MathHelper.calculateRGB(255, 105, 0);

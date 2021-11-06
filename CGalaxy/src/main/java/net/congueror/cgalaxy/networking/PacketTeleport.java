@@ -1,5 +1,8 @@
 package net.congueror.cgalaxy.networking;
 
+import net.congueror.cgalaxy.CGalaxy;
+import net.congueror.cgalaxy.entity.AbstractRocket;
+import net.congueror.cgalaxy.item.AbstractRocketItem;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
@@ -34,11 +37,19 @@ public class PacketTeleport {
             if (player != null) {
                 ResourceKey<Level> dim = ResourceKey.create(Registry.DIMENSION_REGISTRY, level);
                 ServerLevel world = Objects.requireNonNull(player.level.getServer()).getLevel(dim);
-                if (world != null) {
+                if (world != null && player.getVehicle() instanceof AbstractRocket) {
+                    int fuel = ((AbstractRocket) player.getVehicle()).getFuel();
+                    AbstractRocket rocket = ((AbstractRocketItem) ((AbstractRocket) player.getVehicle()).getItem()).newRocketEntity(world, fuel);
                     if (player.getVehicle() != null) {
                         player.getVehicle().remove(Entity.RemovalReason.UNLOADED_WITH_PLAYER);
                     }
-                    player.teleportTo(world, player.blockPosition().getX(), player.blockPosition().getY(), player.blockPosition().getZ(), 0, 0);
+                    player.teleportTo(world, player.blockPosition().getX(), 300, player.blockPosition().getZ(), 0, 0);
+                    rocket.setPos(player.blockPosition().getX() + 0.5, 300, player.blockPosition().getZ() + 0.5);
+                    world.addFreshEntity(rocket);
+                    player.startRiding(rocket, true);
+                    rocket.getPersistentData().putInt(CGalaxy.ROCKET_POWERED, 3);
+                } else if (world != null) {
+                    player.teleportTo(world, player.blockPosition().getX(), 200, player.blockPosition().getZ(), 0, 0);
                 }
             }
         });

@@ -34,6 +34,18 @@ minecraft {
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            arg "-mixin.config=clib.mixin.json"
+            mods {
+                clib {
+                    source sourceSets.main
+                }
+            }
+        }
+
         data {
             workingDirectory project.file('run')
 
@@ -82,7 +94,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.84'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.104'
 
     //compileOnly fg.deobf('slimeknights.tconstruct:TConstruct:1.16.5-3.1.0.231')
     //compileOnly fg.deobf('slimeknights.mantle:Mantle:1.16.5-1.6.114')
