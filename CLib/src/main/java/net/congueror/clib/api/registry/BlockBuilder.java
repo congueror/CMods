@@ -57,7 +57,7 @@ public class BlockBuilder {
     public final Map<String, String> locale = new HashMap<>();
 
     public boolean generateBlockItem = true;
-    public CreativeModeTab tab = ModCreativeTabs.BlocksIG.instance;
+    public Item.Properties itemProperties = new Item.Properties().tab(ModCreativeTabs.BlocksIG.instance);
     public int burnTime;
     public int containerType;
 
@@ -96,7 +96,7 @@ public class BlockBuilder {
         final IForgeRegistry<Item> registry = e.getRegistry();
         stream().filter(blockBuilder -> blockBuilder.generateBlockItem && blockBuilder.modid.equals(modid)).forEach(builder -> {
             Block block = builder.block;
-            Item.Properties properties = new Item.Properties().tab(builder.tab);
+            Item.Properties properties = builder.itemProperties;
             BlockItem item = new BlockItem(block, properties) {
                 @Override
                 public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
@@ -281,6 +281,7 @@ public class BlockBuilder {
 
     /**
      * Adds this block to the given creative tab. If you do not use this method the default will be {@link ModCreativeTabs.BlocksIG}.
+     * If {@link #withItemProperties(Item.Properties)} was used, the tab that was set last will be the final tab.
      * <p><strong>
      * Requires {@link #withGeneratedBlockItem(boolean)} method.
      * </p></strong>
@@ -288,7 +289,7 @@ public class BlockBuilder {
      * @param tab The {@link CreativeModeTab} you want your block in
      */
     public BlockBuilder withCreativeTab(CreativeModeTab tab) {
-        this.tab = tab;
+        this.itemProperties.tab(tab);
         return this;
     }
 
@@ -324,6 +325,17 @@ public class BlockBuilder {
      */
     public BlockBuilder withDamageableContainerItem() {
         this.containerType = 2;
+        return this;
+    }
+
+    /**
+     * The properties will be passed on to the block item create.
+     * <p><strong>
+     * Requires {@link #withGeneratedBlockItem(boolean)} method.
+     * </p></strong>
+     */
+    public BlockBuilder withItemProperties(Item.Properties properties) {
+        this.itemProperties = properties;
         return this;
     }
 

@@ -64,7 +64,7 @@ public abstract class AbstractProtectionUnitItem extends Item {
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        return true;
+        return getEnergy(stack) != getCapacity(stack);
     }
 
     @Override

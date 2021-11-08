@@ -95,5 +95,4 @@ public class RenderingHelper {
         int darkness = (int)((1.0D - d2) * 11.0D);
         return darkness < 4;
     }
-
 }

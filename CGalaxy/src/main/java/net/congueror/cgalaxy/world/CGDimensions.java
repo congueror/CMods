@@ -3,6 +3,7 @@ package net.congueror.cgalaxy.world;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
 import net.congueror.clib.world.WorldHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
 public class CGDimensions {
@@ -20,6 +21,7 @@ public class CGDimensions {
             .withNightTemperature(-173)
             .withRadiation(380.0F)
             .withAirPressure(0.0000000003)
+            .withYOverlayTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/rocket_y_hud_moon.png"))
             .build();
 
     /**

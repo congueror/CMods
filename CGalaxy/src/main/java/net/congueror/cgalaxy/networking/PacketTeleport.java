@@ -38,7 +38,7 @@ public class PacketTeleport {
                 ResourceKey<Level> dim = ResourceKey.create(Registry.DIMENSION_REGISTRY, level);
                 ServerLevel world = Objects.requireNonNull(player.level.getServer()).getLevel(dim);
                 if (world != null && player.getVehicle() instanceof AbstractRocket) {
-                    int fuel = ((AbstractRocket) player.getVehicle()).getFuel();
+                    int fuel = ((AbstractRocket) player.getVehicle()).getFuel() - 500;
                     AbstractRocket rocket = ((AbstractRocketItem) ((AbstractRocket) player.getVehicle()).getItem()).newRocketEntity(world, fuel);
                     if (player.getVehicle() != null) {
                         player.getVehicle().remove(Entity.RemovalReason.UNLOADED_WITH_PLAYER);

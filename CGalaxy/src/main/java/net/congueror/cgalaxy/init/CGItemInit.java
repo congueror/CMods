@@ -11,6 +11,7 @@ import net.congueror.clib.api.registry.ItemBuilder;
 import net.congueror.clib.items.UpgradeItem;
 import net.congueror.clib.util.MathHelper;
 import net.congueror.clib.util.ModCreativeTabs;
+import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -86,16 +87,16 @@ public class CGItemInit {
             .withTranslation("Raw Lunarite")
             .build(ITEMS);
     public static final RegistryObject<Item> LURANITE_INGOT = new ItemBuilder("lunarite_ingot",
-            new CLItem(new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
+            new CLItem(new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance).rarity(Rarity.create("purple", ChatFormatting.LIGHT_PURPLE))))
             .withTranslation("Lunarite Ingot")
             .build(ITEMS);
 
     public static final RegistryObject<Item> ASTRAL_SAPPHIRE = new ItemBuilder("astral_sapphire",
-            new CLItem(new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
+            new CLItem(new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance).rarity(Rarity.create("dark_blue", ChatFormatting.DARK_BLUE))))
             .withTranslation("Astral Sapphire")
             .build(ITEMS);
     public static final RegistryObject<Item> ASTRAL_SAPPHIRE_DUST = new ItemBuilder("astral_sapphire_dust",
-            new CLItem(new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
+            new CLItem(new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance).rarity(Rarity.create("dark_blue", ChatFormatting.DARK_BLUE))))
             .withTranslation("Astral Sapphire Dust")
             .build(ITEMS);
 

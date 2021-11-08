@@ -34,7 +34,6 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            //arg "-mixin.config=clib.mixin.json"
             mods {
                 workspace {
                     source sourceSets.main
@@ -121,11 +120,21 @@ dependencies {
 
     //compile fg.deobf('slimeknights.tconstruct:TConstruct:1.16.5-3.1.0.231')
     //compile fg.deobf('slimeknights.mantle:Mantle:1.16.5-1.6.114')
+    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 
     runtimeOnly fg.deobf("mezz.jei:jei-1.17.1:8.0.0.16")
 
     implementation project(':CLib')
     implementation project(':CGalaxy')
+}
+
+sourceSets {
+    main.resources.srcDirs += "$rootProject/CLib/src/main/resources"
+}
+
+mixin {
+    add sourceSets.main, "clib.mixin-refmap.json"
+    config 'clib.mixin.json'
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

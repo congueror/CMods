@@ -12,18 +12,22 @@ import net.congueror.cgalaxy.entity.villagers.LunarVillager;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
 import net.congueror.cgalaxy.init.CGCarverInit;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
+import net.congueror.cgalaxy.item.AbstractRocketItem;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.util.DamageSources;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
 import net.congueror.cgalaxy.world.CGBiomes;
 import net.congueror.cgalaxy.world.CGDimensions;
 import net.congueror.cgalaxy.world.CGFeatureGen;
+import net.congueror.clib.api.events.BlockOnPlacedEvent;
+import net.congueror.clib.api.events.PlayerSetupAnimationEvent;
 import net.congueror.clib.api.registry.BlockBuilder;
 import net.congueror.clib.util.RenderingHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,7 +47,6 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -107,7 +110,9 @@ public class CGCommonEvents {
                 if (obj != null) {
                     if (entity instanceof LivingEntity) {
                         AttributeMap manager = ((LivingEntity) entity).getAttributes();
-                        Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(obj.getGravity());
+                        if (Objects.requireNonNull(((LivingEntity) entity).getAttribute(ForgeMod.ENTITY_GRAVITY.get())).getValue() == obj.getGravity()) {
+                            Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(obj.getGravity());
+                        }
                         entity.fallDistance = 1;
                         if (!obj.getBreathable()) {
                             if (!hasOxygen) {
@@ -150,7 +155,7 @@ public class CGCommonEvents {
                         }
                     }
 
-                    if (entity instanceof ItemEntity) {//TODO: non-hardcoded item gravity
+                    if (entity instanceof ItemEntity) {
 
                         //entity.setDeltaMovement(0.0D, -obj.getGravity() / 4.0D, 0.0D);
                         if (level.dimension() == CGDimensions.MOON.getDim() && entity.getPersistentData().getDouble(CGalaxy.ITEM_GRAVITY) <= 1 && entity.getDeltaMovement().y() <= -0.1) {
@@ -187,9 +192,19 @@ public class CGCommonEvents {
         }
 
         @SubscribeEvent
-        public static void onEntityPlaceBlock(BlockEvent.EntityPlaceEvent e) {
-            if (e.getPlacedBlock().getBlock() instanceof TorchBlock) {
-                e.getWorld().setBlock(e.getBlockSnapshot().getPos(), Blocks.DIAMOND_BLOCK.defaultBlockState(), 1);
+        public static void onEntityPlaceBlock(BlockOnPlacedEvent.Post e) {
+            if (CGDimensionBuilder.getObjectFromKey(e.getLevel().dimension()) != null) {
+                if (e.getNewBlock() instanceof TorchBlock && !CGDimensionBuilder.getObjectFromKey(e.getLevel().dimension()).getBreathable()) {
+                    e.getLevel().setBlock(e.getPos(), Blocks.DIAMOND_BLOCK.defaultBlockState(), 2);
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public static void setupPlayerRotationAngles(PlayerSetupAnimationEvent.Post e) {
+            if (e.getPlayer().getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof AbstractRocketItem) {
+                e.getModelPlayer().leftArm.xRot = 172.8F;
+                e.getModelPlayer().rightArm.xRot = 172.8F;
             }
         }
     }//ForgeCommonEvents End

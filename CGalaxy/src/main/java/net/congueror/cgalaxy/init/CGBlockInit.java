@@ -11,7 +11,10 @@ import net.congueror.clib.api.objects.blocks.CLBlock;
 import net.congueror.clib.api.registry.BlockBuilder;
 import net.congueror.clib.init.CLItemInit;
 import net.congueror.clib.util.ModCreativeTabs;
+import net.minecraft.ChatFormatting;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
@@ -127,6 +130,7 @@ public class CGBlockInit {
             .build(BLOCKS);
     public static final RegistryObject<Block> ASTRAL_SAPPHIRE_BLOCK = new BlockBuilder("astral_sapphire_block",
             new CLBlock(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(7.0F, 6.0f).sound(SoundType.METAL)))
+            .withItemProperties(new Item.Properties().rarity(Rarity.create("dark_blue", ChatFormatting.DARK_BLUE)))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_DIAMOND_TOOL, BlockTags.BEACON_BASE_BLOCKS)
             .withNewBlockTag("forge:storage_blocks/astral_sapphire")
             .withNewItemTag("forge:storage_blocks/astral_sapphire")

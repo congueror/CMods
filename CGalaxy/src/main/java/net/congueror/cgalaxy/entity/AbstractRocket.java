@@ -35,7 +35,6 @@ import java.util.Objects;
 
 public abstract class AbstractRocket extends Entity {
 
-    protected int fuel;
     /**
      * Set value in subclass constructor
      */
@@ -45,6 +44,7 @@ public abstract class AbstractRocket extends Entity {
 
     private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(AbstractRocket.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> DATA_ID_DROPS = SynchedEntityData.defineId(AbstractRocket.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_FUEL = SynchedEntityData.defineId(AbstractRocket.class, EntityDataSerializers.INT);
 
     protected AbstractRocket(EntityType<? extends Entity> entity, Level level, int tier) {
         super(entity, level);
@@ -55,7 +55,7 @@ public abstract class AbstractRocket extends Entity {
     public abstract Item getItem();
 
     public int getFuel() {
-        return fuel;
+        return this.entityData.get(DATA_FUEL);
     }
 
     public int getCapacity() {
@@ -63,28 +63,32 @@ public abstract class AbstractRocket extends Entity {
     }
 
     public int drain(int amount) {
-        int fuel = this.fuel;
+        int fuel = getFuel();
         if (fuel > 0 && fuel - amount >= 0) {
-            this.fuel = -amount;
+            this.entityData.set(DATA_FUEL, fuel - amount);
             return amount;
         }
         return 0;
     }
 
     public int fill(int amount) {
-        int filled = capacity - fuel;
+        int filled = capacity - getFuel();
         if (amount < filled) {
-            fuel += amount;
+            this.entityData.set(DATA_FUEL, getFuel() + amount);
             filled = amount;
         } else {
-            fuel = capacity;
+            this.entityData.set(DATA_FUEL, capacity);
         }
         return filled;
     }
 
+    public void setFuel(int fuel) {
+        this.entityData.set(DATA_FUEL, fuel);
+    }
+
     public ItemStack createItemStack() {
         ItemStack stack = new ItemStack(getItem());
-        stack.getOrCreateTag().putInt("Fuel", fuel);
+        stack.getOrCreateTag().putInt("Fuel", getFuel());
         return stack;
     }
 
@@ -92,6 +96,7 @@ public abstract class AbstractRocket extends Entity {
     protected void defineSynchedData() {
         this.entityData.define(DATA_ID_DAMAGE, 0.0f);
         this.entityData.define(DATA_ID_DROPS, true);
+        this.entityData.define(DATA_FUEL, 0);
     }
 
     @Nonnull
@@ -132,7 +137,7 @@ public abstract class AbstractRocket extends Entity {
             }
         } else {
             double d0 = -Objects.requireNonNull(CGDimensionBuilder.getObjectFromKey(this.level.dimension())).getGravity() / 4.0D;
-            this.setDeltaMovement(0.0d, -0.04D, 0.0d);
+            this.setDeltaMovement(0.0d, -0.0001D, 0.0d);
         }
         this.move(MoverType.SELF, this.getDeltaMovement());
     }
@@ -271,14 +276,14 @@ public abstract class AbstractRocket extends Entity {
 
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
-        fuel = pCompound.getInt("Fuel");
         capacity = pCompound.getInt("Capacity");
+        this.setFuel(pCompound.getInt("Fuel"));
     }
 
     @Override
     public void addAdditionalSaveData(@Nonnull CompoundTag pCompound) {
-        pCompound.putInt("Fuel", fuel);
         pCompound.putInt("Capacity", capacity);
+        pCompound.putInt("Fuel", getFuel());
     }
 
     @Nonnull

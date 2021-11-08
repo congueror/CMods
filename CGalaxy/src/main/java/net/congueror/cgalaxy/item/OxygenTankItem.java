@@ -75,7 +75,7 @@ public class OxygenTankItem extends Item {
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        return true;
+        return getOxygen(stack) != getCapacity();
     }
 
     @Override

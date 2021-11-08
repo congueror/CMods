@@ -4,28 +4,48 @@ import net.congueror.cgalaxy.blocks.launch_pad.LaunchPadBlock;
 import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.clib.api.objects.items.CLItem;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.IItemRenderProperties;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 public abstract class AbstractRocketItem extends CLItem {
 
     public AbstractRocketItem(Properties properties) {
         super(properties);
+    }
+
+    public int getFuel(ItemStack stack) {
+        if (stack.getItem() instanceof AbstractRocketItem) {
+            return stack.getOrCreateTag().getInt("Fuel");
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Client only
+     */
+    public int getCapacity() {
+        return newRocketEntity(Minecraft.getInstance().level, 1000).getCapacity();
     }
 
     @Nonnull
@@ -66,6 +86,22 @@ public abstract class AbstractRocketItem extends CLItem {
             pItems.add(new ItemStack(this));
             pItems.add(stack);
         }
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return getFuel(stack) != getCapacity();
+    }
+
+    @Override
+    public double getDurabilityForDisplay(ItemStack stack) {
+        AbstractRocketItem item = (AbstractRocketItem) stack.getItem();
+        return (double) (item.getCapacity() - item.getFuel(stack)) / (double) item.getCapacity();
+    }
+
+    @Override
+    public void appendHoverText(@Nonnull ItemStack pStack, @Nullable net.minecraft.world.level.Level pLevel, java.util.List<Component> pTooltipComponents, @Nonnull TooltipFlag pIsAdvanced) {
+        pTooltipComponents.add(new TranslatableComponent("key.cgalaxy.fuel").append(": ").withStyle(ChatFormatting.AQUA).append(getFuel(pStack) + "/" + getCapacity()).withStyle(ChatFormatting.GREEN));
     }
 
     @Override

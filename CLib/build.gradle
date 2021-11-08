@@ -38,7 +38,6 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            arg "-mixin.config=clib.mixin.json"
             mods {
                 clib {
                     source sourceSets.main
@@ -99,10 +98,12 @@ dependencies {
     //compileOnly fg.deobf('slimeknights.tconstruct:TConstruct:1.16.5-3.1.0.231')
     //compileOnly fg.deobf('slimeknights.mantle:Mantle:1.16.5-1.6.114')
     compileOnly fg.deobf("mezz.jei:jei-1.17.1:8.0.0.16:api")
+    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }
 
 mixin {
     add sourceSets.main, "clib.mixin-refmap.json"
+    config 'clib.mixin.json'
 }
 
 jar {

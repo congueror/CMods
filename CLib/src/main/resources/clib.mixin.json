@@ -3,11 +3,12 @@
   "package": "net.congueror.clib.mixins",
   "compatibilityLevel": "JAVA_16",
   "minVersion": "0.8.4",
-  "client": [
-
-  ],
-  "server": [
+  "mixins": [
     "MixinBlockBehaviour"
+  ],
+  "client": [
+    "MixinPlayerModel",
+    "MixinPrimaryLevelData"
   ],
   "injectors": {
     "defaultRequire": 1

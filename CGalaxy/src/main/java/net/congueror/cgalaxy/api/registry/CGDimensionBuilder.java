@@ -1,6 +1,8 @@
 package net.congueror.cgalaxy.api.registry;
 
+import net.congueror.cgalaxy.CGalaxy;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 
@@ -16,6 +18,7 @@ public class CGDimensionBuilder {
     private int nightTemp = 10;
     private float radiation = 2.4F;
     private double airPressure = 101352.9D;
+    private ResourceLocation yOverlay = new ResourceLocation(CGalaxy.MODID, "textures/gui/rocket_y_hud.png");
 
     public CGDimensionBuilder(ResourceKey<Level> dim) {
         this.dim = dim;
@@ -24,29 +27,26 @@ public class CGDimensionBuilder {
     private ResourceKey<Level> getDim() {
         return dim;
     }
-
     private boolean getIsBreathable() {
         return breathable;
     }
-
     private double getGravity() {
         return gravity;
     }
-
     private int getDayTemp() {
         return dayTemp;
     }
-
     private int getNightTemp() {
         return nightTemp;
     }
-
     private float getRadiation() {
         return radiation;
     }
-
     public double getAirPressure() {
         return airPressure;
+    }
+    public ResourceLocation getyOverlay() {
+        return yOverlay;
     }
 
     /**
@@ -112,6 +112,14 @@ public class CGDimensionBuilder {
         return this;
     }
 
+    /**
+     * The y overlay texture shown when inside a rocket.
+     */
+    public CGDimensionBuilder withYOverlayTexture(ResourceLocation texture) {
+        this.yOverlay = texture;
+        return this;
+    }
+
     public static class DimensionObject {
         private final CGDimensionBuilder builder;
 
@@ -145,6 +153,10 @@ public class CGDimensionBuilder {
 
         public double getAirPressure() {
             return builder.getAirPressure();
+        }
+
+        public ResourceLocation getYOverlayTexture() {
+            return builder.getyOverlay();
         }
     }
 }

@@ -209,7 +209,7 @@ public class OxygenMaskItem extends SpaceSuitItem {
                         String coords = "x: " + (int) player.getX() + ", y: " + (int) player.getY() + ", z:" + (int) player.getZ();
                         int k = mc.font.width(coords);
                         int l = mc.getWindow().getGuiScaledWidth() - 2 - k;
-                        GuiComponent.drawString(poseStack, mc.font, coords, l, 25, textColor);
+                        GuiComponent.drawString(poseStack, mc.font, coords, l, 5, textColor);
                     }
 
                     //Planet Info
