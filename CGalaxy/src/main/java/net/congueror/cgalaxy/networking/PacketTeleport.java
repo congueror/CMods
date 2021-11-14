@@ -3,6 +3,7 @@ package net.congueror.cgalaxy.networking;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.item.AbstractRocketItem;
+import net.congueror.clib.networking.IPacket;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
@@ -16,7 +17,7 @@ import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class PacketTeleport {
+public class PacketTeleport implements IPacket {
     private final ResourceLocation level;
 
     public PacketTeleport(FriendlyByteBuf buffer) {

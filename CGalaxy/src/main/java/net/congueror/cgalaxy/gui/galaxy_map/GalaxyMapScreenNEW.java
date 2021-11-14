@@ -1,58 +1,126 @@
 package net.congueror.cgalaxy.gui.galaxy_map;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.congueror.cgalaxy.CGalaxy;
+import net.congueror.cgalaxy.networking.CGNetwork;
+import net.congueror.cgalaxy.networking.PacketChangeMap;
 import net.congueror.clib.util.MathHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
+import org.apache.commons.lang3.tuple.MutablePair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContainer> {
-
-    MapModes mode;
-
     Minecraft mc = Minecraft.getInstance();
+    int width;
+    int height;
     LocalPlayer player = mc.player;
     @Nullable
     Entity entity = player != null ? player.getVehicle() : null;
     GalaxyMapContainer container;
 
     boolean unlocked;
+    @Nullable
+    GalacticObjectBuilder.GalacticObject<?> currentObj;
+
+    List<Button> nullButtons = new ArrayList<>();
+    List<MutablePair<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Galaxy>, Button>> galaxyButtons = new ArrayList<>();
+    List<MutablePair<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.SolarSystem>, Button>> solarSystemButtons = new ArrayList<>();
+    List<MutablePair<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Planet>, Button>> planetButtons = new ArrayList<>();
+    List<MutablePair<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Moon>, Button>> moonButtons = new ArrayList<>();
+    List<MutablePair<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.MoonMoon>, Button>> moonMoonButtons = new ArrayList<>();
 
     public GalaxyMapScreenNEW(GalaxyMapContainer pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        this.mode = MapModes.SOLAR_SYSTEMS;
+        this.width = mc.getWindow().getGuiScaledWidth();
+        this.height = mc.getWindow().getGuiScaledHeight();
         this.imageWidth = 528;
         this.imageHeight = 498;
         this.unlocked = pMenu.unlocked;
+        this.currentObj = pMenu.map;
         this.container = pMenu;
     }
 
     @Override
     protected void init() {
         super.init();
-        if (this.mode.equals(MapModes.GALAXIES)) {
+        List<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Galaxy>> galaxies = GalacticObjectBuilder.galaxies();
+        for (int i = 0; i < galaxies.size(); i++) {
+            nullButtons.add(addGalaxySelButton(this.width / 2 - 100, this.height / 2 - 50 - (i * 21), 200, 20, 200, 60,
+                    "textures/gui/galaxy_map/galaxy_button.png",
+                    new TranslatableComponent(galaxies.get(i).getName()).withStyle(ChatFormatting.DARK_PURPLE),
+                    galaxies.get(i)));
 
-        } else {
-            blankMapButton(this.leftPos - 25, this.topPos + 320, 15, 10, this.mode.ordinal() - 1);
-            if (this.mode.equals(MapModes.SOLAR_SYSTEMS)) {
+            galaxyButtons.add(new MutablePair<>(galaxies.get(i), addBackButton(this.leftPos - 25, this.topPos + 320, null)));
+        }
+        List<Map.Entry<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.SolarSystem>, GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Galaxy>>> solarSystems = GalacticObjectBuilder.solarSystems();
+        for (Map.Entry<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.SolarSystem>, GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Galaxy>> solarSystem : solarSystems) {
+            galaxyButtons.add(new MutablePair<>(solarSystem.getValue(),
+                    addMapButton(this.width - 100, this.height / 2 + 10, 7, 7, 7, 7, "textures/gui/galaxy_map/galaxy_map_select.png", solarSystem.getKey())));
 
-            }
-            if (this.mode.equals(MapModes.PLANETS)) {
+            solarSystemButtons.add(new MutablePair<>(solarSystem.getKey(),
+                    addBackButton(this.leftPos - 25, this.topPos + 320, solarSystem.getKey().getType().getGalaxy())));
+        }
 
-            }
-            if (this.mode.equals(MapModes.MOONS)) {
+        /*
+        if (this.currentObj.getType() instanceof GalacticObjectBuilder.Planet planet) {
+            planetButtons.add(addBackButton(this.leftPos - 25, this.topPos + 320, planet.getSolarSystem()));
+        }
+        if (this.currentObj.getType() instanceof GalacticObjectBuilder.Moon moon) {
+            moonButtons.add(addBackButton(this.leftPos - 25, this.topPos + 320, moon.getPlanet().getType().getSolarSystem()));
+        }
+        if (this.currentObj.getType() instanceof GalacticObjectBuilder.MoonMoon moonMoon) {
+            moonMoonButtons.add(addBackButton(this.leftPos - 25, this.topPos + 320, moonMoon.getMoon().getType().getPlanet()));
+        }*/
+    }
 
-            }
+    private void resetButtons() {
+        for (Button button : nullButtons) {
+            button.visible = false;
+        }
+        for (Button button : galaxyButtons.stream().map(pair -> pair.right).collect(Collectors.toList())) {
+            button.visible = false;
+        }
+        for (Button button : solarSystemButtons.stream().map(pair -> pair.right).collect(Collectors.toList())) {
+            button.visible = false;
+        }
+        for (Button button : planetButtons.stream().map(pair -> pair.right).collect(Collectors.toList())) {
+            button.visible = false;
+        }
+        for (Button button : moonButtons.stream().map(pair -> pair.right).collect(Collectors.toList())) {
+            button.visible = false;
+        }
+        for (Button button : moonMoonButtons.stream().map(pair -> pair.right).collect(Collectors.toList())) {
+            button.visible = false;
+        }
+    }
+
+    private void setVisible() {
+        for (Button button : nullButtons) {
+            button.visible = true;
+        }
+    }
+
+    private <G extends GalacticObjectBuilder<G>> void setVisible(List<MutablePair<GalacticObjectBuilder.GalacticObject<G>, Button>> list) {
+        for (Button button : list.stream().map(pair -> pair.right).collect(Collectors.toList())) {
+            button.visible = true;
         }
     }
 
@@ -63,28 +131,55 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
     }
 
     @Override
+    protected void renderLabels(@Nonnull PoseStack pPoseStack, int pMouseX, int pMouseY) {
+
+    }
+
+    @Override
     protected void renderBg(@Nonnull PoseStack pPoseStack, float pPartialTicks, int pMouseX, int pMouseY) {
-        int width = mc.getWindow().getGuiScaledWidth();
-        int height = mc.getWindow().getGuiScaledHeight();
         int infoColor = MathHelper.calculateRGB(0, 150, 255);
-
         this.unlocked = container.unlocked;
-    }
+        this.currentObj = container.map;
 
-    private Button blankMapButton(int x, int y, int width, int height, int mapOrdinal) {
-        return addRenderableWidget(new ImageButton(x, y, width, height, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), width, height, p_onPress_1_ -> {
-            for (MapModes mode : MapModes.values()) {
-                if (mode.ordinal() == mapOrdinal) {
-                    this.mode = mode;
-                }
+        resetButtons();
+
+        if (this.currentObj == null) {
+            setVisible();
+            RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/galaxy_map_empty_background.png"));
+            blit(pPoseStack, 0, 0, 0, 0, mc.getWindow().getWidth(), mc.getWindow().getHeight(), width, height);
+        } else {
+            if (this.currentObj.getType() instanceof GalacticObjectBuilder.Galaxy) {
+                setVisible(galaxyButtons);
+                RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/milky_way.png"));
+                blit(pPoseStack, 0, 0, 0, 0, mc.getWindow().getWidth(), mc.getWindow().getHeight(), width, height);
+
             }
-        }));
+        }
     }
 
-    public enum MapModes {
-        GALAXIES,
-        SOLAR_SYSTEMS,
-        PLANETS,
-        MOONS
+    private Button addBackButton(int x, int y, GalacticObjectBuilder.GalacticObject<?> object) {
+        return addMapButton(x, y, 15, 10, 15, 20, "textures/gui/galaxy_map/back_button.png", object);
+    }
+
+    private Button addMapButton(int x, int y, int width, int height, int textureWidth, int textureHeight, String texture, GalacticObjectBuilder.GalacticObject<?> object) {
+        return addRenderableWidget(new ImageButton(x, y, width, height, 0, 0, height
+                , new ResourceLocation(CGalaxy.MODID, texture), textureWidth, textureHeight,
+                p_onPress_1_ -> changeMap(object), TextComponent.EMPTY));
+    }
+
+    private Button addGalaxySelButton(int x, int y, int width, int height, int textureWidth, int textureHeight, String texture, Component message, GalacticObjectBuilder.GalacticObject<?> object) {
+        return addRenderableWidget(new ImageButton(x, y, width, height, 0, 0, height
+                , new ResourceLocation(CGalaxy.MODID, texture), textureWidth, textureHeight,
+                p_onPress_1_ -> changeMap(object), message) {
+            @Override
+            public void renderButton(@Nonnull PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
+                super.renderButton(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
+                drawCenteredString(pMatrixStack, mc.font, getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, MathHelper.calculateRGB(255, 0, 255));
+            }
+        });
+    }
+
+    private void changeMap(GalacticObjectBuilder.GalacticObject<?> obj) {
+        CGNetwork.sendToServer(new PacketChangeMap(obj == null ? "null" : obj.getName()));
     }
 }

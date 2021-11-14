@@ -2,23 +2,27 @@ package net.congueror.cgalaxy.gui.galaxy_map;
 
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.cgalaxy.networking.CGNetwork;
-import net.congueror.cgalaxy.networking.PacketUnlockMap;
+import net.congueror.cgalaxy.networking.PacketSyncMap;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class GalaxyMapContainer extends AbstractContainerMenu {
     public boolean unlocked;
     private boolean unlockedLastTick;
+    @Nullable
+    public GalacticObjectBuilder.GalacticObject<?> map;
     Player player;
 
-    public GalaxyMapContainer(int id, Player player, boolean unlocked) {
+    public GalaxyMapContainer(int id, Player player, boolean unlocked, @Nullable GalacticObjectBuilder.GalacticObject<?> map) {
         super(CGContainerInit.GALAXY_MAP.get(), id);
         this.player = player;
         this.unlocked = unlocked;
+        this.map = map;
     }
 
     @Override
@@ -28,13 +32,14 @@ public class GalaxyMapContainer extends AbstractContainerMenu {
             this.unlockedLastTick = this.unlocked;
             if (player instanceof ServerPlayer player1) {
                 CGNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player1),
-                        new PacketUnlockMap(containerId, unlocked));
+                        new PacketSyncMap(containerId, unlocked, map == null ? "null" : map.getName()));
             }
         }
     }
 
-    public void setUnlocked(boolean unlocked) {
+    public void sync(boolean unlocked, String name) {
         this.unlocked = unlocked;
+        this.map = GalacticObjectBuilder.getObjectFromName(name);
     }
 
     @Override

@@ -9,7 +9,7 @@ import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PacketUpdateInfo {
+public class PacketUpdateInfo implements IPacket {
     private final int windowId;
     private final String info;
 

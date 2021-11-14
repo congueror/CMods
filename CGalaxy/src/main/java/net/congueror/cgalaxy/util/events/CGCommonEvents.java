@@ -14,6 +14,7 @@ import net.congueror.cgalaxy.init.CGCarverInit;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
 import net.congueror.cgalaxy.item.AbstractRocketItem;
 import net.congueror.cgalaxy.networking.CGNetwork;
+import net.congueror.cgalaxy.util.CGGalacticObjects;
 import net.congueror.cgalaxy.util.DamageSources;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
 import net.congueror.cgalaxy.world.CGBiomes;
@@ -62,6 +63,7 @@ public class CGCommonEvents {
         @SubscribeEvent
         public static void commonSetup(FMLCommonSetupEvent e) {
             CGNetwork.registerMessages();
+            CGGalacticObjects.init();
             e.enqueueWork(() -> {
                 CGDimensions.registerDimensions();
                 CGFeatureGen.registerFeatures();
@@ -179,7 +181,7 @@ public class CGCommonEvents {
 
                         @Override
                         public AbstractContainerMenu createMenu(int pContainerId, @Nonnull Inventory pInventory, @Nonnull Player pPlayer) {
-                            return new GalaxyMapContainer(pContainerId, pPlayer, false);
+                            return new GalaxyMapContainer(pContainerId, pPlayer, false, CGGalacticObjects.SOLAR_SYSTEM);
                         }
                     });
                 }

@@ -6,7 +6,6 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
-import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
@@ -43,7 +42,7 @@ public class OpenGalaxyMapCommand implements Command<CommandSourceStack> {
             @Nonnull
             @Override
             public AbstractContainerMenu createMenu(int pContainerId, @Nonnull Inventory pInventory, @Nonnull Player pPlayer) {
-                return new GalaxyMapContainer(pContainerId, player, true);
+                return new GalaxyMapContainer(pContainerId, player, true, null);
             }
         });
         return 1;

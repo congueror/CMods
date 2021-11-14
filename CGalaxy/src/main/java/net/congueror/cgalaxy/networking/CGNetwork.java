@@ -1,8 +1,6 @@
 package net.congueror.cgalaxy.networking;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.clib.CLib;
-import net.congueror.clib.networking.PacketUpdateFluidTanks;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fmllegacy.network.NetworkDirection;
@@ -19,10 +17,10 @@ public class CGNetwork {
 
     public static void registerMessages() {
         INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(CGalaxy.MODID, "cgalaxy"), () -> "1.0", s -> true, s -> true);
-        INSTANCE.messageBuilder(PacketUnlockMap.class, nextID())
-                .encoder(PacketUnlockMap::toBytes)
-                .decoder(PacketUnlockMap::new)
-                .consumer(PacketUnlockMap::handle)
+        INSTANCE.messageBuilder(PacketSyncMap.class, nextID())
+                .encoder(PacketSyncMap::toBytes)
+                .decoder(PacketSyncMap::new)
+                .consumer(PacketSyncMap::handle)
                 .add();
         INSTANCE.messageBuilder(PacketTeleport.class, nextID())
                 .encoder(PacketTeleport::toBytes)
@@ -38,6 +36,11 @@ public class CGNetwork {
                 .encoder(PacketOpenSpaceSuitMenu::toBytes)
                 .decoder(PacketOpenSpaceSuitMenu::new)
                 .consumer(PacketOpenSpaceSuitMenu::handle)
+                .add();
+        INSTANCE.messageBuilder(PacketChangeMap.class, nextID())
+                .encoder(PacketChangeMap::toBytes)
+                .decoder(PacketChangeMap::new)
+                .consumer(PacketChangeMap::handle)
                 .add();
     }
 

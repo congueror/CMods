@@ -185,18 +185,6 @@ public class CGBlockInit {
             new LiquidBlock(CGFluidInit.OIL::getStill, BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops()))
             .build(BLOCKS);
 
-    /*TODO
-    public static final RegistryObject<Block> COAL_TORCH = new BlockBuilder("coal_torch",
-            new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 0)
-                    .sound(SoundType.WOOD), ParticleTypes.FLAME))
-            //.withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.)
-            .build(BLOCKS);
-
-    public static final RegistryObject<Block> WALL_COAL_TORCH = new BlockBuilder("wall_coal_torch",
-            new WallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_152607_) -> 14)
-                    .sound(SoundType.WOOD).dropsLike(COAL_TORCH.get()), ParticleTypes.SCRAPE))
-            .build(BLOCKS);*/
-
     public static Block moonStoneBlock() {
         return new CLBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f, 6.5f).requiresCorrectToolForDrops());
     }

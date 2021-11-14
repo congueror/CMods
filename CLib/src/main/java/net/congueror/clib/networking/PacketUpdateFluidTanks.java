@@ -10,7 +10,7 @@ import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PacketUpdateFluidTanks {
+public class PacketUpdateFluidTanks implements IPacket {
     private final int windowId;
     private final ResourceLocation fluid;
     private final int amount;

@@ -2,6 +2,8 @@ package net.congueror.cgalaxy.networking;
 
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.entity.AbstractRocket;
+import net.congueror.clib.networking.IPacket;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -9,7 +11,12 @@ import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PacketLaunchSequence {
+public class PacketLaunchSequence implements IPacket {
+    @Override
+    public void toBytes(FriendlyByteBuf buf) {
+
+    }
+
     public boolean handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ServerPlayer player = ctx.get().getSender();

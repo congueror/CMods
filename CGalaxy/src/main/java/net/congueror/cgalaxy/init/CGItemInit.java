@@ -87,7 +87,7 @@ public class CGItemInit {
             .withTranslation("Raw Lunarite")
             .build(ITEMS);
     public static final RegistryObject<Item> LURANITE_INGOT = new ItemBuilder("lunarite_ingot",
-            new CLItem(new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance).rarity(Rarity.create("purple", ChatFormatting.LIGHT_PURPLE))))
+            new CLItem(new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance).rarity(Rarity.create("purple", ChatFormatting.DARK_PURPLE))))
             .withTranslation("Lunarite Ingot")
             .build(ITEMS);
 
