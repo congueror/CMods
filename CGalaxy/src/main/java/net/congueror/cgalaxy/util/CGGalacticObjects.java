@@ -14,7 +14,10 @@ public class CGGalacticObjects {
     public static final GalacticObject<SolarSystem> SOLAR_SYSTEM = new GalacticObjectBuilder.SolarSystem("Solar System", MILKY_WAY)
             .withAge(4.6e9)
             .withDiameter(284.46e9, "km")
-            .withCelestialObjects(7).build();
+            .withCelestialObjects(7)
+            .withX((width, integer2) -> 3 * width / 4)
+            .withY((height, integer2) -> height / 2 + 10)
+            .build();
     public static final GalacticObject<Planet> EARTH = new GalacticObjectBuilder.Planet("Earth", SOLAR_SYSTEM)
             .withDiameter(12742, "km")
             .withMoons(1)

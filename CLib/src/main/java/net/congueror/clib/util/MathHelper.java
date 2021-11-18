@@ -14,6 +14,7 @@ public class MathHelper {
 
     /**
      * Converts the argb hexadecimal of a fluid's colour to a {@link Vector4f} which contains the Red, Green, Blue and Alpha.
+     *
      * @return x = Red, y = Blue, z = Green, w = Alpha
      */
     public static Vector4f getFluidColor(int argb) {
@@ -22,6 +23,7 @@ public class MathHelper {
 
     /**
      * Extracts a percentage from the value and it's max value.
+     *
      * @return A number from 0 to 100
      */
     public static int getPercent(int value, int max) {
@@ -30,6 +32,7 @@ public class MathHelper {
 
     /**
      * Formats the given unit of the given value to n, μ, m, G, M and k.
+     *
      * @return The formatted number including the unit.
      */
     public static String formatUnit(double value, String unit) {
@@ -46,7 +49,7 @@ public class MathHelper {
             }
         }
         if (value > 1) {
-            String stringDouble = ((int)value) + "";
+            String stringDouble = value + "";
             if (stringDouble.length() >= 10) {
                 return new DecimalFormat("#.00").format(value / 1e9) + "G" + unit;
             } else if (stringDouble.length() >= 7) {
@@ -56,6 +59,22 @@ public class MathHelper {
             }
         }
         return new DecimalFormat("#.00").format(value) + unit;
+    }
+
+    public static String simplifyNumber(double value) {
+        if (value > 0) {
+            String d = value + "";
+            if (value > 1000000000000.0) {
+                return new DecimalFormat("#.00").format(value / 1000000000000.0) + "T";
+            } else if (value > 1000000000.0) {
+                return new DecimalFormat("#.00").format(value / 1000000000.0) + "B";
+            } else if (value > 1000000.0) {
+                return new DecimalFormat("#.00").format(value / 1000000.0) + "M";
+            } else if (value > 1000) {
+                return new DecimalFormat("#.00").format(value / 1000) + "k";
+            }
+        }
+        return "Unexpected Value";
     }
 
     /**
@@ -69,7 +88,7 @@ public class MathHelper {
      * Converts celcius to farrenheit
      */
     public static float celciusToFarrenheit(float celcius) {
-        return (celcius * (9F/5)) + 32;
+        return (celcius * (9F / 5)) + 32;
     }
 
     /**

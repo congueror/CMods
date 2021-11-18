@@ -1,6 +1,7 @@
 package net.congueror.cgalaxy.gui.galaxy_map;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> {
@@ -13,6 +14,11 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
     private int moons;
     private double gravity;
     private int tier;
+
+    /**width, leftPos, x*/
+    private BiFunction<Integer, Integer, Integer> x;
+    /**height, topPos, y*/
+    private BiFunction<Integer, Integer, Integer> y;
 
     public static final Map<GalacticObject<?>, GalacticObject<?>> OBJECTS = new HashMap<>();
 
@@ -148,6 +154,14 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         return tier;
     }
 
+    public BiFunction<Integer, Integer, Integer> getX() {
+        return x;
+    }
+
+    public BiFunction<Integer, Integer, Integer> getY() {
+        return y;
+    }
+
     public T withDiameter(double diameter, String unit) {
         this.diameter = diameter + unit;
         return self();
@@ -175,6 +189,16 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
     public T withTier(int tier) {
         this.tier = tier;
+        return self();
+    }
+
+    public T withX(BiFunction<Integer, Integer, Integer> x) {
+        this.x = x;
+        return self();
+    }
+
+    public T withY(BiFunction<Integer, Integer, Integer> y) {
+        this.y = y;
         return self();
     }
 
@@ -318,6 +342,21 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
         public int getTier() {
             return builder.getTier();
+        }
+
+        public BiFunction<Integer, Integer, Integer> getX() {
+            return builder.getX();
+        }
+
+        public BiFunction<Integer, Integer, Integer> getY() {
+            return builder.getY();
+        }
+
+        public double getStars() {
+            if (builder instanceof Galaxy) {
+                return ((Galaxy) builder).getStars();
+            }
+            return -1;
         }
     }
 }

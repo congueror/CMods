@@ -68,15 +68,15 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
                     new TranslatableComponent(galaxies.get(i).getName()).withStyle(ChatFormatting.DARK_PURPLE),
                     galaxies.get(i)));
 
-            galaxyButtons.add(new MutablePair<>(galaxies.get(i), addBackButton(this.leftPos - 25, this.topPos + 320, null)));
+            galaxyButtons.add(new MutablePair<>(galaxies.get(i), addBackButton(this.width / 24, this.topPos + 320, null)));
         }
         List<Map.Entry<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.SolarSystem>, GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Galaxy>>> solarSystems = GalacticObjectBuilder.solarSystems();
         for (Map.Entry<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.SolarSystem>, GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Galaxy>> solarSystem : solarSystems) {
             galaxyButtons.add(new MutablePair<>(solarSystem.getValue(),
-                    addMapButton(this.width - 100, this.height / 2 + 10, 7, 7, 7, 7, "textures/gui/galaxy_map/galaxy_map_select.png", solarSystem.getKey())));
+                    addMapButton(solarSystem.getKey().getX().apply(this.width, this.leftPos), solarSystem.getKey().getY().apply(this.height, this.topPos), 7, 7, 7, 7, "textures/gui/galaxy_map/galaxy_map_select.png", solarSystem.getKey())));
 
             solarSystemButtons.add(new MutablePair<>(solarSystem.getKey(),
-                    addBackButton(this.leftPos - 25, this.topPos + 320, solarSystem.getKey().getType().getGalaxy())));
+                    addBackButton(this.width / 24, this.topPos + 320, solarSystem.getKey().getType().getGalaxy())));
         }
 
         /*
@@ -138,6 +138,8 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
     @Override
     protected void renderBg(@Nonnull PoseStack pPoseStack, float pPartialTicks, int pMouseX, int pMouseY) {
         int infoColor = MathHelper.calculateRGB(0, 150, 255);
+        this.width = mc.getWindow().getGuiScaledWidth();
+        this.height = mc.getWindow().getGuiScaledHeight();
         this.unlocked = container.unlocked;
         this.currentObj = container.map;
 
@@ -153,6 +155,23 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
                 RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/milky_way.png"));
                 blit(pPoseStack, 0, 0, 0, 0, mc.getWindow().getWidth(), mc.getWindow().getHeight(), width, height);
 
+                RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/galaxy_map_info.png"));
+                blit(pPoseStack, this.width / 30, this.topPos + 175, 0, 0, 160, 160, 160, 160);
+
+                pPoseStack.pushPose();
+                pPoseStack.scale(1.5f, 1.5f, 0);
+                drawString(pPoseStack, font, new TranslatableComponent(currentObj.getName()).withStyle(ChatFormatting.DARK_PURPLE), this.width / 30, this.topPos + 155, 0);
+                pPoseStack.popPose();
+
+                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.diameter").append(currentObj.getDiameter()), this.leftPos - 25, this.topPos + 230, infoColor);
+                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.age").append(MathHelper.simplifyNumber(currentObj.getAge())), this.leftPos - 25, this.topPos + 240, infoColor);
+                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.stars").append(MathHelper.simplifyNumber(currentObj.getStars())), this.leftPos - 25, this.topPos + 250, infoColor);
+
+                pPoseStack.pushPose();
+                pPoseStack.scale(0.8f, 0.8f, 0);
+                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.hover_tip1"), this.leftPos - 19, this.topPos + 320, MathHelper.calculateRGB(0, 100, 255));
+                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.hover_tip2"), this.leftPos - 19, this.topPos + 330, MathHelper.calculateRGB(0, 100, 255));
+                pPoseStack.popPose();
             }
         }
     }
