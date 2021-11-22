@@ -201,7 +201,7 @@ public class WorldHelper {
      * @param <FC>    {@link TreeConfiguration}
      */
     public static <FC extends FeatureConfiguration> void addVegetalDecor(BiomeLoadingEvent e, ConfiguredFeature<FC, ?> feature, int chance) {
-        e.getGeneration().getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION).add(() -> feature.rarity(chance).squared());
+        e.getGeneration().getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION).add(() -> feature.decorated(Features.Decorators.HEIGHTMAP_WITH_TREE_THRESHOLD_SQUARED).rarity(chance).squared());
     }
 
     /**

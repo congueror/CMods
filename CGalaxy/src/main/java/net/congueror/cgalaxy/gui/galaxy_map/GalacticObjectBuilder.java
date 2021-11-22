@@ -1,7 +1,9 @@
 package net.congueror.cgalaxy.gui.galaxy_map;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.resources.ResourceLocation;
+
 import java.util.*;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> {
@@ -15,10 +17,9 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
     private double gravity;
     private int tier;
 
-    /**width, leftPos, x*/
-    private BiFunction<Integer, Integer, Integer> x;
-    /**height, topPos, y*/
-    private BiFunction<Integer, Integer, Integer> y;
+    private X x;
+    private Y y;
+    private ResourceLocation texture;
 
     public static final Map<GalacticObject<?>, GalacticObject<?>> OBJECTS = new HashMap<>();
 
@@ -29,22 +30,6 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
     public static GalacticObject<?> getObjectFromName(String name) {
         return OBJECTS.keySet().stream().filter(galacticObject -> galacticObject.getName().equals(name)).findAny().orElse(null);
     }
-
-    /*
-    public static <T extends GalacticObjectBuilder<T>, U extends GalacticObjectBuilder<U>, A extends GalacticObject<? extends GalacticObjectBuilder<T>>, B extends GalacticObject<? extends GalacticObjectBuilder<U>>>
-    List<Map.Entry<A, B>> getObjectsOfType() {
-        List<Map.Entry<A, B>> list = new ArrayList<>();
-        List<A> a = OBJECTS.keySet().stream()
-                .filter(object -> object.getClass().isInstance(A)).map(object -> (A) object).collect(Collectors.toList());
-        List<GalacticObject<Galaxy>> galaxies = OBJECTS.values().stream()
-                .filter(object -> object.getType() instanceof Galaxy).map(object -> (GalacticObject<Galaxy>) object).collect(Collectors.toList());
-        for (GalacticObject<SolarSystem> system : a) {
-            for (GalacticObject<Galaxy> galaxy : galaxies) {
-                list.add(new AbstractMap.SimpleEntry<>(system, galaxy));
-            }
-        }
-        return list;
-    }*/
 
     @SuppressWarnings("unchecked")
     public static List<GalacticObject<Galaxy>> galaxies() {
@@ -154,12 +139,16 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         return tier;
     }
 
-    public BiFunction<Integer, Integer, Integer> getX() {
+    public X getX() {
         return x;
     }
 
-    public BiFunction<Integer, Integer, Integer> getY() {
+    public Y getY() {
         return y;
+    }
+
+    public ResourceLocation getTexture() {
+        return texture;
     }
 
     public T withDiameter(double diameter, String unit) {
@@ -192,13 +181,18 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         return self();
     }
 
-    public T withX(BiFunction<Integer, Integer, Integer> x) {
+    public T withX(X x) {
         this.x = x;
         return self();
     }
 
-    public T withY(BiFunction<Integer, Integer, Integer> y) {
+    public T withY(Y y) {
         this.y = y;
+        return self();
+    }
+
+    public T withTexture(ResourceLocation location) {
+        this.texture = location;
         return self();
     }
 
@@ -238,6 +232,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         public GalacticObject<Galaxy> getGalaxy() {
             return galaxy;
         }
+
         public int getCelestialObjects() {
             return celestialObjects;
         }
@@ -344,12 +339,16 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             return builder.getTier();
         }
 
-        public BiFunction<Integer, Integer, Integer> getX() {
-            return builder.getX();
+        public int getX(int width, int leftPos) {
+            return builder.getX().applyX(width, leftPos);
         }
 
-        public BiFunction<Integer, Integer, Integer> getY() {
-            return builder.getY();
+        public int getY(int height, int topPos) {
+            return builder.getY().applyY(height, topPos);
+        }
+
+        public ResourceLocation getTexture() {
+            return builder.getTexture();
         }
 
         public double getStars() {
@@ -358,5 +357,32 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             }
             return -1;
         }
+
+        public int getTerrestrialObjects() {
+            if (builder instanceof SolarSystem) {
+                return ((SolarSystem) builder).getCelestialObjects();
+            }
+            return -1;
+        }
+
+        public ChatFormatting getColor() {
+            if (builder instanceof Galaxy) {
+                return ChatFormatting.DARK_PURPLE;
+            } else if (builder instanceof SolarSystem) {
+                return ChatFormatting.GOLD;
+            } else if (builder instanceof Planet) {
+                return ChatFormatting.GREEN;
+            } else if (builder instanceof Moon) {
+                return ChatFormatting.GRAY;
+            }
+            return ChatFormatting.WHITE;
+        }
+    }
+
+    public interface X {
+        int applyX(int width, int leftPos);
+    }
+    public interface Y {
+        int applyY(int height, int topPos);
     }
 }

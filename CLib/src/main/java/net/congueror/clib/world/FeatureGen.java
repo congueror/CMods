@@ -2,7 +2,7 @@ package net.congueror.clib.world;
 
 import net.congueror.clib.CLib;
 import net.congueror.clib.init.CLBlockInit;
-import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -49,7 +49,7 @@ public class FeatureGen {
                 new StraightTrunkPlacer(4, 2, 0),
                 new SimpleStateProvider(CLBlockInit.RUBBER_LEAVES.get().defaultBlockState()),
                 new SimpleStateProvider(CLBlockInit.RUBBER_SAPLING.get().defaultBlockState()),
-                new FancyFoliagePlacer(UniformInt.of(2, 2), UniformInt.of(0, 0), 3),
+                new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                 new TwoLayersFeatureSize(1, 0, 1)).ignoreVines().build()));
 
         TIN = registerConfiguredOre(overworld, CLBlockInit.TIN_ORE.get(), 8, 63, 25);
@@ -60,7 +60,7 @@ public class FeatureGen {
         NICKEL = registerConfiguredOre(overworld, CLBlockInit.NICKEL_ORE.get(), 7, 31, 4);
         PLATINUM = registerConfiguredOre(overworld, CLBlockInit.PLATINUM_ORE.get(), 6, 8, 1);
         TUNGSTEN = registerConfiguredOre(overworld, CLBlockInit.TUNGSTEN_ORE.get(), 6, 16, 2);
-        OPAL = registerConfiguredOre(WorldHelper.end, CLBlockInit.OPAL_ORE.get(), 4, 30, 1);
+        OPAL = registerConfiguredOre(end, CLBlockInit.OPAL_ORE.get(), 4, 30, 1);
         TITANIUM = registerConfiguredOre(nether, CLBlockInit.TITANIUM_ORE.get(), 7, 7, 1);
         URANIUM = registerConfiguredOre(overworld, CLBlockInit.URANIUM_ORE.get(), 7, 16, 1);
         COBALT = registerConfiguredOre(nether, CLBlockInit.COBALT_ORE.get(), 7, 32, 1);

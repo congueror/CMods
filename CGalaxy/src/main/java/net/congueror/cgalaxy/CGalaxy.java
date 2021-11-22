@@ -2,6 +2,7 @@ package net.congueror.cgalaxy;
 
 import net.congueror.cgalaxy.init.*;
 import net.congueror.cgalaxy.util.CGConfig;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -63,4 +64,8 @@ public class CGalaxy {
 //TODO: Moon Village/Villagers
 //TODO: Moon Boss
 //TODO: Space Station (Zero-G: 0 Gravity Attribute, delta movement x - 0.4 unless tethered or in air, ability to go up or down)
+
+    public static ResourceLocation location(String texture) {
+        return new ResourceLocation(CGalaxy.MODID, texture);
+    }
 }

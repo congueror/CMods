@@ -49,7 +49,7 @@ public class MathHelper {
             }
         }
         if (value > 1) {
-            String stringDouble = value + "";
+            String stringDouble = ((int)value) + "";
             if (stringDouble.length() >= 10) {
                 return new DecimalFormat("#.00").format(value / 1e9) + "G" + unit;
             } else if (stringDouble.length() >= 7) {
@@ -61,6 +61,11 @@ public class MathHelper {
         return new DecimalFormat("#.00").format(value) + unit;
     }
 
+    /**
+     *
+     *
+     * @return
+     */
     public static String simplifyNumber(double value) {
         if (value > 0) {
             String d = value + "";

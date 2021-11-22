@@ -9,11 +9,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
-import net.minecraft.world.level.block.AmethystClusterBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.ToolActions;
@@ -21,7 +21,9 @@ import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
+import java.util.Random;
 
 public class CLBlockInit {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, CLib.MODID);
@@ -276,7 +278,13 @@ public class CLBlockInit {
             .build(BLOCKS);
 
     public static final RegistryObject<Block> RUBBER_SAPLING = new BlockBuilder("rubber_sapling",
-            new CLSaplingBlock(FeatureGen.RUBBER_TREE, BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)))
+            new SaplingBlock(new AbstractTreeGrower() {
+                @Nullable
+                @Override
+                protected ConfiguredFeature<TreeConfiguration, ?> getConfiguredFeature(Random pRandom, boolean pLargeHive) {
+                    return FeatureGen.RUBBER_TREE;
+                }
+            }, BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)))
             .withBlockModel(BlockModelDataProvider::crossBlock)
             .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.texture(block.asItem(), "block/rubber_sapling"))
             .withTranslation("Rubber Sapling")
