@@ -112,18 +112,15 @@ public class CGCommonEvents {
                 if (obj != null) {
                     if (entity instanceof LivingEntity) {
                         AttributeMap manager = ((LivingEntity) entity).getAttributes();
-                        if (Objects.requireNonNull(((LivingEntity) entity).getAttribute(ForgeMod.ENTITY_GRAVITY.get())).getValue() == obj.getGravity()) {
-                            Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(obj.getGravity());
-                        }
+                        Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(obj.getGravity());
                         entity.fallDistance = 1;
                         if (!obj.getBreathable()) {
-                            if (!hasOxygen) {
-                                player.hurt(DamageSources.NO_OXYGEN, 2.0f);
-                            }
                             if (entity instanceof CGEntity i) {
                                 if (!i.canBreath(obj)) {
                                     entity.hurt(DamageSources.NO_OXYGEN, 2.0f);
                                 }
+                            } else if (!hasOxygen) {
+                                entity.hurt(DamageSources.NO_OXYGEN, 2.0f);
                             }
                         }
                         player.getPersistentData().putDouble(CGalaxy.PLAYER_AIR_PRESSURE, obj.getAirPressure());

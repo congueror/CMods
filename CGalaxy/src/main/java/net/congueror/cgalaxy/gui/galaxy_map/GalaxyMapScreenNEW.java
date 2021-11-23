@@ -46,8 +46,8 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
     @Nullable
     GalacticObjectBuilder.GalacticObject<?> currentObj;
 
-    List<Button> nullButtons = new ArrayList<>();
     //Current Object, Button
+    List<MutablePair<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Galaxy>, Button>> nullButtons = new ArrayList<>();
     List<MutablePair<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Galaxy>, Button>> galaxyButtons = new ArrayList<>();
     List<MutablePair<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.SolarSystem>, Button>> solarSystemButtons = new ArrayList<>();
     List<MutablePair<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Planet>, Button>> planetButtons = new ArrayList<>();
@@ -60,9 +60,11 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
         this.height = mc.getWindow().getGuiScaledHeight();
         this.imageWidth = 528;
         this.imageHeight = 498;
-        this.unlocked = pMenu.unlocked;
-        this.currentObj = pMenu.map;
         this.container = pMenu;
+        this.currentObj = pMenu.map;
+        if (pMenu.unlocked) {
+            this.unlocked = true;
+        }
     }
 
     @Override
@@ -70,10 +72,11 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
         super.init();
         List<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Galaxy>> galaxies = GalacticObjectBuilder.galaxies();
         for (int i = 0; i < galaxies.size(); i++) {
-            nullButtons.add(addGalaxySelButton(this.width / 2 - 100, this.height / 2 - 50 - (i * 21), 200, 20, 200, 60,
+            nullButtons.add(new MutablePair<>(null,
+                    addGalaxySelButton(this.width / 2 - 100, this.height / 2 - 50 - (i * 21), 200, 20, 200, 60,
                     "textures/gui/galaxy_map/galaxy_button.png",
                     new TranslatableComponent(galaxies.get(i).getName()).withStyle(ChatFormatting.DARK_PURPLE),
-                    galaxies.get(i)));
+                    galaxies.get(i))));
 
             galaxyButtons.add(new MutablePair<>(galaxies.get(i), addBackButton(this.width / 24, this.topPos + 320, null)));
         }
@@ -97,7 +100,7 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
     }
 
     private void resetButtons() {
-        for (Button button : nullButtons) {
+        for (Button button : nullButtons.stream().map(pair -> pair.right).collect(Collectors.toList())) {
             button.visible = false;
         }
         for (Button button : galaxyButtons.stream().map(pair -> pair.right).collect(Collectors.toList())) {
@@ -117,13 +120,12 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
         }
     }
 
-    private void setVisible() {
-        for (Button button : nullButtons) {
-            button.visible = true;
-        }
-    }
-
     private <G extends GalacticObjectBuilder<G>> void setVisible(List<MutablePair<GalacticObjectBuilder.GalacticObject<G>, Button>> list) {
+        if (list.equals(nullButtons)) {
+            for (Button button : list.stream().map(pair -> pair.right).collect(Collectors.toList())) {
+                button.visible = true;
+            }
+        }
         for (Button button : list.stream().filter(pair -> pair.left.equals(currentObj)).map(pair -> pair.right).collect(Collectors.toList())) {
             button.visible = true;
         }
@@ -137,7 +139,6 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
 
     @Override
     protected void renderLabels(@Nonnull PoseStack pPoseStack, int pMouseX, int pMouseY) {
-
     }
 
     @Override
@@ -151,7 +152,7 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
         resetButtons();
 
         if (this.currentObj == null) {
-            setVisible();
+            setVisible(nullButtons);
             RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/galaxy_map_empty_background.png"));
             blit(pPoseStack, 0, 0, 0, 0, mc.getWindow().getWidth(), mc.getWindow().getHeight(), width, height);
         } else {
@@ -204,7 +205,10 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
                 Tesselator tessellator = Tesselator.getInstance();
                 BufferBuilder buffer = tessellator.getBuilder();
                 buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-                drawRing(this.width / 2, this.height / 2, 4, 37, buffer);
+                drawRing(this.width / 2 + 56, this.height / 2 + 9, 50 - 3, 50, buffer);
+                drawRing(this.width / 2 + 56, this.height / 2 + 9, 89 - 3, 89, buffer);
+                drawRing(this.width / 2 + 56, this.height / 2 + 9, 138 - 3, 138, buffer);
+                drawRing(this.width / 2 + 56, this.height / 2 + 9, 183 - 3, 183, buffer);
                 tessellator.end();
                 RenderSystem.enableTexture();
                 RenderSystem.disableBlend();
@@ -299,28 +303,34 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
     }
 
     public void drawRing(int x, int y, int radiusIn, int radiusOut, BufferBuilder buffer) {
-        float endAngle = (float) ((0.5 + 0.25) * TWO_PI + Math.PI);
-        float startAngle = (float) ((-0.5 + 0.25) * TWO_PI + Math.PI);
+        float endAngle = (float) (0.75 * TWO_PI + Math.PI);
+        float startAngle = (float) (-0.25 * TWO_PI + Math.PI);
         float angle = endAngle - startAngle;
         int sections = Math.max(1, Mth.ceil(angle / (2.5f / 360.0f)));
+        float slice = angle / sections;
+
+        int[] color = {210, 0, 0, 255};
 
         for (int i = 0; i < sections; i++) {
-            float angle1 = startAngle + (i / (float) sections) * angle;
-            float angle2 = startAngle + 2 * angle;
+            float angle1 = startAngle + i * slice;
+            float angle2 = startAngle + (i + 1) * slice;
+            float xCoefficient = 1.0F;
+            float yCoefficient = 0.6F;
 
-            float pos1InX = x + radiusIn * (float) Math.cos(angle1);
-            float pos1InY = y + radiusIn * (float) Math.sin(angle1);
-            float pos1OutX = x + radiusOut * (float) Math.cos(angle1);
-            float pos1OutY = y + radiusOut * (float) Math.sin(angle1);
-            float pos2OutX = x + radiusOut * (float) Math.cos(angle2);
-            float pos2OutY = y + radiusOut * (float) Math.sin(angle2);
-            float pos2InX = x + radiusIn * (float) Math.cos(angle2);
-            float pos2InY = y + radiusIn * (float) Math.sin(angle2);
+            float pos1InX = x + radiusIn * (float) Math.cos(angle1) * xCoefficient;
+            float pos1InY = y + radiusIn * (float) Math.sin(angle1) * yCoefficient;
+            float pos2InX = x + radiusIn * (float) Math.cos(angle2) * xCoefficient;
+            float pos2InY = y + radiusIn * (float) Math.sin(angle2) * yCoefficient;
 
-            buffer.vertex(pos1OutX, pos1OutY, 0).color(1F, 0, 0, 1F).endVertex();
-            buffer.vertex(pos1InX, pos1InY, 0).color(1F, 0, 0, 1F).endVertex();
-            buffer.vertex(pos2InX, pos2InY, 0).color(1F, 0, 0, 1F).endVertex();
-            buffer.vertex(pos2OutX, pos2OutY, 0).color(1F, 0, 0, 1F).endVertex();
+            float pos1OutX = x + radiusOut * (float) Math.cos(angle1) * xCoefficient;
+            float pos1OutY = y + radiusOut * (float) Math.sin(angle1) * yCoefficient;
+            float pos2OutX = x + radiusOut * (float) Math.cos(angle2) * xCoefficient;
+            float pos2OutY = y + radiusOut * (float) Math.sin(angle2) * yCoefficient;
+
+            buffer.vertex(pos1OutX, pos1OutY, 0).color(color[0], color[1], color[2], color[3]).endVertex();
+            buffer.vertex(pos1InX, pos1InY, 0).color(color[0], color[1], color[2], color[3]).endVertex();
+            buffer.vertex(pos2InX, pos2InY, 0).color(color[0], color[1], color[2], color[3]).endVertex();
+            buffer.vertex(pos2OutX, pos2OutY, 0).color(color[0], color[1], color[2], color[3]).endVertex();
         }
     }
 }
