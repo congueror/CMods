@@ -36,7 +36,11 @@ public class CGGalacticObjects {
             .withMoons(0)
             .withAtmosphere("Negligible")
             .withGravity(CGDimensions.MOON.getGravity())
-            .withTier(1).build();
+            .withTier(1)
+            .withX((width, leftPos) -> leftPos + 245)
+            .withY((height, topPos) -> topPos + 340)
+            .withTexture(CGalaxy.location("textures/sky/moon.png"))
+            .build();
     public static final GalacticObject<Planet> MARS = new Planet("Mars", SOLAR_SYSTEM)
             .withDiameter(6779, "km")
             .withMoons(2)
@@ -53,6 +57,9 @@ public class CGGalacticObjects {
             .withAtmosphere("None")
             .withGravity(0.0057)
             .withTier(1)
+            .withX((width, leftPos) -> leftPos + 245)
+            .withY((height, topPos) -> topPos + 335)
+            .withTexture(CGalaxy.location("textures/sky/phobos.png"))
             .build();
     public static final GalacticObject<Moon> DEIMOS = new Moon("Deimos", MARS)
             .withDiameter(12.4, "km")
@@ -60,6 +67,9 @@ public class CGGalacticObjects {
             .withAtmosphere("None")
             .withGravity(0.003)
             .withTier(1)
+            .withX((width, leftPos) -> leftPos + 460)
+            .withY((height, topPos) -> topPos + 300)
+            .withTexture(CGalaxy.location("textures/sky/deimos.png"))
             .build();
     public static final GalacticObject<Planet> VENUS = new Planet("Venus", SOLAR_SYSTEM)
             .withDiameter(12104, "km")
