@@ -21,6 +21,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
     private Y y;
     private ResourceLocation texture;
 
+    //sub, super
     public static final Map<GalacticObject<?>, GalacticObject<?>> OBJECTS = new HashMap<>();
 
     public GalacticObjectBuilder(String name) {
@@ -56,10 +57,8 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
                 .filter(object -> object != null && object.getType() instanceof Planet).map(object -> (GalacticObject<Planet>) object).collect(Collectors.toList());
         List<GalacticObject<SolarSystem>> b = OBJECTS.values().stream()
                 .filter(object -> object != null && object.getType() instanceof SolarSystem).map(object -> (GalacticObject<SolarSystem>) object).collect(Collectors.toList());
-        for (GalacticObject<Planet> system : a) {
-            for (GalacticObject<SolarSystem> galaxy : b) {
-                list.add(new AbstractMap.SimpleEntry<>(system, galaxy));
-            }
+        for (int i = 0; i < a.size(); i++) {
+            list.add(new AbstractMap.SimpleEntry<>(a.get(i), b.get(i)));
         }
         return list;
     }
@@ -139,16 +138,16 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         return tier;
     }
 
+    public ResourceLocation getTexture() {
+        return texture;
+    }
+
     public X getX() {
         return x;
     }
 
     public Y getY() {
         return y;
-    }
-
-    public ResourceLocation getTexture() {
-        return texture;
     }
 
     public T withDiameter(double diameter, String unit) {
@@ -181,6 +180,11 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         return self();
     }
 
+    public T withTexture(ResourceLocation location) {
+        this.texture = location;
+        return self();
+    }
+
     public T withX(X x) {
         this.x = x;
         return self();
@@ -188,11 +192,6 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
     public T withY(Y y) {
         this.y = y;
-        return self();
-    }
-
-    public T withTexture(ResourceLocation location) {
-        this.texture = location;
         return self();
     }
 
@@ -339,14 +338,6 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             return builder.getTier();
         }
 
-        public int getX(int width, int leftPos) {
-            return builder.getX().applyX(width, leftPos);
-        }
-
-        public int getY(int height, int topPos) {
-            return builder.getY().applyY(height, topPos);
-        }
-
         public ResourceLocation getTexture() {
             return builder.getTexture();
         }
@@ -363,6 +354,14 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
                 return ((SolarSystem) builder).getCelestialObjects();
             }
             return -1;
+        }
+
+        public int getX(int width, int leftPos) {
+            return builder.getX().applyX(width, leftPos);
+        }
+
+        public int getY(int height, int topPos) {
+            return builder.getY().applyY(height, topPos);
         }
 
         public ChatFormatting getColor() {
@@ -382,6 +381,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
     public interface X {
         int applyX(int width, int leftPos);
     }
+
     public interface Y {
         int applyY(int height, int topPos);
     }

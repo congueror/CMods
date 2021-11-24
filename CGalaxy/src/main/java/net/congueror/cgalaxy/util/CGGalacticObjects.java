@@ -43,7 +43,7 @@ public class CGGalacticObjects {
             .withAtmosphere("Thin")
             .withGravity(3.721)
             .withTier(2)
-            .withX((width, leftPos) -> leftPos + 175)
+            .withX((width, leftPos) -> leftPos + 165)
             .withY((height, topPos) -> topPos + 180)
             .withTexture(CGalaxy.location("textures/sky/mars.png"))
             .build();
@@ -77,7 +77,7 @@ public class CGGalacticObjects {
             .withAtmosphere("Negligible")
             .withGravity(3.7)
             .withTier(3)
-            .withX((width, leftPos) -> leftPos + 359)
+            .withX((width, leftPos) -> leftPos + 349)
             .withY((height, topPos) -> topPos + 241)
             .withTexture(CGalaxy.location("textures/sky/mercury.png"))
             .build();

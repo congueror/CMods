@@ -67,13 +67,13 @@ public class MathHelper {
     public static String simplifyNumber(double value) {
         if (value > 0) {
             String d = value + "";
-            if (value > 1000000000000.0) {
+            if (value >= 1000000000000.0) {
                 return new DecimalFormat("#.00").format(value / 1000000000000.0) + "T";
-            } else if (value > 1000000000.0) {
+            } else if (value >= 1000000000.0) {
                 return new DecimalFormat("#.00").format(value / 1000000000.0) + "B";
-            } else if (value > 1000000.0) {
+            } else if (value >= 1000000.0) {
                 return new DecimalFormat("#.00").format(value / 1000000.0) + "M";
-            } else if (value > 1000) {
+            } else if (value >= 1000) {
                 return new DecimalFormat("#.00").format(value / 1000) + "k";
             }
         }
