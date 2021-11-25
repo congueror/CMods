@@ -26,7 +26,6 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +102,7 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
         List<Map.Entry<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Planet>, GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.SolarSystem>>> planets = GalacticObjectBuilder.planets();
         for (Map.Entry<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Planet>, GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.SolarSystem>> planet : planets) {
             solarSystemButtons.add(new MutablePair<>(planet.getValue(),
-                    addMapButton(calculateX(planet.getKey()), calculateY(planet.getKey()), 16, 16, 16, 16, planet.getKey().getTexture().getPath(), planet.getKey())));
+                    addMapButton(calculateX(planet.getKey()), calculateY(planet.getKey()), calculateSize(16), calculateSize(16), calculateSize(16), calculateSize(16), planet.getKey().getTexture().getPath(), planet.getKey())));
 
             planetButtons.add(new MutablePair<>(planet.getKey(),
                     addBackButton(this.width / 24, this.topPos + 320, planet.getKey().getType().getSolarSystem())));
@@ -262,60 +261,31 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
     }
 
     public int calculateX(GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Planet> obj) {
-        String f = new DecimalFormat("#.##").format(scroll);
         int x = obj.getX(width, leftPos);
-        int calculateX = 1;
-        int sunX = this.leftPos + 304 - calculateMidX() + (calculateSize(32) / 2);
-        return x + calculateX;
+        int y = obj.getY(height, topPos);
+        int xo = this.width / 2 + 56;
+        double a1 = Math.atan(y / (float)x);
+        double r1 = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        double cos = Math.cos(a1);
+        return (int) (cos * r1 * scroll);
     }
 
     public int calculateY(GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Planet> obj) {
-        String f = new DecimalFormat("#.##").format(scroll);
+        int x = obj.getX(width, leftPos);
         int y = obj.getY(height, topPos);
-        int calculateY = 1;
-        int sunY = this.topPos + 242 - calculateMidY() + (calculateSize(32) / 2);
-        if (y > sunY) {
-            if (scroll > 1) {
-
-            } else {
-
-            }
-        } else {
-
-        }
-        return y - calculateY;
+        int yo = this.height / 2 + 9;
+        double a1 = Math.atan(y / (float)x);
+        double r1 = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        double sin = Math.sin(a1);
+        return (int) (sin * r1 * scroll * 0.6);
     }
 
     public int calculateMidX() {
-        String f = new DecimalFormat("#.##").format(scroll);
-        int calculateX = (int) (1.5 * (scroll * 10 % 10));
-        if (scroll < 1) {
-            switch (f) {
-                case "0.9" -> calculateX = -2;
-                case "0.8" -> calculateX = -4;
-                case "0.7" -> calculateX = -6;
-                case "0.6" -> calculateX = -7;
-                case "0.5" -> calculateX = -9;
-                case "0.4" -> calculateX = -10;
-            }
-        }
-        return this.leftPos + 304 - calculateX;
+        return this.width / 2 + 56 - (calculateSize(32) / 2);
     }
 
     public int calculateMidY() {
-        String f = new DecimalFormat("#.##").format(scroll);
-        int calculateY = (int) (1.5 * (scroll * 10 % 10));
-        if (scroll < 1) {
-            switch (f) {
-                case "0.9" -> calculateY = -2;
-                case "0.8" -> calculateY = -4;
-                case "0.7" -> calculateY = -6;
-                case "0.6" -> calculateY = -7;
-                case "0.5" -> calculateY = -9;
-                case "0.4" -> calculateY = -10;
-            }
-        }
-        return this.topPos + 242 - calculateY;
+        return this.height / 2 + 9 - (calculateSize(32) / 2);
     }
 
     public int calculateSize(int size) {
@@ -334,6 +304,7 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
                 p_onPress_1_ -> changeMap(object), (pButton, pPoseStack, pMouseX, pMouseY) -> {
             this.renderMapTooltip(pPoseStack, pMouseX, pMouseY, object);
         }, TextComponent.EMPTY) {
+            /*
             @Override
             public void renderButton(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
                 pMatrixStack.pushPose();
@@ -341,7 +312,7 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
                 pMatrixStack.translate((-(this.x / scroll) + this.x) * -1.2, (-(this.y / scroll) + this.y) * -1.2, 0);
                 super.renderButton(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
                 pMatrixStack.popPose();
-            }
+            }*/
         });
     }
 

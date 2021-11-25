@@ -30,6 +30,7 @@ public class CGGalacticObjects {
             .withX((width, leftPos) -> leftPos + 440)
             .withY((height, topPos) -> topPos + 281)
             .withTexture(CGalaxy.location("textures/sky/earth.png"))
+            .withRingIndex(2)
             .build();
     public static final GalacticObject<Moon> MOON = new Moon("Moon", EARTH)
             .withDiameter(3474.2, "km")
@@ -50,6 +51,7 @@ public class CGGalacticObjects {
             .withX((width, leftPos) -> leftPos + 165)
             .withY((height, topPos) -> topPos + 180)
             .withTexture(CGalaxy.location("textures/sky/mars.png"))
+            .withRingIndex(3)
             .build();
     public static final GalacticObject<Moon> PHOBOS = new Moon("Phobos", MARS)
             .withDiameter(22.5, "km")
@@ -80,6 +82,7 @@ public class CGGalacticObjects {
             .withX((width, leftPos) -> leftPos + 240)
             .withY((height, topPos) -> topPos + 280)
             .withTexture(CGalaxy.location("textures/sky/venus.png"))
+            .withRingIndex(1)
             .build();
     public static final GalacticObject<Planet> MERCURY = new Planet("Mercury", SOLAR_SYSTEM)
             .withDiameter(4879.4, "km")
@@ -90,6 +93,7 @@ public class CGGalacticObjects {
             .withX((width, leftPos) -> leftPos + 349)
             .withY((height, topPos) -> topPos + 241)
             .withTexture(CGalaxy.location("textures/sky/mercury.png"))
+            .withRingIndex(0)
             .build();
 
     public static void init() {}

@@ -245,6 +245,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
     public static class Planet extends GalacticObjectBuilder<Planet> {
 
         private final GalacticObject<SolarSystem> solarSystem;
+        private int ringIndex;
 
         public Planet(String name, GalacticObject<SolarSystem> solarSystem) {
             super(name);
@@ -255,9 +256,18 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             return solarSystem;
         }
 
+        public int getRingIndex() {
+            return ringIndex;
+        }
+
         @Override
         public double getAge() {
             return solarSystem.getAge();
+        }
+
+        public Planet withRingIndex(int ringIndex) {
+            this.ringIndex = ringIndex;
+            return this;
         }
     }
 
@@ -362,6 +372,13 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
         public int getY(int height, int topPos) {
             return builder.getY().applyY(height, topPos);
+        }
+
+        public int getRingIndex() {
+            if (builder instanceof Planet) {
+                return ((Planet) builder).getRingIndex();
+            }
+            return -1;
         }
 
         public ChatFormatting getColor() {
