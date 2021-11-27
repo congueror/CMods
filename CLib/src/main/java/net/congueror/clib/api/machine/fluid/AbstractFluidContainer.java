@@ -24,7 +24,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Objects;
 
 public abstract class AbstractFluidContainer<T extends AbstractFluidBlockEntity> extends AbstractInventoryContainer {
     T tile;

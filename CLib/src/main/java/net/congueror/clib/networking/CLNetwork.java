@@ -16,7 +16,7 @@ public class CLNetwork {
     }
 
     public static void registerMessages() {
-        INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(CLib.MODID, "clib"), () -> "1.0", s -> true, s -> true);
+        INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(CLib.MODID, "main"), () -> "1.0", s -> true, s -> true);
         INSTANCE.messageBuilder(PacketUpdateFluidTanks.class, nextID())
                 .encoder(PacketUpdateFluidTanks::toBytes)
                 .decoder(PacketUpdateFluidTanks::new)

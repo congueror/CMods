@@ -262,22 +262,22 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
 
     public int calculateX(GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Planet> obj) {
         int x = obj.getX(width, leftPos);
-        int y = obj.getY(height, topPos);
-        int xo = this.width / 2 + 56;
-        double a1 = Math.atan(y / (float)x);
-        double r1 = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-        double cos = Math.cos(a1);
-        return (int) (cos * r1 * scroll);
+        double r1 = 40 + (49 * obj.getRingIndex());
+        double r2 = scroll * (40 + (49 * obj.getRingIndex()));
+        if (x > (this.width / 2 + 56)) {
+            return (int) (x + (r2 - r1));
+        }
+        return (int) (x - (r2 - r1));
     }
 
     public int calculateY(GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Planet> obj) {
-        int x = obj.getX(width, leftPos);
         int y = obj.getY(height, topPos);
-        int yo = this.height / 2 + 9;
-        double a1 = Math.atan(y / (float)x);
-        double r1 = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-        double sin = Math.sin(a1);
-        return (int) (sin * r1 * scroll * 0.6);
+        double r1 = 0.6 * (40 + (49 * obj.getRingIndex()));
+        double r2 = 0.6 * scroll * (40 + (49 * obj.getRingIndex()));
+        if (y > (this.height / 2 + 9)) {
+            return (int) (y + (r2 - r1));
+        }
+        return (int) (y - (r2 - r1));
     }
 
     public int calculateMidX() {
@@ -303,13 +303,12 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
                 , new ResourceLocation(CGalaxy.MODID, texture), textureWidth, textureHeight,
                 p_onPress_1_ -> changeMap(object), (pButton, pPoseStack, pMouseX, pMouseY) -> {
             this.renderMapTooltip(pPoseStack, pMouseX, pMouseY, object);
-        }, TextComponent.EMPTY) {
-            /*
+        }, TextComponent.EMPTY) {/*
             @Override
-            public void renderButton(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
+            public void renderButton(@Nonnull PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
                 pMatrixStack.pushPose();
+                pMatrixStack.translate(-(calculateSize(16) / 2f), -(calculateSize(16) / 2f), 0);
                 pMatrixStack.scale(scroll, scroll, 0);
-                pMatrixStack.translate((-(this.x / scroll) + this.x) * -1.2, (-(this.y / scroll) + this.y) * -1.2, 0);
                 super.renderButton(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
                 pMatrixStack.popPose();
             }*/
