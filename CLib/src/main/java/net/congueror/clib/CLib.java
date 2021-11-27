@@ -15,12 +15,9 @@ public class CLib {
 
     public static final String MODID = "clib";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static CLib instance;
 
     public CLib() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        CLib.instance = this;
         CLItemInit.ITEMS.register(modEventBus);
         CLBlockInit.BLOCKS.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(this);
@@ -37,5 +34,4 @@ public class CLib {
     public static boolean isTConstructLoaded() {
         return isModLoaded("tconstruct");
     }
-    //Hello fatty
 }

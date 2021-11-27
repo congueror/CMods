@@ -12,13 +12,6 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
     private String diameter;
     private double age;
 
-    private String atmosphere;
-    private int moons;
-    private double gravity;
-    private int tier;
-
-    private X x;
-    private Y y;
     private ResourceLocation texture;
 
     //sub, super
@@ -122,32 +115,8 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         return age;
     }
 
-    public String getAtmosphere() {
-        return atmosphere;
-    }
-
-    public int getMoons() {
-        return moons;
-    }
-
-    public double getGravity() {
-        return gravity;
-    }
-
-    public int getTier() {
-        return tier;
-    }
-
     public ResourceLocation getTexture() {
         return texture;
-    }
-
-    public X getX() {
-        return x;
-    }
-
-    public Y getY() {
-        return y;
     }
 
     public T withDiameter(double diameter, String unit) {
@@ -160,38 +129,8 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         return self();
     }
 
-    public T withAtmosphere(String atmosphere) {
-        this.atmosphere = atmosphere;
-        return self();
-    }
-
-    public T withMoons(int moons) {
-        this.moons = moons;
-        return self();
-    }
-
-    public T withGravity(double gravity) {
-        this.gravity = gravity;
-        return self();
-    }
-
-    public T withTier(int tier) {
-        this.tier = tier;
-        return self();
-    }
-
     public T withTexture(ResourceLocation location) {
         this.texture = location;
-        return self();
-    }
-
-    public T withX(X x) {
-        this.x = x;
-        return self();
-    }
-
-    public T withY(Y y) {
-        this.y = y;
         return self();
     }
 
@@ -222,6 +161,8 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
         private final GalacticObject<Galaxy> galaxy;
         private int celestialObjects;
+        private X x;
+        private Y y;
 
         public SolarSystem(String name, GalacticObject<Galaxy> galaxy) {
             super(name);
@@ -236,8 +177,26 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             return celestialObjects;
         }
 
+        public X getX() {
+            return x;
+        }
+
+        public Y getY() {
+            return y;
+        }
+
         public SolarSystem withCelestialObjects(int celestialObjects) {
             this.celestialObjects = celestialObjects;
+            return this;
+        }
+
+        public SolarSystem withX(X x) {
+            this.x = x;
+            return this;
+        }
+
+        public SolarSystem withY(Y y) {
+            this.y = y;
             return this;
         }
     }
@@ -246,6 +205,11 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
         private final GalacticObject<SolarSystem> solarSystem;
         private int ringIndex;
+        private float angle;
+        private String atmosphere;
+        private int moons;
+        private double gravity;
+        private int tier;
 
         public Planet(String name, GalacticObject<SolarSystem> solarSystem) {
             super(name);
@@ -260,13 +224,58 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             return ringIndex;
         }
 
+        public float getAngle() {
+            return angle;
+        }
+
+        public String getAtmosphere() {
+            return atmosphere;
+        }
+
+        public int getMoons() {
+            return moons;
+        }
+
+        public double getGravity() {
+            return gravity;
+        }
+
+        public int getTier() {
+            return tier;
+        }
+
         @Override
         public double getAge() {
             return solarSystem.getAge();
         }
 
+        public Planet withAtmosphere(String atmosphere) {
+            this.atmosphere = atmosphere;
+            return this;
+        }
+
+        public Planet withMoons(int moons) {
+            this.moons = moons;
+            return this;
+        }
+
+        public Planet withGravity(double gravity) {
+            this.gravity = gravity;
+            return this;
+        }
+
+        public Planet withTier(int tier) {
+            this.tier = tier;
+            return this;
+        }
+
         public Planet withRingIndex(int ringIndex) {
             this.ringIndex = ringIndex;
+            return this;
+        }
+
+        public Planet withAngle(float angle) {
+            this.angle = angle;
             return this;
         }
     }
@@ -274,6 +283,12 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
     public static class Moon extends GalacticObjectBuilder<Moon> {
 
         private final GalacticObject<Planet> planet;
+        private int ringIndex;
+        private float angle;
+        private String atmosphere;
+        private int moons;
+        private double gravity;
+        private int tier;
 
         public Moon(String name, GalacticObject<Planet> planet) {
             super(name);
@@ -284,15 +299,75 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             return planet;
         }
 
+        public int getRingIndex() {
+            return ringIndex;
+        }
+
+        public float getAngle() {
+            return angle;
+        }
+
+        public String getAtmosphere() {
+            return atmosphere;
+        }
+
+        public int getMoons() {
+            return moons;
+        }
+
+        public double getGravity() {
+            return gravity;
+        }
+
+        public int getTier() {
+            return tier;
+        }
+
         @Override
         public double getAge() {
             return planet.getAge();
+        }
+
+        public Moon withAtmosphere(String atmosphere) {
+            this.atmosphere = atmosphere;
+            return this;
+        }
+
+        public Moon withMoons(int moons) {
+            this.moons = moons;
+            return this;
+        }
+
+        public Moon withGravity(double gravity) {
+            this.gravity = gravity;
+            return this;
+        }
+
+        public Moon withTier(int tier) {
+            this.tier = tier;
+            return this;
+        }
+
+        public Moon withRingIndex(int ringIndex) {
+            this.ringIndex = ringIndex;
+            return this;
+        }
+
+        public Moon withAngle(float angle) {
+            this.angle = angle;
+            return this;
         }
     }
 
     public static class MoonMoon extends GalacticObjectBuilder<MoonMoon> {
 
         private final GalacticObject<Moon> moon;
+        private int ringIndex;
+        private float angle;
+        private String atmosphere;
+        private int moons;
+        private double gravity;
+        private int tier;
 
         public MoonMoon(String name, GalacticObject<Moon> moon) {
             super(name);
@@ -303,9 +378,63 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             return moon;
         }
 
+        public int getRingIndex() {
+            return ringIndex;
+        }
+
+        public float getAngle() {
+            return angle;
+        }
+
+        public String getAtmosphere() {
+            return atmosphere;
+        }
+
+        public int getMoons() {
+            return moons;
+        }
+
+        public double getGravity() {
+            return gravity;
+        }
+
+        public int getTier() {
+            return tier;
+        }
+
         @Override
         public double getAge() {
             return moon.getAge();
+        }
+
+        public MoonMoon withRingIndex(int ringIndex) {
+            this.ringIndex = ringIndex;
+            return this;
+        }
+
+        public MoonMoon withAngle(float angle) {
+            this.angle = angle;
+            return this;
+        }
+
+        public MoonMoon withAtmosphere(String atmosphere) {
+            this.atmosphere = atmosphere;
+            return this;
+        }
+
+        public MoonMoon withMoons(int moons) {
+            this.moons = moons;
+            return this;
+        }
+
+        public MoonMoon withGravity(double gravity) {
+            this.gravity = gravity;
+            return this;
+        }
+
+        public MoonMoon withTier(int tier) {
+            this.tier = tier;
+            return this;
         }
     }
 
@@ -332,24 +461,52 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             return builder.getAge();
         }
 
+        public ResourceLocation getTexture() {
+            return builder.getTexture();
+        }
+
         public String getAtmosphere() {
-            return builder.getAtmosphere();
+            if (builder instanceof Planet) {
+                return ((Planet) builder).getAtmosphere();
+            } else if (builder instanceof Moon) {
+                return ((Moon) builder).getAtmosphere();
+            } else if (builder instanceof MoonMoon) {
+                return ((MoonMoon) builder).getAtmosphere();
+            }
+            return "null";
         }
 
         public int getMoons() {
-            return builder.getMoons();
+            if (builder instanceof Planet) {
+                return ((Planet) builder).getMoons();
+            } else if (builder instanceof Moon) {
+                return ((Moon) builder).getMoons();
+            } else if (builder instanceof MoonMoon) {
+                return ((MoonMoon) builder).getMoons();
+            }
+            return -1;
         }
 
         public double getGravity() {
-            return builder.getGravity();
+            if (builder instanceof Planet) {
+                return ((Planet) builder).getGravity();
+            } else if (builder instanceof Moon) {
+                return ((Moon) builder).getGravity();
+            } else if (builder instanceof MoonMoon) {
+                return ((MoonMoon) builder).getGravity();
+            }
+            return -1;
         }
 
         public int getTier() {
-            return builder.getTier();
-        }
-
-        public ResourceLocation getTexture() {
-            return builder.getTexture();
+            if (builder instanceof Planet) {
+                return ((Planet) builder).getMoons();
+            } else if (builder instanceof Moon) {
+                return ((Moon) builder).getMoons();
+            } else if (builder instanceof MoonMoon) {
+                return ((MoonMoon) builder).getMoons();
+            }
+            return -1;
         }
 
         public double getStars() {
@@ -366,17 +523,38 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             return -1;
         }
 
-        public int getX(int width, int leftPos) {
-            return builder.getX().applyX(width, leftPos);
+        public int getSolarSystemX(int width, int leftPos) {
+            if (builder instanceof SolarSystem) {
+                return ((SolarSystem) builder).getX().applyX(width, leftPos);
+            }
+            return -1;
         }
 
-        public int getY(int height, int topPos) {
-            return builder.getY().applyY(height, topPos);
+        public int getSolarSystemY(int height, int topPos) {
+            if (builder instanceof SolarSystem) {
+                return ((SolarSystem) builder).getY().applyY(height, topPos);
+            }
+            return -1;
         }
 
         public int getRingIndex() {
             if (builder instanceof Planet) {
                 return ((Planet) builder).getRingIndex();
+            } else if (builder instanceof Moon) {
+                return ((Moon) builder).getRingIndex();
+            } else if (builder instanceof MoonMoon) {
+                return ((MoonMoon) builder).getRingIndex();
+            }
+            return -1;
+        }
+
+        public float getAngle() {
+            if (builder instanceof Planet) {
+                return ((Planet) builder).getAngle();
+            } else if (builder instanceof Moon) {
+                return ((Moon) builder).getAngle();
+            } else if (builder instanceof MoonMoon) {
+                return ((MoonMoon) builder).getAngle();
             }
             return -1;
         }

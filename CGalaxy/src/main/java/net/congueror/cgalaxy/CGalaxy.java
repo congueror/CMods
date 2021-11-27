@@ -17,7 +17,6 @@ public class CGalaxy {
 
     public static final String MODID = "cgalaxy";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static CGalaxy instance;
 
     //Persistent Data Constant Strings
     /**Integer*/
@@ -56,7 +55,6 @@ public class CGalaxy {
         CGCarverInit.CARVERS.register(modEventBus);
         CGFeatureInit.FEATURES.register(modEventBus);
         CGSoundInit.SOUNDS.register(modEventBus);
-        CGalaxy.instance = this;
 
         MinecraftForge.EVENT_BUS.register(this);
     }

@@ -27,8 +27,7 @@ public class CGGalacticObjects {
             .withAtmosphere("Breathable")
             .withGravity(CGDimensions.OVERWORLD.getGravity())
             .withTier(0)
-            .withX((width, leftPos) -> leftPos + 440)
-            .withY((height, topPos) -> topPos + 281)
+            .withAngle(20)
             .withTexture(CGalaxy.location("textures/sky/earth.png"))
             .withRingIndex(2)
             .build();
@@ -38,8 +37,7 @@ public class CGGalacticObjects {
             .withAtmosphere("Negligible")
             .withGravity(CGDimensions.MOON.getGravity())
             .withTier(1)
-            .withX((width, leftPos) -> leftPos + 245)
-            .withY((height, topPos) -> topPos + 340)
+            .withAngle(0)
             .withTexture(CGalaxy.location("textures/sky/moon.png"))
             .build();
     public static final GalacticObject<Planet> MARS = new Planet("Mars", SOLAR_SYSTEM)
@@ -48,8 +46,7 @@ public class CGGalacticObjects {
             .withAtmosphere("Thin")
             .withGravity(3.721)
             .withTier(2)
-            .withX((width, leftPos) -> leftPos + 165)
-            .withY((height, topPos) -> topPos + 180)
+            .withAngle(300)
             .withTexture(CGalaxy.location("textures/sky/mars.png"))
             .withRingIndex(3)
             .build();
@@ -59,8 +56,7 @@ public class CGGalacticObjects {
             .withAtmosphere("None")
             .withGravity(0.0057)
             .withTier(1)
-            .withX((width, leftPos) -> leftPos + 245)
-            .withY((height, topPos) -> topPos + 335)
+            .withAngle(0)
             .withTexture(CGalaxy.location("textures/sky/phobos.png"))
             .build();
     public static final GalacticObject<Moon> DEIMOS = new Moon("Deimos", MARS)
@@ -69,8 +65,7 @@ public class CGGalacticObjects {
             .withAtmosphere("None")
             .withGravity(0.003)
             .withTier(1)
-            .withX((width, leftPos) -> leftPos + 460)
-            .withY((height, topPos) -> topPos + 300)
+            .withAngle(0)
             .withTexture(CGalaxy.location("textures/sky/deimos.png"))
             .build();
     public static final GalacticObject<Planet> VENUS = new Planet("Venus", SOLAR_SYSTEM)
@@ -79,8 +74,7 @@ public class CGGalacticObjects {
             .withAtmosphere("Very Thick")
             .withGravity(8.87)
             .withTier(4)
-            .withX((width, leftPos) -> leftPos + 240)
-            .withY((height, topPos) -> topPos + 280)
+            .withAngle(135)
             .withTexture(CGalaxy.location("textures/sky/venus.png"))
             .withRingIndex(1)
             .build();
@@ -90,8 +84,7 @@ public class CGGalacticObjects {
             .withAtmosphere("Negligible")
             .withGravity(3.7)
             .withTier(3)
-            .withX((width, leftPos) -> leftPos + 349)
-            .withY((height, topPos) -> topPos + 241)
+            .withAngle(340)
             .withTexture(CGalaxy.location("textures/sky/mercury.png"))
             .withRingIndex(0)
             .build();
