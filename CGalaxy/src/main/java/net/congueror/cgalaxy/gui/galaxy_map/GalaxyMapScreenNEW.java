@@ -2,11 +2,13 @@ package net.congueror.cgalaxy.gui.galaxy_map;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import net.congueror.cgalaxy.CGalaxy;
+import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.networking.PacketChangeMap;
+import net.congueror.cgalaxy.networking.PacketTeleport;
 import net.congueror.clib.util.MathHelper;
+import net.congueror.clib.util.RenderingHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -14,48 +16,41 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static net.minecraft.util.Mth.TWO_PI;
 
 public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContainer> {
     Minecraft mc = Minecraft.getInstance();
     int width;
     int height;
     LocalPlayer player = mc.player;
-    @Nullable
-    Entity entity = player != null ? player.getVehicle() : null;
     GalaxyMapContainer container;
 
     boolean unlocked;
     @Nullable
     GalacticObjectBuilder.GalacticObject<?> currentObj;
 
-    float angle;
     float scroll = 1.0F;
 
     //Current Object, Button
-    List<MutablePair<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Galaxy>, Button>> nullButtons = new ArrayList<>();
-    List<MutablePair<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Galaxy>, Button>> galaxyButtons = new ArrayList<>();
-    List<MutablePair<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.SolarSystem>, Button>> solarSystemButtons = new ArrayList<>();
-    List<MutablePair<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Planet>, Button>> planetButtons = new ArrayList<>();
-    List<MutablePair<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Moon>, Button>> moonButtons = new ArrayList<>();
-    List<MutablePair<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.MoonMoon>, Button>> moonMoonButtons = new ArrayList<>();
+    List<MutablePair<String, Button>> nullButtons = new ArrayList<>();
+    List<MutablePair<String, Button>> galaxyButtons = new ArrayList<>();
+    List<MutablePair<String, Button>> solarSystemButtons = new ArrayList<>();
+    List<MutablePair<String, Button>> planetButtons = new ArrayList<>();
+    List<MutablePair<String, Button>> moonButtons = new ArrayList<>();
+    List<MutablePair<String, Button>> moonMoonButtons = new ArrayList<>();
 
     public GalaxyMapScreenNEW(GalaxyMapContainer pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -65,11 +60,7 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
         this.imageHeight = 498;
         this.container = pMenu;
         this.currentObj = pMenu.map;
-        if (pMenu.unlocked) {
-            this.unlocked = true;
-        } else {
-            this.unlocked = false;
-        }
+        this.unlocked = pMenu.unlocked;
     }
 
     @Override
@@ -90,33 +81,60 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
                             new TranslatableComponent(galaxies.get(i).getName()).withStyle(ChatFormatting.DARK_PURPLE),
                             galaxies.get(i))));
 
-            galaxyButtons.add(new MutablePair<>(galaxies.get(i), addBackButton(this.width / 24, this.topPos + 320, null)));
+            galaxyButtons.add(new MutablePair<>(galaxies.get(i).getName(), addBackButton(null)));
         }
         List<Map.Entry<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.SolarSystem>, GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Galaxy>>> solarSystems = GalacticObjectBuilder.solarSystems();
-        for (Map.Entry<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.SolarSystem>, GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Galaxy>> solarSystem : solarSystems) {
-            galaxyButtons.add(new MutablePair<>(solarSystem.getValue(),
+        for (var solarSystem : solarSystems) {
+            galaxyButtons.add(new MutablePair<>(solarSystem.getValue().getName(),
                     addMapButton(solarSystem.getKey().getSolarSystemX(this.width, this.leftPos), solarSystem.getKey().getSolarSystemY(this.height, this.topPos), 7, 7, 7, 7, "textures/gui/galaxy_map/galaxy_map_select.png", solarSystem.getKey())));
 
-            solarSystemButtons.add(new MutablePair<>(solarSystem.getKey(),
-                    addBackButton(this.width / 24, this.topPos + 320, solarSystem.getKey().getType().getGalaxy())));
+            solarSystemButtons.add(new MutablePair<>(solarSystem.getKey().getName(),
+                    addBackButton(solarSystem.getKey().getType().getGalaxy())));
         }
+        List<List<String>> moonList = new ArrayList<>();
+
         List<Map.Entry<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Planet>, GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.SolarSystem>>> planets = GalacticObjectBuilder.planets();
-        for (Map.Entry<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Planet>, GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.SolarSystem>> planet : planets) {
-            solarSystemButtons.add(new MutablePair<>(planet.getValue(),
+        for (var planet : planets) {
+            solarSystemButtons.add(new MutablePair<>(planet.getValue().getName(),
                     addMapButton(calculateX(planet.getKey()), calculateY(planet.getKey()), calculateSize(16), calculateSize(16), calculateSize(16), calculateSize(16), planet.getKey().getTexture().getPath(), planet.getKey())));
 
-            planetButtons.add(new MutablePair<>(planet.getKey(),
-                    addBackButton(this.width / 24, this.topPos + 320, planet.getKey().getType().getSolarSystem())));
+            planetButtons.add(new MutablePair<>(planet.getKey().getName(),
+                    addBackButton(planet.getKey().getType().getSolarSystem())));
+            planetButtons.add(new MutablePair<>(planet.getKey().getName(),
+                    addMapButton(calculateMidX(), calculateMidY(), calculateSize(32), calculateSize(32), calculateSize(32), calculateSize(32), planet.getKey().getTexture().getPath(), planet.getKey())));
+            planetButtons.add(new MutablePair<>(planet.getKey().getName(),
+                    addLaunchButton(planet.getKey())));
+
+            List<String> tempList = new ArrayList<>();
+            GalacticObjectBuilder.moons().stream()
+                    .filter(e -> e.getKey().getType().getPlanet().getName().equals(planet.getKey().getName()))
+                    .map(Map.Entry::getKey)
+                    .forEach(o -> tempList.add(o.getName()));
+            moonList.add(tempList);
         }
         List<Map.Entry<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Moon>, GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Planet>>> moons = GalacticObjectBuilder.moons();
-        for (Map.Entry<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Moon>, GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Planet>> moon : moons) {
-            planetButtons.add(new MutablePair<>(moon.getValue(),
+        for (var moon : moons) {
+            planetButtons.add(new MutablePair<>(moon.getValue().getName(),
                     addMapButton(calculateX(moon.getKey()), calculateY(moon.getKey()), calculateSize(16), calculateSize(16), calculateSize(16), calculateSize(16), moon.getKey().getTexture().getPath(), moon.getKey())));
 
-            moonButtons.add(new MutablePair<>(moon.getKey(),
+            for (List<String> strings : moonList) {
+                if (strings.contains(moon.getKey().getName())) {
+                    for (String string : strings) {
+                        GalacticObjectBuilder.GalacticObject<?> obj = GalacticObjectBuilder.getObjectFromName(string);
+                        var pair = new MutablePair<>(moon.getKey().getName(),
+                                addMapButton(calculateX(obj), calculateY(obj), calculateSize(16), calculateSize(16), calculateSize(16), calculateSize(16), obj.getTexture().getPath(), obj));
+                        if (!moonButtons.contains(pair)) {
+                            moonButtons.add(pair);
+                        }
+                    }
+                }
+            }
+            moonButtons.add(new MutablePair<>(moon.getKey().getName(),
+                    addLaunchButton(moon.getKey())));
+            moonButtons.add(new MutablePair<>(moon.getKey().getName(),
                     addMapButton(calculateMidX(), calculateMidY(), calculateSize(32), calculateSize(32), calculateSize(32), calculateSize(32), moon.getValue().getTexture().getPath(), moon.getValue())));
-            moonButtons.add(new MutablePair<>(moon.getKey(),
-                    addBackButton(this.width / 24, this.topPos + 320, moon.getKey().getType().getPlanet().getType().getSolarSystem())));
+            moonButtons.add(new MutablePair<>(moon.getKey().getName(),
+                    addBackButton(moon.getKey().getType().getPlanet().getType().getSolarSystem())));
         }
     }
 
@@ -141,14 +159,17 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
         }
     }
 
-    private <G extends GalacticObjectBuilder<G>> void setVisible(List<MutablePair<GalacticObjectBuilder.GalacticObject<G>, Button>> list) {
+    private void setVisible(List<MutablePair<String, Button>> list) {
         if (list.stream().anyMatch(pair -> pair.left == null)) {
             for (Button button : list.stream().map(pair -> pair.right).collect(Collectors.toList())) {
                 button.visible = true;
             }
             return;
         }
-        for (Button button : list.stream().filter(pair -> pair.left.equals(currentObj)).map(pair -> pair.right).collect(Collectors.toList())) {
+        for (Button button : list.stream().filter(pair -> {
+            assert currentObj != null;
+            return pair.left.equals(currentObj.getName());
+        }).map(pair -> pair.right).collect(Collectors.toList())) {
             button.visible = true;
         }
     }
@@ -169,7 +190,10 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
 
         this.width = mc.getWindow().getGuiScaledWidth();
         this.height = mc.getWindow().getGuiScaledHeight();
-        this.unlocked = container.unlocked;
+        if (this.unlocked != container.unlocked) {
+            this.unlocked = container.unlocked;
+            runInit();
+        }
         this.currentObj = container.map;
         resetButtons();
 
@@ -206,6 +230,23 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
                 RenderSystem.setShaderTexture(0, CGalaxy.location("textures/gui/galaxy_map/galaxy_map_empty_background.png"));
                 blit(pPoseStack, 0, 0, 0, 0, mc.getWindow().getWidth(), mc.getWindow().getHeight(), width, height);
 
+                RenderSystem.enableBlend();
+                RenderSystem.disableTexture();
+                RenderSystem.defaultBlendFunc();
+                RenderSystem.setShader(GameRenderer::getPositionColorShader);
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+                Tesselator tessellator = Tesselator.getInstance();
+                BufferBuilder buffer = tessellator.getBuilder();
+                buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+                for (int i = 0; i < GalacticObjectBuilder.planets().stream().filter(entry -> entry.getValue().equals(currentObj)).count(); i++) {
+                    int radius = 40 + (49 * i);
+                    drawRing(this.width / 2 + 56, this.height / 2 + 9, radius - 3, radius, buffer);
+                }
+                tessellator.end();
+                RenderSystem.enableTexture();
+                RenderSystem.enableBlend();
+
                 RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/galaxy_map_info.png"));
                 blit(pPoseStack, this.width / 30, this.topPos + 175, 0, 0, 160, 160, 160, 160);
 
@@ -218,6 +259,19 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.age").append(MathHelper.simplifyNumber(currentObj.getAge())), this.leftPos - 25, this.topPos + 240, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.bodies").append(currentObj.getTerrestrialObjects() + ""), this.leftPos - 25, this.topPos + 250, infoColor);
 
+                RenderSystem.setShaderTexture(0, this.currentObj.getTexture());
+                int size = calculateSize(32);
+                blit(pPoseStack, calculateMidX(), calculateMidY(), 0, 0, size, size, size, size);
+            }
+            if (this.currentObj.getType() instanceof GalacticObjectBuilder.Planet || this.currentObj.getType() instanceof GalacticObjectBuilder.Moon) {
+                if (this.currentObj.getType() instanceof GalacticObjectBuilder.Planet) {
+                    setVisible(planetButtons);
+                } else {
+                    setVisible(moonButtons);
+                }
+                RenderSystem.setShaderTexture(0, CGalaxy.location("textures/gui/galaxy_map/galaxy_map_empty_background.png"));
+                blit(pPoseStack, 0, 0, 0, 0, mc.getWindow().getWidth(), mc.getWindow().getHeight(), width, height);
+
                 RenderSystem.enableBlend();
                 RenderSystem.disableTexture();
                 RenderSystem.defaultBlendFunc();
@@ -227,22 +281,20 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
                 Tesselator tessellator = Tesselator.getInstance();
                 BufferBuilder buffer = tessellator.getBuilder();
                 buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-                for (int i = 0; i < GalacticObjectBuilder.planets().stream().filter(entry -> entry.getValue().equals(currentObj)).count(); i++) {
-                    int radius = 40 + (49 * i);
-                    drawRing(this.width / 2 + 56, this.height / 2 + 9, radius - 3, radius, buffer);
+                if (this.currentObj.getType() instanceof GalacticObjectBuilder.Planet) {
+                    for (int i = 0; i < GalacticObjectBuilder.moons().stream().filter(entry -> entry.getValue().equals(currentObj)).count(); i++) {
+                        int radius = 40 + (49 * i);
+                        drawRing(this.width / 2 + 56, this.height / 2 + 9, radius - 3, radius, buffer);
+                    }
+                } else if (this.currentObj.getType() instanceof GalacticObjectBuilder.Moon moon) {
+                    for (int i = 0; i < GalacticObjectBuilder.moons().stream().filter(entry -> entry.getValue().equals(moon.getPlanet())).count(); i++) {
+                        int radius = 40 + (49 * i);
+                        drawRing(this.width / 2 + 56, this.height / 2 + 9, radius - 3, radius, buffer);
+                    }
                 }
                 tessellator.end();
                 RenderSystem.enableTexture();
-                RenderSystem.disableBlend();
-
-                RenderSystem.setShaderTexture(0, this.currentObj.getTexture());
-                int size = calculateSize(32);
-                blit(pPoseStack, calculateMidX(), calculateMidY(), 0, 0, size, size, size, size);
-            }
-            if (this.currentObj.getType() instanceof GalacticObjectBuilder.Planet) {
-                setVisible(planetButtons);
-                RenderSystem.setShaderTexture(0, CGalaxy.location("textures/gui/galaxy_map/galaxy_map_empty_background.png"));
-                blit(pPoseStack, 0, 0, 0, 0, mc.getWindow().getWidth(), mc.getWindow().getHeight(), width, height);
+                RenderSystem.enableBlend();
 
                 RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/galaxy_map_info.png"));
                 blit(pPoseStack, this.width / 30, this.topPos + 175, 0, 0, 160, 160, 160, 160);
@@ -255,30 +307,21 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.diameter").append(currentObj.getDiameter()), this.leftPos - 25, this.topPos + 230, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.age").append(MathHelper.simplifyNumber(currentObj.getAge())), this.leftPos - 25, this.topPos + 240, infoColor);
                 drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.atmosphere").append(currentObj.getAtmosphere()), this.leftPos - 25, this.topPos + 250, infoColor);
-                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.gravity").append(currentObj.getGravity() + ""), this.leftPos - 25, this.topPos + 250, infoColor);
-                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.moons").append(currentObj.getMoons() + ""), this.leftPos - 25, this.topPos + 250, infoColor);
-                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.tier").append(currentObj.getTier() + ""), this.leftPos - 25, this.topPos + 250, infoColor);
+                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.gravity").append(new DecimalFormat("#.##").format(currentObj.getGravity())), this.leftPos - 25, this.topPos + 260, infoColor);
+                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.moons").append(currentObj.getMoons() + ""), this.leftPos - 25, this.topPos + 270, infoColor);
+                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.tier").append(currentObj.getTier() + ""), this.leftPos - 25, this.topPos + 280, infoColor);
 
-                RenderSystem.enableBlend();
-                RenderSystem.disableTexture();
-                RenderSystem.defaultBlendFunc();
-                RenderSystem.setShader(GameRenderer::getPositionColorShader);
-                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-
-                Tesselator tessellator = Tesselator.getInstance();
-                BufferBuilder buffer = tessellator.getBuilder();
-                buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-                for (int i = 0; i < GalacticObjectBuilder.planets().stream().filter(entry -> entry.getValue().equals(currentObj)).count(); i++) {
-                    int radius = 40 + (49 * i);
-                    drawRing(this.width / 2 + 56, this.height / 2 + 9, radius - 3, radius, buffer);
+                if (this.currentObj.getType() instanceof GalacticObjectBuilder.Planet) {
+                    RenderSystem.setShaderTexture(0, CGalaxy.location("textures/gui/galaxy_map/galaxy_map_select1.png"));
+                    int size = calculateSize(37);
+                    blit(pPoseStack, this.width / 2 + 56 - (size / 2), this.height / 2 + 9 - (size / 2), 0, 0, size, size, size, size);
+                } else {
+                    RenderSystem.setShaderTexture(0, CGalaxy.location("textures/gui/galaxy_map/galaxy_map_select1.png"));
+                    int size = calculateSize(18);
+                    int x = (int) ((this.width / 2 + 56) + scroll * (40 + (49 * this.currentObj.getRingIndex())) * Math.cos(currentObj.getAngle()) - (size / 2));
+                    int y = (int) ((this.height / 2 + 9) + scroll * (0.6 * (40 + (49 * this.currentObj.getRingIndex()))) * Math.sin(currentObj.getAngle()) - (size / 2));
+                    blit(pPoseStack, x, y, 0, 0, size, size, size, size);
                 }
-                tessellator.end();
-                RenderSystem.enableTexture();
-                RenderSystem.disableBlend();
-
-                RenderSystem.setShaderTexture(0, this.currentObj.getTexture());
-                int size = calculateSize(32);
-                blit(pPoseStack, calculateMidX(), calculateMidY(), 0, 0, size, size, size, size);
             }
         }
     }
@@ -326,8 +369,8 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
         return (int) (size * scroll);
     }
 
-    private Button addBackButton(int x, int y, GalacticObjectBuilder.GalacticObject<?> object) {
-        return addRenderableWidget(new ImageButton(x, y, 15, 10, 0, 0, 10
+    private Button addBackButton(GalacticObjectBuilder.GalacticObject<?> object) {
+        return addRenderableWidget(new ImageButton(this.width / 24, this.topPos + 320, 15, 10, 0, 0, 10
                 , new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/back_button.png"), 15, 20,
                 p_onPress_1_ -> changeMap(object), TextComponent.EMPTY));
     }
@@ -352,95 +395,66 @@ public class GalaxyMapScreenNEW extends AbstractContainerScreen<GalaxyMapContain
         });
     }
 
+    private Button addLaunchButton(GalacticObjectBuilder.GalacticObject<?> object) {
+        Component message = TextComponent.EMPTY;
+        String l = canLaunch(object);
+        if (l.contains("nope")) {
+            int i = l.indexOf(" ");
+            message = new TranslatableComponent(l.substring(i)).withStyle(ChatFormatting.RED);
+        }
+        Component finalMessage = message;
+        return addRenderableWidget(new ImageButton(this.leftPos - 2, this.topPos + 311, 85, 20, 0,
+                canLaunch(object).contains("yep") ? 20 : 0, 0,
+                CGalaxy.location("textures/gui/galaxy_map/launch_button.png"), 85, 40,
+                pButton -> {
+                    if (canLaunch(object).contains("yep") && player.level.dimension() != object.getDimension()) {
+                        Minecraft.getInstance().setScreen(null);
+                        CGNetwork.sendToServer(new PacketTeleport(object.getDimension().location()));
+                    }
+                }, (pButton, pPoseStack, pMouseX, pMouseY) -> {
+            this.renderMapTooltip(pPoseStack, pMouseX, pMouseY, finalMessage);
+        }, TextComponent.EMPTY));
+    }
+
+    private String canLaunch(GalacticObjectBuilder.GalacticObject<?> object) {
+        if (object.getDimension() != null) {
+            if (this.unlocked) {
+                return "yep";
+            }
+            if (player.getVehicle() != null && player.getVehicle() instanceof AbstractRocket) {
+                if (((AbstractRocket) player.getVehicle()).tier >= object.getTier()) {
+                    return "yep";
+                } else {
+                    return "nope: Insufficient rocket tier.";
+                }
+            } else {
+                return "nope: You are not inside a rocket.";
+            }
+        }
+        return "nope: You cannot visit this planet.";
+    }
+
     private void changeMap(GalacticObjectBuilder.GalacticObject<?> obj) {
         CGNetwork.sendToServer(new PacketChangeMap(obj == null ? "null" : obj.getName()));
     }
 
     public void renderMapTooltip(@Nonnull PoseStack pPoseStack, int pMouseX, int pMouseY, GalacticObjectBuilder.GalacticObject<?> object) {
         if (object != null) {
-            int i = mc.font.width(new TranslatableComponent(object.getName()));
-            int j = 8;
+            RenderingHelper.renderTooltip(pPoseStack, pMouseX, pMouseY, new TranslatableComponent(object.getName()).withStyle(object.getColor()), 0x800031b3, 0xFF0031AF);
+        }
+    }
 
-            int j2 = pMouseX + 12;
-            int k2 = pMouseY - 12;
-            if (j2 + i > this.width) {
-                j2 -= 28 + i;
-            }
-
-            if (k2 + j + 6 > this.height) {
-                k2 = this.height - j - 6;
-            }
-
-            pPoseStack.pushPose();
-            this.itemRenderer.blitOffset = 400.0F;
-            Tesselator tesselator = Tesselator.getInstance();
-            BufferBuilder bufferbuilder = tesselator.getBuilder();
-            RenderSystem.setShader(GameRenderer::getPositionColorShader);
-            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-            Matrix4f matrix4f = pPoseStack.last().pose();
-            int colorA = 0x800031b3;
-            int colorB = 0xFF0031AF;
-            int colorC = 0x800031b3;
-            fillGradient(matrix4f, bufferbuilder, j2 - 3, k2 - 4, j2 + i + 3, k2 - 3, 400, colorA, colorA);
-            fillGradient(matrix4f, bufferbuilder, j2 - 3, k2 + j + 3, j2 + i + 3, k2 + j + 4, 400, colorA, colorA);
-            fillGradient(matrix4f, bufferbuilder, j2 - 3, k2 - 3, j2 + i + 3, k2 + j + 3, 400, colorA, colorA);
-            fillGradient(matrix4f, bufferbuilder, j2 - 4, k2 - 3, j2 - 3, k2 + j + 3, 400, colorA, colorA);
-            fillGradient(matrix4f, bufferbuilder, j2 + i + 3, k2 - 3, j2 + i + 4, k2 + j + 3, 400, colorA, colorA);
-            fillGradient(matrix4f, bufferbuilder, j2 - 3, k2 - 3 + 1, j2 - 3 + 1, k2 + j + 3 - 1, 400, colorB, colorC);
-            fillGradient(matrix4f, bufferbuilder, j2 + i + 2, k2 - 3 + 1, j2 + i + 3, k2 + j + 3 - 1, 400, colorB, colorC);
-            fillGradient(matrix4f, bufferbuilder, j2 - 3, k2 - 3, j2 + i + 3, k2 - 3 + 1, 400, colorB, colorB);
-            fillGradient(matrix4f, bufferbuilder, j2 - 3, k2 + j + 2, j2 + i + 3, k2 + j + 3, 400, colorC, colorC);
-            RenderSystem.enableDepthTest();
-            RenderSystem.disableTexture();
-            RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
-            bufferbuilder.end();
-            BufferUploader.end(bufferbuilder);
-            RenderSystem.disableBlend();
-            RenderSystem.enableTexture();
-            MultiBufferSource.BufferSource multibuffersource$buffersource = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-            pPoseStack.translate(0.0D, 0.0D, 400.0D);
-
-            int l1 = k2;
-            this.font.drawInBatch(new TranslatableComponent(object.getName()).withStyle(object.getColor()), j2, l1, -1, true, pPoseStack.last().pose(), multibuffersource$buffersource, false, 0, 15728880);
-            RenderSystem.enableBlend();
-            multibuffersource$buffersource.endBatch();
-            pPoseStack.popPose();
+    public void renderMapTooltip(@Nonnull PoseStack pPoseStack, int pMouseX, int pMouseY, Component mes) {
+        if (mes != TextComponent.EMPTY) {
+            RenderingHelper.renderTooltip(pPoseStack, pMouseX, pMouseY, mes, 0x808b0000, 0xFF7C0D0E);
         }
     }
 
     public void drawRing(int x, int y, int radiusIn, int radiusOut, BufferBuilder buffer) {
-        float endAngle = (float) (0.75 * TWO_PI + Math.PI);
-        float startAngle = (float) (-0.25 * TWO_PI + Math.PI);
-        float angle = endAngle - startAngle;
-        int sections = Math.max(1, Mth.ceil(angle / (2.5f / 360.0f)));
-        float slice = angle / sections;
-
         int[] color = {210, 0, 0, 255};
         if (this.unlocked) {
             color = new int[]{0, 210, 0, 255};
         }
-
-        for (int i = 0; i < sections; i++) {
-            float angle1 = startAngle + i * slice;
-            float angle2 = startAngle + (i + 1) * slice;
-            float xCoefficient = 1.0F;
-            float yCoefficient = 0.6F;
-
-            float pos1InX = x + (radiusIn * scroll) * (float) Math.cos(angle1) * xCoefficient;
-            float pos1InY = y + (radiusIn * scroll) * (float) Math.sin(angle1) * yCoefficient;
-            float pos2InX = x + (radiusIn * scroll) * (float) Math.cos(angle2) * xCoefficient;
-            float pos2InY = y + (radiusIn * scroll) * (float) Math.sin(angle2) * yCoefficient;
-
-            float pos1OutX = x + (radiusOut * scroll) * (float) Math.cos(angle1) * xCoefficient;
-            float pos1OutY = y + (radiusOut * scroll) * (float) Math.sin(angle1) * yCoefficient;
-            float pos2OutX = x + (radiusOut * scroll) * (float) Math.cos(angle2) * xCoefficient;
-            float pos2OutY = y + (radiusOut * scroll) * (float) Math.sin(angle2) * yCoefficient;
-
-            buffer.vertex(pos1OutX, pos1OutY, 0).color(color[0], color[1], color[2], color[3]).endVertex();
-            buffer.vertex(pos1InX, pos1InY, 0).color(color[0], color[1], color[2], color[3]).endVertex();
-            buffer.vertex(pos2InX, pos2InY, 0).color(color[0], color[1], color[2], color[3]).endVertex();
-            buffer.vertex(pos2OutX, pos2OutY, 0).color(color[0], color[1], color[2], color[3]).endVertex();
-        }
+        RenderingHelper.drawEllipse(buffer, x, y, radiusIn * scroll, radiusOut * scroll, color, 1.0f, 0.6f);
     }
 }

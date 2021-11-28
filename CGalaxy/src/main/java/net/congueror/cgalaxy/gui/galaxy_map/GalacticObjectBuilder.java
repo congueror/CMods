@@ -1,7 +1,9 @@
 package net.congueror.cgalaxy.gui.galaxy_map;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,14 +34,12 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
     public static List<Map.Entry<GalacticObject<SolarSystem>, GalacticObject<Galaxy>>> solarSystems() {
         List<Map.Entry<GalacticObject<SolarSystem>, GalacticObject<Galaxy>>> list = new ArrayList<>();
-        List<GalacticObject<SolarSystem>> systems = OBJECTS.keySet().stream()
+        List<GalacticObject<SolarSystem>> a = OBJECTS.keySet().stream()
                 .filter(object -> object != null && object.getType() instanceof SolarSystem).map(object -> (GalacticObject<SolarSystem>) object).collect(Collectors.toList());
-        List<GalacticObject<Galaxy>> galaxies = OBJECTS.values().stream()
+        List<GalacticObject<Galaxy>> b = OBJECTS.values().stream()
                 .filter(object -> object != null && object.getType() instanceof Galaxy).map(object -> (GalacticObject<Galaxy>) object).collect(Collectors.toList());
-        for (GalacticObject<SolarSystem> system : systems) {
-            for (GalacticObject<Galaxy> galaxy : galaxies) {
-                list.add(new AbstractMap.SimpleEntry<>(system, galaxy));
-            }
+        for (int i = 0; i < a.size(); i++) {
+            list.add(new AbstractMap.SimpleEntry<>(a.get(i), b.get(i)));
         }
         return list;
     }
@@ -62,10 +62,8 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
                 .filter(object -> object != null && object.getType() instanceof Moon).map(object -> (GalacticObject<Moon>) object).collect(Collectors.toList());
         List<GalacticObject<Planet>> b = OBJECTS.values().stream()
                 .filter(object -> object != null && object.getType() instanceof Planet).map(object -> (GalacticObject<Planet>) object).collect(Collectors.toList());
-        for (GalacticObject<Moon> system : a) {
-            for (GalacticObject<Planet> galaxy : b) {
-                list.add(new AbstractMap.SimpleEntry<>(system, galaxy));
-            }
+        for (int i = 0; i < a.size(); i++) {
+            list.add(new AbstractMap.SimpleEntry<>(a.get(i), b.get(i)));
         }
         return list;
     }
@@ -76,10 +74,8 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
                 .filter(object -> object != null && object.getType() instanceof MoonMoon).map(object -> (GalacticObject<MoonMoon>) object).collect(Collectors.toList());
         List<GalacticObject<Moon>> b = OBJECTS.values().stream()
                 .filter(object -> object != null && object.getType() instanceof Moon).map(object -> (GalacticObject<Moon>) object).collect(Collectors.toList());
-        for (GalacticObject<MoonMoon> system : a) {
-            for (GalacticObject<Moon> galaxy : b) {
-                list.add(new AbstractMap.SimpleEntry<>(system, galaxy));
-            }
+        for (int i = 0; i < a.size(); i++) {
+            list.add(new AbstractMap.SimpleEntry<>(a.get(i), b.get(i)));
         }
         return list;
     }
@@ -210,6 +206,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         private int moons;
         private double gravity;
         private int tier;
+        private ResourceKey<Level> dim;
 
         public Planet(String name, GalacticObject<SolarSystem> solarSystem) {
             super(name);
@@ -242,6 +239,10 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
         public int getTier() {
             return tier;
+        }
+
+        public ResourceKey<Level> getDim() {
+            return dim;
         }
 
         @Override
@@ -278,6 +279,11 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             this.angle = angle;
             return this;
         }
+
+        public Planet withDim(ResourceKey<Level> dim) {
+            this.dim = dim;
+            return this;
+        }
     }
 
     public static class Moon extends GalacticObjectBuilder<Moon> {
@@ -289,6 +295,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         private int moons;
         private double gravity;
         private int tier;
+        private ResourceKey<Level> dim;
 
         public Moon(String name, GalacticObject<Planet> planet) {
             super(name);
@@ -323,6 +330,10 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             return tier;
         }
 
+        public ResourceKey<Level> getDim() {
+            return dim;
+        }
+
         @Override
         public double getAge() {
             return planet.getAge();
@@ -355,6 +366,11 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
         public Moon withAngle(float angle) {
             this.angle = angle;
+            return this;
+        }
+
+        public Moon withDim(ResourceKey<Level> dim) {
+            this.dim = dim;
             return this;
         }
     }
@@ -557,6 +573,15 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
                 return ((MoonMoon) builder).getAngle();
             }
             return -1;
+        }
+
+        public ResourceKey<Level> getDimension() {
+            if (builder instanceof Planet) {
+                return ((Planet) builder).getDim();
+            } else if (builder instanceof Moon) {
+                return ((Moon) builder).getDim();
+            }
+            return null;
         }
 
         public ChatFormatting getColor() {

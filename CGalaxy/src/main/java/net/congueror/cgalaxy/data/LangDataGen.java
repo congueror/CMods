@@ -57,7 +57,7 @@ public class LangDataGen extends LangDataProvider {
         add("gui.cgalaxy.atmosphere", "Atmosphere: ");
         add("gui.cgalaxy.moons", "Moons: ");
         add("gui.cgalaxy.gravity", "Gravity: ");
-        add("gui.cgalaxy.tier", "Gravity: ");
+        add("gui.cgalaxy.tier", "Tier: ");
 
         add("gui.cgalaxy.milky_way", "Milky Way");
         add("gui.cgalaxy.milky_way.diameter", "Diameter: 105,700 LY");

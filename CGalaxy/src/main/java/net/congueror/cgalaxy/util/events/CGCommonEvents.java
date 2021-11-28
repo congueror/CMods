@@ -40,8 +40,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.TorchBlock;
+import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -54,6 +55,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,13 +65,13 @@ public class CGCommonEvents {
         @SubscribeEvent
         public static void commonSetup(FMLCommonSetupEvent e) {
             CGNetwork.registerMessages();
-            CGGalacticObjects.init();
             e.enqueueWork(() -> {
                 CGDimensions.registerDimensions();
                 CGFeatureGen.registerFeatures();
                 CGCarverInit.registerCarvers();
                 CGBiomes.registerBiomes();
             });
+            CGGalacticObjects.init();
         }
 
         @SubscribeEvent
@@ -193,8 +195,16 @@ public class CGCommonEvents {
         @SubscribeEvent
         public static void onEntityPlaceBlock(BlockOnPlacedEvent.Post e) {
             if (CGDimensionBuilder.getObjectFromKey(e.getLevel().dimension()) != null) {
-                if (e.getNewBlock() instanceof TorchBlock && !CGDimensionBuilder.getObjectFromKey(e.getLevel().dimension()).getBreathable()) {
-                    e.getLevel().setBlock(e.getPos(), Blocks.DIAMOND_BLOCK.defaultBlockState(), 2);
+                if (!CGDimensionBuilder.getObjectFromKey(e.getLevel().dimension()).getBreathable()) {
+                    List<Block> torches = new ArrayList<>();
+                    torches.add(Blocks.TORCH);
+                    torches.add(Blocks.SOUL_TORCH);
+                    torches.add(Blocks.WALL_TORCH);
+                    torches.add(Blocks.SOUL_WALL_TORCH);
+                    if (torches.contains(e.getNewBlock()))
+                        e.getLevel().setBlock(e.getPos(), Blocks.DIAMOND_BLOCK.defaultBlockState(), 2);
+                    if (e.getNewBlock() instanceof FireBlock)
+                        e.getLevel().setBlock(e.getPos(), Blocks.AIR.defaultBlockState(), 2);
                 }
             }
         }
