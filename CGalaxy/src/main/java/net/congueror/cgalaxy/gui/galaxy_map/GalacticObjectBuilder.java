@@ -10,21 +10,22 @@ import java.util.stream.Collectors;
 
 public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> {
 
-    public final String name;
+    public final ResourceLocation id;
     private String diameter;
     private double age;
 
     private ResourceLocation texture;
+    public final Map<String, String> locale = new HashMap<>();
 
     //sub, super
     public static final Map<GalacticObject<?>, GalacticObject<?>> OBJECTS = new HashMap<>();
 
-    public GalacticObjectBuilder(String name) {
-        this.name = name;
+    public GalacticObjectBuilder(ResourceLocation id) {
+        this.id = id;
     }//TODO: Translation key generation.
 
-    public static GalacticObject<?> getObjectFromName(String name) {
-        return OBJECTS.keySet().stream().filter(galacticObject -> galacticObject.getName().equals(name)).findAny().orElse(null);
+    public static GalacticObject<?> getObjectFromId(ResourceLocation name) {
+        return OBJECTS.keySet().stream().filter(galacticObject -> galacticObject.getId().equals(name)).findAny().orElse(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -82,7 +83,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
     public GalacticObject<T> build() {
         GalacticObject<T> obj = new GalacticObject<>(self());
-        if (OBJECTS.keySet().stream().map(GalacticObject::getName).anyMatch(s -> s.equals(obj.getName()))) {
+        if (OBJECTS.keySet().stream().map(GalacticObject::getId).anyMatch(s -> s.equals(obj.getId()))) {
             throw new IllegalStateException("Duplicate galactic objects found!");
         }
         if (self() instanceof Galaxy) {
@@ -99,8 +100,8 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         return obj;
     }
 
-    public String getName() {
-        return name;
+    public ResourceLocation getId() {
+        return id;
     }
 
     public String getDiameter() {
@@ -113,6 +114,12 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
     public ResourceLocation getTexture() {
         return texture;
+    }
+
+    protected abstract String getType();
+
+    public String getTranslationKey() {
+        return getType() + "." + getId().getNamespace() + "." + getId().getPath();
     }
 
     public T withDiameter(double diameter, String unit) {
@@ -130,6 +137,27 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         return self();
     }
 
+    /**
+     * Adds a translation to this object in the en_us locale. If you wish to change locale use {@link #withTranslation(String, String)}
+     *
+     * @param translation The name of the translated object, e.g. "My Ore"
+     */
+    public T withTranslation(String translation) {
+        this.locale.put("en_us", translation);
+        return self();
+    }
+
+    /**
+     * Adds a translation to this block in the given locale.
+     *
+     * @param translation The name of the translated block, e.g. "My Ore"
+     * @param locale      The localization this translation will be added to, e.g. "en_us"
+     */
+    public T withTranslation(String translation, String locale) {
+        this.locale.put(locale, translation);
+        return self();
+    }
+
     @SuppressWarnings("unchecked")
     final T self() {
         return (T) this;
@@ -139,8 +167,13 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
         private double stars;
 
-        public Galaxy(String name) {
+        public Galaxy(ResourceLocation name) {
             super(name);
+        }
+
+        @Override
+        protected String getType() {
+            return "galaxy";
         }
 
         public double getStars() {
@@ -160,7 +193,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         private X x;
         private Y y;
 
-        public SolarSystem(String name, GalacticObject<Galaxy> galaxy) {
+        public SolarSystem(ResourceLocation name, GalacticObject<Galaxy> galaxy) {
             super(name);
             this.galaxy = galaxy;
         }
@@ -195,6 +228,11 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             this.y = y;
             return this;
         }
+
+        @Override
+        protected String getType() {
+            return "solar_system";
+        }
     }
 
     public static class Planet extends GalacticObjectBuilder<Planet> {
@@ -208,7 +246,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         private int tier;
         private ResourceKey<Level> dim;
 
-        public Planet(String name, GalacticObject<SolarSystem> solarSystem) {
+        public Planet(ResourceLocation name, GalacticObject<SolarSystem> solarSystem) {
             super(name);
             this.solarSystem = solarSystem;
         }
@@ -248,6 +286,11 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         @Override
         public double getAge() {
             return solarSystem.getAge();
+        }
+
+        @Override
+        protected String getType() {
+            return "planet";
         }
 
         public Planet withAtmosphere(String atmosphere) {
@@ -297,7 +340,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         private int tier;
         private ResourceKey<Level> dim;
 
-        public Moon(String name, GalacticObject<Planet> planet) {
+        public Moon(ResourceLocation name, GalacticObject<Planet> planet) {
             super(name);
             this.planet = planet;
         }
@@ -337,6 +380,11 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         @Override
         public double getAge() {
             return planet.getAge();
+        }
+
+        @Override
+        protected String getType() {
+            return "moon";
         }
 
         public Moon withAtmosphere(String atmosphere) {
@@ -385,7 +433,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         private double gravity;
         private int tier;
 
-        public MoonMoon(String name, GalacticObject<Moon> moon) {
+        public MoonMoon(ResourceLocation name, GalacticObject<Moon> moon) {
             super(name);
             this.moon = moon;
         }
@@ -421,6 +469,11 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         @Override
         public double getAge() {
             return moon.getAge();
+        }
+
+        @Override
+        protected String getType() {
+            return "moonmoon";
         }
 
         public MoonMoon withRingIndex(int ringIndex) {
@@ -461,8 +514,8 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             this.builder = builder;
         }
 
-        public String getName() {
-            return builder.getName();
+        public ResourceLocation getId() {
+            return builder.getId();
         }
 
         public G getType() {
@@ -479,6 +532,10 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
         public ResourceLocation getTexture() {
             return builder.getTexture();
+        }
+
+        public String getTranslationKey() {
+            return builder.getTranslationKey();
         }
 
         public String getAtmosphere() {
@@ -516,11 +573,11 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
         public int getTier() {
             if (builder instanceof Planet) {
-                return ((Planet) builder).getMoons();
+                return ((Planet) builder).getTier();
             } else if (builder instanceof Moon) {
-                return ((Moon) builder).getMoons();
+                return ((Moon) builder).getTier();
             } else if (builder instanceof MoonMoon) {
-                return ((MoonMoon) builder).getMoons();
+                return ((MoonMoon) builder).getTier();
             }
             return -1;
         }

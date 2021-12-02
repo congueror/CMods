@@ -1,22 +1,15 @@
-package net.congueror.clib.api.data;
+package net.congueror.cgalaxy.api.data;
 
+import net.congueror.cgalaxy.gui.galaxy_map.GalacticObjectBuilder;
+import net.congueror.clib.api.data.LangDataProvider;
 import net.congueror.clib.api.registry.BlockBuilder;
 import net.congueror.clib.api.registry.FluidBuilder;
 import net.congueror.clib.api.registry.ItemBuilder;
 import net.minecraft.data.DataGenerator;
-import net.minecraftforge.common.data.LanguageProvider;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-public class LangDataProvider extends LanguageProvider {
-
-    protected String locale;
-    protected String modid;
-
-    protected static List<String> locales = new ArrayList<>();
-
+public class CGLangDataProvider extends LangDataProvider {
     /**
      * Call this method from your data generation event to generate all the language files from the builders.
      */
@@ -39,22 +32,27 @@ public class LangDataProvider extends LanguageProvider {
                     locales.add(string.getKey());
                 }
             });
+        if (GalacticObjectBuilder.OBJECTS.keySet().stream().anyMatch(object -> object.getId().getNamespace().equals(modid))) {
+            GalacticObjectBuilder.OBJECTS.keySet().stream().filter(object -> object.getId().getNamespace().equals(modid))
+                    .map(object -> object.getType().locale).forEach(stringStringMap -> {
+                        for (var string : stringStringMap.entrySet()) {
+                            locales.add(string.getKey());
+                        }
+                    });
+        }
         locales.stream().distinct().forEach(s -> gen.addProvider(new LangDataProvider(gen, modid, s)));
     }
 
-    public LangDataProvider(DataGenerator gen, String modid, String locale) {
+    public CGLangDataProvider(DataGenerator gen, String modid, String locale) {
         super(gen, modid, locale);
-        this.modid = modid;
-        this.locale = locale;
     }
 
     @Override
     protected void addTranslations() {
-        if (ItemBuilder.OBJECTS.get(modid) != null)
-            ItemBuilder.OBJECTS.get(modid).stream().filter(itemBuilder -> itemBuilder.locale.containsKey(locale)).forEach(builder -> add(builder.getItem(), builder.locale.get(locale)));
-        if (BlockBuilder.OBJECTS.get(modid) != null)
-            BlockBuilder.OBJECTS.get(modid).stream().filter(blockBuilder -> blockBuilder.locale.containsKey(locale)).forEach(blockBuilder -> add(blockBuilder.block, blockBuilder.locale.get(locale)));
-        if (FluidBuilder.OBJECTS.get(modid) != null)
-            FluidBuilder.OBJECTS.get(modid).stream().filter(fluidBuilder -> fluidBuilder.locale.containsKey(locale)).forEach(fluidBuilder -> add(fluidBuilder.getStill().get().getAttributes().getTranslationKey(), fluidBuilder.locale.get(locale)));
+        super.addTranslations();
+        if (GalacticObjectBuilder.OBJECTS.keySet().stream().anyMatch(object -> object.getId().getNamespace().equals(modid)))
+            GalacticObjectBuilder.OBJECTS.keySet().stream().filter(object -> object.getId().getNamespace().equals(modid))
+                    .filter(object -> object.getType().locale.containsKey(locale))
+                    .forEach(object -> add(object.getTranslationKey(), object.getType().locale.get(locale)));
     }
 }

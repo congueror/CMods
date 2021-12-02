@@ -6,6 +6,7 @@ import net.congueror.clib.networking.IPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,19 +19,19 @@ import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
 public class PacketChangeMap implements IPacket {
-    private final String name;
+    private final ResourceLocation name;
 
-    public PacketChangeMap(String name) {
+    public PacketChangeMap(ResourceLocation name) {
         this.name = name;
     }
 
     public PacketChangeMap(FriendlyByteBuf buf) {
-        this.name = buf.readUtf();
+        this.name = buf.readResourceLocation();
     }
 
     @Override
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeUtf(this.name);
+        buf.writeResourceLocation(this.name);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class PacketChangeMap implements IPacket {
                     @Nonnull
                     @Override
                     public AbstractContainerMenu createMenu(int pContainerId, @Nonnull Inventory pInventory, @Nonnull Player pPlayer) {
-                        return new GalaxyMapContainer(pContainerId, player, true, GalacticObjectBuilder.getObjectFromName(name));
+                        return new GalaxyMapContainer(pContainerId, player, true, GalacticObjectBuilder.getObjectFromId(name));
                     }
                 });
             }

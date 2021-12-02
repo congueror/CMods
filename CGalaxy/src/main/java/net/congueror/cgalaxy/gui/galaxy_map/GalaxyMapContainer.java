@@ -3,6 +3,7 @@ package net.congueror.cgalaxy.gui.galaxy_map;
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.networking.PacketSyncMap;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -32,14 +33,14 @@ public class GalaxyMapContainer extends AbstractContainerMenu {
             this.unlockedLastTick = this.unlocked;
             if (player instanceof ServerPlayer player1) {
                 CGNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player1),
-                        new PacketSyncMap(containerId, unlocked, map == null ? "null" : map.getName()));
+                        new PacketSyncMap(containerId, unlocked, map == null ? new ResourceLocation("null") : map.getId()));
             }
         }
     }
 
-    public void sync(boolean unlocked, String name) {
+    public void sync(boolean unlocked, ResourceLocation name) {
         this.unlocked = unlocked;
-        this.map = GalacticObjectBuilder.getObjectFromName(name);
+        this.map = GalacticObjectBuilder.getObjectFromId(name);
     }
 
     @Override

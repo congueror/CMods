@@ -1,7 +1,8 @@
 package net.congueror.cgalaxy.data;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.clib.api.data.*;
+import net.congueror.cgalaxy.api.data.CGLangDataProvider;
+import net.congueror.cgalaxy.util.CGGalacticObjects;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -13,6 +14,7 @@ public class DataGenerators {
     @SubscribeEvent
     public static void gatherDataEvent(GatherDataEvent e) {
         DataGenerator gen = e.getGenerator();
+        CGGalacticObjects.init();
 
         if (e.includeServer()) {
             CGalaxy.LOGGER.debug("Starting Server Data Generators for CGalaxy");
@@ -27,8 +29,10 @@ public class DataGenerators {
             CGalaxy.LOGGER.debug("Starting Client Data Generators for CGalaxy");
             gen.addProvider(new ItemModelDataGen(gen, e.getExistingFileHelper()));
             gen.addProvider(new BlockModelDataGen(gen, e.getExistingFileHelper()));
-            LangDataProvider.create(gen, CGalaxy.MODID);
+            CGLangDataProvider.create(gen, CGalaxy.MODID);
             gen.addProvider(new LangDataGen(gen, "en_us"));
+            gen.addProvider(new LangDataGen(gen, "el_gr"));
+            gen.addProvider(new LangDataGen(gen, "el_cy"));
         }
     }
 }

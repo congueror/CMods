@@ -7,13 +7,15 @@ import net.congueror.cgalaxy.world.CGDimensions;
 import static net.congueror.cgalaxy.gui.galaxy_map.GalacticObjectBuilder.*;
 
 public class CGGalacticObjects {
-    public static final GalacticObject<Galaxy> MILKY_WAY = new GalacticObjectBuilder.Galaxy("Milky Way")
+    public static final GalacticObject<Galaxy> MILKY_WAY = new GalacticObjectBuilder.Galaxy(CGalaxy.location("milky_way"))
+            .withTranslation("Milky Way")
             .withAge(13.51e9)
             .withDiameter(105700, "LY")
             .withStars(250e9)
             .withTexture(CGalaxy.location("textures/gui/galaxy_map/milky_way.png"))
             .build();
-    public static final GalacticObject<SolarSystem> SOLAR_SYSTEM = new GalacticObjectBuilder.SolarSystem("Solar System", MILKY_WAY)
+    public static final GalacticObject<SolarSystem> SOLAR_SYSTEM = new GalacticObjectBuilder.SolarSystem(CGalaxy.location("solar_system"), MILKY_WAY)
+            .withTranslation("Solar System")
             .withAge(4.6e9)
             .withDiameter(284.46e9, "km")
             .withCelestialObjects(7)
@@ -21,7 +23,10 @@ public class CGGalacticObjects {
             .withY((height, topPos) -> height / 2 + 10)
             .withTexture(CGalaxy.location("textures/sky/sun.png"))
             .build();
-    public static final GalacticObject<Planet> EARTH = new GalacticObjectBuilder.Planet("Earth", SOLAR_SYSTEM)
+    public static final GalacticObject<Planet> EARTH = new GalacticObjectBuilder.Planet(CGalaxy.location("earth"), SOLAR_SYSTEM)
+            .withTranslation("Earth")
+            .withTranslation("\u0393\u03B7", "el_gr")
+            .withTranslation("\u0393\u03B7", "el_cy")
             .withDiameter(12742, "km")
             .withMoons(1)
             .withAtmosphere("Breathable")
@@ -32,7 +37,8 @@ public class CGGalacticObjects {
             .withRingIndex(2)
             .withDim(CGDimensions.OVERWORLD.getDim())
             .build();
-    public static final GalacticObject<Moon> MOON = new Moon("Moon", EARTH)
+    public static final GalacticObject<Moon> MOON = new Moon(CGalaxy.location("moon"), EARTH)
+            .withTranslation("Moon")
             .withDiameter(3474.2, "km")
             .withMoons(0)
             .withAtmosphere("Negligible")
@@ -42,7 +48,8 @@ public class CGGalacticObjects {
             .withTexture(CGalaxy.location("textures/sky/moon.png"))
             .withDim(CGDimensions.MOON.getDim())
             .build();
-    public static final GalacticObject<Planet> MARS = new Planet("Mars", SOLAR_SYSTEM)
+    public static final GalacticObject<Planet> MARS = new Planet(CGalaxy.location("mars"), SOLAR_SYSTEM)
+            .withTranslation("Mars")
             .withDiameter(6779, "km")
             .withMoons(2)
             .withAtmosphere("Thin")
@@ -52,7 +59,8 @@ public class CGGalacticObjects {
             .withTexture(CGalaxy.location("textures/sky/mars.png"))
             .withRingIndex(3)
             .build();
-    public static final GalacticObject<Moon> PHOBOS = new Moon("Phobos", MARS)
+    public static final GalacticObject<Moon> PHOBOS = new Moon(CGalaxy.location("phobos"), MARS)
+            .withTranslation("Phobos")
             .withDiameter(22.5, "km")
             .withMoons(0)
             .withAtmosphere("None")
@@ -62,7 +70,8 @@ public class CGGalacticObjects {
             .withTexture(CGalaxy.location("textures/sky/phobos.png"))
             .withRingIndex(0)
             .build();
-    public static final GalacticObject<Moon> DEIMOS = new Moon("Deimos", MARS)
+    public static final GalacticObject<Moon> DEIMOS = new Moon(CGalaxy.location("deimos"), MARS)
+            .withTranslation("Deimos")
             .withDiameter(12.4, "km")
             .withMoons(0)
             .withAtmosphere("None")
@@ -72,7 +81,8 @@ public class CGGalacticObjects {
             .withTexture(CGalaxy.location("textures/sky/deimos.png"))
             .withRingIndex(1)
             .build();
-    public static final GalacticObject<Planet> VENUS = new Planet("Venus", SOLAR_SYSTEM)
+    public static final GalacticObject<Planet> VENUS = new Planet(CGalaxy.location("venus"), SOLAR_SYSTEM)
+            .withTranslation("Venus")
             .withDiameter(12104, "km")
             .withMoons(0)
             .withAtmosphere("Very Thick")
@@ -82,7 +92,8 @@ public class CGGalacticObjects {
             .withTexture(CGalaxy.location("textures/sky/venus.png"))
             .withRingIndex(1)
             .build();
-    public static final GalacticObject<Planet> MERCURY = new Planet("Mercury", SOLAR_SYSTEM)
+    public static final GalacticObject<Planet> MERCURY = new Planet(CGalaxy.location("mercury"), SOLAR_SYSTEM)
+            .withTranslation("Mercury")
             .withDiameter(4879.4, "km")
             .withMoons(0)
             .withAtmosphere("Negligible")
@@ -91,6 +102,17 @@ public class CGGalacticObjects {
             .withAngle(340)
             .withTexture(CGalaxy.location("textures/sky/mercury.png"))
             .withRingIndex(0)
+            .build();
+    public static final GalacticObject<Planet> JUPITER = new Planet(CGalaxy.location("jupiter"), SOLAR_SYSTEM)
+            .withTranslation("Jupiter")
+            .withDiameter(139820, "km")
+            .withMoons(79)
+            .withAtmosphere("Gas Giant")
+            .withGravity(24.79)
+            .withTier(5)
+            .withAngle(50)
+            .withTexture(CGalaxy.location("textures/sky/jupiter.png"))
+            .withRingIndex(4)
             .build();
 
     public static void init() {}

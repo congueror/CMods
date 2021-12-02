@@ -62,6 +62,8 @@ public class MathHelper {
     }
 
     /**
+     * TODO
+     *
      * @return
      */
     public static String simplifyNumber(double value) {
