@@ -33,6 +33,7 @@ public class CGGalacticObjects {
             .withGravity(CGDimensions.OVERWORLD.getGravity() * 100)
             .withTier(0)
             .withAngle(20)
+            .withDaysPerYear(365)
             .withTexture(CGalaxy.location("textures/sky/earth.png"))
             .withRingIndex(2)
             .withDim(CGDimensions.OVERWORLD.getDim())
@@ -45,6 +46,7 @@ public class CGGalacticObjects {
             .withGravity(CGDimensions.MOON.getGravity() * 100)
             .withTier(1)
             .withAngle(0)
+            .withDaysPerYear(27)
             .withTexture(CGalaxy.location("textures/sky/moon.png"))
             .withDim(CGDimensions.MOON.getDim())
             .build();
@@ -56,6 +58,7 @@ public class CGGalacticObjects {
             .withGravity(3.721)
             .withTier(2)
             .withAngle(243)
+            .withDaysPerYear(687)
             .withTexture(CGalaxy.location("textures/sky/mars.png"))
             .withRingIndex(3)
             .build();
@@ -67,6 +70,7 @@ public class CGGalacticObjects {
             .withGravity(0.0057)
             .withTier(1)
             .withAngle(180)
+            .withDaysPerYear(0.3f)
             .withTexture(CGalaxy.location("textures/sky/phobos.png"))
             .withRingIndex(0)
             .build();
@@ -78,6 +82,7 @@ public class CGGalacticObjects {
             .withGravity(0.003)
             .withTier(1)
             .withAngle(140)
+            .withDaysPerYear(1.25f)
             .withTexture(CGalaxy.location("textures/sky/deimos.png"))
             .withRingIndex(1)
             .build();
@@ -89,6 +94,7 @@ public class CGGalacticObjects {
             .withGravity(8.87)
             .withTier(4)
             .withAngle(135)
+            .withDaysPerYear(225)
             .withTexture(CGalaxy.location("textures/sky/venus.png"))
             .withRingIndex(1)
             .build();
@@ -100,6 +106,7 @@ public class CGGalacticObjects {
             .withGravity(3.7)
             .withTier(3)
             .withAngle(340)
+            .withDaysPerYear(88)
             .withTexture(CGalaxy.location("textures/sky/mercury.png"))
             .withRingIndex(0)
             .build();
@@ -111,6 +118,7 @@ public class CGGalacticObjects {
             .withGravity(24.79)
             .withTier(5)
             .withAngle(50)
+            .withDaysPerYear(4380)
             .withTexture(CGalaxy.location("textures/sky/jupiter.png"))
             .withRingIndex(4)
             .build();

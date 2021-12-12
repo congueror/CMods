@@ -6,6 +6,7 @@ import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryBlock;
 import net.congueror.cgalaxy.blocks.launch_pad.LaunchPadBlock;
 import net.congueror.cgalaxy.blocks.meteorite.MeteoriteBlock;
 import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorBlock;
+import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerBlock;
 import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
 import net.congueror.clib.api.objects.blocks.CLBlock;
 import net.congueror.clib.api.registry.BlockBuilder;
@@ -174,6 +175,14 @@ public class CGBlockInit {
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withBlockModel(null)
             .withTranslation("Oxygen Compressor")
+            .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
+            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createFluidMachineDrop((AbstractFluidBlock) block))
+            .build(BLOCKS);
+    public static final RegistryObject<Block> ROOM_PRESSURIZER = new BlockBuilder("room_pressurizer",
+            new RoomPressurizerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
+            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
+            .withBlockModel(null)
+            .withTranslation("Room Pressurizer")
             .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
             .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createFluidMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);

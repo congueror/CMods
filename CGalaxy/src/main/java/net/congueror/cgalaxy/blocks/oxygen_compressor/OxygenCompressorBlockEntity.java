@@ -14,12 +14,10 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.stream.IntStream;
@@ -91,23 +89,6 @@ public class OxygenCompressorBlockEntity extends AbstractFluidBlockEntity {
     @Override
     public int getEnergyCapacity() {
         return 40000;
-    }
-
-    @Override
-    public int getProcessTime() {
-        return Objects.requireNonNull(getRecipe()).getProcessTime();
-    }
-
-    @Nullable
-    @Override
-    public Collection<FluidStack> getFluidResults(IFluidRecipe<?> recipe) {
-        return recipe.getFluidResults();
-    }
-
-    @Nullable
-    @Override
-    public Collection<ItemStack> getItemResults(IFluidRecipe<?> recipe) {
-        return recipe.getItemResults();
     }
 
     @Override

@@ -49,7 +49,7 @@ public class OxygenCompressorContainer extends AbstractFluidContainer<OxygenComp
 
     @Override
     public int getEnergyUsage() {
-        return te.getEnergyUsage();
+        return te.getEnergyUsageFinal();
     }
 
     @Override

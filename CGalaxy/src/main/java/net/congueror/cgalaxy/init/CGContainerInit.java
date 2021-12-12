@@ -7,6 +7,8 @@ import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryBlockEntity;
 import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryContainer;
 import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorBlockEntity;
 import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorContainer;
+import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerBlockEntity;
+import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerContainer;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
 import net.congueror.cgalaxy.gui.space_suit.SpaceSuitContainer;
 import net.minecraft.core.BlockPos;
@@ -33,14 +35,21 @@ public class CGContainerInit {
                 BlockPos pos = data.readBlockPos();
                 BlockEntity tile = inv.player.getCommandSenderWorld().getBlockEntity(pos);
                 FuelRefineryBlockEntity te = (FuelRefineryBlockEntity) tile;
-                return new FuelRefineryContainer(windowId, inv.player, inv, te, new SimpleContainerData(FuelLoaderBlockEntity.FIELDS_COUNT));
+                return new FuelRefineryContainer(windowId, inv.player, inv, te, new SimpleContainerData(FuelRefineryBlockEntity.FIELDS_COUNT));
             }));
     public static final RegistryObject<MenuType<OxygenCompressorContainer>> OXYGEN_COMPRESSOR = MENU_TYPES.register("oxygen_compressor", () ->
             IForgeContainerType.create((windowId, inv, data) -> {
                 BlockPos pos = data.readBlockPos();
                 BlockEntity tile = inv.player.getCommandSenderWorld().getBlockEntity(pos);
                 OxygenCompressorBlockEntity te = (OxygenCompressorBlockEntity) tile;
-                return new OxygenCompressorContainer(windowId, inv.player, inv, te, new SimpleContainerData(FuelLoaderBlockEntity.FIELDS_COUNT));
+                return new OxygenCompressorContainer(windowId, inv.player, inv, te, new SimpleContainerData(OxygenCompressorBlockEntity.FIELDS_COUNT));
+            }));
+    public static final RegistryObject<MenuType<RoomPressurizerContainer>> ROOM_PRESSURIZER = MENU_TYPES.register("room_pressurizer", () ->
+            IForgeContainerType.create((windowId, inv, data) -> {
+                BlockPos pos = data.readBlockPos();
+                BlockEntity tile = inv.player.getCommandSenderWorld().getBlockEntity(pos);
+                RoomPressurizerBlockEntity te = (RoomPressurizerBlockEntity) tile;
+                return new RoomPressurizerContainer(windowId, inv.player, inv, te, new SimpleContainerData(RoomPressurizerBlockEntity.FIELDS_COUNT));
             }));
 
     public static final RegistryObject<MenuType<GalaxyMapContainer>> GALAXY_MAP = MENU_TYPES.register("galaxy_map", () ->

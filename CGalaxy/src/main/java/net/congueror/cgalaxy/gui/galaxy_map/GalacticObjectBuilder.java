@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> {
 
     public final ResourceLocation id;
-    private String diameter;
+    private MutablePair<Double, String> diameter;
     private double age;
 
     private ResourceLocation texture;
@@ -104,7 +105,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         return id;
     }
 
-    public String getDiameter() {
+    public MutablePair<Double, String> getDiameter() {
         return diameter;
     }
 
@@ -123,7 +124,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
     }
 
     public T withDiameter(double diameter, String unit) {
-        this.diameter = diameter + unit;
+        this.diameter = new MutablePair<>(diameter, unit);
         return self();
     }
 
@@ -159,7 +160,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
     }
 
     @SuppressWarnings("unchecked")
-    final T self() {
+    private T self() {
         return (T) this;
     }
 
@@ -235,275 +236,155 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         }
     }
 
-    public static class Planet extends GalacticObjectBuilder<Planet> {
-
-        private final GalacticObject<SolarSystem> solarSystem;
+    public static abstract class AbstractTerrestrialObject<T extends GalacticObjectBuilder<T>> extends GalacticObjectBuilder<T> {
         private int ringIndex;
         private float angle;
+        private float daysPerYear;
         private String atmosphere;
         private int moons;
         private double gravity;
         private int tier;
         private ResourceKey<Level> dim;
 
+        public AbstractTerrestrialObject(ResourceLocation id) {
+            super(id);
+        }
+
+        public int getRingIndex() {
+            return ringIndex;
+        }
+
+        public float getAngle() {
+            return angle;
+        }
+
+        public String getAtmosphere() {
+            return atmosphere;
+        }
+
+        public int getMoons() {
+            return moons;
+        }
+
+        public double getGravity() {
+            return gravity;
+        }
+
+        public int getTier() {
+            return tier;
+        }
+
+        public ResourceKey<Level> getDim() {
+            return dim;
+        }
+
+        public float getDaysPerYear() {
+            return daysPerYear;
+        }
+
+        public T withAtmosphere(String atmosphere) {
+            this.atmosphere = atmosphere;
+            return self();
+        }
+
+        public T withMoons(int moons) {
+            this.moons = moons;
+            return self();
+        }
+
+        public T withGravity(double gravity) {
+            this.gravity = gravity;
+            return self();
+        }
+
+        public T withTier(int tier) {
+            this.tier = tier;
+            return self();
+        }
+
+        public T withRingIndex(int ringIndex) {
+            this.ringIndex = ringIndex;
+            return self();
+        }
+
+        public T withAngle(float angle) {
+            this.angle = angle;
+            return self();
+        }
+
+        public T withDim(ResourceKey<Level> dim) {
+            this.dim = dim;
+            return self();
+        }
+
+        public T withDaysPerYear(float days) {
+            this.daysPerYear = days;
+            return self();
+        }
+
+        private T self() {
+            //noinspection unchecked
+            return (T) this;
+        }
+    }
+
+    public static class Planet extends AbstractTerrestrialObject<Planet> {
+
+        private final GalacticObject<SolarSystem> solarSystem;
+
         public Planet(ResourceLocation name, GalacticObject<SolarSystem> solarSystem) {
             super(name);
             this.solarSystem = solarSystem;
+            this.withAge(solarSystem.getAge());
         }
 
         public GalacticObject<SolarSystem> getSolarSystem() {
             return solarSystem;
         }
 
-        public int getRingIndex() {
-            return ringIndex;
-        }
-
-        public float getAngle() {
-            return angle;
-        }
-
-        public String getAtmosphere() {
-            return atmosphere;
-        }
-
-        public int getMoons() {
-            return moons;
-        }
-
-        public double getGravity() {
-            return gravity;
-        }
-
-        public int getTier() {
-            return tier;
-        }
-
-        public ResourceKey<Level> getDim() {
-            return dim;
-        }
-
-        @Override
-        public double getAge() {
-            return solarSystem.getAge();
-        }
-
         @Override
         protected String getType() {
             return "planet";
         }
-
-        public Planet withAtmosphere(String atmosphere) {
-            this.atmosphere = atmosphere;
-            return this;
-        }
-
-        public Planet withMoons(int moons) {
-            this.moons = moons;
-            return this;
-        }
-
-        public Planet withGravity(double gravity) {
-            this.gravity = gravity;
-            return this;
-        }
-
-        public Planet withTier(int tier) {
-            this.tier = tier;
-            return this;
-        }
-
-        public Planet withRingIndex(int ringIndex) {
-            this.ringIndex = ringIndex;
-            return this;
-        }
-
-        public Planet withAngle(float angle) {
-            this.angle = angle;
-            return this;
-        }
-
-        public Planet withDim(ResourceKey<Level> dim) {
-            this.dim = dim;
-            return this;
-        }
     }
 
-    public static class Moon extends GalacticObjectBuilder<Moon> {
+    public static class Moon extends AbstractTerrestrialObject<Moon> {
 
         private final GalacticObject<Planet> planet;
-        private int ringIndex;
-        private float angle;
-        private String atmosphere;
-        private int moons;
-        private double gravity;
-        private int tier;
-        private ResourceKey<Level> dim;
 
         public Moon(ResourceLocation name, GalacticObject<Planet> planet) {
             super(name);
             this.planet = planet;
+            this.withAge(planet.getAge());
         }
 
         public GalacticObject<Planet> getPlanet() {
             return planet;
         }
 
-        public int getRingIndex() {
-            return ringIndex;
-        }
-
-        public float getAngle() {
-            return angle;
-        }
-
-        public String getAtmosphere() {
-            return atmosphere;
-        }
-
-        public int getMoons() {
-            return moons;
-        }
-
-        public double getGravity() {
-            return gravity;
-        }
-
-        public int getTier() {
-            return tier;
-        }
-
-        public ResourceKey<Level> getDim() {
-            return dim;
-        }
-
-        @Override
-        public double getAge() {
-            return planet.getAge();
-        }
-
         @Override
         protected String getType() {
             return "moon";
         }
-
-        public Moon withAtmosphere(String atmosphere) {
-            this.atmosphere = atmosphere;
-            return this;
-        }
-
-        public Moon withMoons(int moons) {
-            this.moons = moons;
-            return this;
-        }
-
-        public Moon withGravity(double gravity) {
-            this.gravity = gravity;
-            return this;
-        }
-
-        public Moon withTier(int tier) {
-            this.tier = tier;
-            return this;
-        }
-
-        public Moon withRingIndex(int ringIndex) {
-            this.ringIndex = ringIndex;
-            return this;
-        }
-
-        public Moon withAngle(float angle) {
-            this.angle = angle;
-            return this;
-        }
-
-        public Moon withDim(ResourceKey<Level> dim) {
-            this.dim = dim;
-            return this;
-        }
     }
 
-    public static class MoonMoon extends GalacticObjectBuilder<MoonMoon> {
+    public static class MoonMoon extends AbstractTerrestrialObject<MoonMoon> {
 
         private final GalacticObject<Moon> moon;
-        private int ringIndex;
-        private float angle;
-        private String atmosphere;
-        private int moons;
-        private double gravity;
-        private int tier;
 
         public MoonMoon(ResourceLocation name, GalacticObject<Moon> moon) {
             super(name);
             this.moon = moon;
+            this.withAge(moon.getAge());
         }
 
         public GalacticObject<Moon> getMoon() {
             return moon;
         }
 
-        public int getRingIndex() {
-            return ringIndex;
-        }
-
-        public float getAngle() {
-            return angle;
-        }
-
-        public String getAtmosphere() {
-            return atmosphere;
-        }
-
-        public int getMoons() {
-            return moons;
-        }
-
-        public double getGravity() {
-            return gravity;
-        }
-
-        public int getTier() {
-            return tier;
-        }
-
-        @Override
-        public double getAge() {
-            return moon.getAge();
-        }
-
         @Override
         protected String getType() {
             return "moonmoon";
-        }
-
-        public MoonMoon withRingIndex(int ringIndex) {
-            this.ringIndex = ringIndex;
-            return this;
-        }
-
-        public MoonMoon withAngle(float angle) {
-            this.angle = angle;
-            return this;
-        }
-
-        public MoonMoon withAtmosphere(String atmosphere) {
-            this.atmosphere = atmosphere;
-            return this;
-        }
-
-        public MoonMoon withMoons(int moons) {
-            this.moons = moons;
-            return this;
-        }
-
-        public MoonMoon withGravity(double gravity) {
-            this.gravity = gravity;
-            return this;
-        }
-
-        public MoonMoon withTier(int tier) {
-            this.tier = tier;
-            return this;
         }
     }
 
@@ -522,7 +403,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             return this.builder;
         }
 
-        public String getDiameter() {
+        public MutablePair<Double, String> getDiameter() {
             return builder.getDiameter();
         }
 
@@ -628,6 +509,17 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
                 return ((Moon) builder).getAngle();
             } else if (builder instanceof MoonMoon) {
                 return ((MoonMoon) builder).getAngle();
+            }
+            return -1;
+        }
+
+        public float getDaysPerYear() {
+            if (builder instanceof Planet) {
+                return ((Planet) builder).getDaysPerYear();
+            } else if (builder instanceof Moon) {
+                return ((Moon) builder).getDaysPerYear();
+            } else if (builder instanceof MoonMoon) {
+                return ((MoonMoon) builder).getDaysPerYear();
             }
             return -1;
         }

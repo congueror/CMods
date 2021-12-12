@@ -1,4 +1,4 @@
-package net.congueror.cgalaxy.blocks.fuel_loader;
+package net.congueror.cgalaxy.blocks.room_pressurizer;
 
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.clib.api.machine.fluid.AbstractFluidContainer;
@@ -15,13 +15,11 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-import javax.annotation.Nonnull;
+public class RoomPressurizerContainer extends AbstractFluidContainer<RoomPressurizerBlockEntity> {
+    final RoomPressurizerBlockEntity te;
 
-public class FuelLoaderContainer extends AbstractFluidContainer<FuelLoaderBlockEntity> {
-    FuelLoaderBlockEntity te;
-
-    public FuelLoaderContainer(int id, Player player, Inventory playerInventory, FuelLoaderBlockEntity tile, ContainerData dataIn) {
-        super(CGContainerInit.FUEL_LOADER.get(), id, player, playerInventory, tile, dataIn);
+    public RoomPressurizerContainer(int id, Player player, Inventory playerInventory, RoomPressurizerBlockEntity tile, ContainerData dataIn) {
+        super(CGContainerInit.ROOM_PRESSURIZER.get(), id, player, playerInventory, tile, dataIn);
         this.te = tile;
         if (fluidLastTick.isEmpty()) {
             for (int i = 0; i < getFluidTanks().length; i++) {
@@ -66,9 +64,8 @@ public class FuelLoaderContainer extends AbstractFluidContainer<FuelLoaderBlockE
         return te.data.get(1);
     }
 
-    @Nonnull
     @Override
-    public ItemStack quickMoveStack(@Nonnull Player pPlayer, int pIndex) {
+    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(pIndex);
         if (slot.hasItem()) {

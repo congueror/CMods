@@ -14,6 +14,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -61,8 +62,9 @@ public interface IFluidRecipe<C extends IItemFluidInventory> extends Recipe<C> {
         return list;
     }
 
+    @Nonnull
     @Override
-    default ItemStack assemble(C inv) {
+    default ItemStack assemble(@Nonnull C inv) {
         return getResultItem();
     }
 

@@ -51,8 +51,8 @@ public class CLBlockInit {
     public static final RegistryObject<Block> RUBY_ORE = new BlockBuilder("ruby_ore", new CLOreBlock(BlockBehaviour.Properties
             .of(Material.STONE).requiresCorrectToolForDrops()
             .strength(3.0f, 6.0f)
-            .sound(SoundType.NETHERRACK)
-            , 7))
+            .sound(SoundType.NETHERRACK),
+            7))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, tierToTag(2))
             .withNewBlockTag("forge:ores/ruby")
             .withNewItemTag("forge:ores/ruby")

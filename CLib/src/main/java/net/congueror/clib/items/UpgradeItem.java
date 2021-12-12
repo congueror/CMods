@@ -15,6 +15,7 @@ public class UpgradeItem extends Item {
 
     public enum UpgradeType {
         SPEED, //Increases Progress per tick
-        STACK //Increases stack per operation
+        STACK, //Increases stack per operation
+        RANGE, //Increases range of machine
     }
 }

@@ -48,7 +48,7 @@ public class FuelRefineryContainer extends AbstractFluidContainer<FuelRefineryBl
 
     @Override
     public int getEnergyUsage() {
-        return te.getEnergyUsage();
+        return te.getEnergyUsageFinal();
     }
 
     public int getMaxEnergy() {

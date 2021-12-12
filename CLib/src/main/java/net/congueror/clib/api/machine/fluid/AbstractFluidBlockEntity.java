@@ -93,7 +93,7 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
 
     /**
      * The recipe that the tile entity uses. This can be acquired by using the recipe manager like so:
-     * <pre>world.getRecipeManager().getRecipe([RECIPE], wrapper, world).orElse(null)</pre>
+     * <pre>level.getRecipeManager().getRecipe([RECIPE], wrapper, world).orElse(null)</pre>
      */
     @Nullable
     public abstract IFluidRecipe<?> getRecipe();
@@ -124,35 +124,12 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
     /**
      * The amount of FE consumed per tick.
      */
-    public abstract int getEnergyUsage();
+    protected abstract int getEnergyUsage();
 
     /**
      * The capacity of the energy buffer.
      */
     public abstract int getEnergyCapacity();
-
-    /**
-     * The amount of ticks it takes for the machine to complete a process
-     */
-    public abstract int getProcessTime();
-
-    /**
-     * The fluid results of the given recipe.
-     *
-     * @param recipe The recipe
-     * @return A {@link Collection} of {@link FluidStack}s.
-     */
-    @Nullable
-    public abstract Collection<FluidStack> getFluidResults(IFluidRecipe<?> recipe);
-
-    /**
-     * The item results of the given recipe.
-     *
-     * @param recipe The recipe
-     * @return A {@link Collection} of {@link ItemStack}s.
-     */
-    @Nullable
-    public abstract Collection<ItemStack> getItemResults(IFluidRecipe<?> recipe);
 
     /**
      * Here you can add any additional requirements for the machine to start
@@ -180,10 +157,10 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
         FluidStack tank = tanks[0].getFluid();
         IFluidRecipe<?> recipe = getRecipe();
         if (recipe != null && shouldRun()) {
-            if (energyStorage.getEnergyStored() >= getEnergyUsage() && requisites()) {
+            if (energyStorage.getEnergyStored() >= getEnergyUsageFinal() && requisites()) {
                 processTime = getProcessTime();
                 progress += getProgressSpeed();
-                energyStorage.consumeEnergy(getEnergyUsage());
+                energyStorage.consumeEnergy(getEnergyUsageFinal());
                 info = "key.clib.working";
                 setChanged();
                 if (progress >= processTime) {
@@ -195,7 +172,7 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
                     sendUpdate(getActiveState());
                 }
             } else {
-                if (energyStorage.getEnergyStored() <= getEnergyUsage()) {
+                if (energyStorage.getEnergyStored() <= getEnergyUsageFinal()) {
                     info = "key.clib.error_insufficient_energy";
                 }
                 if (progress > 0) {
@@ -230,11 +207,49 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
     }
 
     /**
-     * Checks whether the tile entity should run based on the operation type.
+     * The fluid results of the given recipe.
+     *
+     * @param recipe The recipe
+     * @return A {@link Collection} of {@link FluidStack}s.
+     */
+    @Nullable
+    public Collection<FluidStack> getFluidResults(IFluidRecipe<?> recipe) {
+        return Objects.requireNonNull(getRecipe()).getFluidResults();
+    }
+
+    /**
+     * The item results of the given recipe.
+     *
+     * @param recipe The recipe
+     * @return A {@link Collection} of {@link ItemStack}s.
+     */
+    @Nullable
+    public Collection<ItemStack> getItemResults(IFluidRecipe<?> recipe) {
+        return Objects.requireNonNull(getRecipe()).getItemResults();
+    }
+
+    /**
+     * The amount of ticks it takes for the machine to complete a process
+     */
+    public int getProcessTime() {
+        return Objects.requireNonNull(getRecipe()).getProcessTime();
+    }
+
+    /**
+     * The starting range of the machine. Unless overriding, use {@link #getRangeFinal()}.
+     *
+     * @return Initial range of machine in blocks.
+     */
+    protected int getRange() {
+        return -1;
+    }
+
+    /**
+     * Checks whether the tile entity should run.
      */
     public boolean shouldRun() {
-        boolean flag = false;
-        boolean flag1 = false;
+        boolean flag = outputSlotsAndTanks().get("tanks") == null;
+        boolean flag1 = outputSlotsAndTanks().get("slots") == null;
         for (int i : outputSlotsAndTanks().get("tanks")) {
             flag = tanks[i].getFluidAmount() + getFluidProcessSize() <= tanks[i].getCapacity();
         }
@@ -296,6 +311,24 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
             }
         }
         return stack;
+    }
+
+    /**
+     * Calculates the range that the machine will function in.
+     *
+     * @return The range in blocks.
+     */
+    public int getRangeFinal() {
+        int[] slots = new int[]{invSize().length - 1, invSize().length - 2, invSize().length - 3, invSize().length - 4};
+        int range = getRange();
+        for (int i = 0; i < slots.length; i++) {
+            if (itemHandler.getStackInSlot(i).getItem() instanceof UpgradeItem) {
+                if (((UpgradeItem) itemHandler.getStackInSlot(i).getItem()).getType().equals(UpgradeItem.UpgradeType.RANGE)) {
+                    range += getRange() / 2;
+                }
+            }
+        }
+        return range;
     }
 
     public int getEnergyUsageFinal() {//TODO
