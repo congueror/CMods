@@ -1,5 +1,6 @@
 package net.congueror.cgalaxy.item;
 
+import net.congueror.clib.util.MathHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -12,6 +13,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -74,14 +76,19 @@ public class OxygenTankItem extends Item {
     }
 
     @Override
-    public boolean showDurabilityBar(ItemStack stack) {
+    public boolean isBarVisible(ItemStack stack) {
         return getOxygen(stack) != getCapacity();
     }
 
     @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
+    public int getBarWidth(ItemStack stack) {
         OxygenTankItem item = (OxygenTankItem) stack.getItem();
-        return (double) (item.getCapacity() - item.getOxygen(stack)) / (double) item.getCapacity();
+        return Math.round(13.0F - (item.getCapacity() - item.getOxygen(stack)) * 13.0F / (float)item.getCapacity());
+    }
+
+    @Override
+    public int getBarColor(@NotNull ItemStack stack) {
+        return 0xFFADD8E6;
     }
 
     @Override

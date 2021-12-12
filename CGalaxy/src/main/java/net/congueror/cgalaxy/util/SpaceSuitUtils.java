@@ -4,11 +4,11 @@ import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.item.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -33,7 +33,7 @@ public class SpaceSuitUtils {
             }
             if (isEquipped(entity)) {
                 ItemStack stack = entity.getItemBySlot(equipmentSlot);
-                ListTag tagList = stack.getOrCreateTag().getCompound("inventory").getList("Items", Constants.NBT.TAG_COMPOUND);
+                ListTag tagList = stack.getOrCreateTag().getCompound("inventory").getList("Items", Tag.TAG_COMPOUND);
                 for (int i = 0; i < tagList.size(); i++) {
                     CompoundTag itemTags = tagList.getCompound(i);
                     stacks.add(ItemStack.of(itemTags));

@@ -6,9 +6,9 @@ import net.congueror.clib.api.registry.ItemBuilder;
 import net.congueror.clib.items.HammerItem;
 import net.congueror.clib.util.ModCreativeTabs;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class CLItemInit {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, CLib.MODID);

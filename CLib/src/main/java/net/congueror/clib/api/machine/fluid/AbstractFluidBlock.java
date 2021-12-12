@@ -21,16 +21,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
-import org.lwjgl.system.CallbackI;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.security.DrbgParameters;
 
 public abstract class AbstractFluidBlock extends AbstractTickableBlock {//TODO: Energy nbt when block is broken.
 
@@ -58,8 +55,8 @@ public abstract class AbstractFluidBlock extends AbstractTickableBlock {//TODO: 
     }
 
     @Override
-    public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-        return willHarvest || super.removedByPlayer(state, world, pos, player, false, fluid);
+    public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+        return willHarvest || super.onDestroyedByPlayer(state, world, pos, player, false, fluid);
     }
 
     @Override

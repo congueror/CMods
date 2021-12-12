@@ -13,11 +13,11 @@ public class MathHelper {
     }
 
     /**
-     * Converts the argb hexadecimal of a fluid's colour to a {@link Vector4f} which contains the Red, Green, Blue and Alpha.
+     * Converts the argb hexadecimal to a {@link Vector4f} which contains the Red, Green, Blue and Alpha.
      *
-     * @return x = Red, y = Blue, z = Green, w = Alpha
+     * @return x = Red, y = Green, z = Blue, w = Alpha
      */
-    public static Vector4f getFluidColor(int argb) {
+    public static Vector4f hexARGBtoRGBA(int argb) {
         return new Vector4f(((argb >> 16) & 0xFF) / 255f, ((argb >> 8) & 0xFF) / 255f, ((argb) & 0xFF) / 255f, ((argb >> 24) & 0xFF) / 255f);
     }
 

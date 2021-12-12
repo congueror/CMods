@@ -37,7 +37,7 @@ public class RocketHUDOverlay extends GuiComponent implements IIngameOverlay {
                 String coords = "x: " + (int) player.getX() + ", y: " + (int) player.getY() + ", z:" + (int) player.getZ();
                 int k = mc.font.width(coords);
                 int l = mc.getWindow().getGuiScaledWidth() - 2 - k;
-                FluidStack stack1 = new FluidStack(CGFluidInit.KEROSENE.getStill(), rocket.getFuel());
+                FluidStack stack1 = new FluidStack(CGFluidInit.KEROSENE.getStill().get(), rocket.getFuel());
                 int a = 51 - (51 * MathHelper.getPercent(rocket.getFuel(), rocket.getCapacity()) / 100);
                 int x2 = l - 3;
                 int y1 = 1 + a;

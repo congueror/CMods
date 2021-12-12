@@ -108,14 +108,14 @@ public class GalacticMapButton extends Button {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, this.resourceLocation);
         int i = this.yTexStart;
-        if (this.isHovered()) {
+        if (this.isHoveredOrFocused()) {
             i += this.yDiffTex;
         }
 
         RenderSystem.enableDepthTest();
         blit(pMatrixStack, this.x, this.y, (float) this.xTexStart, (float) i, this.width, this.height, this.textureWidth, this.textureHeight);
 
-        if (this.isHovered()) {
+        if (this.isHoveredOrFocused()) {
             this.renderToolTip(pMatrixStack, pMouseX, pMouseY);
         }
     }

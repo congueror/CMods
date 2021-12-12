@@ -17,9 +17,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -51,8 +51,8 @@ public class CLBlockInit {
     public static final RegistryObject<Block> RUBY_ORE = new BlockBuilder("ruby_ore", new CLOreBlock(BlockBehaviour.Properties
             .of(Material.STONE).requiresCorrectToolForDrops()
             .strength(3.0f, 6.0f)
-            .sound(SoundType.NETHERRACK),
-            7))
+            .sound(SoundType.NETHERRACK)
+            , 7))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, tierToTag(2))
             .withNewBlockTag("forge:ores/ruby")
             .withNewItemTag("forge:ores/ruby")
@@ -245,7 +245,7 @@ public class CLBlockInit {
 
     public static final RegistryObject<Block> RUBBER_LOG = new BlockBuilder("rubber_log",
             new CLRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)))
-            .withExistingBlockTags(BlockTags.MINEABLE_WITH_AXE)
+            .withExistingBlockTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS)
             .withNewBlockTag("forge:rubber_logs")
             .withNewItemTag("forge:rubber_logs")
             .withModifiedState(ToolActions.AXE_STRIP, RUBBER_STRIPPED_LOG)
@@ -265,7 +265,7 @@ public class CLBlockInit {
 
     public static final RegistryObject<Block> RUBBER_LEAVES = new BlockBuilder("rubber_leaves",
             new CLLeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)))
-            .withExistingBlockTags(BlockTags.MINEABLE_WITH_HOE)
+            .withExistingBlockTags(BlockTags.MINEABLE_WITH_HOE, BlockTags.LEAVES)
             .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createLeavesDrops(block, CLBlockInit.RUBBER_SAPLING.get()))
             .withTranslation("Rubber Leaves")
             .build(BLOCKS);

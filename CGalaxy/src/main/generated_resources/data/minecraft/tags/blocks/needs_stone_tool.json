@@ -19,6 +19,7 @@
     "cgalaxy:launch_pad",
     "cgalaxy:fuel_loader",
     "cgalaxy:fuel_refinery",
-    "cgalaxy:oxygen_compressor"
+    "cgalaxy:oxygen_compressor",
+    "cgalaxy:room_pressurizer"
   ]
 }

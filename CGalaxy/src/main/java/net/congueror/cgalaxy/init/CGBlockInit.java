@@ -7,6 +7,7 @@ import net.congueror.cgalaxy.blocks.launch_pad.LaunchPadBlock;
 import net.congueror.cgalaxy.blocks.meteorite.MeteoriteBlock;
 import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorBlock;
 import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerBlock;
+import net.congueror.clib.api.data.ItemModelDataProvider;
 import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
 import net.congueror.clib.api.objects.blocks.CLBlock;
 import net.congueror.clib.api.registry.BlockBuilder;
@@ -20,9 +21,9 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class CGBlockInit {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, CGalaxy.MODID);
@@ -182,16 +183,17 @@ public class CGBlockInit {
             new RoomPressurizerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withBlockModel(null)
+            .withItemModel(ItemModelDataProvider::empty)
             .withTranslation("Room Pressurizer")
             .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
             .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createFluidMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);
 
     public static final RegistryObject<Block> KEROSENE = BlockBuilder.createFluid("kerosene",
-            new LiquidBlock(CGFluidInit.KEROSENE::getStill, BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops()))
+            new LiquidBlock(CGFluidInit.KEROSENE.getStill(), BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops()))
             .build(BLOCKS);
     public static final RegistryObject<Block> OIL = BlockBuilder.createFluid("oil",
-            new LiquidBlock(CGFluidInit.OIL::getStill, BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops()))
+            new LiquidBlock(CGFluidInit.OIL.getStill(), BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops()))
             .build(BLOCKS);
 
     public static Block moonStoneBlock() {

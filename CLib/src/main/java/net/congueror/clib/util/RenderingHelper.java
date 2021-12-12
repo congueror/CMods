@@ -81,9 +81,9 @@ public class RenderingHelper {
      */
     public static void renderFluid(Matrix4f matrix, FluidStack fluid, int x1, int x2, int y1, int y2, int blitOffset) {
         int color = fluid.getFluid().getAttributes().getColor();
-        float r = MathHelper.getFluidColor(color).x();
-        float g = MathHelper.getFluidColor(color).y();
-        float b = MathHelper.getFluidColor(color).z();
+        float r = MathHelper.hexARGBtoRGBA(color).x();
+        float g = MathHelper.hexARGBtoRGBA(color).y();
+        float b = MathHelper.hexARGBtoRGBA(color).z();
         ResourceLocation texture = fluid.getFluid().getAttributes().getStillTexture();
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(texture);
         RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);

@@ -995,6 +995,8 @@ c66c1fb5ccbd69519d45e57e935ad0db1bbc6605 data/minecraft/recipes/lapis_lazuli.jso
 f91b582e00ca987eff4361d00693a53789a0a9f9 data/minecraft/recipes/quartz.json
 dea42ebf75c0c61a280351351688ff95d371ef1d data/minecraft/tags/blocks/beacon_base_blocks.json
 2ba1af94c17ae8ce0c7481aed4a944a08940a8c7 data/minecraft/tags/blocks/crystal_sound_blocks.json
+eeb5495ddb339697ef15717357521b0c13651abc data/minecraft/tags/blocks/leaves.json
+1ad9ec66defc53cd51aa7f30bacae1bb6fc93f11 data/minecraft/tags/blocks/logs.json
 3da3511ed5c854b618051ee7ad25bd0853cfcc04 data/minecraft/tags/blocks/mineable/axe.json
 eeb5495ddb339697ef15717357521b0c13651abc data/minecraft/tags/blocks/mineable/hoe.json
 05f2f5c06a0dcfafab0335f925d2b5fe32636785 data/minecraft/tags/blocks/mineable/pickaxe.json

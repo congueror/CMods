@@ -15,37 +15,38 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.extensions.IForgeContainerType;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.common.extensions.IForgeMenuType;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class CGContainerInit {
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, CGalaxy.MODID);
 
     public static final RegistryObject<MenuType<FuelLoaderContainer>> FUEL_LOADER = MENU_TYPES.register("fuel_loader", () ->
-            IForgeContainerType.create((windowId, inv, data) -> {
+            IForgeMenuType.create((windowId, inv, data) -> {
                 BlockPos pos = data.readBlockPos();
                 BlockEntity tile = inv.player.getCommandSenderWorld().getBlockEntity(pos);
                 FuelLoaderBlockEntity te = (FuelLoaderBlockEntity) tile;
                 return new FuelLoaderContainer(windowId, inv.player, inv, te, new SimpleContainerData(FuelLoaderBlockEntity.FIELDS_COUNT));
             }));
     public static final RegistryObject<MenuType<FuelRefineryContainer>> FUEL_REFINERY = MENU_TYPES.register("fuel_refinery", () ->
-            IForgeContainerType.create((windowId, inv, data) -> {
+            IForgeMenuType.create((windowId, inv, data) -> {
                 BlockPos pos = data.readBlockPos();
                 BlockEntity tile = inv.player.getCommandSenderWorld().getBlockEntity(pos);
                 FuelRefineryBlockEntity te = (FuelRefineryBlockEntity) tile;
                 return new FuelRefineryContainer(windowId, inv.player, inv, te, new SimpleContainerData(FuelRefineryBlockEntity.FIELDS_COUNT));
             }));
     public static final RegistryObject<MenuType<OxygenCompressorContainer>> OXYGEN_COMPRESSOR = MENU_TYPES.register("oxygen_compressor", () ->
-            IForgeContainerType.create((windowId, inv, data) -> {
+            IForgeMenuType.create((windowId, inv, data) -> {
                 BlockPos pos = data.readBlockPos();
                 BlockEntity tile = inv.player.getCommandSenderWorld().getBlockEntity(pos);
                 OxygenCompressorBlockEntity te = (OxygenCompressorBlockEntity) tile;
                 return new OxygenCompressorContainer(windowId, inv.player, inv, te, new SimpleContainerData(OxygenCompressorBlockEntity.FIELDS_COUNT));
             }));
     public static final RegistryObject<MenuType<RoomPressurizerContainer>> ROOM_PRESSURIZER = MENU_TYPES.register("room_pressurizer", () ->
-            IForgeContainerType.create((windowId, inv, data) -> {
+            IForgeMenuType.create((windowId, inv, data) -> {
                 BlockPos pos = data.readBlockPos();
                 BlockEntity tile = inv.player.getCommandSenderWorld().getBlockEntity(pos);
                 RoomPressurizerBlockEntity te = (RoomPressurizerBlockEntity) tile;
@@ -53,7 +54,7 @@ public class CGContainerInit {
             }));
 
     public static final RegistryObject<MenuType<GalaxyMapContainer>> GALAXY_MAP = MENU_TYPES.register("galaxy_map", () ->
-            IForgeContainerType.create((windowId, inv, data) -> new GalaxyMapContainer(windowId, inv.player, false, null)));
+            IForgeMenuType.create((windowId, inv, data) -> new GalaxyMapContainer(windowId, inv.player, false, null)));
     public static final RegistryObject<MenuType<SpaceSuitContainer>> SPACE_SUIT = MENU_TYPES.register("space_suit", () ->
-            IForgeContainerType.create((windowId, inv, data) -> new SpaceSuitContainer(windowId, inv)));
+            IForgeMenuType.create((windowId, inv, data) -> new SpaceSuitContainer(windowId, inv)));
 }

@@ -16,9 +16,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class CGItemInit {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, CGalaxy.MODID);
@@ -28,15 +28,15 @@ public class CGItemInit {
             .withTranslation("Speed Upgrade")
             .build(ITEMS);
     public static final RegistryObject<Item> KEROSENE_BUCKET = new ItemBuilder("kerosene_bucket",
-            new CLBucketItem(CGFluidInit.KEROSENE::getStill, new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
+            new CLBucketItem(CGFluidInit.KEROSENE.getStill(), new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
             .withTranslation("Kerosene Bucket")
             .build(ITEMS);
     public static final RegistryObject<Item> OIL_BUCKET = new ItemBuilder("oil_bucket",
-            new CLBucketItem(CGFluidInit.OIL::getStill, new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
+            new CLBucketItem(CGFluidInit.OIL.getStill(), new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
             .withTranslation("Oil Bucket")
             .build(ITEMS);
     public static final RegistryObject<Item> OXYGEN_BUCKET = new ItemBuilder("oxygen_bucket",
-            new CLBucketItem(CGFluidInit.OXYGEN::getStill, new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
+            new CLBucketItem(CGFluidInit.OXYGEN.getStill(), new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
             .withTranslation("Oxygen Bucket")
             .build(ITEMS);
 

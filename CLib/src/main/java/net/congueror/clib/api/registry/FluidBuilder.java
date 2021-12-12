@@ -12,8 +12,8 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -123,11 +123,11 @@ public class FluidBuilder {
     }
 
     /**
-     * Temporary fix until forge fixes this. Must be called from a {@link net.minecraftforge.fml.event.lifecycle.InterModProcessEvent}.
+     * Temporary fix until forge fixes this. Called from a {@link net.minecraftforge.fml.event.lifecycle.InterModProcessEvent}.
      */
     public static void registerBlockFluidFix() {
         for (Map.Entry<String, List<FluidBuilder>> entry : OBJECTS.entrySet()) {
-            entry.getValue().stream().filter(fluidBuilder -> fluidBuilder.block != null).forEach(fluidBuilder -> fluidBuilder.block.get().fluid = fluidBuilder.block.get().getFluid());
+            //entry.getValue().stream().filter(fluidBuilder -> fluidBuilder.block != null).forEach(fluidBuilder -> fluidBuilder.block.get().fluid = fluidBuilder.block.get().getFluid());
         }
     }
 
@@ -375,16 +375,16 @@ public class FluidBuilder {
         public RegistryObject<FlowingFluid> flowing;
 
         public FluidObject(FluidBuilder builder) {
-            still = builder.still;
-            flowing = builder.flowing;
+            still = builder.getStill();
+            flowing = builder.getFlowing();
         }
 
-        public FlowingFluid getStill() {
-            return still.get();
+        public RegistryObject<FlowingFluid> getStill() {
+            return still;
         }
 
-        public FlowingFluid getFlowing() {
-            return flowing.get();
+        public RegistryObject<FlowingFluid> getFlowing() {
+            return flowing;
         }
     }
 }

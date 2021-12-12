@@ -22,6 +22,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.IItemRenderProperties;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -89,14 +90,19 @@ public abstract class AbstractRocketItem extends CLItem {
     }
 
     @Override
-    public boolean showDurabilityBar(ItemStack stack) {
+    public boolean isBarVisible(@NotNull ItemStack stack) {
         return getFuel(stack) != getCapacity();
     }
 
     @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
+    public int getBarWidth(ItemStack stack) {
         AbstractRocketItem item = (AbstractRocketItem) stack.getItem();
-        return (double) (item.getCapacity() - item.getFuel(stack)) / (double) item.getCapacity();
+        return Math.round(13.0F - (item.getCapacity() - item.getFuel(stack)) * 13.0F / (float)item.getCapacity());
+    }
+
+    @Override
+    public int getBarColor(ItemStack p_150901_) {
+        return 0xFFE5E5C0;
     }
 
     @Override

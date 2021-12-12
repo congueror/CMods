@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -63,13 +64,14 @@ public abstract class AbstractProtectionUnitItem extends Item {
     }
 
     @Override
-    public boolean showDurabilityBar(ItemStack stack) {
+    public boolean isBarVisible(@NotNull ItemStack stack) {
         return getEnergy(stack) != getCapacity(stack);
     }
 
     @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
-        return (double) (getCapacity(stack) - getEnergy(stack)) / (double) getCapacity(stack);
+    public int getBarWidth(@NotNull ItemStack stack) {
+        AbstractProtectionUnitItem item = (AbstractProtectionUnitItem) stack.getItem();
+        return Math.round(13.0F - (item.getCapacity(stack) - item.getEnergy(stack)) * 13.0F / (float)item.getCapacity(stack));
     }
 
     @Override

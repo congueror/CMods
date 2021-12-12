@@ -7,6 +7,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.Climate;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
@@ -45,7 +47,7 @@ public class MoonBiomeSource extends BiomeSource {
 
     @Nonnull
     @Override
-    public Biome getNoiseBiome(int pX, int pY, int pZ) {
+    public Biome getNoiseBiome(int pX, int pY, int pZ, Climate.@NotNull Sampler sampler) {
         int i = pX >> 2;
         int j = pZ >> 2;
         if ((long)i * (long)i + (long)j * (long)j <= 820L) {

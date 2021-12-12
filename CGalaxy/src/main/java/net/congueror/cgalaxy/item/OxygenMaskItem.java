@@ -76,7 +76,7 @@ public class OxygenMaskItem extends SpaceSuitItem {
                                     tankCapacity.add(((OxygenTankItem) itemStack.getItem()).getCapacity());
                                 });
                         if (!tankAmount.isEmpty()) {
-                            FluidStack stack1 = new FluidStack(CGFluidInit.OXYGEN.getStill(), tankAmount.get(0));
+                            FluidStack stack1 = new FluidStack(CGFluidInit.OXYGEN.getStill().get(), tankAmount.get(0));
                             int a = 50 - (50 * MathHelper.getPercent(tankAmount.get(0), tankCapacity.get(0)) / 100);
                             int x1 = 1;
                             int x2 = x1 + 16;
@@ -84,7 +84,7 @@ public class OxygenMaskItem extends SpaceSuitItem {
                             int y2 = y1 + (50 - a);
                             RenderingHelper.renderFluid(matrix, stack1, x1, x2, y1, y2, 0);
                             if (tankAmount.size() >= 2) {
-                                FluidStack stack2 = new FluidStack(CGFluidInit.OXYGEN.getStill(), tankAmount.get(1));
+                                FluidStack stack2 = new FluidStack(CGFluidInit.OXYGEN.getStill().get(), tankAmount.get(1));
                                 int a1 = 50 - (50 * MathHelper.getPercent(tankAmount.get(1), tankCapacity.get(1)) / 100);
                                 int x3 = 18;
                                 int x4 = x3 + 16;

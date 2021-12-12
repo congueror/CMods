@@ -8,6 +8,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
@@ -27,19 +28,47 @@ public class MoonCarver extends CaveWorldCarver {
     }
 
     @Override
-    protected boolean canReplaceBlock(BlockState state, @Nonnull BlockState aboveState) {
+    protected boolean canReplaceBlock(BlockState state) {
         return state.is(CGBlockInit.MOON_STONE.get());
     }
 
     @Override
-    protected boolean carveBlock(CarvingContext pContext, CaveCarverConfiguration pConfig, ChunkAccess pChunk, Function<BlockPos, Biome> pBiomeAccessor, BitSet pCarvingMask, Random pRandom, BlockPos.MutableBlockPos pPos, BlockPos.MutableBlockPos pCheckPos, Aquifer pAquifer, MutableBoolean pReachedSurface) {
+    protected boolean carveBlock(CarvingContext pContext, CaveCarverConfiguration pConfig, ChunkAccess pChunk, Function<BlockPos, Biome> pBiomeAccessor, CarvingMask pCarvingMask, BlockPos.MutableBlockPos pPos, BlockPos.MutableBlockPos pCheckPos, Aquifer pAquifer, MutableBoolean pReachedSurface) {
         BlockState blockstate = pChunk.getBlockState(pPos);
-        BlockState blockstate1 = pChunk.getBlockState(pCheckPos.setWithOffset(pPos, Direction.UP));
-        if (blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(Blocks.MYCELIUM)) {
+        if (blockstate.is(CGBlockInit.MOON_REGOLITH.get())) {
             pReachedSurface.setTrue();
         }
 
-        if (!this.canReplaceBlock(blockstate, blockstate1)) {
+        if (!this.canReplaceBlock(blockstate)) {
+            return false;
+        } else {
+            BlockState blockstate1 = this.getCarveState(pContext, pConfig, pCheckPos, pAquifer);
+            if (blockstate1 == null) {
+                return false;
+            } else {
+                pChunk.setBlockState(pPos, blockstate1, false);
+                if (pAquifer.shouldScheduleFluidUpdate() && !blockstate1.getFluidState().isEmpty()) {
+                    pChunk.markPosForPostprocessing(pPos);
+                }
+
+                if (pReachedSurface.isTrue()) {
+                    pCheckPos.setWithOffset(pPos, Direction.DOWN);
+                    if (pChunk.getBlockState(pCheckPos).is(Blocks.DIRT)) {
+                        pContext.topMaterial(pBiomeAccessor, pChunk, pCheckPos, !blockstate1.getFluidState().isEmpty()).ifPresent((p_190743_) -> {
+                            pChunk.setBlockState(pCheckPos, p_190743_, false);
+                            if (!p_190743_.getFluidState().isEmpty()) {
+                                pChunk.markPosForPostprocessing(pCheckPos);
+                            }
+
+                        });
+                    }
+                }
+
+                return true;
+            }
+        }
+        /*
+        if (!this.canReplaceBlock(blockstate)) {
             return false;
         } else {
             BlockState blockstate2 = this.getCarveState(pContext, pConfig, pPos, pAquifer);
@@ -58,6 +87,6 @@ public class MoonCarver extends CaveWorldCarver {
 
                 return true;
             }
-        }
+        }*/
     }
 }

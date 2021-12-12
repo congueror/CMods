@@ -1,4 +1,4 @@
-# CMods 1.17.1
+# CMods 1.18
  
 ## **Permissions:**
 This project has no specified license. Which means that All Rights Reserved applies.
