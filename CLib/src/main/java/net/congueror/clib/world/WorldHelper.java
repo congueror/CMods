@@ -202,23 +202,14 @@ public class WorldHelper {
     }
 
     /**
-     * Generates a tree feature in the world. Use in a {@link BiomeLoadingEvent}
-     *
-     * @param e       The {@link BiomeLoadingEvent}.
-     * @param feature The tree configured feature to be generated.
-     */
-    public static void addTree(BiomeLoadingEvent e, PlacedFeature feature) {
-        e.getGeneration().getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION).add(() -> feature);
-    }
-
-    /**
      * Generates a tree feature in the world. Use in a {@link BiomeLoadingEvent}.
      *
      * @param e       The {@link BiomeLoadingEvent}
      * @param feature A tree {@link ConfiguredFeature}
      */
-    public static void addVegetalDecor(BiomeLoadingEvent e, PlacedFeature feature) {
-        e.getGeneration().getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION).add(() -> feature);
+    public static void addVegetalDecor(BiomeLoadingEvent e, PlacedFeature... feature) {
+        for (PlacedFeature feature1 : feature)
+            e.getGeneration().getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION).add(() -> feature1);
     }
 
     /**

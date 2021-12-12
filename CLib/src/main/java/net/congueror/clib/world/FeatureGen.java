@@ -82,7 +82,7 @@ public class FeatureGen {
     public static void onBiomeLoading(BiomeLoadingEvent e) {
         if (isOverworld(e)) {
             if (isBiome(e, Biomes.FOREST.location())) {
-                addTree(e, RUBBER_TREE_PLACEMENT);
+                addVegetalDecor(e, RUBBER_TREE_PLACEMENT);
             }
             addOre(e,
                     TIN,
