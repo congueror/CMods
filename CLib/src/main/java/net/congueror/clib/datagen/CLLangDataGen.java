@@ -4,8 +4,8 @@ import net.congueror.clib.CLib;
 import net.congueror.clib.api.data.LangDataProvider;
 import net.minecraft.data.DataGenerator;
 
-public class LangDataGen extends LangDataProvider {
-    public LangDataGen(DataGenerator gen, String locale) {
+public class CLLangDataGen extends LangDataProvider {
+    public CLLangDataGen(DataGenerator gen, String locale) {
         super(gen, CLib.MODID, locale);
     }
 
@@ -26,6 +26,8 @@ public class LangDataGen extends LangDataProvider {
         add("key.clib.idle", "Idle.");
         add("key.clib.error_invalid_recipe", "Invalid Recipe!");
         add("key.clib.error_insufficient_energy", "Insufficient Energy!");
+        add("key.clib.upgrade_speed1", "Processing: Increases the processing speed of the machine.");
+        add("key.clib.upgrade_speed2", "Generating: Increases energy outcome.");
 
         add("material.clib.tin", "Tin");
         add("material.clib.aluminum", "Aluminum");

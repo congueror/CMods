@@ -20,6 +20,10 @@ public class ModEnergyStorage extends EnergyStorage implements INBTSerializable<
         super(capacity, maxReceive, maxExtract, energy);
     }
 
+    public int getMaxExtract() {
+        return maxExtract;
+    }
+
     public void setEnergy(int energy) {
         this.energy = energy;
         onEnergyChanged();

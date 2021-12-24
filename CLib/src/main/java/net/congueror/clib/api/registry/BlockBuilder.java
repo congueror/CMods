@@ -16,13 +16,15 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -34,9 +36,7 @@ import java.util.stream.Stream;
 public class BlockBuilder {
     private final String name;
     public final Block block;
-    @Nullable
     public RegistryObject<Block> regObject;
-    public String modid;
 
     /**
      * All the block tags added via the {@link #withNewItemTag(String)} method. The string is simply the full name of the tag, e.g. "forge:storage_blocks/steel".
@@ -89,28 +89,30 @@ public class BlockBuilder {
     }
 
     /**
-     * Registers a block item only if the {@link #withGeneratedBlockItem(boolean)} is called. Otherwise, you need to register your block item manually (or not, it's your choice).
-     * Must also be called from a {@link net.minecraftforge.event.RegistryEvent.Register} event.
+     * Builds/Registers this BlockBuilder object to the DeferredRegister passed in.
+     *
+     * @param register The block {@link DeferredRegister} of your mod.
+     * @return The registered {@link RegistryObject}.
      */
-    public static void registerBlockItems(final RegistryEvent.Register<Item> e, String modid) {
-        final IForgeRegistry<Item> registry = e.getRegistry();
-        stream().filter(blockBuilder -> blockBuilder.generateBlockItem && blockBuilder.modid.equals(modid)).forEach(builder -> {
-            Block block = builder.block;
-            Item.Properties properties = builder.itemProperties;
-            BlockItem item = new BlockItem(block, properties) {
+    public RegistryObject<Block> build(DeferredRegister<Block> register) {
+        String modid = ObfuscationReflectionHelper.getPrivateValue(DeferredRegister.class, register, "modid");
+        RegistryObject<Block> obj = register.register(name, () -> block);
+
+        if (generateBlockItem) {
+            BlockItem item = new BlockItem(block, itemProperties) {
                 @Override
                 public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-                    return builder.burnTime;
+                    return burnTime;
                 }
 
                 @Override
                 public boolean hasContainerItem(ItemStack stack) {
-                    return builder.containerType > 0;
+                    return containerType > 0;
                 }
 
                 @Override
                 public ItemStack getContainerItem(ItemStack itemStack) {
-                    if (builder.containerType == 2) {
+                    if (containerType == 2) {
                         ItemStack stack1 = new ItemStack(this.asItem());
                         stack1.setDamageValue(itemStack.getDamageValue() + 1);
                         if (stack1.getDamageValue() > stack1.getMaxDamage()) {
@@ -122,20 +124,11 @@ public class BlockBuilder {
                     return super.getContainerItem(itemStack);
                 }
             };
-            item.setRegistryName(Objects.requireNonNull(block.getRegistryName()));
-            registry.register(item);
-        });
-    }
+            new ItemBuilder(name, item)
+                    .withItemModel(null)
+                    .build(ItemBuilder.REGISTERS.get(modid));
+        }
 
-    /**
-     * Builds/Registers this BlockBuilder object to the DeferredRegister passed in.
-     *
-     * @param register The block {@link DeferredRegister} of your mod.
-     * @return The registered {@link RegistryObject}.
-     */
-    public RegistryObject<Block> build(DeferredRegister<Block> register) {
-        RegistryObject<Block> obj = register.register(name, () -> block);
-        this.modid = obj.getId().getNamespace();
         List<BlockBuilder> newList;
         if (OBJECTS.get(modid) != null) {
             newList = new ArrayList<>(OBJECTS.get(modid));

@@ -99,7 +99,7 @@ public class FuelLoadingCategory implements IRecipeCategory<FuelLoaderRecipe> {
     public List<Component> getTooltipStrings(@Nonnull FuelLoaderRecipe recipe, double mouseX, double mouseY) {
         List<Component> list = new ArrayList<>();
         if (mouseX >= 151 && mouseX <= 167 && mouseY >= 2 && mouseY <= 62) {
-            list.add(new TranslatableComponent("tooltip.cgalaxy.screen.energy_usage").append(": 30FE/t"));
+            list.add(new TranslatableComponent("key.cgalaxy.energy_usage").append(": 30FE/t"));
         }
         return list;
     }

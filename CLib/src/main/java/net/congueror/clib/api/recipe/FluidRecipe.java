@@ -13,17 +13,13 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public interface IFluidRecipe<C extends IItemFluidInventory> extends Recipe<C> {
-    /**
-     * How many ticks it takes for an operation to be completed
-     */
-    int getProcessTime();
-
+public interface FluidRecipe<C extends IItemFluidInventory> extends ItemRecipe<C> {
     /**
      * Tests whether the fluid in a tank matches the recipe. You can do this by returning {@link FluidIngredient#test(FluidStack)}.
      * If your recipe's ingredient is a fluid make sure to call this method in the {@link #matches(net.minecraft.world.Container, net.minecraft.world.level.Level)} method otherwise you can just return true.
@@ -49,33 +45,6 @@ public interface IFluidRecipe<C extends IItemFluidInventory> extends Recipe<C> {
      */
     default FluidStack getFluidResult() {
         return Iterables.get(getFluidResults(), 0);
-    }
-
-    /**
-     * A collection of item stacks that result from this recipe. Override this if you have multiple item outputs.
-     * If you have a single item output then use {@link Recipe#getResultItem()}.
-     * @return A {@link Collection} of {@link ItemStack}s.
-     */
-    default Collection<ItemStack> getItemResults() {
-        Collection<ItemStack> list = new ArrayList<>();
-        list.add(getResultItem());
-        return list;
-    }
-
-    @Nonnull
-    @Override
-    default ItemStack assemble(@Nonnull C inv) {
-        return getResultItem();
-    }
-
-    @Override
-    default boolean canCraftInDimensions(int width, int height) {
-        return true;
-    }
-
-    @Override
-    default boolean isSpecial() {
-        return true;
     }
 
     default FluidStack deserialize(JsonElement json, int amountFallback) {

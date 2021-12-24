@@ -1,7 +1,6 @@
 package net.congueror.clib;
 
-import net.congueror.clib.init.CLBlockInit;
-import net.congueror.clib.init.CLItemInit;
+import net.congueror.clib.init.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
@@ -20,6 +19,9 @@ public class CLib {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         CLItemInit.ITEMS.register(modEventBus);
         CLBlockInit.BLOCKS.register(modEventBus);
+        CLRecipeSerializerInit.RECIPE_SERIALIZERS.register(modEventBus);
+        CLBlockEntityInit.BLOCK_ENTITY_TYPES.register(modEventBus);
+        CLContainerInit.MENU_TYPES.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(this);
     }
 

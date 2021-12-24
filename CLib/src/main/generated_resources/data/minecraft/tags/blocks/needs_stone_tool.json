@@ -4,6 +4,7 @@
     "clib:tin_block",
     "clib:tin_ore",
     "clib:saltpetre_ore",
-    "clib:sulfur_ore"
+    "clib:sulfur_ore",
+    "clib:solar_generator"
   ]
 }

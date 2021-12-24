@@ -1,37 +1,25 @@
 package net.congueror.clib.api.machine.fluid;
 
-import net.congueror.clib.api.machine.ModEnergyStorage;
-import net.congueror.clib.api.machine.tickable.AbstractTickableBlockEntity;
+import net.congueror.clib.api.machine.item.AbstractItemBlockEntity;
+import net.congueror.clib.api.recipe.FluidRecipe;
 import net.congueror.clib.api.recipe.FluidRecipeWrapper;
-import net.congueror.clib.api.recipe.IFluidRecipe;
 import net.congueror.clib.items.UpgradeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -40,9 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEntity implements IFluidHandler, MenuProvider {
-    protected ItemStackHandler itemHandler = createHandler();
-    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+public abstract class AbstractFluidBlockEntity extends AbstractItemBlockEntity<FluidRecipe<?>> implements IFluidHandler {
     protected FluidRecipeWrapper wrapper = new FluidRecipeWrapper(itemHandler, this);
 
     /**
@@ -52,43 +38,10 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
     public FluidTank[] tanks;
     private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(() -> this);
 
-    protected ModEnergyStorage energyStorage;
-    protected LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
-
     protected boolean sendOutFluid = true;
-
-    protected float progress;
-    protected int processTime;
-    public String info = "";
-    public static final int FIELDS_COUNT = 2;
-    public final ContainerData data = new ContainerData() {
-
-        @Override
-        public int get(int index) {
-            return switch (index) {
-                case 0 -> (int) progress;
-                case 1 -> processTime;
-                default -> 0;
-            };
-        }
-
-        @Override
-        public void set(int index, int value) {
-            switch (index) {
-                case 0 -> progress = value;
-                case 1 -> processTime = value;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return FIELDS_COUNT;
-        }
-    };
 
     public AbstractFluidBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
         super(tileEntityTypeIn, pos, state);
-        this.energyStorage = createEnergy();
     }
 
     /**
@@ -96,12 +49,7 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
      * <pre>level.getRecipeManager().getRecipe([RECIPE], wrapper, world).orElse(null)</pre>
      */
     @Nullable
-    public abstract IFluidRecipe<?> getRecipe();
-
-    /**
-     * An array of numbers that represent slots. Must start at 0. Must include 4 additional slots at the end for upgrade slots.
-     */
-    public abstract int[] invSize();
+    public abstract FluidRecipe<?> getRecipe();
 
     /**
      * A map of all input slot and tank indexes. String should be either "tanks" or "slots" and the array of integers should be the indexes of all input slots/tanks.
@@ -113,40 +61,15 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
      */
     public abstract HashMap<String, int[]> outputSlotsAndTanks();
 
-    /**
-     * Check whether an item can fit in the given slot.
-     *
-     * @param slot  The slot of the item
-     * @param stack The ItemStack in the slot.
-     */
-    public abstract boolean canItemFit(int slot, ItemStack stack);
+    @Override
+    public int[] inputSlots() {
+        return inputSlotsAndTanks().get("slots");
+    }
 
-    /**
-     * The amount of FE consumed per tick.
-     */
-    protected abstract int getEnergyUsage();
-
-    /**
-     * The capacity of the energy buffer.
-     */
-    public abstract int getEnergyCapacity();
-
-    /**
-     * Here you can add any additional requirements for the machine to start
-     *
-     * @return True if the machine should run.
-     */
-    public abstract boolean requisites();
-
-    /**
-     * The result of the machine.
-     */
-    public abstract void execute();
-
-    /**
-     * What happens to a slot when it detects an item.
-     */
-    public abstract void executeSlot();
+    @Override
+    public int[] outputSlots() {
+        return outputSlotsAndTanks().get("slots");
+    }
 
     @Override
     public void tick() {
@@ -155,11 +78,11 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
         }
 
         FluidStack tank = tanks[0].getFluid();
-        IFluidRecipe<?> recipe = getRecipe();
+        FluidRecipe<?> recipe = getRecipe();
         if (recipe != null && shouldRun()) {
             if (energyStorage.getEnergyStored() >= getEnergyUsageFinal() && requisites()) {
                 processTime = getProcessTime();
-                progress += getProgressSpeed();
+                progress += getProgressSpeedFinal();
                 energyStorage.consumeEnergy(getEnergyUsageFinal());
                 info = "key.clib.working";
                 setChanged();
@@ -209,44 +132,17 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
     /**
      * The fluid results of the given recipe.
      *
-     * @param recipe The recipe
      * @return A {@link Collection} of {@link FluidStack}s.
      */
     @Nullable
-    public Collection<FluidStack> getFluidResults(IFluidRecipe<?> recipe) {
+    public Collection<FluidStack> getFluidResults() {
         return Objects.requireNonNull(getRecipe()).getFluidResults();
-    }
-
-    /**
-     * The item results of the given recipe.
-     *
-     * @param recipe The recipe
-     * @return A {@link Collection} of {@link ItemStack}s.
-     */
-    @Nullable
-    public Collection<ItemStack> getItemResults(IFluidRecipe<?> recipe) {
-        return Objects.requireNonNull(getRecipe()).getItemResults();
-    }
-
-    /**
-     * The amount of ticks it takes for the machine to complete a process
-     */
-    public int getProcessTime() {
-        return Objects.requireNonNull(getRecipe()).getProcessTime();
-    }
-
-    /**
-     * The starting range of the machine. Unless overriding, use {@link #getRangeFinal()}.
-     *
-     * @return Initial range of machine in blocks.
-     */
-    protected int getRange() {
-        return -1;
     }
 
     /**
      * Checks whether the tile entity should run.
      */
+    @Override
     public boolean shouldRun() {
         boolean flag = outputSlotsAndTanks().get("tanks") == null;
         boolean flag1 = outputSlotsAndTanks().get("slots") == null;
@@ -262,34 +158,17 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
     /**
      * Puts the resulting fluid stack in the output tanks.
      *
-     * @param result The resulting {@link FluidStack}. Should be used like so:
-     *               <pre>getFluidResults(getRecipe()).forEach(this::storeResultFluid)</pre>
+     * @param results A collection of {@link FluidStack}s, usually used with {@link #getFluidResults()}.
      */
-    protected void storeResultFluid(FluidStack result) {
-        for (int i : outputSlotsAndTanks().get("tanks")) {
-            FluidStack output = tanks[i].getFluid();
-            if (getFluidProcessSize() + output.getAmount() <= tanks[i].getCapacity()) {
-                tanks[i].fill(result, FluidAction.EXECUTE);
-            }
-        }
-    }
-
-    /**
-     * Calculates how much the {@link #progress} will be increased each tick.
-     *
-     * @return the progress per tick.
-     */
-    public float getProgressSpeed() {
-        int[] slots = new int[]{invSize().length - 1, invSize().length - 2, invSize().length - 3, invSize().length - 4};
-        int progress = 1;
-        for (int i = 0; i < slots.length; i++) {
-            if (itemHandler.getStackInSlot(i).getItem() instanceof UpgradeItem) {
-                if (((UpgradeItem) itemHandler.getStackInSlot(i).getItem()).getType().equals(UpgradeItem.UpgradeType.SPEED)) {
-                    progress += 1;
+    protected void storeResultFluid(Collection<FluidStack> results) {
+        results.forEach(fluidStack -> {
+            for (int i : outputSlotsAndTanks().get("tanks")) {
+                FluidStack output = tanks[i].getFluid();
+                if (getFluidProcessSize() + output.getAmount() <= tanks[i].getCapacity()) {
+                    tanks[i].fill(fluidStack, FluidAction.EXECUTE);
                 }
             }
-        }
-        return progress;
+        });
     }
 
     /**
@@ -300,7 +179,7 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
     public int getFluidProcessSize() {
         int[] slots = new int[]{invSize().length - 1, invSize().length - 2, invSize().length - 3, invSize().length - 4};
         int stack = 0;
-        for (FluidStack i : Objects.requireNonNull(getFluidResults(getRecipe()))) {
+        for (FluidStack i : Objects.requireNonNull(getFluidResults())) {
             stack = i.getAmount();
         }
         for (int i = 0; i < slots.length; i++) {
@@ -311,42 +190,6 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
             }
         }
         return stack;
-    }
-
-    /**
-     * Calculates the range that the machine will function in.
-     *
-     * @return The range in blocks.
-     */
-    public int getRangeFinal() {
-        int[] slots = new int[]{invSize().length - 1, invSize().length - 2, invSize().length - 3, invSize().length - 4};
-        int range = getRange();
-        for (int i = 0; i < slots.length; i++) {
-            if (itemHandler.getStackInSlot(i).getItem() instanceof UpgradeItem) {
-                if (((UpgradeItem) itemHandler.getStackInSlot(i).getItem()).getType().equals(UpgradeItem.UpgradeType.RANGE)) {
-                    range += getRange() / 2;
-                }
-            }
-        }
-        return range;
-    }
-
-    public int getEnergyUsageFinal() {//TODO
-        int usage = getEnergyUsage();
-        return usage;
-    }
-
-    /**
-     * Used by block to drop contents when broken.
-     *
-     * @return A list of item stacks inside the te.
-     */
-    public NonNullList<ItemStack> getDrops() {
-        NonNullList<ItemStack> drops = NonNullList.create();
-        for (int i = 0; i < invSize().length; i++) {
-            drops.add(itemHandler.getStackInSlot(i));
-        }
-        return drops;
     }
 
     /**
@@ -430,80 +273,23 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
         }
     }
 
-    /**
-     * Override for custom slot limits.
-     * @param slot The index of the slot.
-     */
-    public int getSlotLimits(int slot) {
-        if (slot >= invSize().length - 4) {
-            return 1;
-        } else {
-            return 64;
-        }
-    }
-
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return handler.cast();
-        }
         if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return fluidHandler.cast();
         }
-        if (cap == CapabilityEnergy.ENERGY) {
-            return energy.cast();
-        }
         return super.getCapability(cap, side);//TODO: Change which side can accept a capability
-    }
-
-    private ModEnergyStorage createEnergy() {
-        return new ModEnergyStorage(getEnergyCapacity(), 1000, 0);
-    }
-
-    private ItemStackHandler createHandler() {
-        return new ItemStackHandler(invSize().length) {
-
-            @Override
-            protected void onContentsChanged(int slot) {
-                setChanged();
-            }
-
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return canItemFit(slot, stack);
-            }
-
-            @Override
-            public int getSlotLimit(int slot) {
-                return getSlotLimits(slot);
-            }
-
-            @Override
-            protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
-                if (stack.getItem() instanceof UpgradeItem) {
-                    return 1;
-                }
-                return super.getStackLimit(slot, stack);
-            }
-        };
     }
 
     @Override
     public void setRemoved() {
         super.setRemoved();
-        handler.invalidate();
         fluidHandler.invalidate();
-        energy.invalidate();
     }
 
     @Override
     public void load(CompoundTag nbt) {
-        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        this.progress = nbt.getInt("Progress");
-        this.processTime = nbt.getInt("ProcessTime");
-        energyStorage.deserializeNBT(nbt.getCompound("energy"));
-
         for (int i = 0; i < tanks.length; i++) {
             if (nbt.contains("tank" + i)) {
                 tanks[i].setFluid(FluidStack.loadFluidStackFromNBT(nbt.getCompound("tank" + i)));
@@ -513,45 +299,15 @@ public abstract class AbstractFluidBlockEntity extends AbstractTickableBlockEnti
         super.load(nbt);
     }
 
-    @Nonnull
     @Override
-    public CompoundTag save(CompoundTag tag) {
-        tag.put("inventory", itemHandler.serializeNBT());
-        tag.putInt("Progress", (int) this.progress);
-        tag.putInt("ProcessTime", this.processTime);
-        tag.put("energy", energyStorage.serializeNBT());
-
+    protected void saveAdditional(CompoundTag pTag) {
         for (int i = 0; i < tanks.length; i++) {
             if (!tanks[i].isEmpty()) {
-                tag.put("tank" + i, tanks[i].getFluid().writeToNBT(new CompoundTag()));
+                pTag.put("tank" + i, tanks[i].getFluid().writeToNBT(new CompoundTag()));
             }
         }
 
-        return super.save(tag);
-    }
-
-    protected void sendUpdate(BlockState newState) {
-        if (level == null)
-            return;
-        BlockState oldState = level.getBlockState(worldPosition);
-        if (oldState != newState) {
-            level.setBlock(worldPosition, newState, 3);
-            level.sendBlockUpdated(worldPosition, oldState, newState, 3);
-        }
-    }
-
-    protected BlockState getActiveState() {
-        return getBlockState().setValue(AbstractFurnaceBlock.LIT, true);
-    }
-
-    protected BlockState getInactiveState() {
-        return getBlockState().setValue(AbstractFurnaceBlock.LIT, false);
-    }
-
-    @Nonnull
-    @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent(this.getBlockState().getBlock().getDescriptionId());
+        super.saveAdditional(pTag);
     }
 
     @Override

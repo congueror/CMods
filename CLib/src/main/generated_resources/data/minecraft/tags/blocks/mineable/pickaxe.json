@@ -44,6 +44,7 @@
     "clib:chromium_ore",
     "clib:thorium_ore",
     "clib:saltpetre_ore",
-    "clib:sulfur_ore"
+    "clib:sulfur_ore",
+    "clib:solar_generator"
   ]
 }

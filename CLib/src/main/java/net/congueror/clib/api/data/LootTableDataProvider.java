@@ -3,6 +3,7 @@ package net.congueror.clib.api.data;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
+import net.congueror.clib.api.machine.item.AbstractItemBlock;
 import net.congueror.clib.api.registry.BlockBuilder;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -101,7 +102,7 @@ public class LootTableDataProvider extends LootTableProvider implements DataProv
                         .add(LootItem.lootTableItem(b))), LootContextParamSets.BLOCK);
     }
 
-    public void createFluidMachineDrop(AbstractFluidBlock b) {//TODO
+    public void createMachineDrop(AbstractItemBlock b) {//TODO
         addTable(b.getLootTable(), LootTable.lootTable().withPool(
                 LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(ExplosionCondition.survivesExplosion())
                         .add(LootItem.lootTableItem(b))

@@ -2,8 +2,12 @@ package net.congueror.clib.init;
 
 import net.congueror.clib.CLib;
 import net.congueror.clib.api.data.BlockModelDataProvider;
+import net.congueror.clib.api.data.ItemModelDataProvider;
+import net.congueror.clib.api.machine.item.AbstractItemBlock;
 import net.congueror.clib.api.objects.blocks.*;
 import net.congueror.clib.api.registry.BlockBuilder;
+import net.congueror.clib.blocks.SolarGeneratorBlock;
+import net.congueror.clib.util.ModCreativeTabs;
 import net.congueror.clib.world.FeatureGen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -288,6 +292,16 @@ public class CLBlockInit {
             .withBlockModel(BlockModelDataProvider::crossBlock)
             .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.texture(block.asItem(), "block/rubber_sapling"))
             .withTranslation("Rubber Sapling")
+            .build(BLOCKS);
+
+    public static final RegistryObject<Block> SOLAR_GENERATOR = new BlockBuilder("solar_generator",
+            new SolarGeneratorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 10))
+            .withCreativeTab(ModCreativeTabs.MachinesIG.instance)
+            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
+            .withBlockModel(null)
+            .withItemModel(ItemModelDataProvider::empty)
+            .withTranslation("Solar Generator")
+            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createMachineDrop((AbstractItemBlock) block))
             .build(BLOCKS);
 
     public static BlockBuilder registerStorageBlock(String name, float hardness, int harvestLvl) {

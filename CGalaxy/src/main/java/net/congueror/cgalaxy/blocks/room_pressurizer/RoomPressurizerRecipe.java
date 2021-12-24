@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
 import net.congueror.clib.api.recipe.FluidIngredient;
 import net.congueror.clib.api.recipe.FluidRecipeSerializer;
-import net.congueror.clib.api.recipe.IFluidRecipe;
+import net.congueror.clib.api.recipe.FluidRecipe;
 import net.congueror.clib.api.recipe.IItemFluidInventory;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -18,7 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class RoomPressurizerRecipe implements IFluidRecipe<IItemFluidInventory> {
+public class RoomPressurizerRecipe implements FluidRecipe<IItemFluidInventory> {
     final ResourceLocation id;
     int processTime;
     FluidIngredient ingredient;

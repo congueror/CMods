@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
 import net.congueror.clib.api.recipe.FluidIngredient;
-import net.congueror.clib.api.recipe.IFluidRecipe;
+import net.congueror.clib.api.recipe.FluidRecipe;
 import net.congueror.clib.api.recipe.IItemFluidInventory;
 import net.congueror.clib.api.recipe.FluidRecipeSerializer;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public class FuelRefineryRecipe implements IFluidRecipe<IItemFluidInventory> {
+public class FuelRefineryRecipe implements FluidRecipe<IItemFluidInventory> {
     final ResourceLocation id;
     int processTime;
     FluidIngredient ingredient;

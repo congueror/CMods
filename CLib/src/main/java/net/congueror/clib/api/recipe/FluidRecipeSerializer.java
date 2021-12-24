@@ -5,7 +5,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 /**
  * Convenience class. Extend this class in your recipe serializer classes if you want to.
- * @param <T> {@link IFluidRecipe}
+ * @param <T> {@link FluidRecipe}
  */
-public abstract class FluidRecipeSerializer<T extends IFluidRecipe<?>> extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<T> {
+public abstract class FluidRecipeSerializer<T extends FluidRecipe<?>> extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<T> {
 }

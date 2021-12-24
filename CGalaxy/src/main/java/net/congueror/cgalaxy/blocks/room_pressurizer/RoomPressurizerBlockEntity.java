@@ -3,7 +3,8 @@ package net.congueror.cgalaxy.blocks.room_pressurizer;
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
 import net.congueror.clib.api.machine.fluid.AbstractFluidBlockEntity;
-import net.congueror.clib.api.recipe.IFluidRecipe;
+import net.congueror.clib.api.recipe.FluidRecipe;
+import net.congueror.clib.api.recipe.ItemRecipe;
 import net.congueror.clib.items.UpgradeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,7 +30,7 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
 
     @Nullable
     @Override
-    public IFluidRecipe<?> getRecipe() {
+    public FluidRecipe<?> getRecipe() {
         assert level != null;
         return level.getRecipeManager().getRecipeFor(CGRecipeSerializerInit.Types.ROOM_PRESSURIZING, wrapper, level).orElse(null);
     }

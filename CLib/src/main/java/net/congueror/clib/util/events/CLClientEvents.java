@@ -1,8 +1,11 @@
 package net.congueror.clib.util.events;
 
 import net.congueror.clib.CLib;
+import net.congueror.clib.blocks.SolarGeneratorScreen;
 import net.congueror.clib.init.CLBlockInit;
+import net.congueror.clib.init.CLContainerInit;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -33,6 +36,8 @@ public class CLClientEvents {
             ItemBlockRenderTypes.setRenderLayer(CLBlockInit.SAPPHIRE_MEDIUM_BUD.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(CLBlockInit.SAPPHIRE_LARGE_BUD.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(CLBlockInit.SAPPHIRE_CLUSTER.get(), RenderType.cutout());
+
+            MenuScreens.register(CLContainerInit.SOLAR_GENERATOR.get(), SolarGeneratorScreen::new);
         }
     }
 

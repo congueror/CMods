@@ -20,6 +20,7 @@ import net.congueror.cgalaxy.util.SpaceSuitUtils;
 import net.congueror.cgalaxy.world.CGBiomes;
 import net.congueror.cgalaxy.world.CGDimensions;
 import net.congueror.cgalaxy.world.CGFeatureGen;
+import net.congueror.clib.CLib;
 import net.congueror.clib.api.events.BlockOnPlacedEvent;
 import net.congueror.clib.api.events.PlayerSetupAnimationEvent;
 import net.congueror.clib.api.registry.BlockBuilder;
@@ -80,11 +81,6 @@ public class CGCommonEvents {
             e.put(CGEntityTypeInit.ASTRO_ENDERMAN.get(), AstroEnderman.createMonsterAttributes().build());
             e.put(CGEntityTypeInit.LUNAR_VILLAGER.get(), LunarVillager.createAttributes().build());
             e.put(CGEntityTypeInit.LUNAR_ZOMBIE_VILLAGER.get(), Zombie.createAttributes().build());
-        }
-
-        @SubscribeEvent
-        public static void onRegisterItem(final RegistryEvent.Register<Item> e) {
-            BlockBuilder.registerBlockItems(e, CGalaxy.MODID);
         }
     }
 

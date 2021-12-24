@@ -11,7 +11,6 @@ import javax.annotation.Nonnull;
 
 public class FuelLoaderScreen extends AbstractFluidScreen<FuelLoaderContainer> {
     public static ResourceLocation GUI = new ResourceLocation(CGalaxy.MODID, "textures/gui/fuel_loader.png");
-    FuelLoaderContainer container;
 
     public FuelLoaderScreen(FuelLoaderContainer pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);

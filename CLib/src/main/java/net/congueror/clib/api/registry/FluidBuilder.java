@@ -123,15 +123,6 @@ public class FluidBuilder {
     }
 
     /**
-     * Temporary fix until forge fixes this. Called from a {@link net.minecraftforge.fml.event.lifecycle.InterModProcessEvent}.
-     */
-    public static void registerBlockFluidFix() {
-        for (Map.Entry<String, List<FluidBuilder>> entry : OBJECTS.entrySet()) {
-            //entry.getValue().stream().filter(fluidBuilder -> fluidBuilder.block != null).forEach(fluidBuilder -> fluidBuilder.block.get().fluid = fluidBuilder.block.get().getFluid());
-        }
-    }
-
-    /**
      * Builds/Registers this FluidBuilder object to the DeferredRegister passed in.
      * @param register The fluid {@link DeferredRegister} of your mod.
      * @return A {@link FluidObject} which you can use to get either the source or flowing fluid.

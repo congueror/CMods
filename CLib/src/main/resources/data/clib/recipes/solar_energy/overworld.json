@@ -1,0 +1,7 @@
+{
+  "type": "clib:solar_energy",
+  "dimension": "minecraft:overworld",
+  "dayIntensity": 1.0,
+  "nightIntensity": 0,
+  "texture": "clib:textures/gui/overworld.png"
+}

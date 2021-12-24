@@ -106,17 +106,31 @@ public class WorldHelper {
     /**
      * Used to register a configured tree feature to the {@link BuiltinRegistries}
      *
-     * @param modid   Your mod id
+     * @param modid   Your mod's id
      * @param name    The id of your feature
      * @param feature The Tree Feature
-     * @return
      */
     public static ConfiguredFeature<TreeConfiguration, ?> registerTree(String modid, String name, TreeConfiguration feature) {
         return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation(modid, name), Feature.TREE.configured(feature));
     }
 
+    /**
+     * Registers a placement for the given tree feature.
+     *
+     * @param modid   Your mod's id.
+     * @param name    The id of your placement.
+     * @param feature The tree configured feature.
+     * @param sapling The sapling block of your tree.
+     * @param chance  The chance that this tree has to spawn.
+     */
     public static PlacedFeature registerTreePlacement(String modid, String name, ConfiguredFeature<TreeConfiguration, ?> feature, Block sapling, int chance) {
-        return Registry.register(BuiltinRegistries.PLACED_FEATURE, new ResourceLocation(modid, name), feature.placed(BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(sapling.defaultBlockState(), BlockPos.ZERO)), CountPlacement.of(chance)));
+        return Registry.register(BuiltinRegistries.PLACED_FEATURE, new ResourceLocation(modid, name),
+                feature.placed(
+                        InSquarePlacement.spread(),
+                        HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR),
+                        SurfaceWaterDepthFilter.forMaxDepth(0),
+                        BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(sapling.defaultBlockState(), BlockPos.ZERO)),
+                        CountPlacement.of(chance)));
     }
 
     /**

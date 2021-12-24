@@ -7,6 +7,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -32,6 +33,7 @@ import java.util.stream.Stream;
 public class ItemBuilder {
     private final String name;
     private final Item item;
+    public static final Map<String, DeferredRegister<Item>> REGISTERS = new HashMap<>();
 
     /**
      * All the item tags added via the {@link #withNewItemTag(String)} and {@link BlockBuilder#withNewItemTag(String)} methods. The string is simply the full name of the tag, e.g. "forge:ingots/steel".
@@ -78,16 +80,17 @@ public class ItemBuilder {
      * @return The registered {@link RegistryObject}.
      */
     public RegistryObject<Item> build(DeferredRegister<Item> register) {
+        String modid = ObfuscationReflectionHelper.getPrivateValue(DeferredRegister.class, register, "modid");
         RegistryObject<Item> obj = register.register(name, () -> item);
-        String modId = obj.getId().getNamespace();
+        REGISTERS.put(modid, register);
         List<ItemBuilder> newList;
-        if (OBJECTS.get(modId) != null) {
-            newList = new ArrayList<>(OBJECTS.get(modId));
+        if (OBJECTS.get(modid) != null) {
+            newList = new ArrayList<>(OBJECTS.get(modid));
         } else {
             newList = new ArrayList<>();
         }
         newList.add(this);
-        OBJECTS.put(modId, newList);
+        OBJECTS.put(modid, newList);
         return obj;
     }
 

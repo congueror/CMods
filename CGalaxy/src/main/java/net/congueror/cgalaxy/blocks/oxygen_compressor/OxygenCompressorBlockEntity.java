@@ -4,7 +4,7 @@ import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
 import net.congueror.cgalaxy.item.OxygenTankItem;
 import net.congueror.clib.api.machine.fluid.AbstractFluidBlockEntity;
-import net.congueror.clib.api.recipe.IFluidRecipe;
+import net.congueror.clib.api.recipe.FluidRecipe;
 import net.congueror.clib.items.UpgradeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
@@ -38,7 +38,7 @@ public class OxygenCompressorBlockEntity extends AbstractFluidBlockEntity {
 
     @Nullable
     @Override
-    public IFluidRecipe<?> getRecipe() {
+    public FluidRecipe<?> getRecipe() {
         assert level != null;
         return level.getRecipeManager().getRecipeFor(CGRecipeSerializerInit.Types.OXYGEN_COMPRESSING, wrapper, level).orElse(null);
     }
@@ -98,7 +98,7 @@ public class OxygenCompressorBlockEntity extends AbstractFluidBlockEntity {
 
     @Override
     public void execute() {
-        Objects.requireNonNull(getFluidResults(Objects.requireNonNull(getRecipe()))).forEach(this::storeResultFluid);
+        storeResultFluid(Objects.requireNonNull(getFluidResults()));
         wrapper.getItem(0).shrink(1);
     }
 

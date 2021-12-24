@@ -27,6 +27,11 @@ public class CLNetwork {
                 .decoder(PacketUpdateInfo::new)
                 .consumer(PacketUpdateInfo::handle)
                 .add();
+        INSTANCE.messageBuilder(PacketUpdateSolarGenerator.class, nextID())
+                .encoder(PacketUpdateSolarGenerator::toBytes)
+                .decoder(PacketUpdateSolarGenerator::new)
+                .consumer(PacketUpdateSolarGenerator::handle)
+                .add();
     }
 
     public static void sendToClient(Object packet, ServerPlayer player) {

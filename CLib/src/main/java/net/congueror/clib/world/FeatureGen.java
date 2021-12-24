@@ -53,7 +53,7 @@ public class FeatureGen {
                 BlockStateProvider.simple(CLBlockInit.RUBBER_LEAVES.get().defaultBlockState()),
                 new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                 new TwoLayersFeatureSize(1, 0, 1)).ignoreVines().build());
-        RUBBER_TREE_PLACEMENT = registerTreePlacement(CLib.MODID, "rubber_tree", RUBBER_TREE, CLBlockInit.RUBBER_SAPLING.get(), 20);
+        RUBBER_TREE_PLACEMENT = registerTreePlacement(CLib.MODID, "rubber_tree", RUBBER_TREE, CLBlockInit.RUBBER_SAPLING.get(), 2);
 
         TIN = registerConfiguredOre(overworld, CLBlockInit.TIN_ORE.get(), 8, 0, 63, 25);
         ALUMINUM = registerConfiguredOre(overworld, CLBlockInit.ALUMINUM_ORE.get(), 7, 0, 63, 8);

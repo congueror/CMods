@@ -30,9 +30,9 @@ public class DataGenerators {
             gen.addProvider(new ItemModelDataGen(gen, e.getExistingFileHelper()));
             gen.addProvider(new BlockModelDataGen(gen, e.getExistingFileHelper()));
             CGLangDataProvider.create(gen, CGalaxy.MODID);
-            gen.addProvider(new LangDataGen(gen, "en_us"));
-            gen.addProvider(new LangDataGen(gen, "el_gr"));
-            gen.addProvider(new LangDataGen(gen, "el_cy"));
+            gen.addProvider(new CGLangDataGen(gen, "en_us"));
+            gen.addProvider(new CGLangDataGen(gen, "el_gr"));
+            gen.addProvider(new CGLangDataGen(gen, "el_cy"));
         }
     }
 }

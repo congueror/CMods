@@ -27,7 +27,7 @@ public class DataGenerators {
             generator.addProvider(new ItemModelDataGen(generator, event.getExistingFileHelper()));
             generator.addProvider(new BlockModelDataGen(generator, event.getExistingFileHelper()));
             LangDataProvider.create(generator, CLib.MODID);
-            generator.addProvider(new LangDataGen(generator, "en_us"));
+            generator.addProvider(new CLLangDataGen(generator, "en_us"));
         }
     }
 }

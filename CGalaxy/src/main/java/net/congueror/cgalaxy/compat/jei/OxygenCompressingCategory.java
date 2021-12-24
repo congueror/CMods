@@ -105,7 +105,7 @@ public class OxygenCompressingCategory implements IRecipeCategory<OxygenCompress
     public List<Component> getTooltipStrings(@Nonnull OxygenCompressorRecipe recipe, double mouseX, double mouseY) {
         List<Component> list = new ArrayList<>();
         if (mouseX >= 151 && mouseX <= 167 && mouseY >= 2 && mouseY <= 62) {
-            list.add(new TranslatableComponent("tooltip.cgalaxy.screen.energy_usage").append(": 50FE/t"));
+            list.add(new TranslatableComponent("key.cgalaxy.energy_usage").append(": 50FE/t"));
         }
         return list;
     }

@@ -4,8 +4,8 @@ import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.api.data.CGLangDataProvider;
 import net.minecraft.data.DataGenerator;
 
-public class LangDataGen extends CGLangDataProvider {
-    public LangDataGen(DataGenerator gen, String locale) {
+public class CGLangDataGen extends CGLangDataProvider {
+    public CGLangDataGen(DataGenerator gen, String locale) {
         super(gen, CGalaxy.MODID, locale);
     }
 
@@ -22,8 +22,8 @@ public class LangDataGen extends CGLangDataProvider {
 
             add("chat.cgalaxy.launch_off", " is launching off to space!");
             add("key.cgalaxy.empty", "Empty");
-            add("tooltip.cgalaxy.screen.energy_percent", "Energy");
-            add("tooltip.cgalaxy.screen.energy_usage", "Usage");
+            add("key.cgalaxy.energy_percent", "Energy");
+            add("key.cgalaxy.energy_usage", "Usage");
             add("key.cgalaxy.error_incomplete_pad", "The Launch Pad must be 3x3!");
             add("key.cgalaxy.error_missing_rocket", "No viable rocket detected!");
             add("key.cgalaxy.idle_rocket_full", "Rocket is full.");

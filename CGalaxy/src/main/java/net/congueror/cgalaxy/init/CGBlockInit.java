@@ -161,7 +161,7 @@ public class CGBlockInit {
             .withBlockModel(null)
             .withTranslation("Fuel Loader")
             .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
-            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createFluidMachineDrop((AbstractFluidBlock) block))
+            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);
     public static final RegistryObject<Block> FUEL_REFINERY = new BlockBuilder("fuel_refinery",
             new FuelRefineryBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
@@ -169,7 +169,7 @@ public class CGBlockInit {
             .withBlockModel(null)
             .withTranslation("Fuel Refinery")
             .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
-            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createFluidMachineDrop((AbstractFluidBlock) block))
+            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);
     public static final RegistryObject<Block> OXYGEN_COMPRESSOR = new BlockBuilder("oxygen_compressor",
             new OxygenCompressorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
@@ -177,7 +177,7 @@ public class CGBlockInit {
             .withBlockModel(null)
             .withTranslation("Oxygen Compressor")
             .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
-            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createFluidMachineDrop((AbstractFluidBlock) block))
+            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);
     public static final RegistryObject<Block> ROOM_PRESSURIZER = new BlockBuilder("room_pressurizer",
             new RoomPressurizerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
@@ -186,7 +186,7 @@ public class CGBlockInit {
             .withItemModel(ItemModelDataProvider::empty)
             .withTranslation("Room Pressurizer")
             .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
-            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createFluidMachineDrop((AbstractFluidBlock) block))
+            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);
 
     public static final RegistryObject<Block> KEROSENE = BlockBuilder.createFluid("kerosene",

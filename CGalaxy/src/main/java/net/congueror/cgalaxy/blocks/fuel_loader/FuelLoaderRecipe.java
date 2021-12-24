@@ -3,7 +3,7 @@ package net.congueror.cgalaxy.blocks.fuel_loader;
 import com.google.gson.JsonObject;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
 import net.congueror.clib.api.recipe.FluidIngredient;
-import net.congueror.clib.api.recipe.IFluidRecipe;
+import net.congueror.clib.api.recipe.FluidRecipe;
 import net.congueror.clib.api.recipe.IItemFluidInventory;
 import net.congueror.clib.api.recipe.FluidRecipeSerializer;
 import net.minecraft.network.FriendlyByteBuf;
@@ -18,7 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class FuelLoaderRecipe implements IFluidRecipe<IItemFluidInventory> {
+public class FuelLoaderRecipe implements FluidRecipe<IItemFluidInventory> {
     final ResourceLocation id;
     int processTime;
     FluidIngredient ingredient;

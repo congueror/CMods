@@ -1,6 +1,6 @@
 package net.congueror.clib.networking;
 
-import net.congueror.clib.api.machine.fluid.AbstractFluidContainer;
+import net.congueror.clib.api.machine.item.AbstractItemContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -35,8 +35,8 @@ public class PacketUpdateInfo implements IPacket {
                 Player player = mc.player;
                 if (windowId != -1 && player != null) {
                     if (windowId == player.containerMenu.containerId) {
-                        if (player.containerMenu instanceof AbstractFluidContainer) {
-                            ((AbstractFluidContainer<?>) player.containerMenu).updateInfo(info);
+                        if (player.containerMenu instanceof AbstractItemContainer) {
+                            ((AbstractItemContainer<?>) player.containerMenu).updateInfo(info);
                         }
                     }
                 }

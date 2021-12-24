@@ -21,16 +21,6 @@ public class CLCommonEvents {
             CLNetwork.registerMessages();
             e.enqueueWork(FeatureGen::registerFeatures);
         }
-
-        @SubscribeEvent
-        public static void interModProcess(InterModProcessEvent e) {
-            FluidBuilder.registerBlockFluidFix();
-        }
-
-        @SubscribeEvent
-        public static void onRegisterItem(final RegistryEvent.Register<Item> e) {
-            BlockBuilder.registerBlockItems(e, CLib.MODID);
-        }
     }
 
     @Mod.EventBusSubscriber(modid = CLib.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

@@ -50,7 +50,7 @@ b942f127d162991429939be40cd1b1d20bd1d8aa assets/clib/blockstates/titanium_block.
 53bd7c2fd218e1f6bc07a9aafa19607e5514a48c assets/clib/blockstates/uranium_ore.json
 34d9d2ae693060620aae422f530710b04243b589 assets/clib/blockstates/zinc_block.json
 100d480616fee8ce78b24aeb618ef988c2f394e0 assets/clib/blockstates/zinc_ore.json
-6468e9b8bd4db9010903caa6fa87afba751431bc assets/clib/lang/en_us.json
+ff94fc6f99cf0e996246de12ab53df1f05893294 assets/clib/lang/en_us.json
 15934f1f2793bfbf64b8b497402353226b993bb9 assets/clib/models/block/aluminum_block.json
 59a2100b52f41db8c4c4b3b318e6de11ee5ab7e5 assets/clib/models/block/aluminum_ore.json
 61c034473af54e778b20e8e67ab3298d88bc865e assets/clib/models/block/brass_block.json
@@ -482,6 +482,7 @@ abef92c7bb40d900106d4fac2fcb7382ec1cd21f data/clib/loot_tables/blocks/sapphire_c
 7f064539d634c98a2e465696a5f47d1db57475da data/clib/loot_tables/blocks/silver_block.json
 11dc8d00e838c905fad11e335e67c3fe91301300 data/clib/loot_tables/blocks/silver_ore.json
 8a2f75b4d80525ad34ba97dd4f1f79f166e03dcd data/clib/loot_tables/blocks/small_sapphire_bud.json
+51ae33bd7a026dbb9dd700839babe3f7ec0cbfc6 data/clib/loot_tables/blocks/solar_generator.json
 fa49f17c796b51f94fc4ce1e42ad10d01bc9344f data/clib/loot_tables/blocks/steel_block.json
 59a81ddd1f4fadb3934aa3e58f6734a9397112b8 data/clib/loot_tables/blocks/stripped_rubber_log.json
 84dfd4299dafef0965abfea9f1942669f0905aaa data/clib/loot_tables/blocks/stripped_rubber_wood.json
@@ -999,10 +1000,10 @@ eeb5495ddb339697ef15717357521b0c13651abc data/minecraft/tags/blocks/leaves.json
 1ad9ec66defc53cd51aa7f30bacae1bb6fc93f11 data/minecraft/tags/blocks/logs.json
 3da3511ed5c854b618051ee7ad25bd0853cfcc04 data/minecraft/tags/blocks/mineable/axe.json
 eeb5495ddb339697ef15717357521b0c13651abc data/minecraft/tags/blocks/mineable/hoe.json
-05f2f5c06a0dcfafab0335f925d2b5fe32636785 data/minecraft/tags/blocks/mineable/pickaxe.json
+591c050875bdd921965c80bc6cde030694796eba data/minecraft/tags/blocks/mineable/pickaxe.json
 e61b5986a2d3ab8635f3ad892d214a1d934471f6 data/minecraft/tags/blocks/mineable/shovel.json
 98f32b02ffa2b435641743d6290dc39f0a5bdd48 data/minecraft/tags/blocks/needs_diamond_tool.json
 f045973e1d9636fc9765fc0720b02bb883c77088 data/minecraft/tags/blocks/needs_iron_tool.json
-c09100f0ec0e3f9fb05aed89d9940879c5a618a8 data/minecraft/tags/blocks/needs_stone_tool.json
+44553c37ed2babfcb5b9999e80f3aed947c34b3b data/minecraft/tags/blocks/needs_stone_tool.json
 cfdd7a98dc6db89efde3923334e3f0b6a4472e07 data/minecraft/tags/blocks/planks.json
 cfdd7a98dc6db89efde3923334e3f0b6a4472e07 data/minecraft/tags/items/planks.json
