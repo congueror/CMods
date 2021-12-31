@@ -178,7 +178,7 @@ public abstract class AbstractItemBlockEntity<R extends ItemRecipe<?>> extends A
                     sendUpdate(getActiveState());
                 }
             } else {
-                if (energyStorage.getEnergyStored() <= getEnergyUsageFinal()) {
+                if (energyStorage.getEnergyStored() < getEnergyUsageFinal()) {
                     info = "key.clib.error_insufficient_energy";
                 }
                 if (progress > 0) {

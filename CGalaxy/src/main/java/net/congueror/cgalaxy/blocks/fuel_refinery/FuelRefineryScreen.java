@@ -36,10 +36,10 @@ public class FuelRefineryScreen extends AbstractFluidScreen<FuelRefineryContaine
     @Override
     protected void renderBg(@Nonnull PoseStack pPoseStack, float pPartialTicks, int pMouseX, int pMouseY) {
         renderBackground(pPoseStack, GUI);
-        renderHorizontalArrow(pPoseStack, 85, 35, 196, 0);
-        renderEnergyBuffer(pPoseStack, 172, 9, 196, 17, 212, 17);
+        renderHorizontalArrow(pPoseStack, 85, 35);
+        renderEnergyBuffer(pPoseStack, 172, 9);
         renderFluidTank(pPoseStack, 66, 18, 0);
         renderFluidTank(pPoseStack, 111, 18, 1);
-        renderStatusLight(pPoseStack, 154, 8, 228, 17);
+        renderStatusLight(pPoseStack, 154, 8);
     }
 }

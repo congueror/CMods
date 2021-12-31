@@ -76,6 +76,6 @@ public abstract class AbstractProtectionUnitItem extends Item {
 
     @Override
     public void appendHoverText(@Nonnull ItemStack pStack, @Nullable net.minecraft.world.level.Level pLevel, java.util.List<Component> pTooltipComponents, @Nonnull TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(new TranslatableComponent("key.cgalaxy.energy_percent").append(": ").withStyle(ChatFormatting.AQUA).append(getEnergy(pStack) + "/" + getCapacity(pStack)).withStyle(ChatFormatting.GREEN));
+        pTooltipComponents.add(new TranslatableComponent("key.clib.energy_percent").append(": ").withStyle(ChatFormatting.AQUA).append(getEnergy(pStack) + "/" + getCapacity(pStack)).withStyle(ChatFormatting.GREEN));
     }
 }

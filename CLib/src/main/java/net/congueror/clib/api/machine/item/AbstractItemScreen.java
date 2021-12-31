@@ -2,7 +2,9 @@ package net.congueror.clib.api.machine.item;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.congueror.clib.CLib;
 import net.congueror.clib.util.MathHelper;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -16,6 +18,8 @@ import java.util.List;
 
 public abstract class AbstractItemScreen<T extends AbstractItemContainer<?>> extends AbstractContainerScreen<T> {
     protected T container;
+    public static final int elementWidth = 56;
+    public static final int elementHeight = 60;
 
     public AbstractItemScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -56,8 +60,8 @@ public abstract class AbstractItemScreen<T extends AbstractItemContainer<?>> ext
      */
     public void renderEnergyTooltip(PoseStack pPoseStack, int pMouseX, int pMouseY) {
         renderTooltip(pPoseStack, pMouseX, pMouseY, 170, 7, 18, 62,
-                new TranslatableComponent("key.cgalaxy.energy_percent").append(": " + MathHelper.getPercent(container.getEnergy(), container.getMaxEnergy()) + "%" + " (" + container.getEnergy() + "FE)"),
-                new TranslatableComponent("key.cgalaxy.energy_usage").append(": " + container.getEnergyUsage() + "FE/t"));
+                new TranslatableComponent("key.clib.energy_percent").append(": " + MathHelper.getPercent(container.getEnergy(), container.getMaxEnergy()) + "%" + " (" + container.getEnergy() + "FE)"),
+                new TranslatableComponent("key.clib.energy_usage").append(": " + container.getEnergyUsage() + "FE/t"));
     }
 
     /**
@@ -77,60 +81,54 @@ public abstract class AbstractItemScreen<T extends AbstractItemContainer<?>> ext
      * @param x The starting x position of the light.
      * @param y The starting y position of the light.
      */
-    public void renderStatusLight(PoseStack poseStack, int x, int y, int uOffset, int vOffset) {
+    public void renderStatusLight(PoseStack poseStack, int x, int y) {
+        setElementTex();
         if (container.getInfo().contains("working")) {
-            this.blit(poseStack, this.leftPos + x, this.topPos + y, uOffset, vOffset, 7, 7);
+            blit(poseStack, this.leftPos + x, this.topPos + y, 32, 0, 7, 7, elementWidth, elementHeight);
         } else if (container.getInfo().contains("idle")) {
-            this.blit(poseStack, this.leftPos + x, this.topPos + y, uOffset, vOffset + 14, 7, 7);
+            blit(poseStack, this.leftPos + x, this.topPos + y, 32, 14, 7, 7, elementWidth, elementHeight);
         } else if (container.getInfo().contains("error")) {
-            this.blit(poseStack, this.leftPos + x, this.topPos + y, uOffset, vOffset + 7, 7, 7);
+            blit(poseStack, this.leftPos + x, this.topPos + y, 32, 7, 7, 7, elementWidth, elementHeight);
         }
     }
 
     /**
      * Renders a horizontal progress arrow.
      *
-     * @param x       The starting x position of the arrow.
-     * @param y       The starting y position (bottom) of the arrow.
-     * @param uOffset The texture's x location of the arrow
-     * @param vOffset The texture's y location of the arrow
+     * @param x The starting x position of the arrow.
+     * @param y The starting y position (bottom) of the arrow.
      */
-    public void renderHorizontalArrow(PoseStack poseStack, int x, int y, int uOffset, int vOffset) {
+    public void renderHorizontalArrow(PoseStack poseStack, int x, int y) {
+        setElementTex();
         int progress = container.getProgress();
         int processTime = container.getProcessTime();
         int length = processTime > 0 && progress > 0 ? progress * 24 / processTime : 0;
-        this.blit(poseStack, this.leftPos + x, this.topPos + y, uOffset, vOffset, length + 1, 16);
+        blit(poseStack, this.leftPos + x, this.topPos + y, 32, 43, length + 1, 16, elementWidth, elementHeight);
     }
 
     /**
      * Renders a vertical progress arrow.
-     *
-     * @param x       The starting x position of the arrow.
+     *  @param x       The starting x position of the arrow.
      * @param y       The starting y position (bottom) of the arrow.
-     * @param uOffset The texture's x location of the arrow
-     * @param vOffset The texture's y location of the arrow
      */
-    public void renderVerticalArrow(PoseStack poseStack, int x, int y, int uOffset, int vOffset) {
+    public void renderVerticalArrow(PoseStack poseStack, int x, int y) {
+        setElementTex();
         int progress = container.getProgress();
         int processTime = container.getProcessTime();
         int length = processTime > 0 && progress > 0 ? progress * 30 / processTime : 0;
-        this.blit(poseStack, this.leftPos + x, this.topPos + y - length, uOffset, vOffset - length, 16, length + 1);
+        blit(poseStack, this.leftPos + x, this.topPos + y - length, 39, 30 - length, 16, length + 1, elementWidth, elementHeight);
     }
 
     /**
      * Renders an energy buffer with the stored energy at the given coordinates.
-     *
-     * @param x             The starting x position of the buffer.
+     *  @param x             The starting x position of the buffer.
      * @param y             The starting y position (bottom) of the buffer.
-     * @param uEnergyOffset The texture's x location of the energy
-     * @param vEnergyOffset The texture's y location of the energy
-     * @param uGlassOffset  The texture's x location of the glass overlay
-     * @param vGlassOffset  The texture's y location of the glass overlay
      */
-    public void renderEnergyBuffer(PoseStack pPoseStack, int x, int y, int uEnergyOffset, int vEnergyOffset, int uGlassOffset, int vGlassOffset) {
+    public void renderEnergyBuffer(PoseStack pPoseStack, int x, int y) {
+        setElementTex();
         int z = 60 - (60 * MathHelper.getPercent(container.getEnergy(), container.getMaxEnergy()) / 100);
-        this.blit(pPoseStack, this.leftPos + x, this.topPos + y + z, uEnergyOffset, vEnergyOffset, 16, 60 - z);
-        this.blit(pPoseStack, this.leftPos + x, this.topPos + y, uGlassOffset, vGlassOffset, 16, 60);
+        blit(pPoseStack, this.leftPos + x, this.topPos + y + z, 0, 0, 16, 60 - z, elementWidth, elementHeight);
+        blit(pPoseStack, this.leftPos + x, this.topPos + y, 16, 0, 16, 60, elementWidth, elementHeight);
     }
 
     @Override
@@ -140,5 +138,9 @@ public abstract class AbstractItemScreen<T extends AbstractItemContainer<?>> ext
 
         String inv = new TranslatableComponent("key.categories.inventory").getString();
         this.font.draw(pPoseStack, inv, ((float) (imageWidth / 2 - font.width(inv) / 2)) - 30, 74, 4210752);
+    }
+
+    protected void setElementTex() {
+        RenderSystem.setShaderTexture(0, new ResourceLocation(CLib.MODID, "textures/gui/screen_elements.png"));
     }
 }

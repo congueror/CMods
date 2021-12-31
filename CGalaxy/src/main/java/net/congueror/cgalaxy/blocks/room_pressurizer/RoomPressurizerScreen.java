@@ -1,4 +1,4 @@
-package net.congueror.cgalaxy.blocks.fuel_loader;
+package net.congueror.cgalaxy.blocks.room_pressurizer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.congueror.cgalaxy.CGalaxy;
@@ -9,17 +9,17 @@ import net.minecraft.world.entity.player.Inventory;
 
 import javax.annotation.Nonnull;
 
-public class FuelLoaderScreen extends AbstractFluidScreen<FuelLoaderContainer> {
-    public static ResourceLocation GUI = new ResourceLocation(CGalaxy.MODID, "textures/gui/fuel_loader.png");
+public class RoomPressurizerScreen extends AbstractFluidScreen<RoomPressurizerContainer> {
+    public static ResourceLocation GUI = new ResourceLocation(CGalaxy.MODID, "textures/gui/room_pressurizer.png");
 
-    public FuelLoaderScreen(FuelLoaderContainer pMenu, Inventory pPlayerInventory, Component pTitle) {
+    public RoomPressurizerScreen(RoomPressurizerContainer pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         this.container = pMenu;
     }
 
     @Override
     public String getKey() {
-        return "block.cgalaxy.fuel_loader";
+        return "block.cgalaxy.room_pressurizer";
     }
 
     @Override

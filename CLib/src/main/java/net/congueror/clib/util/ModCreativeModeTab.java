@@ -1,5 +1,6 @@
 package net.congueror.clib.util;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -20,12 +21,22 @@ public abstract class ModCreativeModeTab extends CreativeModeTab {
      */
     protected abstract String getItemIconRegistryKey();
 
+    /**
+     * The nbt that will be applied to the itemstack which is rendered as an icon.
+     */
+    protected CompoundTag getIconNBT() {
+        return new CompoundTag();
+    }
+
     @Nonnull
     @Override
     public ItemStack makeIcon() {
         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(getItemIconRegistryKey()));
-        if (item != null)
-            return new ItemStack(item);
+        if (item != null) {
+            ItemStack stack = new ItemStack(item);
+            stack.setTag(getIconNBT());
+            return stack;
+        }
         return new ItemStack(Items.BARRIER);
     }
 

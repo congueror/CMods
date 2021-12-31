@@ -23,6 +23,8 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static net.congueror.clib.compat.jei.JEICompat.getRecipes;
+
 @JeiPlugin
 public class JEICompat implements IModPlugin {
     private static final ResourceLocation ID = new ResourceLocation(CGalaxy.MODID, "plugin/main");
@@ -49,11 +51,6 @@ public class JEICompat implements IModPlugin {
         registration.addRecipes(getRecipes(CGRecipeSerializerInit.Types.FUEL_REFINING), FUEL_REFINING);
         registration.addRecipes(getRecipes(CGRecipeSerializerInit.Types.OXYGEN_COMPRESSING), OXYGEN_COMPRESSING);
         registration.addRecipes(getRecipes(CGRecipeSerializerInit.Types.FUEL_LOADING), FUEL_LOADING);
-    }
-
-    public static List<Recipe<?>> getRecipes(RecipeType<?> recipe) {
-        assert Minecraft.getInstance().level != null;
-        return Minecraft.getInstance().level.getRecipeManager().getRecipes().stream().filter(iRecipe -> iRecipe.getType() == recipe).collect(Collectors.toList());
     }
 
     @Override

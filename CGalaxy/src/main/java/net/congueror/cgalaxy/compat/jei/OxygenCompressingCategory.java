@@ -16,6 +16,7 @@ import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorRecipe;
 import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorScreen;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
+import net.congueror.clib.CLib;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -38,10 +39,11 @@ public class OxygenCompressingCategory implements IRecipeCategory<OxygenCompress
 
     public OxygenCompressingCategory(IGuiHelper helper) {
         this.helper = helper;
-        int processTime = ((OxygenCompressorRecipe) JEICompat.getRecipes(CGRecipeSerializerInit.Types.OXYGEN_COMPRESSING).get(0)).getProcessTime();
-        arrow = helper.drawableBuilder(FuelRefineryScreen.GUI, 196, 0, 24, 17).buildAnimated(processTime, IDrawableAnimated.StartDirection.LEFT, false);
-        energy_glass = helper.drawableBuilder(FuelRefineryScreen.GUI, 212, 17, 16, 60).build();
-        energy = helper.drawableBuilder(FuelRefineryScreen.GUI, 196, 17, 16, 60).buildAnimated(800, IDrawableAnimated.StartDirection.TOP, true);
+        int processTime = ((OxygenCompressorRecipe) net.congueror.clib.compat.jei.JEICompat.getRecipes(CGRecipeSerializerInit.Types.OXYGEN_COMPRESSING).get(0)).getProcessTime();
+        ResourceLocation e = new ResourceLocation(CLib.MODID, "textures/gui/screen_elements.png");
+        arrow = helper.drawableBuilder(e, 32, 43, 24, 17).buildAnimated(processTime, IDrawableAnimated.StartDirection.LEFT, false);
+        energy_glass = helper.drawableBuilder(e, 16, 0, 16, 60).build();
+        energy = helper.drawableBuilder(e, 0, 0, 16, 60).buildAnimated(800, IDrawableAnimated.StartDirection.TOP, true);
         localized = I18n.get("recipe.cgalaxy.oxygen_compressing");
     }
 
@@ -104,8 +106,8 @@ public class OxygenCompressingCategory implements IRecipeCategory<OxygenCompress
     @Override
     public List<Component> getTooltipStrings(@Nonnull OxygenCompressorRecipe recipe, double mouseX, double mouseY) {
         List<Component> list = new ArrayList<>();
-        if (mouseX >= 151 && mouseX <= 167 && mouseY >= 2 && mouseY <= 62) {
-            list.add(new TranslatableComponent("key.cgalaxy.energy_usage").append(": 50FE/t"));
+        if (mouseX >= 151 && mouseX <= 168 && mouseY >= 2 && mouseY <= 62) {
+            list.add(new TranslatableComponent("key.clib.energy_usage").append(": 50FE/t"));
         }
         return list;
     }

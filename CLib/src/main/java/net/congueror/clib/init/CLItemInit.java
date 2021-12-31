@@ -13,6 +13,9 @@ import net.minecraftforge.registries.RegistryObject;
 public class CLItemInit {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, CLib.MODID);
 
+    public static final RegistryObject<Item> GHOST_ITEM = new ItemBuilder("ghost", new Item(new Item.Properties()))
+            .withItemModel(null).build(ITEMS);
+
     public static final RegistryObject<Item> TIN_INGOT = registerItem("tin_ingot", new CLItem(properties()))
             .withNewItemTag("forge:ingots/tin").withTranslation("Tin Ingot").build(ITEMS);
     public static final RegistryObject<Item> TIN_NUGGET = registerItem("tin_nugget", new CLItem(properties()))

@@ -91,15 +91,23 @@ public class SolarGeneratorBlockEntity extends AbstractItemBlockEntity<SolarGene
     @Override
     public boolean requisites() {
         assert level != null;
+        if (energyStorage.isFullEnergy()) {
+            info = "key.clib.idle";
+            return false;
+        }
+
         if (Objects.requireNonNull(getRecipe()).matches(wrapper, level)) {
             if (!RenderingHelper.isDayTime(level)) {
                 info = "key.clib.error_night_time";
                 return false;
             }
 
-            if (getNightIntensity() > 0) {
-                return true;
-            } else return getDayIntensity() > 0;
+            if (!level.canSeeSky(getBlockPos().above())) {
+                info = "key.clib.error_no_sky";
+                return false;
+            }
+
+            return getNightIntensity() > 0 || getDayIntensity() > 0;
         } else {
             info = "key.clib.error_invalid_dimension";
             return false;
@@ -111,7 +119,7 @@ public class SolarGeneratorBlockEntity extends AbstractItemBlockEntity<SolarGene
         assert level != null;
         Block block = level.getBlockState(getBlockPos()).getBlock();
         if (block instanceof SolarGeneratorBlock) {
-            float fe = ((SolarGeneratorBlock) block).getGeneration() + (getProgressSpeedFinal() * 5);
+            float fe = ((SolarGeneratorBlock) block).getGeneration() + ((getProgressSpeedFinal() - 1) * 5);
             float in = RenderingHelper.isDayTime(level) ? getDayIntensity() : getNightIntensity();
             energyGen = (int) (fe * in);
             energyStorage.generateEnergy(energyGen);

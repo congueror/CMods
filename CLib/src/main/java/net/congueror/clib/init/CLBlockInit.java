@@ -295,7 +295,7 @@ public class CLBlockInit {
             .build(BLOCKS);
 
     public static final RegistryObject<Block> SOLAR_GENERATOR = new BlockBuilder("solar_generator",
-            new SolarGeneratorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 10))
+            new SolarGeneratorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 1000))//TODO
             .withCreativeTab(ModCreativeTabs.MachinesIG.instance)
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withBlockModel(null)

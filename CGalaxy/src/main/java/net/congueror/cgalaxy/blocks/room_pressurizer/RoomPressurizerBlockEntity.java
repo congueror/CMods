@@ -4,16 +4,21 @@ import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
 import net.congueror.clib.api.machine.fluid.AbstractFluidBlockEntity;
 import net.congueror.clib.api.recipe.FluidRecipe;
-import net.congueror.clib.api.recipe.ItemRecipe;
 import net.congueror.clib.items.UpgradeItem;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nonnull;
@@ -23,9 +28,22 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
+    Map<Direction, Integer> range = Util.make(() -> {
+        Map<Direction, Integer> map = new HashMap<>();
+        for (Direction i : Direction.values()) {
+            if (i.equals(Direction.DOWN)) {
+                map.put(i, 1);
+                continue;
+            }
+            map.put(i, getRange());
+        }
+        return map;
+    });
+
     public RoomPressurizerBlockEntity(BlockPos pos, BlockState state) {
         super(CGBlockEntityInit.ROOM_PRESSURIZER.get(), pos, state);
         this.tanks = IntStream.range(0, 1).mapToObj(value -> new FluidTank(15000)).toArray(FluidTank[]::new);
+        sendOutFluid = false;
     }
 
     @Nullable
@@ -78,87 +96,48 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
 
     @Override
     public boolean requisites() {
-        int r = getRangeFinal();
-        Map<Direction, Integer> rs = new HashMap<>();
-        for (Direction i : Direction.values()) {
-            switch (i) {
-                case UP -> {
-                    for (int j = 1; j <= r + 1; j++) {
-                        assert level != null;
-                        BlockPos pos = getBlockPos().above(j);
-                        if (!level.getBlockState(pos).isAir()) {
-                            rs.put(i, j);
-                            break;
-                        }
-                    }
+        for (int i = -range.get(Direction.DOWN); i <= range.get(Direction.UP); i++) {
+            for (int j = -range.get(Direction.WEST); j <= range.get(Direction.EAST); j++) {
+                BlockPos pos = getBlockPos().north(range.get(Direction.NORTH)).above(i).east(j);
+                BlockPos pos1 = getBlockPos().south(range.get(Direction.SOUTH)).above(i).east(j);
+                assert level != null;
+                level.setBlock(pos, Blocks.BEDROCK.defaultBlockState(), 2);
+                level.setBlock(pos1, Blocks.BEDROCK.defaultBlockState(), 2);
+                if (blockValid(pos)) {
+                    return false;
                 }
-                case DOWN -> {
-                    for (int j = 1; j <= r + 1; j++) {
-                        assert level != null;
-                        BlockPos pos = getBlockPos().below(j);
-                        if (!level.getBlockState(pos).isAir()) {
-                            rs.put(i, j);
-                            break;
-                        }
-                    }
-                }
-                case EAST -> {
-                    for (int j = 1; j <= r + 1; j++) {
-                        assert level != null;
-                        BlockPos pos = getBlockPos().east(j);
-                        if (!level.getBlockState(pos).isAir()) {
-                            rs.put(i, j);
-                            break;
-                        }
-                    }
-                }
-                case WEST -> {
-                    for (int j = 1; j <= r + 1; j++) {
-                        assert level != null;
-                        BlockPos pos = getBlockPos().west(j);
-                        if (!level.getBlockState(pos).isAir()) {
-                            rs.put(i, j);
-                            break;
-                        }
-                    }
-                }
-                case NORTH -> {
-                    for (int j = 1; j <= r + 1; j++) {
-                        assert level != null;
-                        BlockPos pos = getBlockPos().north(j);
-                        if (!level.getBlockState(pos).isAir()) {
-                            rs.put(i, j);
-                            break;
-                        }
-                    }
-                }
-                case SOUTH -> {
-                    for (int j = 1; j <= r + 1; j++) {
-                        assert level != null;
-                        BlockPos pos = getBlockPos().south(j);
-                        if (!level.getBlockState(pos).isAir()) {
-                            rs.put(i, j);
-                            break;
-                        }
-                    }
+            }
+            for (int j = -range.get(Direction.SOUTH); j <= range.get(Direction.NORTH); j++) {
+                BlockPos pos = getBlockPos().east(range.get(Direction.EAST)).above(i).north(j);
+                BlockPos pos1 = getBlockPos().west(range.get(Direction.WEST)).above(i).north(j);
+                assert level != null;
+                level.setBlock(pos, Blocks.BEDROCK.defaultBlockState(), 2);
+                level.setBlock(pos1, Blocks.BEDROCK.defaultBlockState(), 2);
+                if (blockValid(pos)) {
+                    return false;
                 }
             }
         }
-        for (Integer integer : rs.values()) {
-            if (integer == 0) return false;
-        }
-
-        for (int i = -rs.get(Direction.DOWN); i <= rs.get(Direction.UP); i++) {
-            for (int j = -rs.get(Direction.WEST); j <= rs.get(Direction.EAST); j++) {
-                BlockPos pos = getBlockPos().north(rs.get(Direction.NORTH)).above(i).east(j);
+        for (int i = -range.get(Direction.WEST); i <= range.get(Direction.EAST); i++) {
+            for (int j = -range.get(Direction.SOUTH); j <= range.get(Direction.NORTH); j++) {
+                BlockPos pos = getBlockPos().below(range.get(Direction.DOWN)).east(i).north(j);
+                BlockPos pos1 = getBlockPos().above(range.get(Direction.UP)).east(i).north(j);
                 assert level != null;
-                if (level.getBlockState(pos).isAir()) {
+                level.setBlock(pos, Blocks.BEDROCK.defaultBlockState(), 2);
+                level.setBlock(pos1, Blocks.BEDROCK.defaultBlockState(), 2);
+                if (blockValid(pos)) {
                     return false;
                 }
             }
         }
 
         return true;
+    }
+
+    private boolean blockValid(BlockPos pos) {
+        assert level != null;
+        BlockState s = level.getBlockState(pos);
+        return s.isAir() || (s.hasProperty(BlockStateProperties.OPEN) && s.getValue(BlockStateProperties.OPEN)) || !s.isSolidRender(level, pos);
     }
 
     @Override
@@ -168,7 +147,7 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
 
     @Override
     protected int getRange() {
-        return 6;
+        return 4;
     }
 
     @Override
@@ -181,5 +160,28 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, @Nonnull Inventory pInventory, @Nonnull Player pPlayer) {
         return new RoomPressurizerContainer(pContainerId, pPlayer, pInventory, this, this.data);
+    }
+
+    @Override
+    public void load(CompoundTag nbt) {
+        super.load(nbt);
+        ListTag list = nbt.getList("Dimensions", Tag.TAG_COMPOUND);
+        for (int i = 0; i < list.size(); i++) {
+            CompoundTag tag = list.getCompound(i);
+            for (Direction j : Direction.values())
+                range.put(j, tag.getInt(j.getName()));
+        }
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag pTag) {
+        super.saveAdditional(pTag);
+        ListTag nbt = new ListTag();
+        for (Direction i : Direction.values()) {
+            CompoundTag tag = new CompoundTag();
+            tag.putInt(i.getName(), range.get(i));
+            nbt.add(tag);
+        }
+        pTag.put("Dimensions", nbt);
     }
 }

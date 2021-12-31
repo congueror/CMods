@@ -22,6 +22,9 @@ public class CLLangDataGen extends LangDataProvider {
         add("tooltip.clib.nbt_tags", "NBT Tags");
         add("tooltip.clib.hold_ctrl_for_tags", "Hold %1$s for Tags");
 
+        add("key.clib.energy_percent", "Energy");
+        add("key.clib.energy_usage", "Usage");
+        add("key.clib.energy_generation", "Generation");
         add("key.clib.working", "Working...");
         add("key.clib.idle", "Idle.");
         add("key.clib.error_invalid_recipe", "Invalid Recipe!");

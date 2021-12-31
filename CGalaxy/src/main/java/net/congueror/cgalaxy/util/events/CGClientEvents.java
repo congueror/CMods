@@ -4,6 +4,7 @@ import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderScreen;
 import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryScreen;
 import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorScreen;
+import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerScreen;
 import net.congueror.cgalaxy.client.AbstractRocketModel;
 import net.congueror.cgalaxy.client.models.*;
 import net.congueror.cgalaxy.client.overlays.RocketHUDOverlay;
@@ -43,6 +44,7 @@ public class CGClientEvents {
             MenuScreens.register(CGContainerInit.FUEL_LOADER.get(), FuelLoaderScreen::new);
             MenuScreens.register(CGContainerInit.FUEL_REFINERY.get(), FuelRefineryScreen::new);
             MenuScreens.register(CGContainerInit.OXYGEN_COMPRESSOR.get(), OxygenCompressorScreen::new);
+            MenuScreens.register(CGContainerInit.ROOM_PRESSURIZER.get(), RoomPressurizerScreen::new);
             MenuScreens.register(CGContainerInit.GALAXY_MAP.get(), GalaxyMapScreenNEW::new);
             MenuScreens.register(CGContainerInit.SPACE_SUIT.get(), SpaceSuitScreen::new);
 

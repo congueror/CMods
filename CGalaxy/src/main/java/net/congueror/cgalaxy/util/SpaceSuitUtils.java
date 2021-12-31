@@ -1,6 +1,8 @@
 package net.congueror.cgalaxy.util;
 
 import net.congueror.cgalaxy.CGalaxy;
+import net.congueror.cgalaxy.api.events.AddVillagerProfessionsEvent;
+import net.congueror.cgalaxy.api.events.OxygenCheckEvent;
 import net.congueror.cgalaxy.item.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -9,11 +11,13 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
@@ -86,18 +90,21 @@ public class SpaceSuitUtils {
     }
 
     public static boolean hasOxygen(LivingEntity entity) {
-        boolean flag = SpaceSuitUtils.isEquipped(entity);
-        AtomicBoolean flag1 = new AtomicBoolean(false);
-        AtomicBoolean flag2 = new AtomicBoolean(false);
-        SpaceSuitUtils.deserializeContents(entity).forEach(itemStack -> {
-            if (itemStack.getItem() instanceof OxygenGearItem) {
-                flag1.set(true);
-            }
-            if (itemStack.getItem() instanceof OxygenTankItem tank) {
-                flag2.set(tank.getOxygen(itemStack) > 0);
-            }
-        });
-        return flag && flag1.get() && flag2.get();
+        AtomicBoolean flag = new AtomicBoolean(SpaceSuitUtils.isEquipped(entity));
+        if (flag.get()) {
+            AtomicBoolean flag1 = new AtomicBoolean();
+            AtomicBoolean flag2 = new AtomicBoolean();
+            SpaceSuitUtils.deserializeContents(entity).forEach(itemStack -> {
+                if (itemStack.getItem() instanceof OxygenGearItem) {
+                    flag1.set(true);
+                }
+                if (itemStack.getItem() instanceof OxygenTankItem tank) {
+                    flag2.set(tank.getOxygen(itemStack) > 0);
+                }
+            });
+            flag.set(flag1.get() && flag2.get());
+        }
+        return flag.get();
     }
 
     public static void drainProtection(LivingEntity entity, int temperature, float radiation) {

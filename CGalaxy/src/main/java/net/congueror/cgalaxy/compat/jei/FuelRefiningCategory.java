@@ -14,6 +14,7 @@ import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryRecipe;
 import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryScreen;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
+import net.congueror.clib.CLib;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -37,10 +38,11 @@ public class FuelRefiningCategory implements IRecipeCategory<FuelRefineryRecipe>
 
     public FuelRefiningCategory(IGuiHelper helper) {
         this.helper = helper;
-        int processTime = ((FuelRefineryRecipe) JEICompat.getRecipes(CGRecipeSerializerInit.Types.FUEL_REFINING).get(0)).getProcessTime();
-        arrow = helper.drawableBuilder(FuelRefineryScreen.GUI, 196, 0, 24, 17).buildAnimated(processTime, IDrawableAnimated.StartDirection.LEFT, false);
-        energy_glass = helper.drawableBuilder(FuelRefineryScreen.GUI, 212, 17, 16, 60).build();
-        energy = helper.drawableBuilder(FuelRefineryScreen.GUI, 196, 17, 16, 60).buildAnimated(666, IDrawableAnimated.StartDirection.TOP, true);
+        int processTime = ((FuelRefineryRecipe) net.congueror.clib.compat.jei.JEICompat.getRecipes(CGRecipeSerializerInit.Types.FUEL_REFINING).get(0)).getProcessTime();
+        ResourceLocation e = new ResourceLocation(CLib.MODID, "textures/gui/screen_elements.png");
+        arrow = helper.drawableBuilder(e, 32, 43, 24, 17).buildAnimated(processTime, IDrawableAnimated.StartDirection.LEFT, false);
+        energy_glass = helper.drawableBuilder(e, 16, 0, 16, 60).build();
+        energy = helper.drawableBuilder(e, 0, 0, 16, 60).buildAnimated(666, IDrawableAnimated.StartDirection.TOP, true);
         localized = I18n.get("recipe.cgalaxy.fuel_refining");
     }
 
@@ -105,7 +107,7 @@ public class FuelRefiningCategory implements IRecipeCategory<FuelRefineryRecipe>
     public List<Component> getTooltipStrings(@Nonnull FuelRefineryRecipe recipe, double mouseX, double mouseY) {
         List<Component> list = new ArrayList<>();
         if (mouseX >= 151 && mouseX <= 167 && mouseY >= 2 && mouseY <= 62) {
-            list.add(new TranslatableComponent("key.cgalaxy.energy_usage").append(": 60FE/t"));
+            list.add(new TranslatableComponent("key.clib.energy_usage").append(": 60FE/t"));
         }
         return list;
     }

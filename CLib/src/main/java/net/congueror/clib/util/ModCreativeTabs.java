@@ -1,5 +1,6 @@
 package net.congueror.clib.util;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.CreativeModeTab;
 
 public class ModCreativeTabs {
@@ -38,6 +39,13 @@ public class ModCreativeTabs {
         @Override
         protected String getItemIconRegistryKey() {
             return "cgalaxy:rocket_tier_1";
+        }
+
+        @Override
+        protected CompoundTag getIconNBT() {
+            CompoundTag tag = new CompoundTag();
+            tag.putInt("Fuel", 1000);
+            return tag;
         }
     }
 

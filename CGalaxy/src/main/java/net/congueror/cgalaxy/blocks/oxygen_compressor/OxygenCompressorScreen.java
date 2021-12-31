@@ -35,9 +35,9 @@ public class OxygenCompressorScreen extends AbstractFluidScreen<OxygenCompressor
     @Override
     protected void renderBg(@Nonnull PoseStack pPoseStack, float pPartialTicks, int pMouseX, int pMouseY) {
         renderBackground(pPoseStack, GUI);
-        renderHorizontalArrow(pPoseStack, 77, 38, 196, 0);
-        renderEnergyBuffer(pPoseStack, 172, 9, 196, 17, 212, 17);
+        renderHorizontalArrow(pPoseStack, 77, 38);
+        renderEnergyBuffer(pPoseStack, 172, 9);
         renderFluidTank(pPoseStack, 102, 18, 0);
-        renderStatusLight(pPoseStack, 154, 8, 228, 17);
+        renderStatusLight(pPoseStack, 154, 8);
     }
 }
