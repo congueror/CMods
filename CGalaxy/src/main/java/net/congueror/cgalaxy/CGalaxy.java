@@ -20,11 +20,11 @@ public class CGalaxy {
 
     //Persistent Data Constant Strings
     /**Integer*/
-    public static final String PLAYER_TEMPERATURE = "Temperature";
+    public static final String LIVING_TEMPERATURE = "Temperature";
     /**Float*/
-    public static final String PLAYER_RADIATION = "Radiation";
+    public static final String LIVING_RADIATION = "Radiation";
     /**Double*/
-    public static final String PLAYER_AIR_PRESSURE = "AirPressure";
+    public static final String LIVING_AIR_PRESSURE = "AirPressure";
     /**Integer*/
     public static final String LIVING_HEAT_TICK = "HeatTick";
     /**Integer*/
@@ -33,6 +33,8 @@ public class CGalaxy {
     public static final String LIVING_OXYGEN_TICK = "OxygenTick";
     /**Integer*/
     public static final String LIVING_RADIATION_TICK = "RadiationTick";
+    /**Boolean*/
+    public static final String LIVING_PRESSURIZED = "Pressurized";
     /**Integer*/
     public static final String ROCKET_POWERED = "Powered";
     /**Boolean*/

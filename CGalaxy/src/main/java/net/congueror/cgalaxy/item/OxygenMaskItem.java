@@ -155,7 +155,7 @@ public class OxygenMaskItem extends SpaceSuitItem {
 
                     //Radiation
                     {
-                        float pRad = player.getPersistentData().getFloat(CGalaxy.PLAYER_RADIATION);
+                        float pRad = player.getPersistentData().getFloat(CGalaxy.LIVING_RADIATION);
                         String rad = "Radiation: " + pRad + " Sv/y";
                         if (CGConfig.RADIATION.get() == CGConfig.RadiationUnits.REM) {
                             rad = "Radiation: " + new DecimalFormat("#.00").format(MathHelper.sievertsToRem(pRad)) + " rem";
@@ -167,13 +167,13 @@ public class OxygenMaskItem extends SpaceSuitItem {
 
                     //Temperature
                     {
-                        if (pTemp != player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE)) {
+                        if (pTemp != player.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE)) {
                             i++;
                             if (i == 20) {
                                 i = 0;
-                                if (pTemp > player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE)) {
+                                if (pTemp > player.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE)) {
                                     pTemp--;
-                                } else if (pTemp <= player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE)) {
+                                } else if (pTemp <= player.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE)) {
                                     pTemp++;
                                 }
                             }
@@ -225,15 +225,15 @@ public class OxygenMaskItem extends SpaceSuitItem {
                         String grav = "Gravity: " + (String.format("%.02f", player.getAttributeValue(ForgeMod.ENTITY_GRAVITY.get()) * 100)) + "m/s\u00b2";
                         GuiComponent.drawString(poseStack, mc.font, grav, 2, 30, textColor);
 
-                        String pres = "Air Pressure: " + MathHelper.formatUnit(player.getPersistentData().getDouble(CGalaxy.PLAYER_AIR_PRESSURE), "Pa");
+                        String pres = "Air Pressure: " + MathHelper.formatUnit(player.getPersistentData().getDouble(CGalaxy.LIVING_AIR_PRESSURE), "Pa");
                         if (CGConfig.AIR_PRESSURE.get() == CGConfig.AirPressureUnits.PSI) {
-                            pres = "Air Pressure: " + MathHelper.formatUnit(MathHelper.pascalsToPsi(player.getPersistentData().getDouble(CGalaxy.PLAYER_AIR_PRESSURE)), "lbf/in\u00b2");
+                            pres = "Air Pressure: " + MathHelper.formatUnit(MathHelper.pascalsToPsi(player.getPersistentData().getDouble(CGalaxy.LIVING_AIR_PRESSURE)), "lbf/in\u00b2");
                         } else if (CGConfig.AIR_PRESSURE.get() == CGConfig.AirPressureUnits.BARS) {
-                            pres = "Air Pressure: " + MathHelper.formatUnit(MathHelper.pascalsToBars(player.getPersistentData().getDouble(CGalaxy.PLAYER_AIR_PRESSURE)), "bar");
+                            pres = "Air Pressure: " + MathHelper.formatUnit(MathHelper.pascalsToBars(player.getPersistentData().getDouble(CGalaxy.LIVING_AIR_PRESSURE)), "bar");
                         } else if (CGConfig.AIR_PRESSURE.get() == CGConfig.AirPressureUnits.TORR) {
-                            pres = "Air Pressure: " + MathHelper.formatUnit(MathHelper.pascalsToTorr(player.getPersistentData().getDouble(CGalaxy.PLAYER_AIR_PRESSURE)), "torr");
+                            pres = "Air Pressure: " + MathHelper.formatUnit(MathHelper.pascalsToTorr(player.getPersistentData().getDouble(CGalaxy.LIVING_AIR_PRESSURE)), "torr");
                         } else if (CGConfig.AIR_PRESSURE.get() == CGConfig.AirPressureUnits.ATMOSPHERES) {
-                            pres = "Air Pressure: " + MathHelper.formatUnit(MathHelper.pascalsToStandardAtmospheres(player.getPersistentData().getDouble(CGalaxy.PLAYER_AIR_PRESSURE)), "atm");
+                            pres = "Air Pressure: " + MathHelper.formatUnit(MathHelper.pascalsToStandardAtmospheres(player.getPersistentData().getDouble(CGalaxy.LIVING_AIR_PRESSURE)), "atm");
                         }
                         GuiComponent.drawString(poseStack, mc.font, pres, 2, 40, textColor);
                     }

@@ -16,7 +16,6 @@
     "foliage_color": 3888192,
     "grass_color_modifier": "none"
   },
-  "surface_builder": "cgalaxy:moon",
   "carvers": {
     "air": [
       "cgalaxy:moon_carver"

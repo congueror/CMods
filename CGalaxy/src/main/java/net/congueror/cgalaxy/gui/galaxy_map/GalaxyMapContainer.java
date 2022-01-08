@@ -3,8 +3,10 @@ package net.congueror.cgalaxy.gui.galaxy_map;
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.networking.PacketSyncMap;
+import net.congueror.clib.api.machine.AbstractInventoryContainer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraftforge.network.PacketDistributor;
@@ -12,15 +14,15 @@ import net.minecraftforge.network.PacketDistributor;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class GalaxyMapContainer extends AbstractContainerMenu {
+public class GalaxyMapContainer extends AbstractInventoryContainer {
     public boolean unlocked;
     private boolean unlockedLastTick;
     @Nullable
     public GalacticObjectBuilder.GalacticObject<?> map;
     Player player;
 
-    public GalaxyMapContainer(int id, Player player, boolean unlocked, @Nullable GalacticObjectBuilder.GalacticObject<?> map) {
-        super(CGContainerInit.GALAXY_MAP.get(), id);
+    public GalaxyMapContainer(int id, Player player, Inventory playerInv, boolean unlocked, @Nullable GalacticObjectBuilder.GalacticObject<?> map) {
+        super(CGContainerInit.GALAXY_MAP.get(), id, playerInv);
         this.player = player;
         this.unlocked = unlocked;
         this.map = map;

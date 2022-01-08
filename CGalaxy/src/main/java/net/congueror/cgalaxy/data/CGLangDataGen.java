@@ -22,11 +22,14 @@ public class CGLangDataGen extends CGLangDataProvider {
 
             add("chat.cgalaxy.launch_off", " is launching off to space!");
             add("key.cgalaxy.empty", "Empty");
+            add("key.cgalaxy.error_open_room", "Invalid block at");
+            add("key.cgalaxy.idle_no_entities", "No entities in range.");
             add("key.cgalaxy.error_incomplete_pad", "The Launch Pad must be 3x3!");
             add("key.cgalaxy.error_missing_rocket", "No viable rocket detected!");
             add("key.cgalaxy.idle_rocket_full", "Rocket is full.");
             add("key.cgalaxy.fuel_remaining", "Remaining Fuel");
             add("key.cgalaxy.fuel", "Fuel");
+            add("key.cgalaxy.map_no_material", "No acceptable space station item detected in inventory.");
             add("gui.cgalaxy.galaxy_map", "Galaxy Map");
             add("gui.cgalaxy.space_suit", "Space Suit Menu");
 

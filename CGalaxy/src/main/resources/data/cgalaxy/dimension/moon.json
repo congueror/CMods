@@ -1,5 +1,5 @@
 {
-  "type": "cgalaxy:moon",
+  "type": "cgalaxy:moon_type",
   "generator": {
     "type": "minecraft:noise",
     "seed": 0,
@@ -88,7 +88,7 @@
       },
       "disable_mob_generation": false,
       "noise_caves_enabled": false,
-      "noodle_caves_enabled": true,
+      "noodle_caves_enabled": false,
       "aquifers_enabled": false,
       "deepslate_enabled": false,
       "ore_veins_enabled": true,
@@ -116,18 +116,18 @@
           "y_factor": 160
         },
         "bottom_slide": {
-          "target": -30,
-          "size": 0,
-          "offset": 0
-        },
-        "top_slide": {
-          "target": -10,
+          "target": 0.1171875,
           "size": 3,
           "offset": 0
         },
+        "top_slide": {
+          "target": -0.078125,
+          "size": 2,
+          "offset": 8
+        },
         "terrain_shaper": {
-          "offset": 0,
-          "factor": 0,
+          "offset": 0.1,
+          "factor": 3.8,
           "jaggedness": 0
         }
       },

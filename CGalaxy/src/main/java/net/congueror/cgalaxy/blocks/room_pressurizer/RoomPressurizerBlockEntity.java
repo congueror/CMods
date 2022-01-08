@@ -1,5 +1,6 @@
 package net.congueror.cgalaxy.blocks.room_pressurizer;
 
+import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
 import net.congueror.clib.api.machine.fluid.AbstractFluidBlockEntity;
@@ -11,23 +12,29 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.entity.EntityTypeTest;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
+    private List<LivingEntity> entities;
     Map<Direction, Integer> range = Util.make(() -> {
         Map<Direction, Integer> map = new HashMap<>();
         for (Direction i : Direction.values()) {
@@ -96,37 +103,52 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
 
     @Override
     public boolean requisites() {
-        for (int i = -range.get(Direction.DOWN); i <= range.get(Direction.UP); i++) {
-            for (int j = -range.get(Direction.WEST); j <= range.get(Direction.EAST); j++) {
-                BlockPos pos = getBlockPos().north(range.get(Direction.NORTH)).above(i).east(j);
-                BlockPos pos1 = getBlockPos().south(range.get(Direction.SOUTH)).above(i).east(j);
-                assert level != null;
-                level.setBlock(pos, Blocks.BEDROCK.defaultBlockState(), 2);
-                level.setBlock(pos1, Blocks.BEDROCK.defaultBlockState(), 2);
-                if (blockValid(pos)) {
-                    return false;
+        BlockPos posA = getBlockPos().below(range.get(Direction.DOWN)).north(range.get(Direction.NORTH)).west(range.get(Direction.WEST));
+        BlockPos posB = getBlockPos().above(range.get(Direction.UP)).south(range.get(Direction.SOUTH)).east(range.get(Direction.EAST));
+        assert level != null;
+        entities = level.getEntities(EntityTypeTest.forClass(LivingEntity.class), new AABB(posA, posB), Objects::nonNull);
+        if (entities.isEmpty()) {
+            info = "key.cgalaxy.idle_no_entities";
+            return false;
+        } else {
+            for (int i = -range.get(Direction.DOWN); i <= range.get(Direction.UP); i++) {
+                for (int j = -range.get(Direction.WEST); j <= range.get(Direction.EAST); j++) {
+                    BlockPos pos = getBlockPos().north(range.get(Direction.NORTH)).above(i).east(j);
+                    BlockPos pos1 = getBlockPos().south(range.get(Direction.SOUTH)).above(i).east(j);
+                    if (isBlockInvalid(pos, Direction.NORTH)) {
+                        info = "key.cgalaxy.error_open_room" + ", x:" + pos.getX() + ", y:" + pos.getY() + ", z:" + pos.getZ();
+                        return false;
+                    }
+                    if (isBlockInvalid(pos1, Direction.SOUTH)) {
+                        info = "key.cgalaxy.error_open_room" + ", x:" + pos1.getX() + ", y:" + pos1.getY() + ", z:" + pos1.getZ();
+                        return false;
+                    }
+                }
+                for (int j = -range.get(Direction.SOUTH) + 1; j <= range.get(Direction.NORTH) - 1; j++) {
+                    BlockPos pos = getBlockPos().east(range.get(Direction.EAST)).above(i).north(j);
+                    BlockPos pos1 = getBlockPos().west(range.get(Direction.WEST)).above(i).north(j);
+                    if (isBlockInvalid(pos, Direction.EAST)) {
+                        info = "key.cgalaxy.error_open_room" + ", x:" + pos.getX() + ", y:" + pos.getY() + ", z:" + pos.getZ();
+                        return false;
+                    }
+                    if (isBlockInvalid(pos1, Direction.WEST)) {
+                        info = "key.cgalaxy.error_open_room" + ", x:" + pos1.getX() + ", y:" + pos1.getY() + ", z:" + pos1.getZ();
+                        return false;
+                    }
                 }
             }
-            for (int j = -range.get(Direction.SOUTH); j <= range.get(Direction.NORTH); j++) {
-                BlockPos pos = getBlockPos().east(range.get(Direction.EAST)).above(i).north(j);
-                BlockPos pos1 = getBlockPos().west(range.get(Direction.WEST)).above(i).north(j);
-                assert level != null;
-                level.setBlock(pos, Blocks.BEDROCK.defaultBlockState(), 2);
-                level.setBlock(pos1, Blocks.BEDROCK.defaultBlockState(), 2);
-                if (blockValid(pos)) {
-                    return false;
-                }
-            }
-        }
-        for (int i = -range.get(Direction.WEST); i <= range.get(Direction.EAST); i++) {
-            for (int j = -range.get(Direction.SOUTH); j <= range.get(Direction.NORTH); j++) {
-                BlockPos pos = getBlockPos().below(range.get(Direction.DOWN)).east(i).north(j);
-                BlockPos pos1 = getBlockPos().above(range.get(Direction.UP)).east(i).north(j);
-                assert level != null;
-                level.setBlock(pos, Blocks.BEDROCK.defaultBlockState(), 2);
-                level.setBlock(pos1, Blocks.BEDROCK.defaultBlockState(), 2);
-                if (blockValid(pos)) {
-                    return false;
+            for (int i = -range.get(Direction.WEST) + 1; i <= range.get(Direction.EAST) - 1; i++) {
+                for (int j = -range.get(Direction.SOUTH) + 1; j <= range.get(Direction.NORTH) - 1; j++) {
+                    BlockPos pos = getBlockPos().below(range.get(Direction.DOWN)).east(i).north(j);
+                    BlockPos pos1 = getBlockPos().above(range.get(Direction.UP)).east(i).north(j);
+                    if (isBlockInvalid(pos, Direction.DOWN)) {
+                        info = "key.cgalaxy.error_open_room" + ", x:" + pos.getX() + ", y:" + pos.getY() + ", z:" + pos.getZ();
+                        return false;
+                    }
+                    if (isBlockInvalid(pos1, Direction.UP)) {
+                        info = "key.cgalaxy.error_open_room" + ", x:" + pos1.getX() + ", y:" + pos1.getY() + ", z:" + pos1.getZ();
+                        return false;
+                    }
                 }
             }
         }
@@ -134,15 +156,37 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
         return true;
     }
 
-    private boolean blockValid(BlockPos pos) {
+    private boolean isBlockInvalid(BlockPos pos, Direction direction) {
         assert level != null;
         BlockState s = level.getBlockState(pos);
-        return s.isAir() || (s.hasProperty(BlockStateProperties.OPEN) && s.getValue(BlockStateProperties.OPEN)) || !s.isSolidRender(level, pos);
+        boolean flag = false;
+        boolean flag1 = false;
+        if (s.isAir()) {
+            flag = true;
+        }
+        if (!flag && !s.isCollisionShapeFullBlock(level, pos)) {
+            if (s.hasProperty(BlockStateProperties.OPEN)) {
+                //TODO: Check for facings
+                BlockPos pos1 = pos.relative(direction);
+                if (level.getBlockState(pos1).hasProperty(BlockStateProperties.OPEN)) {
+                    flag1 = s.getValue(BlockStateProperties.OPEN) && level.getBlockState(pos1).getValue(BlockStateProperties.OPEN);
+                } else {
+                    flag1 = s.getValue(BlockStateProperties.OPEN);
+                }
+            } else {
+                flag1 = true;
+            }
+        }
+        return flag || flag1;
     }
 
     @Override
     public void execute() {
-
+        for (LivingEntity entity : entities) {
+            entity.getPersistentData().putBoolean(CGalaxy.LIVING_PRESSURIZED, true);
+        }
+        int pSize = 10 * entities.size();
+        tanks[0].drain(pSize, FluidAction.EXECUTE);
     }
 
     @Override
@@ -151,7 +195,7 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
     }
 
     @Override
-    public void executeSlot() {
+    public void executeExtra() {
         emptyBucketSlot(0, 0);
         fillBucketSlot(0, 1);
     }
@@ -168,8 +212,11 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
         ListTag list = nbt.getList("Dimensions", Tag.TAG_COMPOUND);
         for (int i = 0; i < list.size(); i++) {
             CompoundTag tag = list.getCompound(i);
-            for (Direction j : Direction.values())
-                range.put(j, tag.getInt(j.getName()));
+            for (Direction j : Direction.values()) {
+                if (tag.getAllKeys().contains(j.getName())) {
+                    range.put(j, tag.getInt(j.getName()));
+                }
+            }
         }
     }
 

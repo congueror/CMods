@@ -50,7 +50,7 @@ public class PacketChangeMap implements IPacket {
                     @Nonnull
                     @Override
                     public AbstractContainerMenu createMenu(int pContainerId, @Nonnull Inventory pInventory, @Nonnull Player pPlayer) {
-                        return new GalaxyMapContainer(pContainerId, player, true, GalacticObjectBuilder.getObjectFromId(name));
+                        return new GalaxyMapContainer(pContainerId, player, pInventory, true, GalacticObjectBuilder.getObjectFromId(name));
                     }
                 });
             }

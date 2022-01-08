@@ -3,6 +3,8 @@ package net.congueror.cgalaxy.util;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.api.events.AddVillagerProfessionsEvent;
 import net.congueror.cgalaxy.api.events.OxygenCheckEvent;
+import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
+import net.congueror.cgalaxy.api.registry.CGEntity;
 import net.congueror.cgalaxy.item.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -52,11 +54,15 @@ public class SpaceSuitUtils {
         if (temperature < 60) {
             flag.set(true);
         } else {
-            deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof HeatProtectionUnitItem).forEach(itemStack -> {
-                if (((HeatProtectionUnitItem) itemStack.getItem()).getEnergy(itemStack) > 0) {
-                    flag.set(true);
-                }
-            });
+            if (entity.getPersistentData().getBoolean(CGalaxy.LIVING_PRESSURIZED)) {
+                flag.set(true);
+            } else {
+                deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof HeatProtectionUnitItem).forEach(itemStack -> {
+                    if (((HeatProtectionUnitItem) itemStack.getItem()).getEnergy(itemStack) > 0) {
+                        flag.set(true);
+                    }
+                });
+            }
         }
         return flag.get();
     }
@@ -66,11 +72,15 @@ public class SpaceSuitUtils {
         if (temperature > -60) {
             flag.set(true);
         } else {
-            deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof ColdProtectionUnitItem).forEach(itemStack -> {
-                if (((ColdProtectionUnitItem) itemStack.getItem()).getEnergy(itemStack) > 0) {
-                    flag.set(true);
-                }
-            });
+            if (entity.getPersistentData().getBoolean(CGalaxy.LIVING_PRESSURIZED)) {
+                flag.set(true);
+            } else {
+                deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof ColdProtectionUnitItem).forEach(itemStack -> {
+                    if (((ColdProtectionUnitItem) itemStack.getItem()).getEnergy(itemStack) > 0) {
+                        flag.set(true);
+                    }
+                });
+            }
         }
         return flag.get();
     }
@@ -80,31 +90,48 @@ public class SpaceSuitUtils {
         if (radiation < 100) {
             flag.set(true);
         } else {
-            deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof RadiationProtectionUnitItem).forEach(itemStack -> {
-                if (((RadiationProtectionUnitItem) itemStack.getItem()).getEnergy(itemStack) > 0) {
-                    flag.set(true);
-                }
-            });
+            if (entity.getPersistentData().getBoolean(CGalaxy.LIVING_PRESSURIZED)) {
+                flag.set(true);
+            } else {
+                deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof RadiationProtectionUnitItem).forEach(itemStack -> {
+                    if (((RadiationProtectionUnitItem) itemStack.getItem()).getEnergy(itemStack) > 0) {
+                        flag.set(true);
+                    }
+                });
+            }
         }
         return flag.get();
     }
 
-    public static boolean hasOxygen(LivingEntity entity) {
-        AtomicBoolean flag = new AtomicBoolean(SpaceSuitUtils.isEquipped(entity));
-        if (flag.get()) {
-            AtomicBoolean flag1 = new AtomicBoolean();
-            AtomicBoolean flag2 = new AtomicBoolean();
-            SpaceSuitUtils.deserializeContents(entity).forEach(itemStack -> {
-                if (itemStack.getItem() instanceof OxygenGearItem) {
-                    flag1.set(true);
-                }
-                if (itemStack.getItem() instanceof OxygenTankItem tank) {
-                    flag2.set(tank.getOxygen(itemStack) > 0);
-                }
-            });
-            flag.set(flag1.get() && flag2.get());
+    public static boolean hasOxygen(LivingEntity entity, CGDimensionBuilder.DimensionObject obj) {
+        if (!obj.getBreathable()) {
+            if (entity instanceof CGEntity i) {
+                return i.canBreath(obj);
+            }
+
+            if (SpaceSuitUtils.isEquipped(entity)) {
+                AtomicBoolean flag2 = new AtomicBoolean();
+                AtomicBoolean flag3 = new AtomicBoolean();
+                SpaceSuitUtils.deserializeContents(entity).forEach(itemStack -> {
+                    if (itemStack.getItem() instanceof OxygenGearItem) {
+                        flag2.set(true);
+                    }
+                    if (itemStack.getItem() instanceof OxygenTankItem tank) {
+                        flag3.set(tank.getOxygen(itemStack) > 0);
+                    }
+                });
+                return flag2.get() && flag3.get();
+            }
+
+            if (entity.getPersistentData().getBoolean(CGalaxy.LIVING_PRESSURIZED)) {
+                return true;
+            }
+
+            OxygenCheckEvent event = new OxygenCheckEvent();
+            MinecraftForge.EVENT_BUS.post(event);
+            return event.hasOxygen();
         }
-        return flag.get();
+        return obj.getBreathable();
     }
 
     public static void drainProtection(LivingEntity entity, int temperature, float radiation) {

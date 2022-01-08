@@ -10,6 +10,7 @@ public class CGBiomes {
 
     public static final ResourceKey<Biome> THE_MOON = registerBiome(CGalaxy.MODID, "the_moon");
     public static final ResourceKey<Biome> THE_MOON_SOUTH = registerBiome(CGalaxy.MODID, "the_moon_south");
+    public static final ResourceKey<Biome> ORBIT = registerBiome(CGalaxy.MODID, "orbit");
 
     public static void registerBiomes() {}
 }

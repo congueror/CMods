@@ -143,25 +143,25 @@ public class SpaceSuitSettingsScreen extends Screen {
         RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, "textures/gui/space_suit/" + textureName));
         Minecraft mc = Minecraft.getInstance();
 
-        blit(pMatrixStack, leftPos, topPos, this.getBlitOffset(), 0, 0, 110, 140, 140, 115);
+        blit(pMatrixStack, leftPos, topPos, 0, 0, 110, 140, 115, 140);
 
-        blit(pMatrixStack, leftPos + 48, topPos + 24, this.getBlitOffset(), -5, 9, 5, 9, 140, 115);
-        blit(pMatrixStack, leftPos + 98, topPos + 24, this.getBlitOffset(), -5, 0, 5, 9, 140, 115);
+        blit(pMatrixStack, leftPos + 48, topPos + 24, -5, 9, 5, 9, 115, 140);
+        blit(pMatrixStack, leftPos + 98, topPos + 24, -5, 0, 5, 9, 115, 140);
 
-        blit(pMatrixStack, leftPos + 48, topPos + 34, this.getBlitOffset(), -5, 9, 5, 9, 140, 115);
-        blit(pMatrixStack, leftPos + 98, topPos + 34, this.getBlitOffset(), -5, 0, 5, 9, 140, 115);
+        blit(pMatrixStack, leftPos + 48, topPos + 34, -5, 9, 5, 9, 115, 140);
+        blit(pMatrixStack, leftPos + 98, topPos + 34, -5, 0, 5, 9, 115, 140);
 
-        blit(pMatrixStack, leftPos + 48, topPos + 44, this.getBlitOffset(), -5, 9, 5, 9, 140, 115);
-        blit(pMatrixStack, leftPos + 98, topPos + 44, this.getBlitOffset(), -5, 0, 5, 9, 140, 115);
+        blit(pMatrixStack, leftPos + 48, topPos + 44, -5, 9, 5, 9, 115, 140);
+        blit(pMatrixStack, leftPos + 98, topPos + 44, -5, 0, 5, 9, 115, 140);
 
-        blit(pMatrixStack, leftPos + 48, topPos + 54, this.getBlitOffset(), -5, 9, 5, 9, 140, 115);
-        blit(pMatrixStack, leftPos + 98, topPos + 54, this.getBlitOffset(), -5, 0, 5, 9, 140, 115);
+        blit(pMatrixStack, leftPos + 48, topPos + 54, -5, 9, 5, 9, 115, 140);
+        blit(pMatrixStack, leftPos + 98, topPos + 54, -5, 0, 5, 9, 115, 140);
 
         int textColor = CGConfig.GUI_COLOR.get().rgb;
         pMatrixStack.pushPose();
         pMatrixStack.scale(0.6f, 0.6f, 0.6f);
-        int x = mc.getWindow().getGuiScaledWidth() - 190;
-        int y = mc.getWindow().getGuiScaledHeight() - 131;
+        int x = leftPos + 1;
+        int y = topPos + 10;
         drawString(pMatrixStack, mc.font, "Temperature: ", x, y, textColor);
         drawCenteredString(pMatrixStack, mc.font, CGConfig.TEMPERATURE.get().toString(), x + 117, y, textColor);
 

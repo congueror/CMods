@@ -3,7 +3,6 @@ package net.congueror.cgalaxy.util.events;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.api.events.AddVillagerProfessionsEvent;
 import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
-import net.congueror.cgalaxy.api.registry.CGEntity;
 import net.congueror.cgalaxy.commands.CGCommands;
 import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.entity.AstroEnderman;
@@ -20,10 +19,8 @@ import net.congueror.cgalaxy.util.SpaceSuitUtils;
 import net.congueror.cgalaxy.world.CGBiomes;
 import net.congueror.cgalaxy.world.CGDimensions;
 import net.congueror.cgalaxy.world.CGFeatureGen;
-import net.congueror.clib.CLib;
 import net.congueror.clib.api.events.BlockOnPlacedEvent;
 import net.congueror.clib.api.events.PlayerSetupAnimationEvent;
-import net.congueror.clib.api.registry.BlockBuilder;
 import net.congueror.clib.util.RenderingHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -39,7 +36,6 @@ import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -47,7 +43,6 @@ import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -100,42 +95,37 @@ public class CGCommonEvents {
             double y = player.getY();
             double z = player.getZ();
 
-            boolean hasOxygen = SpaceSuitUtils.hasOxygen(player);
-            SpaceSuitUtils.drainTanks(player);
-            SpaceSuitUtils.drainProtection(player, player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE), player.getPersistentData().getFloat(CGalaxy.PLAYER_RADIATION));
-
             List<Entity> entities = level.getEntitiesOfClass(Entity.class, new AABB(x - (192 / 2d), y - (192 / 2d), z - (192 / 2d), x + (192 / 2d), y + (192 / 2d), z + (192 / 2d)));
             for (Entity entity : entities) {
                 CGDimensionBuilder.DimensionObject obj = CGDimensionBuilder.getObjectFromKey(level.dimension());
                 if (obj != null) {
-                    if (entity instanceof LivingEntity) {
-                        AttributeMap manager = ((LivingEntity) entity).getAttributes();
+                    if (entity instanceof LivingEntity le) {
+                        boolean hasOxygen = SpaceSuitUtils.hasOxygen(le, obj);
+                        SpaceSuitUtils.drainTanks(le);
+                        SpaceSuitUtils.drainProtection(le, player.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE), player.getPersistentData().getFloat(CGalaxy.LIVING_RADIATION));
+
+                        AttributeMap manager = le.getAttributes();
                         Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(obj.getGravity());
                         entity.fallDistance = 1;
-                        if (!obj.getBreathable()) {
-                            if (entity instanceof CGEntity i) {
-                                if (!i.canBreath(obj)) {
-                                    entity.hurt(DamageSources.NO_OXYGEN, 2.0f);
-                                }
-                            } else if (!hasOxygen) {
-                                entity.hurt(DamageSources.NO_OXYGEN, 2.0f);
-                            }
+                        if (!hasOxygen) {
+                            entity.hurt(DamageSources.NO_OXYGEN, 2.0f);
                         }
-                        player.getPersistentData().putDouble(CGalaxy.PLAYER_AIR_PRESSURE, obj.getAirPressure());
+
+                        le.getPersistentData().putDouble(CGalaxy.LIVING_AIR_PRESSURE, obj.getAirPressure());
                         if (RenderingHelper.isDayTime(level)) {
-                            player.getPersistentData().putInt(CGalaxy.PLAYER_TEMPERATURE, obj.getDayTemp());
+                            le.getPersistentData().putInt(CGalaxy.LIVING_TEMPERATURE, obj.getDayTemp());
                         } else {
-                            player.getPersistentData().putInt(CGalaxy.PLAYER_TEMPERATURE, obj.getNightTemp());
+                            le.getPersistentData().putInt(CGalaxy.LIVING_TEMPERATURE, obj.getNightTemp());
                         }
-                        player.getPersistentData().putFloat(CGalaxy.PLAYER_RADIATION, obj.getRadiation());
-                        if (!SpaceSuitUtils.hasHeatProtection(player, player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE))) {
-                            player.hurt(DamageSources.NO_HEAT, 3.0f);
+                        le.getPersistentData().putFloat(CGalaxy.LIVING_RADIATION, obj.getRadiation());
+                        if (!SpaceSuitUtils.hasHeatProtection(le, le.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE))) {
+                            le.hurt(DamageSources.HEAT, 3.0f);
                         }
-                        if (!SpaceSuitUtils.hasColdProtection(player, player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE))) {
-                            player.hurt(DamageSources.NO_COLD, 3.0f);
+                        if (!SpaceSuitUtils.hasColdProtection(le, le.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE))) {
+                            le.hurt(DamageSources.COLD, 3.0f);
                         }
-                        if (!SpaceSuitUtils.hasRadiationProtection(player, player.getPersistentData().getFloat(CGalaxy.PLAYER_RADIATION))) {
-                            player.hurt(DamageSources.NO_RADIATION, 1.0f);
+                        if (!SpaceSuitUtils.hasRadiationProtection(le, le.getPersistentData().getFloat(CGalaxy.LIVING_RADIATION))) {
+                            le.hurt(DamageSources.NO_RADIATION, 1.0f);
                         }
 
                         if (obj.getRadiation() < 100) {
@@ -144,16 +134,15 @@ public class CGCommonEvents {
                         if (obj.getBreathable()) {
                             entity.getPersistentData().putInt(CGalaxy.LIVING_OXYGEN_TICK, 0);
                         }
-                        if (player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE) < 60) {
+                        if (le.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE) < 60) {
                             entity.getPersistentData().putInt(CGalaxy.LIVING_HEAT_TICK, 0);
                         }
-                        if (player.getPersistentData().getInt(CGalaxy.PLAYER_TEMPERATURE) > -60) {
+                        if (le.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE) > -60) {
                             entity.getPersistentData().putInt(CGalaxy.LIVING_COLD_TICK, 0);
                         }
                     }
 
                     if (entity instanceof ItemEntity) {
-
                         //entity.setDeltaMovement(0.0D, -obj.getGravity() / 4.0D, 0.0D);
                         if (level.dimension() == CGDimensions.MOON.getDim() && entity.getPersistentData().getDouble(CGalaxy.ITEM_GRAVITY) <= 1 && entity.getDeltaMovement().y() <= -0.1) {
                             entity.getPersistentData().putDouble(CGalaxy.ITEM_GRAVITY, 2);
@@ -176,7 +165,7 @@ public class CGCommonEvents {
 
                         @Override
                         public AbstractContainerMenu createMenu(int pContainerId, @Nonnull Inventory pInventory, @Nonnull Player pPlayer) {
-                            return new GalaxyMapContainer(pContainerId, pPlayer, false, CGGalacticObjects.SOLAR_SYSTEM);
+                            return new GalaxyMapContainer(pContainerId, pPlayer, pInventory, false, CGGalacticObjects.SOLAR_SYSTEM);
                         }
                     });
                 }

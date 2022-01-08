@@ -135,7 +135,7 @@ public abstract class AbstractItemBlockEntity<R extends ItemRecipe<?>> extends A
     /**
      * What happens to a slot when it detects an item.
      */
-    public abstract void executeSlot();
+    public abstract void executeExtra();
 
     /**
      * The range of the machine. Unless overriding, use {@link #getRangeFinal()}.
@@ -203,7 +203,7 @@ public abstract class AbstractItemBlockEntity<R extends ItemRecipe<?>> extends A
         if (getMaxExtract() > 0) {
             sendOutEnergy();
         }
-        executeSlot();
+        executeExtra();
     }
 
     /**

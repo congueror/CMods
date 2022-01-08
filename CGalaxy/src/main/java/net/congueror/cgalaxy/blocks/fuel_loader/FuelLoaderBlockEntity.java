@@ -103,7 +103,11 @@ public class FuelLoaderBlockEntity extends AbstractFluidBlockEntity {
                     BlockPos mid = pad.getMidBlock(level, pos);
                     if (((LaunchPadBlock) level.getBlockState(mid).getBlock()).getRocket(level, mid) != null) {
                         entity = ((LaunchPadBlock) level.getBlockState(mid).getBlock()).getRocket(level, mid);
-                        return true;
+                        if (entity.getFuel() < entity.getCapacity()) {
+                            return true;
+                        } else {
+                            info = "key.cgalaxy.idle_rocket_full";
+                        }
                     } else {
                         info = "key.cgalaxy.error_missing_rocket";
                     }
@@ -117,19 +121,15 @@ public class FuelLoaderBlockEntity extends AbstractFluidBlockEntity {
 
     @Override
     public void execute() {
-        if (entity.getFuel() < entity.getCapacity()) {
-            FuelLoaderRecipe recipe = (FuelLoaderRecipe) getRecipe();
-            assert recipe != null;
-            int amount = recipe.getIngredient().getFluidStacks().get(0).getAmount();
-            int fill = entity.fill(Math.min(tanks[0].getFluidAmount(), amount + getFluidProcessSize()));
-            tanks[0].drain(fill, FluidAction.EXECUTE);
-        } else {
-            info = "key.cgalaxy.idle_rocket_full";
-        }
+        FuelLoaderRecipe recipe = (FuelLoaderRecipe) getRecipe();
+        assert recipe != null;
+        int amount = recipe.getIngredient().getFluidStacks().get(0).getAmount();
+        int fill = entity.fill(Math.min(tanks[0].getFluidAmount(), amount + getFluidProcessSize()));
+        tanks[0].drain(fill, FluidAction.EXECUTE);
     }
 
     @Override
-    public void executeSlot() {
+    public void executeExtra() {
         emptyBucketSlot(0, 0);
         fillBucketSlot(0, 1);
     }

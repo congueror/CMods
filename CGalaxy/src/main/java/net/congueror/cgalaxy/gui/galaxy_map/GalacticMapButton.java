@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import javax.annotation.Nonnull;
 import java.util.Random;
 
-import static net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapScreenNEW.startRadius;
+import static net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapScreen.startRadius;
 import static net.minecraft.client.gui.screens.Screen.hasShiftDown;
 
 public class GalacticMapButton extends Button {
@@ -19,18 +19,19 @@ public class GalacticMapButton extends Button {
     private ResourceLocation resourceLocation;
     private int yTexStart;
     private final int yDiffTex;
-    private final int xTexStart;
+    private int xTexStart;
     private int textureWidth;
     private int textureHeight;
     private OnTooltip onTooltip = NO_TOOLTIP;
+    private OnPress onPress;
 
     private int i, angle;
     private double zoom;
     private int moveX, moveY;
-    public int x1, y1, size1;
+    public int xSel, ySel, sizeSel;
 
     public GalacticMapButton(Type type, int pX, int pY, int pWidth, int pHeight, int pXTexStart, int pYTexStart, int pYDiffTex, ResourceLocation pResourceLocation, int pTextureWidth, int pTextureHeight, OnPress pOnPress, GalacticObjectBuilder.GalacticObject<?> object) {
-        super(pX, pY, pWidth, pHeight, TextComponent.EMPTY, pOnPress, NO_TOOLTIP);
+        super(pX, pY, pWidth, pHeight, TextComponent.EMPTY, onPress -> {}, NO_TOOLTIP);
         this.type = type;
         this.object = object;
         this.textureWidth = pTextureWidth;
@@ -39,37 +40,46 @@ public class GalacticMapButton extends Button {
         this.yTexStart = pYTexStart;
         this.yDiffTex = pYDiffTex;
         this.resourceLocation = pResourceLocation;
+        this.onPress = pOnPress;
 
         angle = new Random().nextInt(361);
     }
 
-    public void updatePosition(GalacticObjectBuilder.GalacticObject<?> obj, int width, int height, int size, double zoom, int moveX, int moveY) {
-        if (!hasShiftDown()) {
-            i++;
-        }
-        this.zoom = zoom;
-        this.moveX = moveX;
-        this.moveY = moveY;
-        int period = (int) ((obj.getDaysPerYear() * 5));
-        if (i >= period / 20) {
-            i = 0;
-            angle++;
-        }
-        if (angle == 360) {
-            angle = 0;
-        }
-        double r1 = startRadius + (49 * obj.getRingIndex());
-        double r2 = 0.6 * (startRadius + (49 * obj.getRingIndex()));
-        x = (int) ((width / 2 + 56) + zoom * r1 * Math.cos(Math.toRadians(angle)) - (size / 2) + moveX);
-        y = (int) ((height / 2 + 9) + zoom * r2 * Math.sin(Math.toRadians(angle)) - (size / 2) + moveY);
+    public void updateOrbiter(GalacticObjectBuilder.GalacticObject<?> obj, int width, int height, int size, double zoom, int moveX, int moveY, Button.OnTooltip onTooltip) {
+        if (type.equals(Type.ORBITER)) {
+            setWidth(size);
+            setHeight(size);
+            setTextureWidth(size);
+            setTextureHeight(size);
+            setOnTooltip(onTooltip);
 
-        if (obj.getType() instanceof GalacticObjectBuilder.Moon) {
-            size1 = (int) (18 * zoom);
-            x1 = (int) ((width / 2 + 56) + zoom * r1 * Math.cos(Math.toRadians(angle)) - (size1 / 2) + moveX);
-            y1 = (int) ((height / 2 + 9) + zoom * r2 * Math.sin(Math.toRadians(angle)) - (size1 / 2) + moveY);
-        } else {
-            x1 = -1;
-            y1 = -1;
+            if (!hasShiftDown()) {
+                i++;
+            }
+            this.zoom = zoom;
+            this.moveX = moveX;
+            this.moveY = moveY;
+            int period = (int) ((obj.getDaysPerYear() * 5));
+            if (i >= period / 20) {
+                i = 0;
+                angle++;
+            }
+            if (angle == 360) {
+                angle = 0;
+            }
+            double r1 = startRadius + (49 * obj.getRingIndex());
+            double r2 = 0.6 * (startRadius + (49 * obj.getRingIndex()));
+            x = (int) ((width / 2 + 56) + zoom * r1 * Math.cos(Math.toRadians(angle)) - (size / 2) + moveX);
+            y = (int) ((height / 2 + 9) + zoom * r2 * Math.sin(Math.toRadians(angle)) - (size / 2) + moveY);
+
+            if (obj.getType() instanceof GalacticObjectBuilder.Moon) {
+                sizeSel = (int) (18 * zoom);
+                xSel = (int) ((width / 2 + 56) + zoom * r1 * Math.cos(Math.toRadians(angle)) - (sizeSel / 2) + moveX);
+                ySel = (int) ((height / 2 + 9) + zoom * r2 * Math.sin(Math.toRadians(angle)) - (sizeSel / 2) + moveY);
+            } else {
+                xSel = -1;
+                ySel = -1;
+            }
         }
     }
 
@@ -90,6 +100,10 @@ public class GalacticMapButton extends Button {
         this.resourceLocation = resourceLocation;
     }
 
+    public void setXTexStart(int xTexStart) {
+        this.xTexStart = xTexStart;
+    }
+
     public void setYTexStart(int yTexStart) {
         this.yTexStart = yTexStart;
     }
@@ -98,9 +112,18 @@ public class GalacticMapButton extends Button {
         this.onTooltip = onTooltip;
     }
 
+    public void setOnPress(OnPress onPress) {
+        this.onPress = onPress;
+    }
+
     @Override
     public void renderToolTip(@Nonnull PoseStack pMatrixStack, int pMouseX, int pMouseY) {
         this.onTooltip.onTooltip(this, pMatrixStack, pMouseX, pMouseY);
+    }
+
+    @Override
+    public void onPress() {
+        this.onPress.onPress(this);
     }
 
     public void renderButton(@Nonnull PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
@@ -132,6 +155,6 @@ public class GalacticMapButton extends Button {
         ORBITER,
         LAUNCH,
         ORBITEE,
-        OPEN_SPACE_STATION
+        SPACE_STATION
     }
 }

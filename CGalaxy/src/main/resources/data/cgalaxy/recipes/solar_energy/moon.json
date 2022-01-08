@@ -1,0 +1,7 @@
+{
+  "type": "clib:solar_energy",
+  "dimension": "cgalaxy:moon",
+  "dayIntensity": 1.8,
+  "nightIntensity": 0,
+  "texture": "clib:textures/gui/moon.png"
+}

@@ -103,7 +103,7 @@ public class OxygenCompressorBlockEntity extends AbstractFluidBlockEntity {
     }
 
     @Override
-    public void executeSlot() {
+    public void executeExtra() {
         emptyBucketSlot(0, 1);
         fillBucketSlot(0, 2);
         ItemStack slot1 = wrapper.getItem(2);

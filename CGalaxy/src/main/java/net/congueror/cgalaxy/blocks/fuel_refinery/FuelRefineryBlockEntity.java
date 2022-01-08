@@ -99,7 +99,7 @@ public class FuelRefineryBlockEntity extends AbstractFluidBlockEntity {
     }
 
     @Override
-    public void executeSlot() {
+    public void executeExtra() {
         emptyBucketSlot(0, 0);
         fillBucketSlot(1, 1);
     }

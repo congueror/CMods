@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import org.jetbrains.annotations.Range;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -52,7 +53,15 @@ public abstract class AbstractItemScreen<T extends AbstractItemContainer<?>> ext
      * Renders a tooltip that gives information about the status of the machine at the coordinates given.
      */
     public void renderStatusTooltip(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        renderTooltip(pPoseStack, pMouseX, pMouseY, 153, 7, 7, 7, new TranslatableComponent(container.getInfo()));
+        Component com;
+        if (container.getInfo().contains(",")) {
+            String comp = container.getInfo().substring(0, container.getInfo().indexOf(","));
+            com = new TranslatableComponent(comp).append(container.getInfo().substring(container.getInfo().indexOf(",")));
+        } else {
+            com = new TranslatableComponent(container.getInfo());
+        }
+
+        renderTooltip(pPoseStack, pMouseX, pMouseY, 153, 7, 7, 7, com);
     }
 
     /**
@@ -141,6 +150,7 @@ public abstract class AbstractItemScreen<T extends AbstractItemContainer<?>> ext
     }
 
     protected void setElementTex() {
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.setShaderTexture(0, new ResourceLocation(CLib.MODID, "textures/gui/screen_elements.png"));
     }
 }

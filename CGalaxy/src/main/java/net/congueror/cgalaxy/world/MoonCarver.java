@@ -42,7 +42,7 @@ public class MoonCarver extends CaveWorldCarver {
         if (!this.canReplaceBlock(blockstate)) {
             return false;
         } else {
-            BlockState blockstate1 = this.getCarveState(pContext, pConfig, pCheckPos, pAquifer);
+            BlockState blockstate1 = this.getCarveState(pContext, pConfig, pPos, pAquifer);
             if (blockstate1 == null) {
                 return false;
             } else {

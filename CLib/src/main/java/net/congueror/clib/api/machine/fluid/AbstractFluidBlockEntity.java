@@ -126,7 +126,7 @@ public abstract class AbstractFluidBlockEntity extends AbstractItemBlockEntity<F
 
         if (sendOutFluid)
             sendOutFluid(outputSlotsAndTanks().get("tanks"));
-        executeSlot();
+        executeExtra();
     }
 
     /**
@@ -227,7 +227,7 @@ public abstract class AbstractFluidBlockEntity extends AbstractItemBlockEntity<F
     }
 
     /**
-     * Empties the bucket at the given slots in the given tank. Usually used with {@link #executeSlot()}
+     * Empties the bucket at the given slots in the given tank. Usually used with {@link #executeExtra()}
      *
      * @param tank  The tank to be filled
      * @param slots The slots to be emptied

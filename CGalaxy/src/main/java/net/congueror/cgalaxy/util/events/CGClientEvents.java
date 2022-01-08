@@ -6,11 +6,13 @@ import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryScreen;
 import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorScreen;
 import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerScreen;
 import net.congueror.cgalaxy.client.AbstractRocketModel;
+import net.congueror.cgalaxy.client.effects.MoonSkyEffects;
+import net.congueror.cgalaxy.client.effects.OverworldOrbitEffects;
 import net.congueror.cgalaxy.client.models.*;
 import net.congueror.cgalaxy.client.overlays.RocketHUDOverlay;
 import net.congueror.cgalaxy.client.renderers.*;
 import net.congueror.cgalaxy.client.renderers.layers.SpaceSuitLayer;
-import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapScreenNEW;
+import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapScreen;
 import net.congueror.cgalaxy.gui.space_suit.SpaceSuitScreen;
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
@@ -45,12 +47,13 @@ public class CGClientEvents {
             MenuScreens.register(CGContainerInit.FUEL_REFINERY.get(), FuelRefineryScreen::new);
             MenuScreens.register(CGContainerInit.OXYGEN_COMPRESSOR.get(), OxygenCompressorScreen::new);
             MenuScreens.register(CGContainerInit.ROOM_PRESSURIZER.get(), RoomPressurizerScreen::new);
-            MenuScreens.register(CGContainerInit.GALAXY_MAP.get(), GalaxyMapScreenNEW::new);
+            MenuScreens.register(CGContainerInit.GALAXY_MAP.get(), GalaxyMapScreen::new);
             MenuScreens.register(CGContainerInit.SPACE_SUIT.get(), SpaceSuitScreen::new);
 
             OverlayRegistry.registerOverlayAbove(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, "cgalaxy_rocket_y_element", new RocketHUDOverlay());
 
-            MoonSkyRenderer.render();
+            new MoonSkyEffects().build();
+            new OverworldOrbitEffects().build();
         }
 
         @SubscribeEvent

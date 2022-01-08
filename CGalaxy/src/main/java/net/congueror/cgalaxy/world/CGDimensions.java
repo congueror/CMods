@@ -23,6 +23,15 @@ public class CGDimensions {
             .withAirPressure(0.0000000003)
             .withYOverlayTexture(new ResourceLocation(CGalaxy.MODID, "textures/gui/rocket_y_hud_moon.png"))
             .build();
+    public static final CGDimensionBuilder.DimensionObject OVERWORLD_ORBIT = new CGDimensionBuilder(WorldHelper.registerDim(CGalaxy.MODID, "overworld_orbit"))
+            .withGravity(0)
+            .withBreathableAtmosphere(false)
+            .withDayTemperature(121)
+            .withNightTemperature(-157)
+            .withRadiation(300.0F)
+            .withAirPressure(0)
+            .withYOverlayTexture(CGalaxy.location("textures/gui/rocket_y_hud_moon"))//TODO
+            .build();
 
     /**
      * Called from an {@link net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent#enqueueWork(Runnable)}

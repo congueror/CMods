@@ -32,7 +32,7 @@ public class ItemEnergyWrapper implements ICapabilityProvider {
         int energy1 = stack.getOrCreateTag().getInt("Energy");
         return new ModEnergyStorage(capacity, 100, 100, energy1) {
             @Override
-            protected void onEnergyChanged() {
+            public void onEnergyChanged() {
                 stack.getOrCreateTag().putInt("Energy", energy);
                 super.onEnergyChanged();
             }

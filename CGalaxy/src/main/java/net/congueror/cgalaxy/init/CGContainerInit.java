@@ -54,7 +54,7 @@ public class CGContainerInit {
             }));
 
     public static final RegistryObject<MenuType<GalaxyMapContainer>> GALAXY_MAP = MENU_TYPES.register("galaxy_map", () ->
-            IForgeMenuType.create((windowId, inv, data) -> new GalaxyMapContainer(windowId, inv.player, false, null)));
+            IForgeMenuType.create((windowId, inv, data) -> new GalaxyMapContainer(windowId, inv.player, inv, false, null)));
     public static final RegistryObject<MenuType<SpaceSuitContainer>> SPACE_SUIT = MENU_TYPES.register("space_suit", () ->
             IForgeMenuType.create((windowId, inv, data) -> new SpaceSuitContainer(windowId, inv)));
 }

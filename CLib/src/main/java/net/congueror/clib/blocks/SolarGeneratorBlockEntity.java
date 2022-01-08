@@ -127,7 +127,7 @@ public class SolarGeneratorBlockEntity extends AbstractItemBlockEntity<SolarGene
     }
 
     @Override
-    public void executeSlot() {
+    public void executeExtra() {
         fillEnergySlot(0);
     }
 

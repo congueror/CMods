@@ -42,7 +42,7 @@ public class OpenGalaxyMapCommand implements Command<CommandSourceStack> {
             @Nonnull
             @Override
             public AbstractContainerMenu createMenu(int pContainerId, @Nonnull Inventory pInventory, @Nonnull Player pPlayer) {
-                return new GalaxyMapContainer(pContainerId, player, true, null);
+                return new GalaxyMapContainer(pContainerId, player, pInventory, true, null);
             }
         });
         return 1;
