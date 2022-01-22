@@ -5,16 +5,18 @@ import net.congueror.cgalaxy.client.models.OxygenTankModels;
 import net.congueror.cgalaxy.item.*;
 import net.congueror.cgalaxy.util.CGFoods;
 import net.congueror.clib.api.data.ItemModelDataProvider;
-import net.congueror.clib.api.objects.items.CLBucketItem;
-import net.congueror.clib.api.objects.items.CLItem;
 import net.congueror.clib.api.registry.ItemBuilder;
 import net.congueror.clib.items.UpgradeItem;
+import net.congueror.clib.items.generic.CLBucketItem;
+import net.congueror.clib.items.generic.CLItem;
 import net.congueror.clib.util.MathHelper;
 import net.congueror.clib.util.ModCreativeTabs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -30,14 +32,22 @@ public class CGItemInit {
     public static final RegistryObject<Item> KEROSENE_BUCKET = new ItemBuilder("kerosene_bucket",
             new CLBucketItem(CGFluidInit.KEROSENE.getStill(), new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
             .withTranslation("Kerosene Bucket")
+            .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.bucketTexture((BucketItem) item))
             .build(ITEMS);
     public static final RegistryObject<Item> OIL_BUCKET = new ItemBuilder("oil_bucket",
             new CLBucketItem(CGFluidInit.OIL.getStill(), new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
             .withTranslation("Oil Bucket")
+            .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.bucketTexture((BucketItem) item))
             .build(ITEMS);
     public static final RegistryObject<Item> OXYGEN_BUCKET = new ItemBuilder("oxygen_bucket",
             new CLBucketItem(CGFluidInit.OXYGEN.getStill(), new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
             .withTranslation("Oxygen Bucket")
+            .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.bucketTexture((BucketItem) item))
+            .build(ITEMS);
+    public static final RegistryObject<Item> NITROGEN_BUCKET = new ItemBuilder("nitrogen_bucket",
+            new CLBucketItem(CGFluidInit.NITROGEN.getStill(), new Item.Properties().tab(ModCreativeTabs.ItemsIG.instance)))
+            .withTranslation("Nitrogen Bucket")
+            .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.bucketTexture((BucketItem) item))
             .build(ITEMS);
 
     public static final RegistryObject<Item> ASTRO_ENDERMAN_EGG = new ItemBuilder("astro_enderman_spawn_egg",
@@ -53,13 +63,13 @@ public class CGItemInit {
             .withItemModel(ItemModelDataProvider::spawnEggTexture)
             .build(ITEMS);
     public static final RegistryObject<Item> LUNAR_VILLAGER_EGG = new ItemBuilder("lunar_villager_spawn_egg",
-            new ForgeSpawnEggItem(CGEntityTypeInit.LUNAR_VILLAGER, MathHelper.calculateRGB(153,50,204), 12422002,
+            new ForgeSpawnEggItem(CGEntityTypeInit.LUNAR_VILLAGER, MathHelper.calculateRGB(153, 50, 204), 12422002,
                     new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
             .withTranslation("Lunar Villager Spawn Egg")
             .withItemModel(ItemModelDataProvider::spawnEggTexture)
             .build(ITEMS);
     public static final RegistryObject<Item> LUNAR_ZOMBIE_VILLAGER_EGG = new ItemBuilder("lunar_zombie_villager_spawn_egg",
-            new ForgeSpawnEggItem(CGEntityTypeInit.LUNAR_ZOMBIE_VILLAGER, MathHelper.calculateRGB(153,50,204), 7969893,
+            new ForgeSpawnEggItem(CGEntityTypeInit.LUNAR_ZOMBIE_VILLAGER, MathHelper.calculateRGB(153, 50, 204), 7969893,
                     new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
             .withTranslation("Lunar Zombie Villager Spawn Egg")
             .withItemModel(ItemModelDataProvider::spawnEggTexture)

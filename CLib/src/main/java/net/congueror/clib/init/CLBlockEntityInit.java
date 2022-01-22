@@ -1,7 +1,7 @@
 package net.congueror.clib.init;
 
 import net.congueror.clib.CLib;
-import net.congueror.clib.blocks.SolarGeneratorBlockEntity;
+import net.congueror.clib.blocks.solar_generator.SolarGeneratorBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

@@ -1,7 +1,7 @@
 package net.congueror.clib.init;
 
 import net.congueror.clib.CLib;
-import net.congueror.clib.blocks.SolarGeneratorRecipe;
+import net.congueror.clib.blocks.solar_generator.SolarGeneratorRecipe;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;

@@ -4,9 +4,12 @@ import net.congueror.clib.api.registry.BlockBuilder;
 import net.congueror.clib.api.registry.ItemBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.loaders.DynamicBucketModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.Objects;
@@ -36,6 +39,14 @@ public class ItemModelDataProvider extends ItemModelProvider {
      */
     public void spawnEggTexture(Item item) {
         withExistingParent(Objects.requireNonNull(item.getRegistryName()).getPath(), "item/template_spawn_egg");
+    }
+
+    public void bucketTexture(BucketItem item) {
+        withExistingParent(item.getRegistryName().getPath(), "forge:item/bucket")
+                .customLoader(DynamicBucketModelBuilder::begin)
+                .applyTint(true)
+                .fluid(item.getFluid())
+                .flipGas(item.getFluid().getAttributes().isGaseous());
     }
 
     @Override

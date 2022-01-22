@@ -3,7 +3,7 @@ package net.congueror.cgalaxy.blocks.oxygen_compressor;
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
 import net.congueror.cgalaxy.item.OxygenTankItem;
-import net.congueror.clib.api.machine.fluid.AbstractFluidBlockEntity;
+import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlockEntity;
 import net.congueror.clib.api.recipe.FluidRecipe;
 import net.congueror.clib.items.UpgradeItem;
 import net.minecraft.core.BlockPos;

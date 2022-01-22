@@ -2,9 +2,10 @@ package net.congueror.cgalaxy.blocks.room_pressurizer;
 
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
+import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
-import net.congueror.clib.api.machine.fluid.AbstractFluidBlockEntity;
 import net.congueror.clib.api.recipe.FluidRecipe;
+import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlockEntity;
 import net.congueror.clib.items.UpgradeItem;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -12,13 +13,18 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractCandleBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.entity.EntityTypeTest;
@@ -27,10 +33,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
@@ -47,9 +50,13 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
         return map;
     });
 
+    private AABB aabb;
+    public static final Map<ResourceKey<Level>, List<AABB>> AABBS = new HashMap<>();
+    public static final Map<ResourceKey<Level>, List<BlockPos>> AFFECTED_BLOCKS = new HashMap<>();
+
     public RoomPressurizerBlockEntity(BlockPos pos, BlockState state) {
         super(CGBlockEntityInit.ROOM_PRESSURIZER.get(), pos, state);
-        this.tanks = IntStream.range(0, 1).mapToObj(value -> new FluidTank(15000)).toArray(FluidTank[]::new);
+        this.tanks = IntStream.range(0, 2).mapToObj(value -> new FluidTank(15000)).toArray(FluidTank[]::new);
         sendOutFluid = false;
     }
 
@@ -62,38 +69,37 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
 
     @Override
     public int[] invSize() {
-        return new int[]{0, 1, 2, 3, 4, 5};
+        return new int[]{0, 1, 2, 3, 4, 5, 6, 7};
     }
 
     @Override
     public HashMap<String, int[]> inputSlotsAndTanks() {
         HashMap<String, int[]> map = new HashMap<>();
-        map.put("tanks", new int[]{0});
-        map.put("slots", new int[]{0});
+        map.put("tanks", new int[]{0, 1});
+        map.put("slots", new int[]{0, 2});
         return map;
     }
 
     @Override
     public HashMap<String, int[]> outputSlotsAndTanks() {
         HashMap<String, int[]> map = new HashMap<>();
-        map.put("tanks", new int[]{0});
-        map.put("slots", new int[]{1});
+        map.put("tanks", new int[]{});
+        map.put("slots", new int[]{1, 3});
         return map;
     }
 
     @Override
     public boolean canItemFit(int slot, ItemStack stack) {
-        if (slot == 0 || slot == 1) {
+        if (slot <= 4) {
             return stack.getItem() instanceof BucketItem;
-        } else if (slot >= 2) {
+        } else {
             return stack.getItem() instanceof UpgradeItem;
         }
-        return false;
     }
 
     @Override
     public int getEnergyUsage() {
-        return 0;
+        return 160;
     }
 
     @Override
@@ -106,49 +112,68 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
         BlockPos posA = getBlockPos().below(range.get(Direction.DOWN)).north(range.get(Direction.NORTH)).west(range.get(Direction.WEST));
         BlockPos posB = getBlockPos().above(range.get(Direction.UP)).south(range.get(Direction.SOUTH)).east(range.get(Direction.EAST));
         assert level != null;
-        entities = level.getEntities(EntityTypeTest.forClass(LivingEntity.class), new AABB(posA, posB), Objects::nonNull);
-        if (entities.isEmpty()) {
+        aabb = new AABB(posA, posB);
+
+        entities = level.getEntities(EntityTypeTest.forClass(LivingEntity.class), aabb, Objects::nonNull);
+        if (wrapper.getFluidInTank(0).getAmount() < 10 * entities.size() * getPercentages()[0] || wrapper.getFluidInTank(1).getAmount() < 10 * entities.size() * getPercentages()[1]) {
+            info = "key.clib.error_insufficient_ingredients";
+            return false;
+        }
+        if (!hasOxygenReceiver()) {
             info = "key.cgalaxy.idle_no_entities";
             return false;
         } else {
-            for (int i = -range.get(Direction.DOWN); i <= range.get(Direction.UP); i++) {
-                for (int j = -range.get(Direction.WEST); j <= range.get(Direction.EAST); j++) {
-                    BlockPos pos = getBlockPos().north(range.get(Direction.NORTH)).above(i).east(j);
-                    BlockPos pos1 = getBlockPos().south(range.get(Direction.SOUTH)).above(i).east(j);
-                    if (isBlockInvalid(pos, Direction.NORTH)) {
-                        info = "key.cgalaxy.error_open_room" + ", x:" + pos.getX() + ", y:" + pos.getY() + ", z:" + pos.getZ();
-                        return false;
-                    }
-                    if (isBlockInvalid(pos1, Direction.SOUTH)) {
-                        info = "key.cgalaxy.error_open_room" + ", x:" + pos1.getX() + ", y:" + pos1.getY() + ", z:" + pos1.getZ();
-                        return false;
-                    }
+            {
+                BlockPos pos = getBlockPos().north(range.get(Direction.NORTH)).above(range.get(Direction.UP)).east(range.get(Direction.EAST));
+                BlockPos pos1 = getBlockPos().north(range.get(Direction.NORTH)).below(range.get(Direction.DOWN)).west(range.get(Direction.WEST));
+                BlockPos invalidPos = BlockPos.betweenClosedStream(pos, pos1).filter(blockPos -> isBlockInvalid(blockPos, Direction.NORTH)).findFirst().orElse(null);
+                if (invalidPos != null) {
+                    info = "key.cgalaxy.error_open_room" + ", x:" + invalidPos.getX() + ", y:" + invalidPos.getY() + ", z:" + invalidPos.getZ();
+                    return false;
                 }
-                for (int j = -range.get(Direction.SOUTH) + 1; j <= range.get(Direction.NORTH) - 1; j++) {
-                    BlockPos pos = getBlockPos().east(range.get(Direction.EAST)).above(i).north(j);
-                    BlockPos pos1 = getBlockPos().west(range.get(Direction.WEST)).above(i).north(j);
-                    if (isBlockInvalid(pos, Direction.EAST)) {
-                        info = "key.cgalaxy.error_open_room" + ", x:" + pos.getX() + ", y:" + pos.getY() + ", z:" + pos.getZ();
-                        return false;
-                    }
-                    if (isBlockInvalid(pos1, Direction.WEST)) {
-                        info = "key.cgalaxy.error_open_room" + ", x:" + pos1.getX() + ", y:" + pos1.getY() + ", z:" + pos1.getZ();
-                        return false;
-                    }
+
+                BlockPos pos2 = getBlockPos().south(range.get(Direction.SOUTH)).above(range.get(Direction.UP)).east(range.get(Direction.EAST));
+                BlockPos pos3 = getBlockPos().south(range.get(Direction.SOUTH)).below(range.get(Direction.DOWN)).west(range.get(Direction.EAST));
+                BlockPos invalidPos1 = BlockPos.betweenClosedStream(pos2, pos3).filter(blockPos -> isBlockInvalid(blockPos, Direction.SOUTH)).findFirst().orElse(null);
+                if (invalidPos1 != null) {
+                    info = "key.cgalaxy.error_open_room" + ", x:" + invalidPos1.getX() + ", y:" + invalidPos1.getY() + ", z:" + invalidPos1.getZ();
+                    return false;
                 }
             }
-            for (int i = -range.get(Direction.WEST) + 1; i <= range.get(Direction.EAST) - 1; i++) {
-                for (int j = -range.get(Direction.SOUTH) + 1; j <= range.get(Direction.NORTH) - 1; j++) {
-                    BlockPos pos = getBlockPos().below(range.get(Direction.DOWN)).east(i).north(j);
-                    BlockPos pos1 = getBlockPos().above(range.get(Direction.UP)).east(i).north(j);
-                    if (isBlockInvalid(pos, Direction.DOWN)) {
-                        info = "key.cgalaxy.error_open_room" + ", x:" + pos.getX() + ", y:" + pos.getY() + ", z:" + pos.getZ();
-                        return false;
-                    }
-                    if (isBlockInvalid(pos1, Direction.UP)) {
-                        info = "key.cgalaxy.error_open_room" + ", x:" + pos1.getX() + ", y:" + pos1.getY() + ", z:" + pos1.getZ();
-                        return false;
-                    }
+
+            {
+                BlockPos pos = getBlockPos().east(range.get(Direction.EAST)).above(range.get(Direction.UP)).north(range.get(Direction.NORTH));
+                BlockPos pos1 = getBlockPos().east(range.get(Direction.EAST)).below(range.get(Direction.DOWN)).south(range.get(Direction.SOUTH));
+                BlockPos invalidPos = BlockPos.betweenClosedStream(pos, pos1).filter(blockPos -> isBlockInvalid(blockPos, Direction.EAST)).findFirst().orElse(null);
+                if (invalidPos != null) {
+                    info = "key.cgalaxy.error_open_room" + ", x:" + invalidPos.getX() + ", y:" + invalidPos.getY() + ", z:" + invalidPos.getZ();
+                    return false;
+                }
+
+                BlockPos pos2 = getBlockPos().west(range.get(Direction.WEST)).above(range.get(Direction.UP)).north(range.get(Direction.NORTH));
+                BlockPos pos3 = getBlockPos().west(range.get(Direction.WEST)).below(range.get(Direction.DOWN)).south(range.get(Direction.SOUTH));
+                BlockPos invalidPos1 = BlockPos.betweenClosedStream(pos2, pos3).filter(blockPos -> isBlockInvalid(blockPos, Direction.WEST)).findFirst().orElse(null);
+                if (invalidPos1 != null) {
+                    info = "key.cgalaxy.error_open_room" + ", x:" + invalidPos1.getX() + ", y:" + invalidPos1.getY() + ", z:" + invalidPos1.getZ();
+                    return false;
+                }
+            }
+
+            {
+                BlockPos pos = getBlockPos().below(range.get(Direction.DOWN)).east(range.get(Direction.EAST)).north(range.get(Direction.NORTH));
+                BlockPos pos1 = getBlockPos().below(range.get(Direction.DOWN)).west(range.get(Direction.WEST)).south(range.get(Direction.SOUTH));
+                BlockPos invalidPos = BlockPos.betweenClosedStream(pos, pos1).filter(blockPos -> isBlockInvalid(blockPos, Direction.DOWN)).findFirst().orElse(null);
+                if (invalidPos != null) {
+                    info = "key.cgalaxy.error_open_room" + ", x:" + invalidPos.getX() + ", y:" + invalidPos.getY() + ", z:" + invalidPos.getZ();
+                    return false;
+                }
+
+                BlockPos pos2 = getBlockPos().above(range.get(Direction.UP)).east(range.get(Direction.EAST)).north(range.get(Direction.NORTH));
+                BlockPos pos3 = getBlockPos().above(range.get(Direction.UP)).west(range.get(Direction.WEST)).south(range.get(Direction.SOUTH));
+                BlockPos invalidPos1 = BlockPos.betweenClosedStream(pos2, pos3).filter(blockPos -> isBlockInvalid(blockPos, Direction.UP)).findFirst().orElse(null);
+                if (invalidPos1 != null) {
+                    info = "key.cgalaxy.error_open_room" + ", x:" + invalidPos1.getX() + ", y:" + invalidPos1.getY() + ", z:" + invalidPos1.getZ();
+                    return false;
                 }
             }
         }
@@ -161,23 +186,19 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
         BlockState s = level.getBlockState(pos);
         boolean flag = false;
         boolean flag1 = false;
+        boolean flag2 = false;
         if (s.isAir()) {
             flag = true;
         }
         if (!flag && !s.isCollisionShapeFullBlock(level, pos)) {
-            if (s.hasProperty(BlockStateProperties.OPEN)) {
-                //TODO: Check for facings
-                BlockPos pos1 = pos.relative(direction);
-                if (level.getBlockState(pos1).hasProperty(BlockStateProperties.OPEN)) {
-                    flag1 = s.getValue(BlockStateProperties.OPEN) && level.getBlockState(pos1).getValue(BlockStateProperties.OPEN);
-                } else {
-                    flag1 = s.getValue(BlockStateProperties.OPEN);
-                }
-            } else {
-                flag1 = true;
+            flag1 = !s.isFaceSturdy(level, pos, direction);
+            flag2 = !s.isFaceSturdy(level, pos, direction.getOpposite());
+            BlockPos pos1 = pos.relative(direction);
+            if (flag2) {
+                flag2 = !level.getBlockState(pos1).isFaceSturdy(level, pos1, direction.getOpposite());
             }
         }
-        return flag || flag1;
+        return flag || (flag1 && flag2);
     }
 
     @Override
@@ -186,18 +207,95 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
             entity.getPersistentData().putBoolean(CGalaxy.LIVING_PRESSURIZED, true);
         }
         int pSize = 10 * entities.size();
-        tanks[0].drain(pSize, FluidAction.EXECUTE);
+        tanks[0].drain((int) (pSize * getPercentages()[0]), FluidAction.EXECUTE);
+        tanks[1].drain((int) (pSize * getPercentages()[1]), FluidAction.EXECUTE);
+    }
+
+    public float[] getPercentages() {
+        int[] pers = ((RoomPressurizerRecipe) Objects.requireNonNull(getRecipe())).getPercentages();
+        return new float[]{pers[0] / 100f, pers[1] / 100f};
     }
 
     @Override
     protected int getRange() {
-        return 4;
+        return 5;
     }
 
     @Override
     public void executeExtra() {
         emptyBucketSlot(0, 0);
+        emptyBucketSlot(1, 2);
         fillBucketSlot(0, 1);
+        fillBucketSlot(1, 3);
+        if (info.contains("working")) {
+            var list = AABBS.get(level.dimension());
+            if (list == null) {
+                list = new ArrayList<>();
+                list.add(aabb);
+                AABBS.put(level.dimension(), list);
+            } else if (!list.contains(aabb)) {
+                list.add(aabb);
+                AABBS.put(level.dimension(), list);
+            }
+        }
+        if ((info.contains("idle") || info.contains("error")) && hasOxygenReceiver()) {
+            entities.stream().filter(livingEntity -> livingEntity.getPersistentData().getBoolean(CGalaxy.LIVING_PRESSURIZED)).forEach(livingEntity -> {
+                livingEntity.getPersistentData().putBoolean(CGalaxy.LIVING_PRESSURIZED, false);
+            });
+
+            var list = AFFECTED_BLOCKS.get(level.dimension());
+            if (list != null) {
+                List<BlockPos> list1 = new ArrayList<>(AFFECTED_BLOCKS.get(level.dimension()));
+                for (BlockPos pos : list) {
+                    if (aabb.contains(pos.getX(), pos.getY(), pos.getZ())) {
+                        list1.remove(pos);
+                        BlockState state = level.getBlockState(pos);
+                        updateAffectedBlocks(state, pos, level);
+                    }
+                }
+
+                AFFECTED_BLOCKS.put(level.dimension(), list1);
+            }
+
+            var list1 = AABBS.get(level.dimension());
+            if (list1 == null) {
+                return;
+            }
+            list1.remove(aabb);
+            AABBS.put(level.dimension(), list1);
+        }
+    }
+
+    public boolean hasOxygenReceiver() {
+        boolean flag = false;
+        var list = AFFECTED_BLOCKS.get(level.dimension());
+        if (list != null && aabb != null) {
+            for (BlockPos pos : list) {
+                flag = aabb.contains(pos.getX(), pos.getY(), pos.getZ());
+                if (flag) break;
+            }
+        }
+        return entities != null && (flag || !entities.isEmpty());
+    }
+
+    public static void updateAffectedBlocks(BlockState state, BlockPos pos, Level level) {
+        Block block = state.getBlock();
+        if (BlockTags.FIRE.contains(block))
+            level.removeBlock(pos, false);
+
+        else if (BlockTags.CAMPFIRES.contains(block) && CampfireBlock.isLitCampfire(state)) {
+            level.levelEvent(null, 1009, pos, 0);
+            CampfireBlock.dowse(null, level, pos, state);
+            level.setBlockAndUpdate(pos, state.setValue(CampfireBlock.LIT, Boolean.FALSE));
+        } else if (BlockTags.CANDLES.contains(block) && AbstractCandleBlock.isLit(state))
+            AbstractCandleBlock.extinguish(null, state, level, pos);
+
+        else if (BlockTags.createOptional(CGalaxy.location("torches")).contains(block)) {
+            BlockState state1 = state.hasProperty(BlockStateProperties.HORIZONTAL_FACING) ?
+                    CGBlockInit.COAL_WALL_TORCH.get().defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, state.getValue(BlockStateProperties.HORIZONTAL_FACING)) :
+                    CGBlockInit.COAL_TORCH.get().defaultBlockState();
+            level.setBlock(pos, state1, 2);
+        }
     }
 
     @Nullable
@@ -210,6 +308,27 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
     public void load(CompoundTag nbt) {
         super.load(nbt);
         ListTag list = nbt.getList("Dimensions", Tag.TAG_COMPOUND);
+        range = deserializeRange(list);
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag pTag) {
+        super.saveAdditional(pTag);
+        pTag.put("Dimensions", serializeRange(range));
+    }
+
+    public static ListTag serializeRange(Map<Direction, Integer> range) {
+        ListTag list = new ListTag();
+        for (Direction i : Direction.values()) {
+            CompoundTag tag = new CompoundTag();
+            tag.putInt(i.getName(), range.get(i));
+            list.add(tag);
+        }
+        return list;
+    }
+
+    public static Map<Direction, Integer> deserializeRange(ListTag list) {
+        Map<Direction, Integer> range = new HashMap<>();
         for (int i = 0; i < list.size(); i++) {
             CompoundTag tag = list.getCompound(i);
             for (Direction j : Direction.values()) {
@@ -218,17 +337,6 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
                 }
             }
         }
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
-        ListTag nbt = new ListTag();
-        for (Direction i : Direction.values()) {
-            CompoundTag tag = new CompoundTag();
-            tag.putInt(i.getName(), range.get(i));
-            nbt.add(tag);
-        }
-        pTag.put("Dimensions", nbt);
+        return range;
     }
 }

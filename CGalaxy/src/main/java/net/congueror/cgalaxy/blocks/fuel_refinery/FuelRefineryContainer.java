@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.blocks.fuel_refinery;
 
 import net.congueror.cgalaxy.init.CGContainerInit;
-import net.congueror.clib.api.machine.fluid.AbstractFluidContainer;
+import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidContainer;
 import net.congueror.clib.items.UpgradeItem;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

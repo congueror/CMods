@@ -83,14 +83,15 @@ public class OverworldOrbitEffects extends AbstractEffects {
                 }
 
                 //Earth
+                size = 140.0F;
                 RenderSystem.enableTexture();
                 RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 poseStack.pushPose();
                 poseStack.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
                 poseStack.mulPose(Vector3f.XP.rotationDegrees(180.0F));
+                poseStack.translate(0, 0, 0);
                 Matrix4f matrix4f2 = poseStack.last().pose();
-                size = 140.0F;
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderTexture(0, EARTH);
                 bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);

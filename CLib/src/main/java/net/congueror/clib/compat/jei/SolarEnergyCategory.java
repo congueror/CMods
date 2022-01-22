@@ -6,14 +6,12 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
-import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
-import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.congueror.clib.CLib;
-import net.congueror.clib.blocks.SolarGeneratorRecipe;
-import net.congueror.clib.blocks.SolarGeneratorScreen;
+import net.congueror.clib.blocks.solar_generator.SolarGeneratorRecipe;
+import net.congueror.clib.blocks.solar_generator.SolarGeneratorScreen;
 import net.congueror.clib.init.CLBlockInit;
 import net.congueror.clib.init.CLItemInit;
 import net.congueror.clib.init.CLRecipeSerializerInit;
@@ -28,8 +26,8 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.congueror.clib.api.machine.item.AbstractItemScreen.elementHeight;
-import static net.congueror.clib.api.machine.item.AbstractItemScreen.elementWidth;
+import static net.congueror.clib.blocks.abstract_machine.item.AbstractItemScreen.elementHeight;
+import static net.congueror.clib.blocks.abstract_machine.item.AbstractItemScreen.elementWidth;
 
 public class SolarEnergyCategory implements IRecipeCategory<SolarGeneratorRecipe> {
     IGuiHelper helper;

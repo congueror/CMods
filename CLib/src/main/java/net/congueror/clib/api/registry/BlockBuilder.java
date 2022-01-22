@@ -3,7 +3,7 @@ package net.congueror.clib.api.registry;
 import net.congueror.clib.api.data.BlockModelDataProvider;
 import net.congueror.clib.api.data.ItemModelDataProvider;
 import net.congueror.clib.api.data.LootTableDataProvider;
-import net.congueror.clib.api.objects.blocks.ICLibBlock;
+import net.congueror.clib.blocks.generic.ICLibBlock;
 import net.congueror.clib.util.ModCreativeTabs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -57,6 +58,7 @@ public class BlockBuilder {
     public final Map<String, String> locale = new HashMap<>();
 
     public boolean generateBlockItem = true;
+    private Function<Block, BlockItem> item = null;
     public Item.Properties itemProperties = new Item.Properties().tab(ModCreativeTabs.BlocksIG.instance);
     public int burnTime;
     public int containerType;
@@ -124,6 +126,9 @@ public class BlockBuilder {
                     return super.getContainerItem(itemStack);
                 }
             };
+            if (this.item != null) {
+                item = this.item.apply(block);
+            }
             new ItemBuilder(name, item)
                     .withItemModel(null)
                     .build(ItemBuilder.REGISTERS.get(modid));
@@ -230,6 +235,7 @@ public class BlockBuilder {
 
     /**
      * Allows you to add a custom loot table to this block. By default, unless this method is called, a simple self-drop loot table is generated.
+     * Passing in null will not generate one.
      *
      * @param ctx A {@link BiConsumer} of types {@link LootTableDataProvider} and {@link Block}.
      *            You can find many useful methods for generating item models inside the {@link LootTableDataProvider} class
@@ -269,6 +275,14 @@ public class BlockBuilder {
      */
     public BlockBuilder withGeneratedBlockItem(boolean shouldGenerate) {
         this.generateBlockItem = shouldGenerate;
+        return this;
+    }
+
+    /**
+     *
+     */
+    public BlockBuilder withItem(Function<Block, BlockItem> item) {
+        this.item = item;
         return this;
     }
 

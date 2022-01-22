@@ -1,6 +1,0 @@
-{
-  "type": "cgalaxy:room_pressurizing",
-  "ingredient": {
-    "fluid": "cgalaxy:oxygen_still"
-  }
-}

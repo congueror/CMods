@@ -118,16 +118,16 @@ public class OxygenMaskItem extends SpaceSuitItem {
                         SpaceSuitUtils.deserializeContents(player)
                                 .forEach(itemStack -> {
                                     if (itemStack.getItem() instanceof HeatProtectionUnitItem item) {
-                                        heat.add(0, item.getEnergy(itemStack));
-                                        heat.add(1, item.getCapacity(itemStack));
+                                        heat.add(0, item.getEnergyStored(itemStack));
+                                        heat.add(1, item.getMaxEnergyStored(itemStack));
                                     }
                                     if (itemStack.getItem() instanceof ColdProtectionUnitItem item) {
-                                        cold.add(0, item.getEnergy(itemStack));
-                                        cold.add(1, item.getCapacity(itemStack));
+                                        cold.add(0, item.getEnergyStored(itemStack));
+                                        cold.add(1, item.getMaxEnergyStored(itemStack));
                                     }
                                     if (itemStack.getItem() instanceof RadiationProtectionUnitItem item) {
-                                        radiation.add(0, item.getEnergy(itemStack));
-                                        radiation.add(1, item.getCapacity(itemStack));
+                                        radiation.add(0, item.getEnergyStored(itemStack));
+                                        radiation.add(1, item.getMaxEnergyStored(itemStack));
                                     }
                                 });
                         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);

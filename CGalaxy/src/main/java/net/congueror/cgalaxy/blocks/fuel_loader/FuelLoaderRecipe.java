@@ -44,13 +44,8 @@ public class FuelLoaderRecipe implements FluidRecipe<IItemFluidInventory> {
     }
 
     @Override
-    public boolean fluidMatches(IItemFluidInventory handler) {
-        return this.ingredient.test(handler.getFluidInTank(0));
-    }
-
-    @Override
     public boolean matches(@Nonnull IItemFluidInventory pContainer, @Nonnull Level pLevel) {
-        return fluidMatches(pContainer);
+        return this.ingredient.test(pContainer.getFluidInTank(0));
     }
 
     @Nonnull

@@ -35,7 +35,7 @@ public class PacketSyncMap {
 
     public boolean handle(Supplier<NetworkEvent.Context> ctx) {
         Minecraft mc = Minecraft.getInstance();
-        if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
+        if (ctx.get().getDirection().equals(NetworkDirection.PLAY_TO_CLIENT)) {
             ctx.get().enqueueWork(() -> {
                 Player player = mc.player;
                 if (windowId != -1 && player != null) {

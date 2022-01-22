@@ -3,12 +3,11 @@ package net.congueror.cgalaxy.gui.galaxy_map;
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.networking.PacketSyncMap;
-import net.congueror.clib.api.machine.AbstractInventoryContainer;
+import net.congueror.clib.blocks.abstract_machine.AbstractInventoryContainer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraftforge.network.PacketDistributor;
 
 import javax.annotation.Nonnull;

@@ -1,6 +1,6 @@
 package net.congueror.cgalaxy.blocks.oxygen_compressor;
 
-import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
+import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;

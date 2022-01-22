@@ -78,6 +78,17 @@ public class BlockModelDataProvider extends BlockStateProvider {
         simpleBlockItem(block, models().getExistingFile(new ResourceLocation(modid, Objects.requireNonNull(block.getRegistryName()).getPath())));
     }
 
+    /**
+     * Block model for torch
+     */
+    public void torchBlock(Block block, String texture) {
+        simpleBlock(block, models().torch(block.getRegistryName().getPath(), new ResourceLocation(texture)));
+    }
+
+    public void wallTorchBlock(Block block, String texture) {
+        horizontalBlock(block, models().torchWall(block.getRegistryName().getPath(), new ResourceLocation(texture)));
+    }
+
     @Override
     protected void registerStatesAndModels() {
         BlockBuilder.OBJECTS.get(modid).forEach(builder -> {

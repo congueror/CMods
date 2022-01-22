@@ -1,0 +1,11 @@
+{
+  "type": "cgalaxy:room_pressurizing",
+  "ingredient1": {
+    "fluid": "cgalaxy:oxygen_still"
+  },
+  "ingredient2": {
+    "fluid": "cgalaxy:nitrogen_still"
+  },
+  "percentage1": 20,
+  "percentage2": 80
+}

@@ -2,8 +2,7 @@ package net.congueror.clib.api.data;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
-import net.congueror.clib.api.machine.item.AbstractItemBlock;
+import net.congueror.clib.blocks.abstract_machine.item.AbstractItemBlock;
 import net.congueror.clib.api.registry.BlockBuilder;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;

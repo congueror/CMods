@@ -218,7 +218,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
                     button.setYTexStart(yOffset);
                     button.setOnTooltip((pButton, pPoseStack, pMouseX, pMouseY) -> this.renderErrorTooltip(pPoseStack, pMouseX, pMouseY, finalMessage));
                 } else if (button.getType().equals(GalacticMapButton.Type.ORBITEE)) {
-                    button.setXY(calculateMidX(), calculateMidY());
+                    button.setPosition(calculateMidX(), calculateMidY());
                     button.setWidth(calculateSize(32));
                     button.setHeight(calculateSize(32));
                     button.setTextureWidth(calculateSize(32));
@@ -227,11 +227,11 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
                 } else if (button.getType().equals(GalacticMapButton.Type.SPACE_STATION)) {
                     if (spaceStationScreenOpen) {
                         button.setXTexStart(141);
-                        button.setXY(button.x, this.topPos + 187 + 122);
+                        button.setPosition(button.x, this.topPos + 187 + 122);
                         button.setOnPress(pButton -> spaceStationScreenOpen = false);
                     } else {
                         button.setXTexStart(129);
-                        button.setXY(button.x, this.topPos + 187);
+                        button.setPosition(button.x, this.topPos + 187);
                         button.setOnPress(pButton -> spaceStationScreenOpen = true);
                     }
                 }
@@ -532,6 +532,16 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
         if (canLaunch(obj).contains("yep")) {
             color = new int[]{0, 210, 0, 255};
         }
-        RenderingHelper.drawEllipse(buffer, x, y, radiusIn * zoom, radiusOut * zoom, color, 1.0f, 0.6f);
+        RenderingHelper.drawEllipse(buffer, x, y, radiusIn * zoom, radiusOut * zoom, color, color, 1.0f, 0.6f);
+    }
+
+    public void drawAsteroidBelt(int x, int y, int radiusIn, int radiusOut, BufferBuilder buffer, GalacticObjectBuilder.GalacticObject<?> obj) {
+        int[] out = {210, 0, 0, 255};
+        int[] in = {210, 0, 0, 180};
+        if (canLaunch(obj).contains("yep")) {
+            out = new int[]{0, 210, 0, 255};
+            in = new int[]{0, 210, 0, 180};
+        }
+        RenderingHelper.drawEllipse(buffer, x, y, radiusIn * zoom, radiusOut * zoom, out, in, 1.0f, 0.6f);
     }
 }

@@ -1,7 +1,7 @@
 package net.congueror.clib.util.events;
 
 import net.congueror.clib.CLib;
-import net.congueror.clib.blocks.SolarGeneratorScreen;
+import net.congueror.clib.blocks.solar_generator.SolarGeneratorScreen;
 import net.congueror.clib.init.CLBlockInit;
 import net.congueror.clib.init.CLContainerInit;
 import net.minecraft.ChatFormatting;

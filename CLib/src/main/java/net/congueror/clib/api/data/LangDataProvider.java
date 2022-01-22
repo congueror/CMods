@@ -53,7 +53,8 @@ public class LangDataProvider extends LanguageProvider {
         if (ItemBuilder.OBJECTS.get(modid) != null)
             ItemBuilder.OBJECTS.get(modid).stream().filter(itemBuilder -> itemBuilder.locale.containsKey(locale)).forEach(builder -> add(builder.getItem(), builder.locale.get(locale)));
         if (BlockBuilder.OBJECTS.get(modid) != null)
-            BlockBuilder.OBJECTS.get(modid).stream().filter(blockBuilder -> blockBuilder.locale.containsKey(locale)).forEach(blockBuilder -> add(blockBuilder.block, blockBuilder.locale.get(locale)));
+            BlockBuilder.OBJECTS.get(modid).stream().filter(blockBuilder -> blockBuilder.locale.containsKey(locale))
+                    .forEach(blockBuilder -> add(blockBuilder.block, blockBuilder.locale.get(locale)));
         if (FluidBuilder.OBJECTS.get(modid) != null)
             FluidBuilder.OBJECTS.get(modid).stream().filter(fluidBuilder -> fluidBuilder.locale.containsKey(locale)).forEach(fluidBuilder -> add(fluidBuilder.getStill().get().getAttributes().getTranslationKey(), fluidBuilder.locale.get(locale)));
     }

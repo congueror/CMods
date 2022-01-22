@@ -1,8 +1,8 @@
 package net.congueror.clib.init;
 
 import net.congueror.clib.CLib;
-import net.congueror.clib.blocks.SolarGeneratorBlockEntity;
-import net.congueror.clib.blocks.SolarGeneratorContainer;
+import net.congueror.clib.blocks.solar_generator.SolarGeneratorBlockEntity;
+import net.congueror.clib.blocks.solar_generator.SolarGeneratorContainer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;

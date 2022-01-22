@@ -3,48 +3,45 @@ package net.congueror.cgalaxy.util.events;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.api.events.AddVillagerProfessionsEvent;
 import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
+import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerBlockEntity;
 import net.congueror.cgalaxy.commands.CGCommands;
 import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.entity.AstroEnderman;
 import net.congueror.cgalaxy.entity.AstroZombie;
 import net.congueror.cgalaxy.entity.villagers.LunarVillager;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
+import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGCarverInit;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
-import net.congueror.cgalaxy.item.AbstractRocketItem;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.util.CGGalacticObjects;
-import net.congueror.cgalaxy.util.DamageSources;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
 import net.congueror.cgalaxy.world.CGBiomes;
 import net.congueror.cgalaxy.world.CGDimensions;
 import net.congueror.cgalaxy.world.CGFeatureGen;
 import net.congueror.clib.api.events.BlockOnPlacedEvent;
-import net.congueror.clib.api.events.PlayerSetupAnimationEvent;
-import net.congueror.clib.util.RenderingHelper;
+import net.congueror.clib.api.events.CropGrowEvent;
+import net.congueror.clib.api.events.SaplingAdvanceEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FireBlock;
-import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.ForgeMod;
+import net.minecraft.world.level.block.AbstractCandleBlock;
+import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -52,7 +49,6 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class CGCommonEvents {
@@ -81,6 +77,12 @@ public class CGCommonEvents {
 
     @Mod.EventBusSubscriber(modid = CGalaxy.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class ForgeCommonEvents {
+
+        @SubscribeEvent
+        public static void attachWorldCapability(AttachCapabilitiesEvent<Level> e) {
+            //TODO
+        }
+
         @SubscribeEvent
         public static void registerCommands(RegisterCommandsEvent e) {
             CGCommands.register(e.getDispatcher());
@@ -90,69 +92,8 @@ public class CGCommonEvents {
         public static void onPlayerTick(TickEvent.PlayerTickEvent e) {
             Minecraft mc = Minecraft.getInstance();
             Player player = e.player;
-            Level level = player.getCommandSenderWorld();
-            double x = player.getX();
-            double y = player.getY();
-            double z = player.getZ();
 
-            List<Entity> entities = level.getEntitiesOfClass(Entity.class, new AABB(x - (192 / 2d), y - (192 / 2d), z - (192 / 2d), x + (192 / 2d), y + (192 / 2d), z + (192 / 2d)));
-            for (Entity entity : entities) {
-                CGDimensionBuilder.DimensionObject obj = CGDimensionBuilder.getObjectFromKey(level.dimension());
-                if (obj != null) {
-                    if (entity instanceof LivingEntity le) {
-                        boolean hasOxygen = SpaceSuitUtils.hasOxygen(le, obj);
-                        SpaceSuitUtils.drainTanks(le);
-                        SpaceSuitUtils.drainProtection(le, player.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE), player.getPersistentData().getFloat(CGalaxy.LIVING_RADIATION));
-
-                        AttributeMap manager = le.getAttributes();
-                        Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(obj.getGravity());
-                        entity.fallDistance = 1;
-                        if (!hasOxygen) {
-                            entity.hurt(DamageSources.NO_OXYGEN, 2.0f);
-                        }
-
-                        le.getPersistentData().putDouble(CGalaxy.LIVING_AIR_PRESSURE, obj.getAirPressure());
-                        if (RenderingHelper.isDayTime(level)) {
-                            le.getPersistentData().putInt(CGalaxy.LIVING_TEMPERATURE, obj.getDayTemp());
-                        } else {
-                            le.getPersistentData().putInt(CGalaxy.LIVING_TEMPERATURE, obj.getNightTemp());
-                        }
-                        le.getPersistentData().putFloat(CGalaxy.LIVING_RADIATION, obj.getRadiation());
-                        if (!SpaceSuitUtils.hasHeatProtection(le, le.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE))) {
-                            le.hurt(DamageSources.HEAT, 3.0f);
-                        }
-                        if (!SpaceSuitUtils.hasColdProtection(le, le.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE))) {
-                            le.hurt(DamageSources.COLD, 3.0f);
-                        }
-                        if (!SpaceSuitUtils.hasRadiationProtection(le, le.getPersistentData().getFloat(CGalaxy.LIVING_RADIATION))) {
-                            le.hurt(DamageSources.NO_RADIATION, 1.0f);
-                        }
-
-                        if (obj.getRadiation() < 100) {
-                            entity.getPersistentData().putInt(CGalaxy.LIVING_RADIATION_TICK, 0);
-                        }
-                        if (obj.getBreathable()) {
-                            entity.getPersistentData().putInt(CGalaxy.LIVING_OXYGEN_TICK, 0);
-                        }
-                        if (le.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE) < 60) {
-                            entity.getPersistentData().putInt(CGalaxy.LIVING_HEAT_TICK, 0);
-                        }
-                        if (le.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE) > -60) {
-                            entity.getPersistentData().putInt(CGalaxy.LIVING_COLD_TICK, 0);
-                        }
-                    }
-
-                    if (entity instanceof ItemEntity) {
-                        //entity.setDeltaMovement(0.0D, -obj.getGravity() / 4.0D, 0.0D);
-                        if (level.dimension() == CGDimensions.MOON.getDim() && entity.getPersistentData().getDouble(CGalaxy.ITEM_GRAVITY) <= 1 && entity.getDeltaMovement().y() <= -0.1) {
-                            entity.getPersistentData().putDouble(CGalaxy.ITEM_GRAVITY, 2);
-                            entity.setDeltaMovement((entity.getDeltaMovement().x()), ((entity.getDeltaMovement().y()) + (obj.getGravity() * 2.5)),
-                                    (entity.getDeltaMovement().z()));
-                            entity.getPersistentData().putDouble(CGalaxy.ITEM_GRAVITY, 0);
-                        }
-                    }
-                }
-            }
+            SpaceSuitUtils.tickPlayer(e);
 
             if (player.getY() >= 600 && player.getVehicle() instanceof AbstractRocket && mc.screen == null) {
                 if (player instanceof ServerPlayer player1) {
@@ -179,27 +120,57 @@ public class CGCommonEvents {
 
         @SubscribeEvent
         public static void onEntityPlaceBlock(BlockOnPlacedEvent.Post e) {
-            if (CGDimensionBuilder.getObjectFromKey(e.getLevel().dimension()) != null) {
-                if (!CGDimensionBuilder.getObjectFromKey(e.getLevel().dimension()).getBreathable()) {
-                    List<Block> torches = new ArrayList<>();
-                    torches.add(Blocks.TORCH);
-                    torches.add(Blocks.SOUL_TORCH);
-                    torches.add(Blocks.WALL_TORCH);
-                    torches.add(Blocks.SOUL_WALL_TORCH);
-                    if (torches.contains(e.getNewBlock()))
-                        e.getLevel().setBlock(e.getPos(), Blocks.DIAMOND_BLOCK.defaultBlockState(), 2);
-                    if (e.getNewBlock() instanceof FireBlock)
-                        e.getLevel().setBlock(e.getPos(), Blocks.AIR.defaultBlockState(), 2);
+            Level level = e.getLevel();
+            BlockState newState = e.getLevel().getBlockState(e.getPos());
+            if (
+                    BlockTags.FIRE.contains(e.getNewBlock()) ||
+                            (BlockTags.CAMPFIRES.contains(e.getNewBlock()) && CampfireBlock.isLitCampfire(newState)) ||
+                            (BlockTags.CANDLES.contains(e.getNewBlock()) && AbstractCandleBlock.isLit(newState)) ||
+                            (BlockTags.createOptional(CGalaxy.location("torches")).contains(e.getNewBlock()))
+            ) {
+                CGDimensionBuilder.DimensionObject object = CGDimensionBuilder.getObjectFromKey(level.dimension());
+                if (object != null) {
+                    if (!object.getBreathable()) {
+                        var list = RoomPressurizerBlockEntity.AABBS.get(level.dimension());
+                        if (list != null && list.stream().anyMatch(aabb -> aabb.contains(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()))) {
+                            var list1 = RoomPressurizerBlockEntity.AFFECTED_BLOCKS.get(level.dimension());
+                            if (list1 == null) list1 = new ArrayList<>();
+                            if (!list1.contains(e.getPos())) list1.add(e.getPos());
+                            RoomPressurizerBlockEntity.AFFECTED_BLOCKS.put(level.dimension(), list1);
+                        } else {
+                            RoomPressurizerBlockEntity.updateAffectedBlocks(newState, e.getPos(), level);
+                        }
+                    }
                 }
             }
         }
 
         @SubscribeEvent
-        public static void setupPlayerRotationAngles(PlayerSetupAnimationEvent.Post e) {
-            if (e.getPlayer().getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof AbstractRocketItem) {
-                e.getModelPlayer().leftArm.xRot = 172.8F;
-                e.getModelPlayer().rightArm.xRot = 172.8F;
+        public static void onAdvanceTree(SaplingAdvanceEvent e) {
+            Level level = e.getLevel();
+            Event.Result result = Event.Result.ALLOW;
+            if (!Objects.requireNonNull(CGDimensionBuilder.getObjectFromKey(level.dimension())).getBreathable()) {
+                result = Event.Result.DENY;
+                var list = RoomPressurizerBlockEntity.AABBS.get(level.dimension());
+                if (list != null && list.stream().anyMatch(aabb -> aabb.contains(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()))) {
+                    result = Event.Result.ALLOW;
+                }
             }
+            e.setResult(result);
+        }
+
+        @SubscribeEvent
+        public static void onCropGrow(CropGrowEvent e) {
+            Level level = e.getLevel();
+            Event.Result result = Event.Result.ALLOW;
+            if (!Objects.requireNonNull(CGDimensionBuilder.getObjectFromKey(level.dimension())).getBreathable()) {
+                result = Event.Result.DENY;
+                var list = RoomPressurizerBlockEntity.AABBS.get(level.dimension());
+                if (list != null && list.stream().anyMatch(aabb -> aabb.contains(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()))) {
+                    result = Event.Result.ALLOW;
+                }
+            }
+            e.setResult(result);
         }
     }//ForgeCommonEvents End
 }

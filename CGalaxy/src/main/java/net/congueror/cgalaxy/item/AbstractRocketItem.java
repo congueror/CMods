@@ -3,7 +3,7 @@ package net.congueror.cgalaxy.item;
 import net.congueror.cgalaxy.blocks.launch_pad.LaunchPadBlock;
 import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.init.CGBlockInit;
-import net.congueror.clib.api.objects.items.CLItem;
+import net.congueror.clib.items.generic.CLItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;

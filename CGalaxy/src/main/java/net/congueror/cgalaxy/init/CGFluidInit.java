@@ -41,10 +41,20 @@ public class CGFluidInit {
     public static final FluidBuilder.FluidObject OXYGEN = new FluidBuilder("oxygen", ForgeFlowingFluid.Source::new, ForgeFlowingFluid.Flowing::new)
             .withColor(0xFFADD8E6)
             .withGaseousForm()
-            .withDensity(1)
+            .withDensity(-1)
             .withTemperature(437)
             .withBucket(() -> CGItemInit.OXYGEN_BUCKET.get())
             .withNewFluidTag("forge:oxygen")
             .withTranslation("Oxygen")
+            .build(FLUIDS);
+
+    public static final FluidBuilder.FluidObject NITROGEN = new FluidBuilder("nitrogen", ForgeFlowingFluid.Source::new, ForgeFlowingFluid.Flowing::new)
+            .withColor(0xFFFFFFFF)
+            .withGaseousForm()
+            .withDensity(-1)
+            .withTemperature(437)
+            .withBucket(() -> CGItemInit.NITROGEN_BUCKET.get())
+            .withNewFluidTag("forge:nitrogen")
+            .withTranslation("Nitrogen")
             .build(FLUIDS);
 }

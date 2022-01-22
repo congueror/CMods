@@ -14,16 +14,22 @@ import net.congueror.cgalaxy.client.renderers.*;
 import net.congueror.cgalaxy.client.renderers.layers.SpaceSuitLayer;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapScreen;
 import net.congueror.cgalaxy.gui.space_suit.SpaceSuitScreen;
+import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
+import net.congueror.cgalaxy.item.AbstractRocketItem;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.networking.PacketLaunchSequence;
 import net.congueror.cgalaxy.networking.PacketOpenSpaceSuitMenu;
 import net.congueror.cgalaxy.util.KeyMappings;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
+import net.congueror.clib.api.events.PlayerSetupAnimationEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.InteractionHand;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -49,6 +55,9 @@ public class CGClientEvents {
             MenuScreens.register(CGContainerInit.ROOM_PRESSURIZER.get(), RoomPressurizerScreen::new);
             MenuScreens.register(CGContainerInit.GALAXY_MAP.get(), GalaxyMapScreen::new);
             MenuScreens.register(CGContainerInit.SPACE_SUIT.get(), SpaceSuitScreen::new);
+
+            ItemBlockRenderTypes.setRenderLayer(CGBlockInit.COAL_TORCH.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(CGBlockInit.COAL_WALL_TORCH.get(), RenderType.cutout());
 
             OverlayRegistry.registerOverlayAbove(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, "cgalaxy_rocket_y_element", new RocketHUDOverlay());
 
@@ -108,6 +117,14 @@ public class CGClientEvents {
                         }
                     }
                 }
+            }
+        }
+
+        @SubscribeEvent
+        public static void setupPlayerRotationAngles(PlayerSetupAnimationEvent.Post e) {
+            if (e.getPlayer().getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof AbstractRocketItem) {
+                e.getModelPlayer().leftArm.xRot = 172.8F;
+                e.getModelPlayer().rightArm.xRot = 172.8F;
             }
         }
     }

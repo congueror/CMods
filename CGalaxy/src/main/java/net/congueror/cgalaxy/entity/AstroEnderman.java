@@ -30,4 +30,14 @@ public class AstroEnderman extends EnderMan implements CGEntity {
     public boolean canBreath(CGDimensionBuilder.DimensionObject object) {
         return true;
     }
+
+    @Override
+    public boolean canSurviveTemperature(int temperature) {
+        return true;
+    }
+
+    @Override
+    public boolean canSurviveRadiation(float radiation) {
+        return true;
+    }
 }

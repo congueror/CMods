@@ -1,6 +1,6 @@
 package net.congueror.clib.items;
 
-import net.congueror.clib.api.objects.items.CLItem;
+import net.congueror.clib.items.generic.CLItem;
 import net.congueror.clib.init.CLItemInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;

@@ -193,11 +193,12 @@ public class RenderingHelper {
      *
      * @param radiusIn      Radius of the inner circle.
      * @param radiusOut     Radius of the outer circle.
-     * @param color         An array of integers representing rgba.
+     * @param colorOut      An array of integers representing rgba for the outer ring.
+     * @param colorIn       An array of integers representing rgba for the inner ring.
      * @param xEccentricity The eccentricity of the ellipse on the x-axis, default being 1.0f.(Note: May not work correctly if both x and y eccentricities are non-1 values)
      * @param yEccentricity The eccentricity of the ellipse on the y-axis, default being 1.0f.(Note: May not work correctly if both x and y eccentricities are non-1 values)
      */
-    public static void drawEllipse(BufferBuilder buffer, int x, int y, float radiusIn, float radiusOut, int[] color, float xEccentricity, float yEccentricity) {
+    public static void drawEllipse(BufferBuilder buffer, int x, int y, float radiusIn, float radiusOut, int[] colorOut, int[] colorIn, float xEccentricity, float yEccentricity) {
         float endAngle = (float) (0.75 * TWO_PI + Math.PI);
         float startAngle = (float) (-0.25 * TWO_PI + Math.PI);
         float angle = endAngle - startAngle;
@@ -218,10 +219,10 @@ public class RenderingHelper {
             float pos2OutX = x + radiusOut * (float) Math.cos(angle2) * xEccentricity;
             float pos2OutY = y + radiusOut * (float) Math.sin(angle2) * yEccentricity;
 
-            buffer.vertex(pos1OutX, pos1OutY, 0).color(color[0], color[1], color[2], color[3]).endVertex();
-            buffer.vertex(pos1InX, pos1InY, 0).color(color[0], color[1], color[2], color[3]).endVertex();
-            buffer.vertex(pos2InX, pos2InY, 0).color(color[0], color[1], color[2], color[3]).endVertex();
-            buffer.vertex(pos2OutX, pos2OutY, 0).color(color[0], color[1], color[2], color[3]).endVertex();
+            buffer.vertex(pos1OutX, pos1OutY, 0).color(colorOut[0], colorOut[1], colorOut[2], colorOut[3]).endVertex();
+            buffer.vertex(pos1InX, pos1InY, 0).color(colorIn[0], colorIn[1], colorIn[2], colorIn[3]).endVertex();
+            buffer.vertex(pos2InX, pos2InY, 0).color(colorIn[0], colorIn[1], colorIn[2], colorIn[3]).endVertex();
+            buffer.vertex(pos2OutX, pos2OutY, 0).color(colorOut[0], colorOut[1], colorOut[2], colorOut[3]).endVertex();
         }
     }
 
@@ -261,20 +262,18 @@ public class RenderingHelper {
                 double d16 = Math.cos(d14);
 
                 for (int j = 0; j < 4; ++j) {
-                    double d17 = 0.0D;
-                    double d18 = ((j & 2) - 1) * d3;
-                    double d19 = ((j + 1 & 2) - 1) * d3;
-                    double d20 = 0.0D;
-                    double d21 = d18 * d16 - d19 * d15;
-                    double d22 = d19 * d16 + d18 * d15;
-                    double d23 = d21 * d12 + 0.0D * d13;
-                    double d24 = 0.0D * d12 - d21 * d13;
-                    double d25 = d24 * d9 - d22 * d10;
-                    double d26 = d22 * d9 + d24 * d10;
+                    double d17 = ((j & 2) - 1) * d3;
+                    double d18 = ((j + 1 & 2) - 1) * d3;
+                    double d19 = d17 * d16 - d18 * d15;
+                    double d20 = d18 * d16 + d17 * d15;
+                    double d21 = d19 * d12 + 0.0D * d13;
+                    double d22 = 0.0D * d12 - d19 * d13;
+                    double d23 = d22 * d9 - d20 * d10;
+                    double d24 = d20 * d9 + d22 * d10;
 
-                    double x = d5 + d25;
-                    double y = d6 + d23;
-                    double z = d7 + d26;
+                    double x = d5 + d23;
+                    double y = d6 + d21;
+                    double z = d7 + d24;
                     bufferBuilder.vertex(x, y, z).endVertex();
                 }
             }

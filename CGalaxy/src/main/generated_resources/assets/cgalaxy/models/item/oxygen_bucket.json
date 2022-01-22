@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "cgalaxy:item/oxygen_bucket"
-  }
+  "parent": "forge:item/bucket",
+  "loader": "forge:bucket",
+  "fluid": "cgalaxy:oxygen_still",
+  "flipGas": true,
+  "applyTint": true
 }

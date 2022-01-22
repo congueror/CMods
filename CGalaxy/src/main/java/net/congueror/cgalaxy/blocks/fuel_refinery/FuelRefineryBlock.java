@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.blocks.fuel_refinery;
 
 
-import net.congueror.clib.api.machine.fluid.AbstractFluidBlock;
+import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;

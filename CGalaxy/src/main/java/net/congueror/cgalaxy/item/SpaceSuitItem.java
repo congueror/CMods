@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.item;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.capabilities.ItemItemHandlerWrapper;
+import net.congueror.clib.api.capability.ItemItemHandlerWrapper;
 import net.congueror.cgalaxy.client.models.SpaceSuitModel;
 import net.congueror.cgalaxy.init.CGSoundInit;
 import net.minecraft.client.model.HumanoidModel;

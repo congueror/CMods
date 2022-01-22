@@ -2,7 +2,7 @@ package net.congueror.cgalaxy.gui.space_suit;
 
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.cgalaxy.item.*;
-import net.congueror.clib.api.machine.AbstractInventoryContainer;
+import net.congueror.clib.blocks.abstract_machine.AbstractInventoryContainer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

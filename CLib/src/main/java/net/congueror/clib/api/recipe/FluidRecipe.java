@@ -20,12 +20,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public interface FluidRecipe<C extends IItemFluidInventory> extends ItemRecipe<C> {
-    /**
-     * Tests whether the fluid in a tank matches the recipe. You can do this by returning {@link FluidIngredient#test(FluidStack)}.
-     * If your recipe's ingredient is a fluid make sure to call this method in the {@link #matches(net.minecraft.world.Container, net.minecraft.world.level.Level)} method otherwise you can just return true.
-     * @return Whether the {@link FluidStack} in the given {@link IItemFluidInventory} matches the recipe's {@link FluidIngredient}.
-     */
-    boolean fluidMatches(C handler);
 
     /**
      * A collection of fluid stacks which is the result of the recipe. Override this if you have multiple outputs.

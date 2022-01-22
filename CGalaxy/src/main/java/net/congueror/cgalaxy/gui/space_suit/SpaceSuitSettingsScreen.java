@@ -4,38 +4,34 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.util.CGConfig;
+import net.congueror.clib.CLib;
+import net.congueror.clib.blocks.abstract_machine.AbstractSettingsScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ImageButton;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class SpaceSuitSettingsScreen extends Screen {
-    private static final int PAGE_NUMBER = 1;
+public class SpaceSuitSettingsScreen extends AbstractSettingsScreen {
 
-    int leftPos = (this.width - 110) / 2;
-    int topPos = (this.height - 140) / 2;
-
+    ResourceLocation blank = new ResourceLocation(CLib.MODID, "textures/gui/blank.png");
     int temperature = 0;
     int radiation = 0;
     int airPressure = 0;
     int color = 0;
 
     protected SpaceSuitSettingsScreen() {
-        super(new TranslatableComponent("gui.cgalaxy.space_suit_settings"));
+        super(new TranslatableComponent("gui.cgalaxy.space_suit_settings"), 1);
     }
 
     @Override
     protected void init() {
         super.init();
-        leftPos = (this.width - 110) / 2;
-        topPos = (this.height - 140) / 2;
-        addRenderableWidget(new ImageButton(this.leftPos + 99, this.topPos + 4, 7, 7, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), width, height, pButton -> {
+        addRenderableWidget(new ImageButton(this.leftPos + 99, this.topPos + 4, 7, 7, 0, 0, 0, blank, width, height, pButton -> {
             Minecraft.getInstance().popGuiLayer();
         }));
-        addRenderableWidget(new ImageButton(leftPos + 48, topPos + 24, 5, 9, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), width, height, pButton -> {
+        addRenderableWidget(new ImageButton(leftPos + 48, topPos + 24, 5, 9, 0, 0, 0, blank, width, height, pButton -> {
             if (temperature == 2) {
                 temperature = 0;
             } else {
@@ -47,7 +43,7 @@ public class SpaceSuitSettingsScreen extends Screen {
                 }
             }
         }));
-        addRenderableWidget(new ImageButton(leftPos + 98, topPos + 24, 5, 9, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), width, height, pButton -> {
+        addRenderableWidget(new ImageButton(leftPos + 98, topPos + 24, 5, 9, 0, 0, 0, blank, width, height, pButton -> {
             if (temperature == 0) {
                 temperature = 2;
             } else {
@@ -59,7 +55,7 @@ public class SpaceSuitSettingsScreen extends Screen {
                 }
             }
         }));
-        addRenderableWidget(new ImageButton(leftPos + 48, topPos + 34, 5, 9, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), width, height, pButton -> {
+        addRenderableWidget(new ImageButton(leftPos + 48, topPos + 34, 5, 9, 0, 0, 0, blank, width, height, pButton -> {
             if (radiation == 1) {
                 radiation = 0;
             } else {
@@ -71,7 +67,7 @@ public class SpaceSuitSettingsScreen extends Screen {
                 }
             }
         }));
-        addRenderableWidget(new ImageButton(leftPos + 98, topPos + 34, 5, 9, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), width, height, pButton -> {
+        addRenderableWidget(new ImageButton(leftPos + 98, topPos + 34, 5, 9, 0, 0, 0, blank, width, height, pButton -> {
             if (radiation == 0) {
                 radiation = 1;
             } else {
@@ -83,7 +79,7 @@ public class SpaceSuitSettingsScreen extends Screen {
                 }
             }
         }));
-        addRenderableWidget(new ImageButton(leftPos + 48, topPos + 44, 5, 9, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), width, height, pButton -> {
+        addRenderableWidget(new ImageButton(leftPos + 48, topPos + 44, 5, 9, 0, 0, 0, blank, width, height, pButton -> {
             if (airPressure == 4) {
                 airPressure = 0;
             } else {
@@ -95,7 +91,7 @@ public class SpaceSuitSettingsScreen extends Screen {
                 }
             }
         }));
-        addRenderableWidget(new ImageButton(leftPos + 98, topPos + 44, 5, 9, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), width, height, pButton -> {
+        addRenderableWidget(new ImageButton(leftPos + 98, topPos + 44, 5, 9, 0, 0, 0, blank, width, height, pButton -> {
             if (airPressure == 0) {
                 airPressure = 4;
             } else {
@@ -107,7 +103,7 @@ public class SpaceSuitSettingsScreen extends Screen {
                 }
             }
         }));
-        addRenderableWidget(new ImageButton(leftPos + 48, topPos + 54, 5, 9, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), width, height, pButton -> {
+        addRenderableWidget(new ImageButton(leftPos + 48, topPos + 54, 5, 9, 0, 0, 0, blank, width, height, pButton -> {
             if (color == 1) {
                 color = 0;
             } else {
@@ -119,7 +115,7 @@ public class SpaceSuitSettingsScreen extends Screen {
                 }
             }
         }));
-        addRenderableWidget(new ImageButton(leftPos + 98, topPos + 54, 5, 9, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), width, height, pButton -> {
+        addRenderableWidget(new ImageButton(leftPos + 98, topPos + 54, 5, 9, 0, 0, 0, blank, width, height, pButton -> {
             if (color == 0) {
                 color = 1;
             } else {
@@ -160,8 +156,8 @@ public class SpaceSuitSettingsScreen extends Screen {
         int textColor = CGConfig.GUI_COLOR.get().rgb;
         pMatrixStack.pushPose();
         pMatrixStack.scale(0.6f, 0.6f, 0.6f);
-        int x = leftPos + 1;
-        int y = topPos + 10;
+        int x = (int) ((leftPos) / 0.6 + (6 / 0.6));
+        int y = (int) (((topPos) / 0.6) + (26 / 0.6));
         drawString(pMatrixStack, mc.font, "Temperature: ", x, y, textColor);
         drawCenteredString(pMatrixStack, mc.font, CGConfig.TEMPERATURE.get().toString(), x + 117, y, textColor);
 

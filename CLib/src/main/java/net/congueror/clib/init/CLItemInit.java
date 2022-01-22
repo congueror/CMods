@@ -1,7 +1,7 @@
 package net.congueror.clib.init;
 
 import net.congueror.clib.CLib;
-import net.congueror.clib.api.objects.items.CLItem;
+import net.congueror.clib.items.generic.CLItem;
 import net.congueror.clib.api.registry.ItemBuilder;
 import net.congueror.clib.items.HammerItem;
 import net.congueror.clib.util.ModCreativeTabs;

@@ -16,7 +16,7 @@ public class CGNetwork {
     }
 
     public static void registerMessages() {
-        INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(CGalaxy.MODID, "cgalaxy"), () -> "1.0", s -> true, s -> true);
+        INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(CGalaxy.MODID, "main"), () -> "1.0", s -> true, s -> true);
         INSTANCE.messageBuilder(PacketSyncMap.class, nextID())
                 .encoder(PacketSyncMap::toBytes)
                 .decoder(PacketSyncMap::new)
@@ -41,6 +41,16 @@ public class CGNetwork {
                 .encoder(PacketChangeMap::toBytes)
                 .decoder(PacketChangeMap::new)
                 .consumer(PacketChangeMap::handle)
+                .add();
+        INSTANCE.messageBuilder(PacketUpdateRoomPressurizer.class, nextID())
+                .encoder(PacketUpdateRoomPressurizer::toBytes)
+                .decoder(PacketUpdateRoomPressurizer::new)
+                .consumer(PacketUpdateRoomPressurizer::handle)
+                .add();
+        INSTANCE.messageBuilder(PacketUpdateRoomPressurizerRange.class, nextID())
+                .encoder(PacketUpdateRoomPressurizerRange::toBytes)
+                .decoder(PacketUpdateRoomPressurizerRange::new)
+                .consumer(PacketUpdateRoomPressurizerRange::handle)
                 .add();
     }
 

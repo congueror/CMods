@@ -8,6 +8,7 @@ import net.congueror.cgalaxy.item.HeatProtectionUnitItem;
 import net.congueror.cgalaxy.item.RadiationProtectionUnitItem;
 import net.congueror.cgalaxy.util.CGConfig;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
+import net.congueror.clib.CLib;
 import net.congueror.clib.util.RenderingHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -29,7 +30,6 @@ public class SpaceSuitScreen extends AbstractContainerScreen<SpaceSuitContainer>
     int rotation;
     private Button rotateButton;
     private Button settingsButton;
-    private boolean isSettings;
     public static ResourceLocation GUI = new ResourceLocation(CGalaxy.MODID, "textures/gui/space_suit/space_suit_gui.png");
 
     public SpaceSuitScreen(SpaceSuitContainer pMenu, Inventory pPlayerInventory, Component pTitle) {
@@ -39,7 +39,7 @@ public class SpaceSuitScreen extends AbstractContainerScreen<SpaceSuitContainer>
     @Override
     protected void init() {
         super.init();
-        rotateButton = addRenderableWidget(new ImageButton(this.leftPos + 28, this.topPos + 10, 8, 9, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), width, height, p_onPress_1_ -> {
+        rotateButton = addRenderableWidget(new ImageButton(this.leftPos + 28, this.topPos + 10, 8, 9, 0, 0, 0, new ResourceLocation(CLib.MODID, "textures/gui/blank.png"), width, height, p_onPress_1_ -> {
             if (rotation < 360) {
                 rotation += 90;
             }
@@ -48,8 +48,7 @@ public class SpaceSuitScreen extends AbstractContainerScreen<SpaceSuitContainer>
             }
         }));
 
-        settingsButton = addRenderableWidget(new ImageButton(this.leftPos - 21, this.topPos + 9, 23, 19, 0, 0, 0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/blank.png"), width, height, p_onPress_1_ -> {
-            isSettings = true;
+        settingsButton = addRenderableWidget(new ImageButton(this.leftPos - 21, this.topPos + 9, 23, 19, 0, 0, 0, new ResourceLocation(CLib.MODID, "textures/gui/blank.png"), width, height, p_onPress_1_ -> {
             Minecraft mc = Minecraft.getInstance();
             mc.pushGuiLayer(new SpaceSuitSettingsScreen());
         }));

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "cgalaxy:block/coal_wall_torch"
+    },
+    "facing=south": {
+      "model": "cgalaxy:block/coal_wall_torch",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cgalaxy:block/coal_wall_torch",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "cgalaxy:block/coal_wall_torch",
+      "y": 90
+    }
+  }
+}

@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "cgalaxy:item/oil_bucket"
-  }
+  "parent": "forge:item/bucket",
+  "loader": "forge:bucket",
+  "fluid": "cgalaxy:oil_still",
+  "flipGas": false,
+  "applyTint": true
 }

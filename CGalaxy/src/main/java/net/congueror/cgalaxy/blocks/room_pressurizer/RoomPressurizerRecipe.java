@@ -1,6 +1,7 @@
 package net.congueror.cgalaxy.blocks.room_pressurizer;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
 import net.congueror.clib.api.recipe.FluidIngredient;
 import net.congueror.clib.api.recipe.FluidRecipeSerializer;
@@ -22,6 +23,9 @@ public class RoomPressurizerRecipe implements FluidRecipe<IItemFluidInventory> {
     final ResourceLocation id;
     int processTime;
     FluidIngredient ingredient;
+    FluidIngredient ingredient1;
+    int percentage;
+    int percentage1;
 
     final int defaultProcess = 600;
 
@@ -29,8 +33,12 @@ public class RoomPressurizerRecipe implements FluidRecipe<IItemFluidInventory> {
         this.id = id;
     }
 
-    public FluidIngredient getIngredient() {
-        return ingredient;
+    public FluidIngredient[] getFluidIngredients() {
+        return new FluidIngredient[]{ingredient, ingredient1};
+    }
+
+    public int[] getPercentages() {
+        return new int[]{percentage, percentage1};
     }
 
     @Override
@@ -44,13 +52,8 @@ public class RoomPressurizerRecipe implements FluidRecipe<IItemFluidInventory> {
     }
 
     @Override
-    public boolean fluidMatches(IItemFluidInventory handler) {
-        return this.ingredient.test(handler.getFluidInTank(0));
-    }
-
-    @Override
     public boolean matches(@Nonnull IItemFluidInventory pContainer, @Nonnull Level pLevel) {
-        return fluidMatches(pContainer);
+        return this.ingredient.test(pContainer.getFluidInTank(0)) && this.ingredient1.test(pContainer.getFluidInTank(1));
     }
 
     @Nonnull
@@ -84,7 +87,15 @@ public class RoomPressurizerRecipe implements FluidRecipe<IItemFluidInventory> {
         public RoomPressurizerRecipe fromJson(@Nonnull ResourceLocation pRecipeId, @Nonnull JsonObject pSerializedRecipe) {
             RoomPressurizerRecipe recipe = new RoomPressurizerRecipe(pRecipeId);
             recipe.processTime = GsonHelper.getAsInt(pSerializedRecipe, "process_time", recipe.defaultProcess);
-            recipe.ingredient = FluidIngredient.deserialize(pSerializedRecipe.get("ingredient"));
+            recipe.ingredient = FluidIngredient.deserialize(pSerializedRecipe.get("ingredient1"));
+            recipe.ingredient1 = FluidIngredient.deserialize(pSerializedRecipe.get("ingredient2"));
+            int per = GsonHelper.getAsInt(pSerializedRecipe, "percentage1", 20);
+            int per1 = GsonHelper.getAsInt(pSerializedRecipe, "percentage2", 80);
+            if (per + per1 != 100) {
+                throw new JsonSyntaxException("The sum of percentages must be 100!");
+            }
+            recipe.percentage = per;
+            recipe.percentage1 = per1;
             return recipe;
         }
 
@@ -94,6 +105,9 @@ public class RoomPressurizerRecipe implements FluidRecipe<IItemFluidInventory> {
             RoomPressurizerRecipe recipe = new RoomPressurizerRecipe(pRecipeId);
             recipe.processTime = pBuffer.readVarInt();
             recipe.ingredient = FluidIngredient.read(pBuffer);
+            recipe.ingredient1 = FluidIngredient.read(pBuffer);
+            recipe.percentage = pBuffer.readInt();
+            recipe.percentage1 = pBuffer.readInt();
             return recipe;
         }
 
@@ -101,6 +115,9 @@ public class RoomPressurizerRecipe implements FluidRecipe<IItemFluidInventory> {
         public void toNetwork(FriendlyByteBuf pBuffer, RoomPressurizerRecipe pRecipe) {
             pBuffer.writeVarInt(pRecipe.processTime);
             pRecipe.ingredient.write(pBuffer);
+            pRecipe.ingredient1.write(pBuffer);
+            pBuffer.writeInt(pRecipe.percentage);
+            pBuffer.writeInt(pRecipe.percentage1);
         }
     }
 }

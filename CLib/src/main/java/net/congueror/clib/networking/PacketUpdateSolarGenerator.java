@@ -1,7 +1,6 @@
 package net.congueror.clib.networking;
 
-import net.congueror.clib.api.machine.item.AbstractItemContainer;
-import net.congueror.clib.blocks.SolarGeneratorContainer;
+import net.congueror.clib.blocks.solar_generator.SolarGeneratorContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;

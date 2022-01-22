@@ -1,6 +1,6 @@
 package net.congueror.clib.networking;
 
-import net.congueror.clib.api.machine.fluid.AbstractFluidContainer;
+import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

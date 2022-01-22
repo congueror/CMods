@@ -2,7 +2,7 @@ package net.congueror.cgalaxy.blocks.launch_pad;
 
 import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.init.CGBlockInit;
-import net.congueror.clib.api.machine.tickable.AbstractTickableBlock;
+import net.congueror.clib.blocks.abstract_machine.tickable.AbstractTickableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;

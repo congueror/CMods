@@ -1,7 +1,7 @@
 package net.congueror.clib.api.registry;
 
 import net.congueror.clib.api.data.ItemModelDataProvider;
-import net.congueror.clib.api.objects.items.ICLibItem;
+import net.congueror.clib.items.generic.ICLibItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
@@ -163,8 +163,8 @@ public class ItemBuilder {
 
     /**
      * Adds a burn time to the item so it can be used in a furnace as fuel.
-     * <p>
-     * This method is exclusive for items that implement {@link ICLibItem} interface.
+     * <p><strong>
+     * This method is exclusive for items that implement {@link ICLibItem} interface.</strong>
      *
      * @param burnTime The amount in ticks that the fuel will burn for.
      */

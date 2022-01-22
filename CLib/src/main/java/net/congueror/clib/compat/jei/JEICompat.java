@@ -9,7 +9,7 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.congueror.clib.CLib;
-import net.congueror.clib.blocks.SolarGeneratorScreen;
+import net.congueror.clib.blocks.solar_generator.SolarGeneratorScreen;
 import net.congueror.clib.init.CLBlockInit;
 import net.congueror.clib.init.CLItemInit;
 import net.congueror.clib.init.CLRecipeSerializerInit;
@@ -19,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;

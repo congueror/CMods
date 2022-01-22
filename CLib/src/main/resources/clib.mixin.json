@@ -4,7 +4,9 @@
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8.4",
   "mixins": [
-    "MixinBlockBehaviour"
+    "MixinBlockBehaviour",
+    "MixinCropBlock",
+    "MixinSaplingBlock"
   ],
   "client": [
     "MixinPlayerModel",

@@ -1,6 +1,6 @@
 package net.congueror.clib.networking;
 
-import net.congueror.clib.api.machine.item.AbstractItemContainer;
+import net.congueror.clib.blocks.abstract_machine.item.AbstractItemContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;

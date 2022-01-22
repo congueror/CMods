@@ -52,22 +52,23 @@ public abstract class BlockOnPlacedEvent extends Event {//TODO: Better docs
     }
 
     /**
-     * Called after the onPlaced method is executed.
-     */
-    public static class Post extends BlockOnPlacedEvent {
-
-        public Post(Level level, BlockPos pos, Block newBlock, BlockState oldState, boolean isMoving) {
-            super(level, pos, newBlock, oldState, isMoving);
-        }
-    }
-
-    /**
      * Called before the onPlaced method of a block is executed. Cancelling this event will not cancel the placement of the block but the onPlace method.
      */
     @Cancelable
     public static class Pre extends BlockOnPlacedEvent {
 
         public Pre(Level level, BlockPos pos, Block newBlock, BlockState oldState, boolean isMoving) {
+            super(level, pos, newBlock, oldState, isMoving);
+        }
+    }
+
+
+    /**
+     * Called after the onPlaced method is executed.
+     */
+    public static class Post extends BlockOnPlacedEvent {
+
+        public Post(Level level, BlockPos pos, Block newBlock, BlockState oldState, boolean isMoving) {
             super(level, pos, newBlock, oldState, isMoving);
         }
     }

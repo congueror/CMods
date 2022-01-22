@@ -42,11 +42,6 @@ public class OxygenCompressorRecipe implements FluidRecipe<IItemFluidInventory> 
     }
 
     @Override
-    public boolean fluidMatches(IItemFluidInventory handler) {
-        return true;
-    }
-
-    @Override
     public FluidStack getFluidResult() {
         return result;
     }
