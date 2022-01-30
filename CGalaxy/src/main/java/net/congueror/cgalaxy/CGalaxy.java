@@ -35,8 +35,6 @@ public class CGalaxy {
     public static final String LIVING_RADIATION_TICK = "RadiationTick";
     /**Boolean*/
     public static final String LIVING_PRESSURIZED = "Pressurized";
-    /**Integer*/
-    public static final String ROCKET_POWERED = "Powered";
     /**Boolean*/
     public static final String ROCKET_LAUNCH = "Launch";
     /**Integer*/
@@ -57,6 +55,7 @@ public class CGalaxy {
         CGCarverInit.CARVERS.register(modEventBus);
         CGFeatureInit.FEATURES.register(modEventBus);
         CGSoundInit.SOUNDS.register(modEventBus);
+        CGStructureInit.STRUCTURES.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }

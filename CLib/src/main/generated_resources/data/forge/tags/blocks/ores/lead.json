@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "clib:lead_ore"
+    "clib:lead_ore",
+    "clib:deepslate_lead_ore"
   ]
 }

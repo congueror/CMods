@@ -2,8 +2,8 @@ package net.congueror.clib.api.data;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import net.congueror.clib.blocks.abstract_machine.item.AbstractItemBlock;
 import net.congueror.clib.api.registry.BlockBuilder;
+import net.congueror.clib.blocks.abstract_machine.item.AbstractItemBlock;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
@@ -25,6 +25,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay;
 import net.minecraft.world.level.storage.loot.functions.FunctionUserBuilder;
@@ -88,6 +89,22 @@ public class LootTableDataProvider extends LootTableProvider implements DataProv
 
     protected static <T> T applyExplosionCondition(ItemLike pItem, ConditionUserBuilder<T> pCondition) {
         return !EXPLOSION_RESISTANT.contains(pItem.asItem()) ? pCondition.when(ExplosionCondition.survivesExplosion()) : pCondition.unwrap();
+    }
+
+    /**
+     * If the condition from {@code conditionBuilder} succeeds, drops 1 {@code block}.
+     * Otherwise, drops loot specified by {@code alternativeEntryBuilder}.
+     */
+    public void createSelfDropDispatchTable(Block pBlock, LootItemCondition.Builder pConditionBuilder, LootPoolEntryContainer.Builder<?> pAlternativeEntryBuilder) {
+        LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(pBlock).when(pConditionBuilder).otherwise(pAlternativeEntryBuilder)));
+    }
+
+    /**
+     * If the block is mined with Silk Touch, drops 1 {@code block}.
+     * Otherwise, drops loot specified by {@code alternativeEntryBuilder}.
+     */
+    public void createSilkTouchDispatchTable(Block pBlock, LootPoolEntryContainer.Builder<?> pAlternativeEntryBuilder) {
+        createSelfDropDispatchTable(pBlock, HAS_SILK_TOUCH, pAlternativeEntryBuilder);
     }
 
     /**
@@ -189,6 +206,11 @@ public class LootTableDataProvider extends LootTableProvider implements DataProv
                         .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))
                         .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ItemTags.CLUSTER_MAX_HARVESTABLES)))
                         .otherwise(applyExplosionDecay(block, LootItem.lootTableItem(drop).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2.0F)))))))), LootContextParamSets.BLOCK);
+    }
+
+    public void createOreDrop(Block pBlock, Item pItem) {
+        createSilkTouchDispatchTable(pBlock,
+                applyExplosionDecay(pBlock, LootItem.lootTableItem(pItem).apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))));
     }
 
     /**

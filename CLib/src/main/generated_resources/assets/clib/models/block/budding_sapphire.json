@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "clib:block/budding_sapphire"
+    "all": "clib:resource/sapphire/budding_sapphire"
   }
 }

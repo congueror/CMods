@@ -4,7 +4,9 @@ import net.congueror.clib.api.data.BlockModelDataProvider;
 import net.congueror.clib.api.data.ItemModelDataProvider;
 import net.congueror.clib.api.data.LootTableDataProvider;
 import net.congueror.clib.blocks.generic.ICLibBlock;
-import net.congueror.clib.util.ModCreativeTabs;
+import net.congueror.clib.util.CreativeTabs;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -26,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -56,12 +59,15 @@ public class BlockBuilder {
     public BiConsumer<ItemModelDataProvider, Block> itemModel;
     public BiConsumer<LootTableDataProvider, Block> lootTable = LootTableDataProvider::createStandardBlockDrop;
     public final Map<String, String> locale = new HashMap<>();
+    public final List<BiConsumer<Consumer<FinishedRecipe>, Block>> recipes = new ArrayList<>();
 
     public boolean generateBlockItem = true;
     private Function<Block, BlockItem> item = null;
-    public Item.Properties itemProperties = new Item.Properties().tab(ModCreativeTabs.BlocksIG.instance);
+    public Item.Properties itemProperties = new Item.Properties().tab(CreativeTabs.BlocksIG.instance);
     public int burnTime;
     public int containerType;
+
+    public RenderType renderType = null;
 
     /**
      * Convenience method for creating a fluid block
@@ -266,6 +272,16 @@ public class BlockBuilder {
         return this;
     }
 
+    public BlockBuilder withRecipe(BiConsumer<Consumer<FinishedRecipe>, Block> recipe) {
+        this.recipes.add(recipe);
+        return this;
+    }
+
+    public BlockBuilder withRenderType(RenderType type) {
+        this.renderType = type;
+        return this;
+    }
+
     /**
      * Whether the BlockBuilder should automatically generate a block item for this block. This by default is true.
      * If you set this to false you will not be able to use several methods such as {@link #withCreativeTab(CreativeModeTab)}, {@link #withBurnTime(int)}, e.t.c.
@@ -287,7 +303,7 @@ public class BlockBuilder {
     }
 
     /**
-     * Adds this block to the given creative tab. If you do not use this method the default will be {@link ModCreativeTabs.BlocksIG}.
+     * Adds this block to the given creative tab. If you do not use this method the default will be {@link CreativeTabs.BlocksIG}.
      * If {@link #withItemProperties(Item.Properties)} was used, the tab that was set last will be the final tab.
      * <p><strong>
      * Requires {@link #withGeneratedBlockItem(boolean)} method.

@@ -27,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -45,10 +46,10 @@ public class OxygenMaskItem extends SpaceSuitItem {
                 int pTemp;
                 int i;
 
+                @Nullable
                 @Override
-                public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A _default) {
-                    //noinspection unchecked
-                    return (A) new SpaceSuitModel(SpaceSuitModel.createBodyLayer());
+                public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
+                    return new SpaceSuitModel(SpaceSuitModel.createBodyLayer());
                 }
 
                 @Override

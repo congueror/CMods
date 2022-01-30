@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "clib:cobalt_ore"
+    "clib:cobalt_ore",
+    "clib:raw_cobalt"
   ]
 }

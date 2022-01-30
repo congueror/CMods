@@ -1,6 +1,16 @@
 {
   "replace": false,
   "values": [
+    "#forge:gears/wood",
+    "#forge:gears/stone",
+    "#forge:gears/iron",
+    "#forge:gears/copper",
+    "#forge:gears/iron",
+    "#forge:gears/lapis",
+    "#forge:gears/quartz",
+    "#forge:gears/diamond",
+    "#forge:gears/emerald",
+    "#forge:gears/netherite",
     "#forge:gears/tin",
     "#forge:gears/steel",
     "#forge:gears/aluminum",
@@ -21,16 +31,6 @@
     "#forge:gears/cobalt",
     "#forge:gears/zinc",
     "#forge:gears/brass",
-    "#forge:gears/chromium",
-    "#forge:gears/wood",
-    "#forge:gears/stone",
-    "#forge:gears/iron",
-    "#forge:gears/copper",
-    "#forge:gears/iron",
-    "#forge:gears/lapis",
-    "#forge:gears/quartz",
-    "#forge:gears/diamond",
-    "#forge:gears/emerald",
-    "#forge:gears/netherite"
+    "#forge:gears/chromium"
   ]
 }

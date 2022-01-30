@@ -1,18 +1,27 @@
 {
   "replace": false,
   "values": [
-    "clib:platinum_block",
+    "clib:ruby_block",
+    "clib:ruby_ore",
+    "clib:silver_ore",
+    "clib:deepslate_silver_ore",
+    "clib:silver_block",
     "clib:platinum_ore",
+    "clib:deepslate_platinum_ore",
+    "clib:platinum_block",
     "clib:enderium_block",
-    "clib:tungsten_block",
     "clib:tungsten_ore",
+    "clib:deepslate_tungsten_ore",
+    "clib:tungsten_block",
     "clib:opal_block",
     "clib:opal_ore",
-    "clib:titanium_block",
     "clib:titanium_ore",
+    "clib:titanium_block",
     "clib:uranium_ore",
-    "clib:cobalt_block",
+    "clib:deepslate_uranium_ore",
     "clib:cobalt_ore",
-    "clib:thorium_ore"
+    "clib:cobalt_block",
+    "clib:thorium_ore",
+    "clib:deepslate_thorium_ore"
   ]
 }

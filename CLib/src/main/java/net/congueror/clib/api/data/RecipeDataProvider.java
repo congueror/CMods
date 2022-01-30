@@ -2,7 +2,9 @@ package net.congueror.clib.api.data;
 
 import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
+import net.congueror.clib.api.registry.BlockBuilder;
 import net.congueror.clib.api.registry.ItemBuilder;
+import net.congueror.clib.util.registry.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.HashCache;
 import net.minecraft.data.recipes.*;
@@ -24,8 +26,24 @@ import java.util.function.Consumer;
 
 public class RecipeDataProvider extends RecipeProvider {
 
-    public RecipeDataProvider(DataGenerator pGenerator) {
+    String modid;
+
+    public RecipeDataProvider(DataGenerator pGenerator, String modid) {
         super(pGenerator);
+        this.modid = modid;
+    }
+
+    @Override
+    protected void buildCraftingRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
+        if (BlockBuilder.OBJECTS.get(modid) != null)
+            BlockBuilder.OBJECTS.get(modid).forEach(builder -> {
+                builder.recipes.forEach(consumerBlockBiConsumer -> consumerBlockBiConsumer.accept(pFinishedRecipeConsumer, builder.block));
+            });
+
+        if (ItemBuilder.OBJECTS.get(modid) != null)
+            ItemBuilder.OBJECTS.get(modid).forEach(builder -> {
+                builder.recipes.forEach(consumerItemBiConsumer -> consumerItemBiConsumer.accept(pFinishedRecipeConsumer, builder.getItem()));
+            });
     }
 
     public static String getHasName(ItemLike pItemLike) {
@@ -111,6 +129,130 @@ public class RecipeDataProvider extends RecipeProvider {
                 .unlockedBy(getHasName(material), has(material))
                 .save(finishedRecipeConsumer);
     }
+
+    public static void basicMetalRecipes(Consumer<FinishedRecipe> c, BasicMetalRegistryObject obj) {
+        Block block = obj.getBlock().get();
+        Block ore = obj.getOre().get();
+        Item ingot = obj.getIngot().get();
+        Item nugget = obj.getNugget().get();
+        Item dust = obj.getDust().get();
+        Item gear = obj.getGear().get();
+        Item raw = obj.getRawItem().get();
+
+        shapelessRecipe(c, block, 1, getTag("forge:ingots/", ingot), 9);
+        shapelessRecipe(c, ingot, 9, getTag("forge:storage_blocks/", block), 1);
+        shapelessRecipe(c, nugget, 9, getTag("forge:ingots/", ingot), 1);
+        shapelessRecipe(c, ingot, 1, getTag("forge:nuggets/", nugget), 9);
+        smeltingRecipe(c, ingot, getTag("forge:ores/", ore), 0.7f, 200);
+        blastingRecipe(c, ingot, getTag("forge:ores/", ore), 0.7f, 400);
+        dustRecipes(c, dust, ingot, getTag("forge:ingots/", ingot));
+        gearRecipe(c, gear, getTag("forge:ingots/", ingot));
+    }
+
+    public static void alloyMetalRecipes(Consumer<FinishedRecipe> c, AlloyMetalRegistryObject obj) {
+        Block block = obj.getBlock().get();
+        Item ingot = obj.getIngot().get();
+        Item nugget = obj.getNugget().get();
+        Item dust = obj.getDust().get();
+        Item gear = obj.getGear().get();
+        Item ore = obj.getBlend().get();
+
+        shapelessRecipe(c, block, 1, getTag("forge:ingots/", ingot), 9);
+        shapelessRecipe(c, ingot, 9, getTag("forge:storage_blocks/", block), 1);
+        shapelessRecipe(c, nugget, 9, getTag("forge:ingots/", ingot), 1);
+        shapelessRecipe(c, ingot, 1, getTag("forge:nuggets/", nugget), 9);
+        smeltingRecipe(c, ingot, getTag("forge:ores/", ore), 0.7f, 400);
+        blastingRecipe(c, ingot, getTag("forge:ores/", ore), 0.7f, 800);
+        dustRecipes(c, dust, ingot, getTag("forge:ingots/", ingot));
+        gearRecipe(c, gear, getTag("forge:ingots/", ingot));
+    }
+
+    public static void singleGemRecipes(Consumer<FinishedRecipe> c, SingleGemRegistryObject obj) {
+        Item gem = obj.getGem().get();
+        Item dust = obj.getDust().get();
+        Item gear = obj.getGear().get();
+        Block block = obj.getBlock().get();
+        Block ore = obj.getOre().get();
+
+        shapelessRecipe(c, block, 1, getTag("forge:gems/", gem), 9);
+        shapelessRecipe(c, gem, 9, getTag("forge:storage_blocks/", block), 1);
+        smeltingRecipe(c, gem, getTag("forge:ores/", ore), 0.7f, 205);
+        blastingRecipe(c, gem, getTag("forge:ores/", ore), 0.7f, 400);
+        dustRecipes(c, dust, gem, getTag("forge:gems/", gem));
+        gearRecipe(c, gear, getTag("forge:gems/", gem));
+    }
+
+    public static void geodeGemRecipes(Consumer<FinishedRecipe> r, GeodeGemRegistryObject obj) {
+        Block block = obj.getBlock().get();
+        Item shard = obj.getShard().get();
+        Item dust = obj.getDust().get();
+        shaped2x2Recipe(r, block, 1, getTag("forge:shards/", shard));
+        dustRecipes(r, dust, shard, getTag("forge:shards/", shard));
+    }
+
+    public static void debrisMetalRecipes(Consumer<FinishedRecipe> c, DebrisMetalRegistryObject obj) {
+        Block block = obj.getBlock().get();
+        Block ore = obj.getOre().get();
+        Item ingot = obj.getIngot().get();
+        Item nugget = obj.getNugget().get();
+        Item dust = obj.getDust().get();
+        Item gear = obj.getGear().get();
+        Item scrap = obj.getScrap().get();
+
+        shapelessRecipe(c, block, 1, getTag("forge:ingots/", ingot), 9);
+        shapelessRecipe(c, ingot, 9, getTag("forge:storage_blocks/", block), 1);
+        shapelessRecipe(c, nugget, 9, getTag("forge:ingots/", ingot), 1);
+        shapelessRecipe(c, ingot, 1, getTag("forge:nuggets/", nugget), 9);
+        shapelessRecipe(c, ingot, 1, getTag("forge:scraps/", scrap), 9);
+        smeltingRecipe(c, scrap, getTag("forge:ores/", ore), 0.7f, 400);
+        blastingRecipe(c, scrap, getTag("forge:ores/", ore), 0.7f, 800);
+        dustRecipes(c, dust, ingot, getTag("forge:ingots/", ingot));
+        gearRecipe(c, gear, getTag("forge:ingots/", ingot));
+    }
+
+    public static void radioactiveMetalRecipes(Consumer<FinishedRecipe> c, RadioactiveMetalRegistryObject obj) {
+        Block ore = obj.getOre().get();
+        Item ingot = obj.getIngot().get();
+        Item nugget = obj.getNugget().get();
+        Item dust = obj.getDust().get();
+
+        shapelessRecipe(c, nugget, 9, getTag("forge:ingots/", ingot), 1);
+        shapelessRecipe(c, ingot, 1, getTag("forge:nuggets/", nugget), 9);
+        smeltingRecipe(c, ingot, getTag("forge:ores/", ore), 0.7f, 200);
+        blastingRecipe(c, ingot, getTag("forge:ores/", ore), 0.7f, 400);
+        dustRecipes(c, dust, ingot, getTag("forge:ingots/", ingot));
+    }
+
+    public static void singleMetalRecipes(Consumer<FinishedRecipe> c, SingleMetalRegistryObject obj) {
+        Block block = obj.getBlock().get();
+        Block ore = obj.getOre().get();
+        Item ingot = obj.getIngot().get();
+        Item nugget = obj.getNugget().get();
+        Item dust = obj.getDust().get();
+        Item gear = obj.getGear().get();
+        Item raw = obj.getRawItem().get();
+
+        shapelessRecipe(c, block, 1, getTag("forge:ingots/", ingot), 9);
+        shapelessRecipe(c, ingot, 9, getTag("forge:storage_blocks/", block), 1);
+        shapelessRecipe(c, nugget, 9, getTag("forge:ingots/", ingot), 1);
+        shapelessRecipe(c, ingot, 1, getTag("forge:nuggets/", nugget), 9);
+        smeltingRecipe(c, ingot, getTag("forge:ores/", ore), 0.7f, 200);
+        blastingRecipe(c, ingot, getTag("forge:ores/", ore), 0.7f, 400);
+        dustRecipes(c, dust, ingot, getTag("forge:ingots/", ingot));
+        gearRecipe(c, gear, getTag("forge:ingots/", ingot));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static void metalRecipes(Consumer<FinishedRecipe> c, @Nullable Block block, Item ingot, Item nugget, Item dust, @Nullable Item gear, Block ore) {
         if (block != null) {

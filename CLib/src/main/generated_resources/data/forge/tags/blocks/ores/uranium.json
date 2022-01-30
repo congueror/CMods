@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "clib:uranium_ore"
+    "clib:uranium_ore",
+    "clib:deepslate_uranium_ore"
   ]
 }

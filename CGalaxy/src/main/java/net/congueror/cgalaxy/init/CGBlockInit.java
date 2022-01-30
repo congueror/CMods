@@ -7,20 +7,18 @@ import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderBlock;
 import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryBlock;
 import net.congueror.cgalaxy.blocks.launch_pad.LaunchPadBlock;
 import net.congueror.cgalaxy.blocks.meteorite.MeteoriteBlock;
-import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorBlock;
+import net.congueror.cgalaxy.blocks.gas_extractor.GasExtractorBlock;
 import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerBlock;
 import net.congueror.cgalaxy.item.CoalTorchBlockItem;
 import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlock;
 import net.congueror.clib.blocks.generic.CLBlock;
 import net.congueror.clib.api.registry.BlockBuilder;
-import net.congueror.clib.init.CLBlockInit;
-import net.congueror.clib.init.CLItemInit;
-import net.congueror.clib.util.ModCreativeTabs;
+import net.congueror.clib.init.CLMaterialInit;
+import net.congueror.clib.util.CreativeTabs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
@@ -37,7 +35,7 @@ public class CGBlockInit {
             .withTranslation("Coal Torch")
             .withItemModel((itemModelDataProvider, block) -> itemModelDataProvider.texture(block.asItem(), "block/coal_torch"))
             .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.torchBlock(block, "cgalaxy:block/coal_torch"))
-            .withItem(block -> new CoalTorchBlockItem(block, new Item.Properties().tab(ModCreativeTabs.CGalaxyIG.instance)))
+            .withItem(block -> new CoalTorchBlockItem(block, new Item.Properties().tab(CreativeTabs.BlocksIG.instance)))
             .build(BLOCKS);
     public static final RegistryObject<Block> COAL_WALL_TORCH = new BlockBuilder("coal_wall_torch",
             new CoalWallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION)
@@ -81,37 +79,37 @@ public class CGBlockInit {
             new SlabBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f, 6.5f).requiresCorrectToolForDrops()))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withTranslation("Moon Stone Slab")
-            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.slabBlock(block, "moon_stone"))
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.slabBlock(block, "cgalaxy:block/moon_stone"))
             .build(BLOCKS);
     public static final RegistryObject<Block> MOON_STONE_STAIRS = new BlockBuilder("moon_stone_stairs",
             new StairBlock(Blocks.STONE::defaultBlockState, BlockBehaviour.Properties.of(Material.STONE).strength(2f, 6.5f).requiresCorrectToolForDrops()))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withTranslation("Moon Stone Stairs")
-            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.stairsBlock(block, "moon_stone"))
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.stairsBlock(block, "cgalaxy:block/moon_stone"))
             .build(BLOCKS);
     public static final RegistryObject<Block> MOON_COBBLESTONE_SLAB = new BlockBuilder("moon_cobblestone_slab",
             new SlabBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f, 6.5f).requiresCorrectToolForDrops()))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withTranslation("Moon Cobblestone Slab")
-            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.slabBlock(block, "moon_cobblestone"))
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.slabBlock(block, "cgalaxy:block/moon_cobblestone"))
             .build(BLOCKS);
     public static final RegistryObject<Block> MOON_COBBLESTONE_STAIRS = new BlockBuilder("moon_cobblestone_stairs",
             new StairBlock(Blocks.STONE::defaultBlockState, BlockBehaviour.Properties.of(Material.STONE).strength(2f, 6.5f).requiresCorrectToolForDrops()))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withTranslation("Moon Cobblestone Stairs")
-            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.stairsBlock(block, "moon_cobblestone"))
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.stairsBlock(block, "cgalaxy:block/moon_cobblestone"))
             .build(BLOCKS);
     public static final RegistryObject<Block> MOON_STONE_BRICKS_SLAB = new BlockBuilder("moon_stone_bricks_slab",
             new SlabBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f, 6.5f).requiresCorrectToolForDrops()))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withTranslation("Moon Stone Brick Slab")
-            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.slabBlock(block, "moon_stone_bricks"))
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.slabBlock(block, "cgalaxy:block/moon_stone_bricks"))
             .build(BLOCKS);
     public static final RegistryObject<Block> MOON_STONE_BRICKS_STAIRS = new BlockBuilder("moon_stone_bricks_stairs",
             new StairBlock(Blocks.STONE::defaultBlockState, BlockBehaviour.Properties.of(Material.STONE).strength(2f, 6.5f).requiresCorrectToolForDrops()))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withTranslation("Moon Stone Brick Stairs")
-            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.stairsBlock(block, "moon_stone_bricks"))
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.stairsBlock(block, "cgalaxy:block/moon_stone_bricks"))
             .build(BLOCKS);
     public static final RegistryObject<Block> MOON_IRON_ORE = new BlockBuilder("moon_iron_ore",
             moonStoneBlock())
@@ -139,7 +137,7 @@ public class CGBlockInit {
             .withTranslation("Moon Titanium Ore")
             .withNewBlockTag("forge:ores/titanium")
             .withNewItemTag("forge:ores/titanium")
-            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createSingleDrop(block, CLItemInit.TITANIUM_SCRAP.get()))
+            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createSingleDrop(block, CLMaterialInit.TITANIUM.getScrap().get()))
             .build(BLOCKS);
 
     public static final RegistryObject<Block> ASTRAL_SAPPHIRE_ORE = new BlockBuilder("astral_sapphire_ore",
@@ -171,39 +169,55 @@ public class CGBlockInit {
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withBlockModel(null)
             .withTranslation("Launch Pad")
-            .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
+            .withCreativeTab(CreativeTabs.CGalaxyIG.instance)
             .build(BLOCKS);
 
     public static final RegistryObject<Block> FUEL_LOADER = new BlockBuilder("fuel_loader",
             new FuelLoaderBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
-            .withBlockModel(null)
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.machineBlock(block,
+                    "cgalaxy:block/machine_frame",
+                    "cgalaxy:block/fuel_loader",
+                    "cgalaxy:block/fuel_loader_lit",
+                    "cgalaxy:block/machine_frame"))
             .withTranslation("Fuel Loader")
-            .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
+            .withCreativeTab(CreativeTabs.CGalaxyIG.instance)
             .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);
     public static final RegistryObject<Block> FUEL_REFINERY = new BlockBuilder("fuel_refinery",
             new FuelRefineryBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
-            .withBlockModel(null)
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.machineBlock(block,
+                    "cgalaxy:block/machine_frame",
+                    "cgalaxy:block/fuel_refinery",
+                    "cgalaxy:block/fuel_refinery_lit",
+                    "cgalaxy:block/machine_frame"))
             .withTranslation("Fuel Refinery")
-            .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
+            .withCreativeTab(CreativeTabs.CGalaxyIG.instance)
             .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);
-    public static final RegistryObject<Block> OXYGEN_COMPRESSOR = new BlockBuilder("oxygen_compressor",
-            new OxygenCompressorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
+    public static final RegistryObject<Block> GAS_EXTRACTOR = new BlockBuilder("gas_extractor",
+            new GasExtractorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
-            .withBlockModel(null)
-            .withTranslation("Oxygen Compressor")
-            .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.machineBlock(block,
+                    "cgalaxy:block/machine_frame",
+                    "cgalaxy:block/gas_extractor_unlit",
+                    "cgalaxy:block/gas_extractor_lit",
+                    "cgalaxy:block/machine_frame"))
+            .withTranslation("Gas Extractor")
+            .withCreativeTab(CreativeTabs.CGalaxyIG.instance)
             .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);
     public static final RegistryObject<Block> ROOM_PRESSURIZER = new BlockBuilder("room_pressurizer",
             new RoomPressurizerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
-            .withBlockModel(null)
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.machineBlock(block,
+                    "cgalaxy:block/machine_frame",
+                    "cgalaxy:block/room_pressurizer",
+                    "cgalaxy:block/room_pressurizer_lit",
+                    "cgalaxy:block/machine_frame"))
             .withTranslation("Room Pressurizer")
-            .withCreativeTab(ModCreativeTabs.CGalaxyIG.instance)
+            .withCreativeTab(CreativeTabs.CGalaxyIG.instance)
             .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createMachineDrop((AbstractFluidBlock) block))
             .build(BLOCKS);
 

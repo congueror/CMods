@@ -68,7 +68,7 @@ public class SolarEnergyCategory implements IRecipeCategory<SolarGeneratorRecipe
 
     @Override
     public IDrawable getIcon() {
-        return helper.createDrawableIngredient(new ItemStack(CLBlockInit.SOLAR_GENERATOR.get()));
+        return helper.createDrawableIngredient(new ItemStack(CLBlockInit.SOLAR_GENERATOR_1.get()));
     }
 
     @Override

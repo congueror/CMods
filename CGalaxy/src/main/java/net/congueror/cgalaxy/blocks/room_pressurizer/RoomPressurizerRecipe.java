@@ -18,6 +18,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RoomPressurizerRecipe implements FluidRecipe<IItemFluidInventory> {
     final ResourceLocation id;
@@ -35,6 +37,10 @@ public class RoomPressurizerRecipe implements FluidRecipe<IItemFluidInventory> {
 
     public FluidIngredient[] getFluidIngredients() {
         return new FluidIngredient[]{ingredient, ingredient1};
+    }
+
+    public List<FluidStack> getInputs() {
+        return new ArrayList<>(ingredient.getFluidStacks());
     }
 
     public int[] getPercentages() {

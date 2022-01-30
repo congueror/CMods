@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "clib:item/electrum_gear"
+    "layer0": "clib:resource/electrum/electrum_gear"
   }
 }

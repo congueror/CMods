@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "clib:item/ruby_gear"
+    "layer0": "clib:resource/ruby/ruby_gear"
   }
 }

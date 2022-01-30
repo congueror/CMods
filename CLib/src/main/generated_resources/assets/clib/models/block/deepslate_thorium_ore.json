@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "clib:resource/thorium/deepslate_thorium_ore"
+  }
+}

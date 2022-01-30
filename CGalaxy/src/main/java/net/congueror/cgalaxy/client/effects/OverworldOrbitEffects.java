@@ -85,6 +85,7 @@ public class OverworldOrbitEffects extends AbstractEffects {
                 //Earth
                 size = 140.0F;
                 RenderSystem.enableTexture();
+                RenderSystem.disableDepthTest();
                 RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 poseStack.pushPose();
@@ -102,6 +103,7 @@ public class OverworldOrbitEffects extends AbstractEffects {
                 bufferbuilder.end();
                 BufferUploader.end(bufferbuilder);
                 poseStack.popPose();
+                RenderSystem.enableDepthTest();
 
                 RenderSystem.disableBlend();
                 if (level.effects().hasGround()) {

@@ -58,6 +58,6 @@ public class JEICompat implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(CLBlockInit.SOLAR_GENERATOR.get()), SOLAR_ENERGY);
+        registration.addRecipeCatalyst(new ItemStack(CLBlockInit.SOLAR_GENERATOR_1.get()), SOLAR_ENERGY);
     }
 }

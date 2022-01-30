@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "clib:item/zinc_gear"
+    "layer0": "clib:resource/zinc/zinc_gear"
   }
 }

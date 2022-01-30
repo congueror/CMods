@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "#forge:nuggets/coal",
     "#forge:nuggets/tin",
     "#forge:nuggets/steel",
     "#forge:nuggets/aluminum",
@@ -21,7 +22,6 @@
     "#forge:nuggets/zinc",
     "#forge:nuggets/brass",
     "#forge:nuggets/chromium",
-    "#forge:nuggets/thorium",
-    "#forge:nuggets/coal"
+    "#forge:nuggets/thorium"
   ]
 }

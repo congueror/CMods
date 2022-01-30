@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "clib:item/tin_gear"
+    "layer0": "clib:resource/tin/tin_gear"
   }
 }

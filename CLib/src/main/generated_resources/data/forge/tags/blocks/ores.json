@@ -1,22 +1,33 @@
 {
   "replace": false,
   "values": [
+    "#forge:ores/saltpetre",
+    "#forge:ores/sulfur",
+    "#forge:ores/tin",
     "#forge:ores/tin",
     "#forge:ores/aluminum",
+    "#forge:ores/aluminum",
+    "#forge:ores/lead",
     "#forge:ores/lead",
     "#forge:ores/ruby",
     "#forge:ores/silver",
+    "#forge:ores/silver",
+    "#forge:ores/nickel",
     "#forge:ores/nickel",
     "#forge:ores/platinum",
+    "#forge:ores/platinum",
+    "#forge:ores/tungsten",
     "#forge:ores/tungsten",
     "#forge:ores/opal",
     "#forge:ores/titanium",
     "#forge:ores/uranium",
+    "#forge:ores/uranium",
     "#forge:ores/cobalt",
     "#forge:ores/zinc",
+    "#forge:ores/zinc",
+    "#forge:ores/chromium",
     "#forge:ores/chromium",
     "#forge:ores/thorium",
-    "#forge:ores/saltpetre",
-    "#forge:ores/sulfur"
+    "#forge:ores/thorium"
   ]
 }

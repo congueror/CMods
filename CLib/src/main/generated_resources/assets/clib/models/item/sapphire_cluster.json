@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "clib:block/sapphire_cluster"
+    "layer0": "clib:resource/sapphire/sapphire_cluster"
   }
 }

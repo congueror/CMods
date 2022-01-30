@@ -1,0 +1,11 @@
+{
+  "type": "cgalaxy:gas_extracting",
+  "ingredient": {
+    "item": "minecraft:farmland"
+  },
+  "result": {
+    "fluid1": {
+      "fluid": "cgalaxy:nitrogen_still"
+    }
+  }
+}

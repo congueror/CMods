@@ -1,7 +1,6 @@
 package net.congueror.cgalaxy.entity;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -27,11 +26,11 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 public abstract class AbstractRocket extends Entity {
 
@@ -45,6 +44,12 @@ public abstract class AbstractRocket extends Entity {
     private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(AbstractRocket.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> DATA_ID_DROPS = SynchedEntityData.defineId(AbstractRocket.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_FUEL = SynchedEntityData.defineId(AbstractRocket.class, EntityDataSerializers.INT);
+    /**
+     * 0=Idle, 1=launching, 2=in air, 3=Landing
+     */
+    private static final EntityDataAccessor<Integer> DATA_MODE = SynchedEntityData.defineId(AbstractRocket.class, EntityDataSerializers.INT);
+
+    double velocity;
 
     protected AbstractRocket(EntityType<? extends Entity> entity, Level level, int tier) {
         super(entity, level);
@@ -53,6 +58,14 @@ public abstract class AbstractRocket extends Entity {
     }
 
     public abstract Item getItem();
+
+    public int getMode() {
+        return this.entityData.get(DATA_MODE);
+    }
+
+    public void setMode(int mode) {
+        this.entityData.set(DATA_MODE, mode);
+    }
 
     public int getFuel() {
         return this.entityData.get(DATA_FUEL);
@@ -97,6 +110,7 @@ public abstract class AbstractRocket extends Entity {
         this.entityData.define(DATA_ID_DAMAGE, 0.0f);
         this.entityData.define(DATA_ID_DROPS, true);
         this.entityData.define(DATA_FUEL, 0);
+        this.entityData.define(DATA_MODE, 0);
     }
 
     @Nonnull
@@ -122,7 +136,7 @@ public abstract class AbstractRocket extends Entity {
     public void tick() {
         super.tick();
 
-        if (this.getPersistentData().getInt(CGalaxy.ROCKET_POWERED) != 3) {
+        if (this.getMode() != 3) {
             if (this.getPersistentData().getBoolean(CGalaxy.ROCKET_LAUNCH)) {
                 if (((this.getDeltaMovement().y()) <= 0.5)) {
                     this.setDeltaMovement(this.getDeltaMovement().x, this.getDeltaMovement().y + 0.1, this.getDeltaMovement().z);
@@ -132,12 +146,23 @@ public abstract class AbstractRocket extends Entity {
                 }
             } else if (this.getDeltaMovement().y <= 0) {
                 if (!this.isNoGravity()) {
-                    this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.04D, 0.0D));
+                    this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.7D, 0.0D));
                 }
             }
         } else {
-            double d0 = -Objects.requireNonNull(CGDimensionBuilder.getObjectFromKey(this.level.dimension())).getGravity() / 4.0D;
-            this.setDeltaMovement(0.0d, -0.0001D, 0.0d);
+            if (this.isVehicle()) {
+                Player player = level.getNearestPlayer(this, 1);
+                if (player != null && player.jumping) {
+                    velocity = -0.5D;
+                } else {
+                    velocity = -1.8D;
+                }
+            }
+            this.setDeltaMovement(0.0d, velocity, 0.0d);
+        }
+        if (!level.isClientSide && this.getDeltaMovement().y < -0.6 && fallDistance > 18 && this.isOnGround()) {
+            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 8.0f, Explosion.BlockInteraction.BREAK);
+            this.remove(RemovalReason.KILLED);
         }
         this.move(MoverType.SELF, this.getDeltaMovement());
     }
@@ -157,17 +182,13 @@ public abstract class AbstractRocket extends Entity {
         }
         ServerPlayer player = (ServerPlayer) level.getNearestPlayer(this, 1);
 
-        if (this.getPersistentData().getInt(CGalaxy.ROCKET_POWERED) == 3) {
+        if (this.getMode() == 3) {
             if (this.isVehicle() && player != null) {
                 //player.connection.send(new ClientboundSetTitlesAnimationPacket(5, 10, 10));
                 //player.connection.send(new ClientboundSetTitleTextPacket(new TextComponent("10").withStyle(ChatFormatting.DARK_RED)));
-            }
-            if (this.getDeltaMovement().y == 0) {
-                this.getPersistentData().putInt(CGalaxy.ROCKET_POWERED, 0);
-            }
-        }
 
-        if (this.getPersistentData().getInt(CGalaxy.ROCKET_POWERED) == 2) {
+            }
+        } else if (this.getMode() == 2) {
             if (this.isVehicle()) {
                 i++;
                 if (player != null) {
@@ -222,7 +243,7 @@ public abstract class AbstractRocket extends Entity {
             } else {
                 i = 0;
                 k = 0;
-                this.getPersistentData().putInt(CGalaxy.ROCKET_POWERED, 0);
+                this.setMode(0);
                 this.getPersistentData().putBoolean(CGalaxy.ROCKET_LAUNCH, false);
             }
         } else {
@@ -278,12 +299,14 @@ public abstract class AbstractRocket extends Entity {
     public void readAdditionalSaveData(CompoundTag pCompound) {
         capacity = pCompound.getInt("Capacity");
         this.setFuel(pCompound.getInt("Fuel"));
+        this.setMode(pCompound.getInt("Mode"));
     }
 
     @Override
     public void addAdditionalSaveData(@Nonnull CompoundTag pCompound) {
         pCompound.putInt("Capacity", capacity);
         pCompound.putInt("Fuel", getFuel());
+        pCompound.putInt("Mode", getMode());
     }
 
     @Nonnull

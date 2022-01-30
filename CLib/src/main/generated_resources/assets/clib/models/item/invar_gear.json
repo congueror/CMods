@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "clib:item/invar_gear"
+    "layer0": "clib:resource/invar/invar_gear"
   }
 }

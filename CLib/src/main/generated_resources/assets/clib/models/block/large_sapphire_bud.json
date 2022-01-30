@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "clib:block/large_sapphire_bud"
+    "cross": "clib:resource/sapphire/large_sapphire_bud"
   }
 }

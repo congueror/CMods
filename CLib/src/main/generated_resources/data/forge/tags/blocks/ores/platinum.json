@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "clib:platinum_ore"
+    "clib:platinum_ore",
+    "clib:deepslate_platinum_ore"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "clib:item/platinum_gear"
+    "layer0": "clib:resource/platinum/platinum_gear"
   }
 }

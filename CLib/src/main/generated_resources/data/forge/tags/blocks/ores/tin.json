@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "clib:tin_ore"
+    "clib:tin_ore",
+    "clib:deepslate_tin_ore"
   ]
 }

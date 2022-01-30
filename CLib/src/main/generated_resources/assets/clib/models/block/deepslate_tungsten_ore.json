@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "clib:resource/tungsten/deepslate_tungsten_ore"
+  }
+}

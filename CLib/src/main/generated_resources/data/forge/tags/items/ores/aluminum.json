@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "clib:aluminum_ore"
+    "clib:aluminum_ore",
+    "clib:deepslate_aluminum_ore",
+    "clib:raw_aluminum"
   ]
 }

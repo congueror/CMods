@@ -2,15 +2,14 @@ package net.congueror.clib.world;
 
 import net.congueror.clib.CLib;
 import net.congueror.clib.init.CLBlockInit;
+import net.congueror.clib.init.CLMaterialInit;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -53,27 +52,36 @@ public class FeatureGen {
                 BlockStateProvider.simple(CLBlockInit.RUBBER_LEAVES.get().defaultBlockState()),
                 new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                 new TwoLayersFeatureSize(1, 0, 1)).ignoreVines().build());
-        RUBBER_TREE_PLACEMENT = registerTreePlacement(CLib.MODID, "rubber_tree", RUBBER_TREE, CLBlockInit.RUBBER_SAPLING.get(), 2);
+        RUBBER_TREE_PLACEMENT = registerTreePlacement(CLib.MODID, "rubber_tree", RUBBER_TREE, CLBlockInit.RUBBER_SAPLING.get(), 100);
 
-        TIN = registerConfiguredOre(overworld, CLBlockInit.TIN_ORE.get(), 8, 0, 63, 25);
-        ALUMINUM = registerConfiguredOre(overworld, CLBlockInit.ALUMINUM_ORE.get(), 7, 0, 63, 8);
-        LEAD = registerConfiguredOre(overworld, CLBlockInit.LEAD_ORE.get(), 7, 0, 31, 4);
-        RUBY = registerConfiguredOre(nether, CLBlockInit.RUBY_ORE.get(), 3, 0, 18, 1);
-        SILVER = registerConfiguredOre(overworld, CLBlockInit.SILVER_ORE.get(), 0, 7, 16, 3);
-        NICKEL = registerConfiguredOre(overworld, CLBlockInit.NICKEL_ORE.get(), 7, 0, 31, 4);
-        PLATINUM = registerConfiguredOre(overworld, CLBlockInit.PLATINUM_ORE.get(), 6, 0, 8, 1);
-        TUNGSTEN = registerConfiguredOre(overworld, CLBlockInit.TUNGSTEN_ORE.get(), 6, 0, 16, 2);
-        OPAL = registerConfiguredOre(end, CLBlockInit.OPAL_ORE.get(), 4, 0, 30, 1);
-        TITANIUM = registerConfiguredOre(nether, CLBlockInit.TITANIUM_ORE.get(), 7, 0, 7, 1);
-        URANIUM = registerConfiguredOre(overworld, CLBlockInit.URANIUM_ORE.get(), 7, 0, 16, 1);
-        COBALT = registerConfiguredOre(nether, CLBlockInit.COBALT_ORE.get(), 7, 0, 32, 1);
-        ZINC = registerConfiguredOre(overworld, CLBlockInit.ZINC_ORE.get(), 7, 0, 32, 8);
-        CHROMIUM = registerConfiguredOre(overworld, CLBlockInit.CHROMIUM_ORE.get(), 7, 0, 22, 6);
-        THORIUM = registerConfiguredOre(overworld, CLBlockInit.THORIUM_ORE.get(), 7, 0, 8, 1);
+        TIN = registerConfiguredOre(CLMaterialInit.TIN.getOre().get(), CLMaterialInit.TIN.getDeepslateOre().get(), 8, -24, 56, 25);
+        ALUMINUM = registerConfiguredOre(CLMaterialInit.ALUMINUM.getOre().get(), CLMaterialInit.ALUMINUM.getDeepslateOre().get(), 7, -24, 63, 8);
+        LEAD = registerConfiguredOre(CLMaterialInit.LEAD.getOre().get(), CLMaterialInit.LEAD.getDeepslateOre().get(), 7, -24, 31, 4);
+        RUBY = registerConfiguredOre(nether, CLMaterialInit.RUBY.getOre().get(), 3, 0, 18, 1);
+        SILVER = registerConfiguredOre(CLMaterialInit.SILVER.getOre().get(), CLMaterialInit.SILVER.getDeepslateOre().get(), 0, -24, 16, 3);
+        NICKEL = registerConfiguredOre(CLMaterialInit.NICKEL.getOre().get(), CLMaterialInit.NICKEL.getDeepslateOre().get(), 7, -24, 31, 4);
+        PLATINUM = registerConfiguredOre(CLMaterialInit.PLATINUM.getOre().get(), CLMaterialInit.PLATINUM.getDeepslateOre().get(), 6, -24, 8, 1);
+        TUNGSTEN = registerConfiguredOre(CLMaterialInit.TUNGSTEN.getOre().get(), CLMaterialInit.TUNGSTEN.getDeepslateOre().get(), 6, -24, 16, 2);
+        OPAL = registerConfiguredOre(end, CLMaterialInit.OPAL.getOre().get(), 4, 0, 30, 1);
+        TITANIUM = registerConfiguredOre(nether, CLMaterialInit.TITANIUM.getOre().get(), 7, 0, 7, 1);
+        URANIUM = registerConfiguredOre(CLMaterialInit.URANIUM.getOre().get(), CLMaterialInit.URANIUM.getDeepslateOre().get(), 7, -24, 16, 1);
+        COBALT = registerConfiguredOre(nether, CLMaterialInit.COBALT.getOre().get(), 7, 0, 32, 1);
+        ZINC = registerConfiguredOre(CLMaterialInit.ZINC.getOre().get(), CLMaterialInit.ZINC.getDeepslateOre().get(), 7, -24, 32, 8);
+        CHROMIUM = registerConfiguredOre(CLMaterialInit.CHROMIUM.getOre().get(), CLMaterialInit.CHROMIUM.getDeepslateOre().get(), 7, -24, 22, 6);
+        THORIUM = registerConfiguredOre(CLMaterialInit.THORIUM.getOre().get(), CLMaterialInit.THORIUM.getDeepslateOre().get(), 7, -24, 8, 1);
+
+
         SALTPETRE = registerConfiguredOre(overworld, CLBlockInit.SALTPETRE_ORE.get(), 3, 0, 100, 1);
         SULFUR = registerConfiguredOre(nether, CLBlockInit.SULFUR_ORE.get(), 5, 0, 100, 4);
 
-        SAPPHIRE_GEODE = registerConfiguredGeode(CLBlockInit.SAPPHIRE_BLOCK.get(), CLBlockInit.SAPPHIRE_BUDDING.get(), CLBlockInit.SAPPHIRE_SMALL_BUD.get(), CLBlockInit.SAPPHIRE_MEDIUM_BUD.get(), CLBlockInit.SAPPHIRE_LARGE_BUD.get(), CLBlockInit.SAPPHIRE_CLUSTER.get(), 46);
+        SAPPHIRE_GEODE = registerConfiguredGeode(
+                CLMaterialInit.SAPPHIRE.getBlock().get(),
+                CLMaterialInit.SAPPHIRE.getBudding().get(),
+                CLMaterialInit.SAPPHIRE.getSmallBud().get(),
+                CLMaterialInit.SAPPHIRE.getMediumBud().get(),
+                CLMaterialInit.SAPPHIRE.getLargeBud().get(),
+                CLMaterialInit.SAPPHIRE.getCluster().get(),
+                46);
 
         SALT = registerConfiguredDisk(CLBlockInit.SALT_BLOCK.get());
     }

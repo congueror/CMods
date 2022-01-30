@@ -4,6 +4,7 @@ import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
+import net.congueror.cgalaxy.util.RoomPressurizerSavedData;
 import net.congueror.clib.api.recipe.FluidRecipe;
 import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlockEntity;
 import net.congueror.clib.items.UpgradeItem;
@@ -14,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -239,30 +241,7 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
             }
         }
         if ((info.contains("idle") || info.contains("error")) && hasOxygenReceiver()) {
-            entities.stream().filter(livingEntity -> livingEntity.getPersistentData().getBoolean(CGalaxy.LIVING_PRESSURIZED)).forEach(livingEntity -> {
-                livingEntity.getPersistentData().putBoolean(CGalaxy.LIVING_PRESSURIZED, false);
-            });
-
-            var list = AFFECTED_BLOCKS.get(level.dimension());
-            if (list != null) {
-                List<BlockPos> list1 = new ArrayList<>(AFFECTED_BLOCKS.get(level.dimension()));
-                for (BlockPos pos : list) {
-                    if (aabb.contains(pos.getX(), pos.getY(), pos.getZ())) {
-                        list1.remove(pos);
-                        BlockState state = level.getBlockState(pos);
-                        updateAffectedBlocks(state, pos, level);
-                    }
-                }
-
-                AFFECTED_BLOCKS.put(level.dimension(), list1);
-            }
-
-            var list1 = AABBS.get(level.dimension());
-            if (list1 == null) {
-                return;
-            }
-            list1.remove(aabb);
-            AABBS.put(level.dimension(), list1);
+            resetAABB();
         }
     }
 
@@ -296,6 +275,35 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
                     CGBlockInit.COAL_TORCH.get().defaultBlockState();
             level.setBlock(pos, state1, 2);
         }
+    }
+
+    public void resetAABB() {
+        entities.stream().filter(livingEntity -> livingEntity.getPersistentData().getBoolean(CGalaxy.LIVING_PRESSURIZED)).forEach(livingEntity -> {
+            livingEntity.getPersistentData().putBoolean(CGalaxy.LIVING_PRESSURIZED, false);
+        });
+
+        var list = AFFECTED_BLOCKS.get(level.dimension());
+        if (list != null) {
+            List<BlockPos> list1 = new ArrayList<>(AFFECTED_BLOCKS.get(level.dimension()));
+            for (BlockPos pos : list) {
+                if (aabb.contains(pos.getX(), pos.getY(), pos.getZ())) {
+                    list1.remove(pos);
+                    BlockState state = level.getBlockState(pos);
+                    updateAffectedBlocks(state, pos, level);
+                }
+            }
+
+            AFFECTED_BLOCKS.put(level.dimension(), list1);
+            if (level instanceof ServerLevel)
+                RoomPressurizerSavedData.makeDirty((ServerLevel) level);
+        }
+
+        var list1 = AABBS.get(level.dimension());
+        if (list1 == null) {
+            return;
+        }
+        list1.remove(aabb);
+        AABBS.put(level.dimension(), list1);
     }
 
     @Nullable

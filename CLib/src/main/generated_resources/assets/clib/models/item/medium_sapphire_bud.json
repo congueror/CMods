@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "clib:block/medium_sapphire_bud"
+    "layer0": "clib:resource/sapphire/medium_sapphire_bud"
   }
 }

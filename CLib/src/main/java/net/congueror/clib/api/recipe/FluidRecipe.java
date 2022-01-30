@@ -18,6 +18,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public interface FluidRecipe<C extends IItemFluidInventory> extends ItemRecipe<C> {
 
@@ -27,9 +29,7 @@ public interface FluidRecipe<C extends IItemFluidInventory> extends ItemRecipe<C
      * @return A {@link Collection} of {@link FluidStack}s
      */
     default Collection<FluidStack> getFluidResults() {
-        Collection<FluidStack> list = new ArrayList<>();
-        list.add(getFluidResult());
-        return list;
+        return Collections.singletonList(getFluidResult());
     }
 
     /**

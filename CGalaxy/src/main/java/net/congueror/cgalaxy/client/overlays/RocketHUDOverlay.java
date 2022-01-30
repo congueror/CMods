@@ -34,6 +34,7 @@ public class RocketHUDOverlay extends GuiComponent implements IIngameOverlay {
                 } else if (y <= 48) {
                     blit(mStack, 3, 202 - (48 / 4), 16, 20, 10, 10, 26, 102);
                 }
+
                 String coords = "x: " + (int) player.getX() + ", y: " + (int) player.getY() + ", z:" + (int) player.getZ();
                 int k = mc.font.width(coords);
                 int l = mc.getWindow().getGuiScaledWidth() - 2 - k;
@@ -43,8 +44,14 @@ public class RocketHUDOverlay extends GuiComponent implements IIngameOverlay {
                 int y1 = 1 + a;
                 int y2 = y1 + (51 - a);
                 RenderingHelper.renderFluid(mStack.last().pose(), stack1, l - 19, x2, y1, y2, 0);
+                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                 RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, "textures/gui/rocket_fuel.png"));
                 blit(mStack, l - 20, 0, 0, 0, 18, 53, 18, 53);
+
+                if (rocket.getMode() == 3 && rocket.getDeltaMovement().y <= -0.6) {
+                    String message = "Accelerating too fast! Press SPACE to slow down.";
+                    GuiComponent.drawCenteredString(mStack, mc.font, message, mc.getWindow().getGuiScaledWidth() / 2, mc.getWindow().getGuiScaledHeight() / 4, 1);
+                }
             }
         }
     }

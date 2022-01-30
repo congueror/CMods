@@ -15,15 +15,31 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 
 public class SolarGeneratorBlock extends AbstractItemBlock {
+    private static int tiers = 0;
     private final int generation;
+    private final int tier;
 
-    public SolarGeneratorBlock(Properties p_49795_, int generation) {
+    public SolarGeneratorBlock(Properties p_49795_, int generation, int tier) {
         super(p_49795_);
         this.generation = generation;
+
+        if (tier == 0) {
+            this.tier = 1000;
+        } else if (tier - 1 == tiers) {
+            this.tier = tier;
+            tiers++;
+        } else {
+            this.tier = tiers + 1;
+            tiers++;
+        }
     }
 
     public int getGeneration() {
         return generation;
+    }
+
+    public int getTier() {
+        return tier;
     }
 
     @Nullable

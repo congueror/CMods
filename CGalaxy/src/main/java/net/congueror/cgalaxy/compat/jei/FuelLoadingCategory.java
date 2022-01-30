@@ -15,6 +15,7 @@ import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderScreen;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
 import net.congueror.clib.CLib;
+import net.congueror.clib.compat.jei.AbstractJeiCategory;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -28,22 +29,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FuelLoadingCategory implements IRecipeCategory<FuelLoaderRecipe> {
-
-    IGuiHelper helper;
-    private final IDrawableAnimated arrow;
-    private final IDrawableStatic energy_glass;
-    private final IDrawableAnimated energy;
-    private final String localized;
+public class FuelLoadingCategory extends AbstractJeiCategory<FuelLoaderRecipe> {
 
     public FuelLoadingCategory(IGuiHelper helper) {
-        this.helper = helper;
-        int processTime = ((FuelLoaderRecipe) net.congueror.clib.compat.jei.JEICompat.getRecipes(CGRecipeSerializerInit.Types.FUEL_LOADING).get(0)).getProcessTime();
-        ResourceLocation e = new ResourceLocation(CLib.MODID, "textures/gui/screen_elements.png");
-        arrow = helper.drawableBuilder(e, 39, 0, 17, 31).buildAnimated(processTime, IDrawableAnimated.StartDirection.BOTTOM, false);
-        energy_glass = helper.drawableBuilder(e, 16, 0, 16, 60).build();
-        energy = helper.drawableBuilder(e, 0, 0, 16, 60).buildAnimated(1333, IDrawableAnimated.StartDirection.TOP, true);
-        localized = I18n.get("recipe.cgalaxy.fuel_loading");
+        super(helper, "recipe.cgalaxy.fuel_loading",
+                ((FuelLoaderRecipe) net.congueror.clib.compat.jei.JEICompat.getRecipes(CGRecipeSerializerInit.Types.FUEL_LOADING).get(0)).getProcessTime(),
+                40000, 30, false);
     }
 
     @Nonnull
@@ -60,20 +51,8 @@ public class FuelLoadingCategory implements IRecipeCategory<FuelLoaderRecipe> {
 
     @Nonnull
     @Override
-    public Component getTitle() {
-        return new TextComponent(localized);
-    }
-
-    @Nonnull
-    @Override
-    public IDrawable getBackground() {
-        return helper.createDrawable(FuelLoaderScreen.GUI, 21, 7, 172, 63);
-    }
-
-    @Nonnull
-    @Override
     public IDrawable getIcon() {
-        return helper.createDrawableIngredient(new ItemStack(CGBlockInit.FUEL_LOADER.get()));
+        return createIcon(CGBlockInit.FUEL_LOADER.get());
     }
 
     @Override
@@ -91,18 +70,9 @@ public class FuelLoadingCategory implements IRecipeCategory<FuelLoaderRecipe> {
 
     @Override
     public void draw(@Nonnull FuelLoaderRecipe recipe, @Nonnull PoseStack poseStack, double mouseX, double mouseY) {
-        arrow.draw(poseStack, 61, 22);
-        energy.draw(poseStack, 151, 2);
-        energy_glass.draw(poseStack, 151, 2);
-    }
-
-    @Nonnull
-    @Override
-    public List<Component> getTooltipStrings(@Nonnull FuelLoaderRecipe recipe, double mouseX, double mouseY) {
-        List<Component> list = new ArrayList<>();
-        if (mouseX >= 151 && mouseX <= 167 && mouseY >= 2 && mouseY <= 62) {
-            list.add(new TranslatableComponent("key.clib.energy_usage").append(": 30FE/t"));
-        }
-        return list;
+        super.draw(recipe, poseStack, mouseX, mouseY);
+        arrow_vertical.draw(poseStack, 61, 22);
+        arrow_vertical_anim.draw(poseStack, 61, 22);
+        tank.draw(poseStack, 78, 10);
     }
 }

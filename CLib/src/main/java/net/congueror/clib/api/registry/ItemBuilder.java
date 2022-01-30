@@ -2,6 +2,7 @@ package net.congueror.clib.api.registry;
 
 import net.congueror.clib.api.data.ItemModelDataProvider;
 import net.congueror.clib.items.generic.ICLibItem;
+import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
@@ -23,7 +25,7 @@ import java.util.stream.Stream;
  * <pre>
  *  public static final RegistryObject<Item> TEST = new ItemBuilder("test",
  *             new CLItem(new Item.Properties()
- *                  .tab(ModCreativeModeTabs.ItemsIG.instance)))
+ *                  .tab(ModCreativeModeTabs.ResourcesIG.instance)))
  *             .withTranslation("My Test")
  *             .withExistingItemTags(Tags.Items.INGOTS)
  *             .build(ITEMS);
@@ -46,6 +48,7 @@ public class ItemBuilder {
     public final Map<String, Tag.Named<Item>> itemTags = new HashMap<>();
     public BiConsumer<ItemModelDataProvider, Item> itemModel = (itemModelDataProvider, item1) -> itemModelDataProvider.texture(item1, "item/" + item1);
     public final Map<String, String> locale = new HashMap<>();
+    public final List<BiConsumer<Consumer<FinishedRecipe>, Item>> recipes = new ArrayList<>();
 
     /**
      * This is the main constructor of the builder.
@@ -156,6 +159,11 @@ public class ItemBuilder {
      */
     public ItemBuilder withTranslation(String translation, String locale) {
         this.locale.put(locale, translation);
+        return this;
+    }
+
+    public ItemBuilder withRecipe(BiConsumer<Consumer<FinishedRecipe>, Item> consumer) {
+        this.recipes.add(consumer);
         return this;
     }
 

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "clib:block/aluminum_ore"
+    "all": "clib:resource/aluminum/aluminum_ore"
   }
 }

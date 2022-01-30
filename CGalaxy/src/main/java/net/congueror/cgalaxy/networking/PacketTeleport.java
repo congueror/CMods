@@ -44,11 +44,11 @@ public class PacketTeleport implements IPacket {
                     if (player.getVehicle() != null) {
                         player.getVehicle().remove(Entity.RemovalReason.UNLOADED_WITH_PLAYER);
                     }
-                    player.teleportTo(world, player.blockPosition().getX(), 300, player.blockPosition().getZ(), 0, 0);
-                    rocket.setPos(player.blockPosition().getX() + 0.5, 300, player.blockPosition().getZ() + 0.5);
+                    player.teleportTo(world, player.blockPosition().getX(), 600, player.blockPosition().getZ(), 0, 0);
+                    rocket.setPos(player.blockPosition().getX() + 0.5, 600, player.blockPosition().getZ() + 0.5);
                     world.addFreshEntity(rocket);
                     player.startRiding(rocket, true);
-                    rocket.getPersistentData().putInt(CGalaxy.ROCKET_POWERED, 3);
+                    rocket.setMode(3);
                 } else if (world != null) {
                     player.teleportTo(world, player.blockPosition().getX(), 200, player.blockPosition().getZ(), 0, 0);
                 }

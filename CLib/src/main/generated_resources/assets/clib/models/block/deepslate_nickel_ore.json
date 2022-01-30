@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "clib:resource/nickel/deepslate_nickel_ore"
+  }
+}

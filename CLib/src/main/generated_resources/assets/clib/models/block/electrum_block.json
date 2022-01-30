@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "clib:block/electrum_block"
+    "all": "clib:resource/electrum/electrum_block"
   }
 }

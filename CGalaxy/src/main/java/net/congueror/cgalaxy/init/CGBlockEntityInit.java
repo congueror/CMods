@@ -4,7 +4,7 @@ import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderBlockEntity;
 import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryBlockEntity;
 import net.congueror.cgalaxy.blocks.launch_pad.LaunchPadBlockEntity;
-import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorBlockEntity;
+import net.congueror.cgalaxy.blocks.gas_extractor.GasExtractorBlockEntity;
 import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -24,8 +24,8 @@ public class CGBlockEntityInit {
     public static final RegistryObject<BlockEntityType<FuelRefineryBlockEntity>> FUEL_REFINERY = BLOCK_ENTITY_TYPES.register("fuel_refinery", () ->
             BlockEntityType.Builder.of(FuelRefineryBlockEntity::new, CGBlockInit.FUEL_REFINERY.get()).build(null));
 
-    public static final RegistryObject<BlockEntityType<OxygenCompressorBlockEntity>> OXYGEN_COMPRESSOR = BLOCK_ENTITY_TYPES.register("oxygen_compressor", () ->
-            BlockEntityType.Builder.of(OxygenCompressorBlockEntity::new, CGBlockInit.OXYGEN_COMPRESSOR.get()).build(null));
+    public static final RegistryObject<BlockEntityType<GasExtractorBlockEntity>> GAS_EXTRACTOR = BLOCK_ENTITY_TYPES.register("gas_extractor", () ->
+            BlockEntityType.Builder.of(GasExtractorBlockEntity::new, CGBlockInit.GAS_EXTRACTOR.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<RoomPressurizerBlockEntity>> ROOM_PRESSURIZER = BLOCK_ENTITY_TYPES.register("room_pressurizer", () ->
             BlockEntityType.Builder.of(RoomPressurizerBlockEntity::new, CGBlockInit.ROOM_PRESSURIZER.get()).build(null));

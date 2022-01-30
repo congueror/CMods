@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "clib:item/chromium_ingot"
+    "layer0": "clib:resource/chromium/chromium_ingot"
   }
 }

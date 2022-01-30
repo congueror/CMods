@@ -76,10 +76,10 @@ public class SpaceSuitItem extends ArmorItem {
     @Override
     public void initializeClient(Consumer<IItemRenderProperties> consumer) {
         consumer.accept(new IItemRenderProperties() {
+
             @Override
-            public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A _default) {
-                //noinspection unchecked
-                return (A) new SpaceSuitModel(SpaceSuitModel.createBodyLayer());
+            public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
+                return new SpaceSuitModel(SpaceSuitModel.createBodyLayer());
             }
         });
     }

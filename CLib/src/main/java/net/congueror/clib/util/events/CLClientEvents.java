@@ -1,6 +1,7 @@
 package net.congueror.clib.util.events;
 
 import net.congueror.clib.CLib;
+import net.congueror.clib.api.registry.BlockBuilder;
 import net.congueror.clib.blocks.solar_generator.SolarGeneratorScreen;
 import net.congueror.clib.init.CLBlockInit;
 import net.congueror.clib.init.CLContainerInit;
@@ -31,11 +32,10 @@ public class CLClientEvents {
     public static class ModClientEvents {
         @SubscribeEvent
         public static void clientSetup(final FMLClientSetupEvent event) {
-            ItemBlockRenderTypes.setRenderLayer(CLBlockInit.RUBBER_SAPLING.get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(CLBlockInit.SAPPHIRE_SMALL_BUD.get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(CLBlockInit.SAPPHIRE_MEDIUM_BUD.get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(CLBlockInit.SAPPHIRE_LARGE_BUD.get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(CLBlockInit.SAPPHIRE_CLUSTER.get(), RenderType.cutout());
+            BlockBuilder.OBJECTS.values().forEach(blockBuilders -> blockBuilders.forEach(blockBuilder -> {
+                if (blockBuilder.renderType != null)
+                    ItemBlockRenderTypes.setRenderLayer(blockBuilder.block, blockBuilder.renderType);
+            }));
 
             MenuScreens.register(CLContainerInit.SOLAR_GENERATOR.get(), SolarGeneratorScreen::new);
         }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "clib:block/tungsten_block"
+    "all": "clib:resource/tungsten/tungsten_block"
   }
 }

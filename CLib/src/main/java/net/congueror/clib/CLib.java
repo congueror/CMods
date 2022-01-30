@@ -22,6 +22,8 @@ public class CLib {
         CLRecipeSerializerInit.RECIPE_SERIALIZERS.register(modEventBus);
         CLBlockEntityInit.BLOCK_ENTITY_TYPES.register(modEventBus);
         CLContainerInit.MENU_TYPES.register(modEventBus);
+
+        CLMaterialInit.init();
         MinecraftForge.EVENT_BUS.register(this);
     }
 

@@ -2,13 +2,13 @@ package net.congueror.clib.init;
 
 import net.congueror.clib.CLib;
 import net.congueror.clib.api.data.BlockModelDataProvider;
-import net.congueror.clib.api.data.ItemModelDataProvider;
 import net.congueror.clib.blocks.abstract_machine.item.AbstractItemBlock;
 import net.congueror.clib.api.registry.BlockBuilder;
 import net.congueror.clib.blocks.generic.*;
 import net.congueror.clib.blocks.solar_generator.SolarGeneratorBlock;
-import net.congueror.clib.util.ModCreativeTabs;
+import net.congueror.clib.util.CreativeTabs;
 import net.congueror.clib.world.FeatureGen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -31,173 +31,6 @@ import java.util.Random;
 
 public class CLBlockInit {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, CLib.MODID);
-
-    public static final RegistryObject<Block> TIN_BLOCK = registerStorageBlock("tin_block", 3.0f, 1)
-            .withTranslation("Block of Tin").build(BLOCKS);
-    public static final RegistryObject<Block> TIN_ORE = registerOreBlock("tin_ore", 1, 0)
-            .withTranslation("Tin Ore").build(BLOCKS);
-
-    public static final RegistryObject<Block> STEEL_BLOCK = registerStorageBlock("steel_block", 6.0f, 2)
-            .withTranslation("Block of Steel").build(BLOCKS);
-
-    public static final RegistryObject<Block> ALUMINUM_BLOCK = registerStorageBlock("aluminum_block", 5.0f, 2)
-            .withTranslation("Block of Aluminum").build(BLOCKS);
-    public static final RegistryObject<Block> ALUMINUM_ORE = registerOreBlock("aluminum_ore", 2, 0)
-            .withTranslation("Aluminum Ore").build(BLOCKS);
-
-    public static final RegistryObject<Block> LEAD_BLOCK = registerStorageBlock("lead_block", 4.0f, 2)
-            .withTranslation("Block of Lead").build(BLOCKS);
-    public static final RegistryObject<Block> LEAD_ORE = registerOreBlock("lead_ore", 2, 0)
-            .withTranslation("Lead Ore").build(BLOCKS);
-
-    public static final RegistryObject<Block> RUBY_BLOCK = registerStorageBlock("ruby_block", 6.0f, 2)
-            .withTranslation("Block of Ruby").build(BLOCKS);
-    public static final RegistryObject<Block> RUBY_ORE = new BlockBuilder("ruby_ore", new CLOreBlock(BlockBehaviour.Properties
-            .of(Material.STONE).requiresCorrectToolForDrops()
-            .strength(3.0f, 6.0f)
-            .sound(SoundType.NETHERRACK)
-            , 7))
-            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, tierToTag(2))
-            .withNewBlockTag("forge:ores/ruby")
-            .withNewItemTag("forge:ores/ruby")
-            .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createMultipleDrops(block, CLItemInit.RUBY.get(), 1, 1))
-            .withTranslation("Nether Ruby Ore")
-            .build(BLOCKS);
-
-    public static final RegistryObject<Block> SILVER_BLOCK = registerStorageBlock("silver_block", 5.0f, 2)
-            .withTranslation("Block of Silver").build(BLOCKS);
-    public static final RegistryObject<Block> SILVER_ORE = registerOreBlock("silver_ore", 2, 0)
-            .withTranslation("Silver Ore").build(BLOCKS);
-
-    public static final RegistryObject<Block> LUMIUM_BLOCK = registerStorageBlock("lumium_block", 3.0f, 2)
-            .withTranslation("Block of Lumium").build(BLOCKS);
-
-    public static final RegistryObject<Block> NICKEL_BLOCK = registerStorageBlock("nickel_block", 4.0f, 2)
-            .withTranslation("Block of Nickel").build(BLOCKS);
-    public static final RegistryObject<Block> NICKEL_ORE = registerOreBlock("nickel_ore", 2, 0)
-            .withTranslation("Nickel Ore").build(BLOCKS);
-
-    public static final RegistryObject<Block> INVAR_BLOCK = registerStorageBlock("invar_block", 3.0f, 2)
-            .withTranslation("Block of Invar").build(BLOCKS);
-
-    public static final RegistryObject<Block> ELECTRUM_BLOCK = registerStorageBlock("electrum_block", 4.0f, 2)
-            .withTranslation("Block of Electrum").build(BLOCKS);
-
-    public static final RegistryObject<Block> PLATINUM_BLOCK = registerStorageBlock("platinum_block", 6.0f, 3)
-            .withTranslation("Block of Platinum").build(BLOCKS);
-    public static final RegistryObject<Block> PLATINUM_ORE = registerOreBlock("platinum_ore", 3, 0)
-            .withTranslation("Platinum Ore").build(BLOCKS);
-
-    public static final RegistryObject<Block> ENDERIUM_BLOCK = registerStorageBlock("enderium_block", 7.0f, 3)
-            .withTranslation("Block of Enderium").build(BLOCKS);
-
-    public static final RegistryObject<Block> SIGNALUM_BLOCK = registerStorageBlock("signalum_block", 3.0f, 2)
-            .withTranslation("Block of Signalum").build(BLOCKS);
-
-    public static final RegistryObject<Block> TUNGSTEN_BLOCK = registerStorageBlock("tungsten_block", 6.0f, 3)
-            .withTranslation("Block of Tungsten").build(BLOCKS);
-    public static final RegistryObject<Block> TUNGSTEN_ORE = registerOreBlock("tungsten_ore", 3, 0)
-            .withTranslation("Tungsten Ore").build(BLOCKS);
-
-    public static final RegistryObject<Block> BRONZE_BLOCK = registerStorageBlock("bronze_block", 4.0f, 2)
-            .withTranslation("Block of Bronze").build(BLOCKS);
-
-    public static final RegistryObject<Block> SAPPHIRE_BLOCK = new BlockBuilder("sapphire_block", new CLBlock(BlockBehaviour.Properties.copy(Blocks.AMETHYST_BLOCK)))
-            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.CRYSTAL_SOUND_BLOCKS)
-            .withNewBlockTag("forge:storage_blocks/sapphire")
-            .withNewItemTag("forge:storage_blocks/sapphire")
-            .withTranslation("Block of Sapphire")
-            .build(BLOCKS);
-    public static final RegistryObject<Block> SAPPHIRE_SMALL_BUD = new BlockBuilder("small_sapphire_bud",
-            new AmethystClusterBlock(3, 4, BlockBehaviour.Properties.copy(Blocks.SMALL_AMETHYST_BUD)))
-            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE)
-            .withBlockModel((blockModelDataGenerator, block) -> blockModelDataGenerator.directionalBlock(block, blockModelDataGenerator.models().cross(Objects.requireNonNull(block.getRegistryName()).getPath(), new ResourceLocation(CLib.MODID, "block/small_sapphire_bud"))))
-            .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.texture(block.asItem(), "block/small_sapphire_bud"))
-            .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createSilkTouchOnlyDrop(block, block))
-            .withTranslation("Small Sapphire Bud")
-            .build(BLOCKS);
-    public static final RegistryObject<Block> SAPPHIRE_MEDIUM_BUD = new BlockBuilder("medium_sapphire_bud",
-            new AmethystClusterBlock(4, 3, BlockBehaviour.Properties.copy(Blocks.MEDIUM_AMETHYST_BUD)))
-            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE)
-            .withBlockModel((blockModelDataGenerator, block) -> blockModelDataGenerator.directionalBlock(block, blockModelDataGenerator.models().cross(Objects.requireNonNull(block.getRegistryName()).getPath(), new ResourceLocation(CLib.MODID, "block/medium_sapphire_bud"))))
-            .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.texture(block.asItem(), "block/medium_sapphire_bud"))
-            .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createSilkTouchOnlyDrop(block, block))
-            .withTranslation("Medium Sapphire Bud")
-            .build(BLOCKS);
-    public static final RegistryObject<Block> SAPPHIRE_LARGE_BUD = new BlockBuilder("large_sapphire_bud",
-            new AmethystClusterBlock(5, 3, BlockBehaviour.Properties.copy(Blocks.LARGE_AMETHYST_BUD)))
-            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE)
-            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.directionalBlock(block, blockModelDataProvider.models().cross(Objects.requireNonNull(block.getRegistryName()).getPath(), new ResourceLocation(CLib.MODID, "block/large_sapphire_bud"))))
-            .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.texture(block.asItem(), "block/large_sapphire_bud"))
-            .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createSilkTouchOnlyDrop(block, block))
-            .withTranslation("Large Sapphire Bud")
-            .build(BLOCKS);
-    public static final RegistryObject<Block> SAPPHIRE_CLUSTER = new BlockBuilder("sapphire_cluster",
-            new AmethystClusterBlock(7, 3, BlockBehaviour.Properties.copy(Blocks.AMETHYST_CLUSTER)))
-            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE)
-            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.directionalBlock(block, blockModelDataProvider.models().cross(Objects.requireNonNull(block.getRegistryName()).getPath(), new ResourceLocation(CLib.MODID, "block/sapphire_cluster"))))
-            .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.texture(block.asItem(), "block/sapphire_cluster"))
-            .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createClusterDrop(block, CLItemInit.SAPPHIRE_SHARD.get()))
-            .withTranslation("Sapphire Cluster")
-            .build(BLOCKS);
-    public static final RegistryObject<Block> SAPPHIRE_BUDDING = new BlockBuilder("budding_sapphire", new CLBuddingBlock(BlockBehaviour.Properties.copy(Blocks.BUDDING_AMETHYST),
-            SAPPHIRE_SMALL_BUD, SAPPHIRE_MEDIUM_BUD, SAPPHIRE_LARGE_BUD, SAPPHIRE_CLUSTER))
-            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.CRYSTAL_SOUND_BLOCKS)
-            .withLootTable(null)
-            .withTranslation("Sapphire Budding")
-            .build(BLOCKS);
-
-    public static final RegistryObject<Block> OPAL_BLOCK = registerStorageBlock("opal_block", 7.0f, 3)
-            .withTranslation("Block of Opal").build(BLOCKS);
-    public static final RegistryObject<Block> OPAL_ORE = new BlockBuilder("opal_ore", new CLOreBlock(BlockBehaviour.Properties
-            .of(Material.STONE).requiresCorrectToolForDrops()
-            .strength(3.0f, 6.0f)
-            .sound(SoundType.STONE)
-            , 17))
-            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, tierToTag(3))
-            .withNewBlockTag("forge:ores/opal")
-            .withNewItemTag("forge:ores/opal")
-            .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createMultipleDrops(block, CLItemInit.OPAL.get(), 1, 1))
-            .withTranslation("End Opal Ore")
-            .build(BLOCKS);
-
-    public static final RegistryObject<Block> TITANIUM_BLOCK = registerStorageBlock("titanium_block", 9.0f, 3)
-            .withTranslation("Block of Titanium").build(BLOCKS);
-    public static final RegistryObject<Block> TITANIUM_ORE = new BlockBuilder("titanium_ore", new CLOreBlock(BlockBehaviour.Properties
-            .of(Material.STONE).requiresCorrectToolForDrops()
-            .strength(8.0f, 28.0f)
-            .sound(SoundType.STONE)
-            , 0))
-            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, tierToTag(3))
-            .withNewBlockTag("forge:ores/titanium")
-            .withNewItemTag("forge:ores/titanium")
-            .withBlockModel(BlockModelDataProvider::cubeColumnBlock)
-            .withTranslation("Recens Debris")
-            .build(BLOCKS);
-
-    public static final RegistryObject<Block> URANIUM_ORE = registerOreBlock("uranium_ore", 3, 0)
-            .withTranslation("Uranium Ore").build(BLOCKS);
-
-    public static final RegistryObject<Block> COBALT_BLOCK = registerStorageBlock("cobalt_block", 6.0f, 3)
-            .withTranslation("Block of Cobalt").build(BLOCKS);
-    public static final RegistryObject<Block> COBALT_ORE = registerOreBlock("cobalt_ore", 3, 0)
-            .withTranslation("Nether Cobalt Ore").build(BLOCKS);
-
-    public static final RegistryObject<Block> ZINC_BLOCK = registerStorageBlock("zinc_block", 4.0f, 2)
-            .withTranslation("Block of Zinc").build(BLOCKS);
-    public static final RegistryObject<Block> ZINC_ORE = registerOreBlock("zinc_ore", 2, 0)
-            .withTranslation("Zinc Ore").build(BLOCKS);
-
-    public static final RegistryObject<Block> BRASS_BLOCK = registerStorageBlock("brass_block", 4.0f, 2)
-            .withTranslation("Block of Brass").build(BLOCKS);
-
-    public static final RegistryObject<Block> CHROMIUM_BLOCK = registerStorageBlock("chromium_block", 4.0f, 2)
-            .withTranslation("Block of Chromium").build(BLOCKS);
-    public static final RegistryObject<Block> CHROMIUM_ORE = registerOreBlock("chromium_ore", 2, 0)
-            .withTranslation("Chromium Ore").build(BLOCKS);
-
-    public static final RegistryObject<Block> THORIUM_ORE = registerOreBlock("thorium_ore", 3, 0)
-            .withTranslation("Thorium Ore").build(BLOCKS);
 
     public static final RegistryObject<Block> SALTPETRE_ORE = new BlockBuilder("saltpetre_ore", new CLOreBlock(BlockBehaviour.Properties
             .of(Material.STONE).requiresCorrectToolForDrops()
@@ -243,7 +76,7 @@ public class CLBlockInit {
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_AXE)
             .withNewBlockTag("forge:rubber_logs")
             .withNewItemTag("forge:rubber_logs")
-            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.axisBlock(block, "stripped_rubber_log"))
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.axisBlock(block, "clib:block/stripped_rubber_log"))
             .withTranslation("Stripped Rubber Wood")
             .build(BLOCKS);
 
@@ -263,7 +96,7 @@ public class CLBlockInit {
             .withNewBlockTag("forge:rubber_logs")
             .withNewItemTag("forge:rubber_logs")
             .withModifiedState(ToolActions.AXE_STRIP, RUBBER_STRIPPED_WOOD)
-            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.axisBlock(block, "rubber_log"))
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.axisBlock(block, "clib:block/rubber_log"))
             .withTranslation("Rubber Wood")
             .build(BLOCKS);
 
@@ -292,17 +125,42 @@ public class CLBlockInit {
             .withBlockModel(BlockModelDataProvider::crossBlock)
             .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.texture(block.asItem(), "block/rubber_sapling"))
             .withTranslation("Rubber Sapling")
+            .withRenderType(RenderType.cutout())
             .build(BLOCKS);
 
-    public static final RegistryObject<Block> SOLAR_GENERATOR = new BlockBuilder("solar_generator",
-            new SolarGeneratorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 1000))//TODO
-            .withCreativeTab(ModCreativeTabs.MachinesIG.instance)
+    public static final RegistryObject<Block> SOLAR_GENERATOR_1 = new BlockBuilder("solar_generator_1",
+            new SolarGeneratorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 20, 1))//TODO
+            .withCreativeTab(CreativeTabs.MachinesIG.instance)
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
-            .withBlockModel(null)
-            .withItemModel(ItemModelDataProvider::empty)
-            .withTranslation("Solar Generator")
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.cubeBottomTopBlock(block, "clib:block/solar_generator_side", "clib:block/machine_frame", "clib:block/solar_generator_1_top"))
+            .withTranslation("Tier 1 Solar Generator")
             .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createMachineDrop((AbstractItemBlock) block))
             .build(BLOCKS);
+    public static final RegistryObject<Block> SOLAR_GENERATOR_2 = new BlockBuilder("solar_generator_2",
+            new SolarGeneratorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 50, 2))
+            .withCreativeTab(CreativeTabs.MachinesIG.instance)
+            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.cubeBottomTopBlock(block, "clib:block/solar_generator_side", "clib:block/machine_frame", "clib:block/solar_generator_2_top"))
+            .withTranslation("Tier 2 Solar Generator")
+            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createMachineDrop((AbstractItemBlock) block))
+            .build(BLOCKS);
+    public static final RegistryObject<Block> SOLAR_GENERATOR_3 = new BlockBuilder("solar_generator_3",
+            new SolarGeneratorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 120, 3))
+            .withCreativeTab(CreativeTabs.MachinesIG.instance)
+            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.cubeBottomTopBlock(block, "clib:block/solar_generator_side", "clib:block/machine_frame", "clib:block/solar_generator_3_top"))
+            .withTranslation("Tier 3 Solar Generator")
+            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createMachineDrop((AbstractItemBlock) block))
+            .build(BLOCKS);
+    public static final RegistryObject<Block> SOLAR_GENERATOR_CREATIVE = new BlockBuilder("solar_generator_creative",
+            new SolarGeneratorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 10000, 0))
+            .withCreativeTab(CreativeTabs.MachinesIG.instance)
+            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.cubeBottomTopBlock(block, "clib:block/solar_generator_side", "clib:block/machine_frame", "clib:block/solar_generator_3_top"))
+            .withTranslation("Creative Solar Generator")
+            .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createMachineDrop((AbstractItemBlock) block))
+            .build(BLOCKS);
+
 
     public static BlockBuilder registerStorageBlock(String name, float hardness, int harvestLvl) {
         return registerStorageBlock(name, hardness, tierToTag(harvestLvl));

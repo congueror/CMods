@@ -13,18 +13,22 @@ import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGCarverInit;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
+import net.congueror.cgalaxy.init.CGStructureInit;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.util.CGGalacticObjects;
+import net.congueror.cgalaxy.util.RoomPressurizerSavedData;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
 import net.congueror.cgalaxy.world.CGBiomes;
 import net.congueror.cgalaxy.world.CGDimensions;
 import net.congueror.cgalaxy.world.CGFeatureGen;
+import net.congueror.cgalaxy.world.structures.CGStructures;
 import net.congueror.clib.api.events.BlockOnPlacedEvent;
 import net.congueror.clib.api.events.CropGrowEvent;
 import net.congueror.clib.api.events.SaplingAdvanceEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.MenuProvider;
@@ -41,6 +45,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -62,6 +67,8 @@ public class CGCommonEvents {
                 CGFeatureGen.registerFeatures();
                 CGCarverInit.registerCarvers();
                 CGBiomes.registerBiomes();
+                CGStructureInit.setupStructures();
+                CGStructures.registerConfiguredStructures();
             });
             CGGalacticObjects.init();
         }
@@ -79,11 +86,6 @@ public class CGCommonEvents {
     public static class ForgeCommonEvents {
 
         @SubscribeEvent
-        public static void attachWorldCapability(AttachCapabilitiesEvent<Level> e) {
-            //TODO
-        }
-
-        @SubscribeEvent
         public static void registerCommands(RegisterCommandsEvent e) {
             CGCommands.register(e.getDispatcher());
         }
@@ -95,7 +97,7 @@ public class CGCommonEvents {
 
             SpaceSuitUtils.tickPlayer(e);
 
-            if (player.getY() >= 600 && player.getVehicle() instanceof AbstractRocket && mc.screen == null) {
+            if (player.getY() >= 600 && player.getVehicle() instanceof AbstractRocket && ((AbstractRocket) player.getVehicle()).getMode() != 3 && mc.screen == null) {
                 if (player instanceof ServerPlayer player1) {
                     NetworkHooks.openGui(player1, new MenuProvider() {
                         @Nonnull
@@ -111,6 +113,11 @@ public class CGCommonEvents {
                     });
                 }
             }
+        }
+
+        @SubscribeEvent
+        public static void worldLoadEvent(WorldEvent.Load e) {
+            CGStructures.addDimensionalSpacing(e);
         }
 
         @SubscribeEvent
@@ -137,6 +144,7 @@ public class CGCommonEvents {
                             if (list1 == null) list1 = new ArrayList<>();
                             if (!list1.contains(e.getPos())) list1.add(e.getPos());
                             RoomPressurizerBlockEntity.AFFECTED_BLOCKS.put(level.dimension(), list1);
+                            RoomPressurizerSavedData.makeDirty((ServerLevel) level);
                         } else {
                             RoomPressurizerBlockEntity.updateAffectedBlocks(newState, e.getPos(), level);
                         }

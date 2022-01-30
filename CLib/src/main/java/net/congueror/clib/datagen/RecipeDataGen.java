@@ -1,8 +1,10 @@
 package net.congueror.clib.datagen;
 
+import net.congueror.clib.CLib;
 import net.congueror.clib.api.data.RecipeDataProvider;
 import net.congueror.clib.init.CLBlockInit;
 import net.congueror.clib.init.CLItemInit;
+import net.congueror.clib.init.CLMaterialInit;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
@@ -16,59 +18,67 @@ import java.util.function.Consumer;
 
 public class RecipeDataGen extends RecipeDataProvider {
     public RecipeDataGen(DataGenerator pGenerator) {
-        super(pGenerator);
+        super(pGenerator, CLib.MODID);
     }
 
     @Override
     protected void buildCraftingRecipes(@Nonnull Consumer<FinishedRecipe> r) {
-        metalRecipes(r, CLBlockInit.TIN_BLOCK.get(), CLItemInit.TIN_INGOT.get(), CLItemInit.TIN_NUGGET.get(), CLItemInit.TIN_DUST.get(), CLItemInit.TIN_GEAR.get(), CLBlockInit.TIN_ORE.get());
+        super.buildCraftingRecipes(r);
+        basicMetalRecipes(r, CLMaterialInit.TIN);
 
-        alloyRecipes(r, CLBlockInit.STEEL_BLOCK.get(), CLItemInit.STEEL_INGOT.get(), CLItemInit.STEEL_NUGGET.get(), CLItemInit.STEEL_DUST.get(), CLItemInit.STEEL_GEAR.get(), CLItemInit.STEEL_BLEND.get());
-        shapelessRecipe(r, CLItemInit.STEEL_BLEND.get(), 2, Tags.Items.INGOTS_IRON, Tags.Items.INGOTS_IRON, Tags.Items.INGOTS_IRON, ItemTags.COALS);
+        alloyMetalRecipes(r, CLMaterialInit.STEEL);
+        shapelessRecipe(r, CLMaterialInit.STEEL.getBlend().get(), 2, Tags.Items.INGOTS_IRON, Tags.Items.INGOTS_IRON, Tags.Items.INGOTS_IRON, ItemTags.COALS);
 
-        metalRecipes(r, CLBlockInit.ALUMINUM_BLOCK.get(), CLItemInit.ALUMINUM_INGOT.get(), CLItemInit.ALUMINUM_NUGGET.get(), CLItemInit.ALUMINUM_DUST.get(), CLItemInit.ALUMINUM_GEAR.get(), CLBlockInit.ALUMINUM_ORE.get());
-        metalRecipes(r, CLBlockInit.LEAD_BLOCK.get(), CLItemInit.LEAD_INGOT.get(), CLItemInit.LEAD_NUGGET.get(), CLItemInit.LEAD_DUST.get(), CLItemInit.LEAD_GEAR.get(), CLBlockInit.LEAD_ORE.get());
-        gemRecipes(r, CLBlockInit.RUBY_BLOCK.get(), CLItemInit.RUBY.get(), CLItemInit.RUBY_DUST.get(), CLItemInit.RUBY_GEAR.get(), CLBlockInit.RUBY_ORE.get());
-        metalRecipes(r, CLBlockInit.SILVER_BLOCK.get(), CLItemInit.SILVER_INGOT.get(), CLItemInit.SILVER_NUGGET.get(), CLItemInit.SILVER_DUST.get(), CLItemInit.SILVER_GEAR.get(), CLBlockInit.SILVER_ORE.get());
+        basicMetalRecipes(r, CLMaterialInit.ALUMINUM);
 
-        alloyRecipes(r, CLBlockInit.LUMIUM_BLOCK.get(), CLItemInit.LUMIUM_INGOT.get(), CLItemInit.LUMIUM_NUGGET.get(), CLItemInit.LUMIUM_DUST.get(), CLItemInit.LUMIUM_GEAR.get(), CLItemInit.LUMIUM_BLEND.get());
-        shapelessRecipe(r, CLItemInit.LUMIUM_BLEND.get(), 2, getTag("forge:ingots/", CLItemInit.SILVER_INGOT.get()), getTag("forge:ingots/", CLItemInit.SILVER_INGOT.get()), getTag("forge:ingots/", CLItemInit.TIN_INGOT.get()), Tags.Items.DUSTS_GLOWSTONE);
+        basicMetalRecipes(r, CLMaterialInit.LEAD);
 
-        metalRecipes(r, CLBlockInit.NICKEL_BLOCK.get(), CLItemInit.NICKEL_INGOT.get(), CLItemInit.NICKEL_NUGGET.get(), CLItemInit.NICKEL_DUST.get(), CLItemInit.NICKEL_GEAR.get(), CLBlockInit.NICKEL_ORE.get());
+        singleGemRecipes(r, CLMaterialInit.RUBY);
 
-        alloyRecipes(r, CLBlockInit.INVAR_BLOCK.get(), CLItemInit.INVAR_INGOT.get(), CLItemInit.INVAR_NUGGET.get(), CLItemInit.INVAR_DUST.get(), CLItemInit.INVAR_GEAR.get(), CLItemInit.INVAR_BLEND.get());
-        shapelessRecipe(r, CLItemInit.INVAR_BLEND.get(), 3, getTag("forge:ingots/", CLItemInit.NICKEL_INGOT.get()), getTag("forge:ingots/", CLItemInit.NICKEL_INGOT.get()), Tags.Items.INGOTS_IRON, Tags.Items.INGOTS_IRON);
+        basicMetalRecipes(r, CLMaterialInit.SILVER);
 
-        alloyRecipes(r, CLBlockInit.ELECTRUM_BLOCK.get(), CLItemInit.ELECTRUM_INGOT.get(), CLItemInit.ELECTRUM_NUGGET.get(), CLItemInit.ELECTRUM_DUST.get(), CLItemInit.ELECTRUM_GEAR.get(), CLItemInit.ELECTRUM_BLEND.get());
-        shapelessRecipe(r, CLItemInit.ELECTRUM_BLEND.get(), 2, getTag("forge:ingots/", CLItemInit.SILVER_INGOT.get()), getTag("forge:ingots/", CLItemInit.SILVER_INGOT.get()), Tags.Items.INGOTS_GOLD);
+        alloyMetalRecipes(r, CLMaterialInit.LUMIUM);
+        shapelessRecipe(r, CLMaterialInit.LUMIUM.getBlend().get(), 2, getTag("forge:ingots/", CLMaterialInit.SILVER.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.SILVER.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), Tags.Items.DUSTS_GLOWSTONE);
 
-        metalRecipes(r, CLBlockInit.PLATINUM_BLOCK.get(), CLItemInit.PLATINUM_INGOT.get(), CLItemInit.PLATINUM_NUGGET.get(), CLItemInit.PLATINUM_DUST.get(), CLItemInit.PLATINUM_GEAR.get(), CLBlockInit.PLATINUM_ORE.get());
+        basicMetalRecipes(r, CLMaterialInit.NICKEL);
 
-        alloyRecipes(r, CLBlockInit.ENDERIUM_BLOCK.get(), CLItemInit.ENDERIUM_INGOT.get(), CLItemInit.ENDERIUM_NUGGET.get(), CLItemInit.ENDERIUM_DUST.get(), CLItemInit.ENDERIUM_GEAR.get(), CLItemInit.ENDERIUM_BLEND.get());
-        shapelessRecipe(r, CLItemInit.ENDERIUM_BLEND.get(), 2, getTag("forge:ingots/", CLItemInit.PLATINUM_INGOT.get()), getTag("forge:ingots/", CLItemInit.SILVER_INGOT.get()), getTag("forge:ingots/", CLItemInit.PLATINUM_INGOT.get()), getTag("forge:ingots/", CLItemInit.TIN_INGOT.get()), getTag("forge:ingots/", CLItemInit.TIN_INGOT.get()));
+        alloyMetalRecipes(r, CLMaterialInit.INVAR);
+        shapelessRecipe(r, CLMaterialInit.INVAR.getBlend().get(), 3, getTag("forge:ingots/", CLMaterialInit.NICKEL.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.NICKEL.getIngot().get()), Tags.Items.INGOTS_IRON, Tags.Items.INGOTS_IRON);
 
-        alloyRecipes(r, CLBlockInit.SIGNALUM_BLOCK.get(), CLItemInit.SIGNALUM_INGOT.get(), CLItemInit.SIGNALUM_NUGGET.get(), CLItemInit.SIGNALUM_DUST.get(), CLItemInit.SIGNALUM_GEAR.get(), CLItemInit.SIGNALUM_BLEND.get());
-        shapelessRecipe(r, CLItemInit.SIGNALUM_BLEND.get(), 4, ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), getTag("forge:ingots/", CLItemInit.TIN_INGOT.get()), getTag("forge:ingots/", CLItemInit.TIN_INGOT.get()), getTag("forge:ingots/", CLItemInit.TIN_INGOT.get()), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE);
+        alloyMetalRecipes(r, CLMaterialInit.ELECTRUM);
+        shapelessRecipe(r, CLMaterialInit.ELECTRUM.getBlend().get(), 2, getTag("forge:ingots/", CLMaterialInit.SILVER.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.SILVER.getIngot().get()), Tags.Items.INGOTS_GOLD);
 
-        metalRecipes(r, CLBlockInit.TUNGSTEN_BLOCK.get(), CLItemInit.TUNGSTEN_INGOT.get(), CLItemInit.TUNGSTEN_NUGGET.get(), CLItemInit.TUNGSTEN_DUST.get(), CLItemInit.TUNGSTEN_GEAR.get(), CLBlockInit.TUNGSTEN_ORE.get());
+        basicMetalRecipes(r, CLMaterialInit.PLATINUM);
 
-        alloyRecipes(r, CLBlockInit.BRONZE_BLOCK.get(), CLItemInit.BRONZE_INGOT.get(), CLItemInit.BRONZE_NUGGET.get(), CLItemInit.BRONZE_DUST.get(), CLItemInit.BRONZE_GEAR.get(), CLItemInit.BRONZE_BLEND.get());
-        shapelessRecipe(r, CLItemInit.BRONZE_BLEND.get(), 3, ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), getTag("forge:ingots/", CLItemInit.TIN_INGOT.get()), getTag("forge:ingots/", CLItemInit.TIN_INGOT.get()), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")));
+        alloyMetalRecipes(r, CLMaterialInit.ENDERIUM);
+        shapelessRecipe(r, CLMaterialInit.ENDERIUM.getBlend().get(), 2, getTag("forge:ingots/", CLMaterialInit.PLATINUM.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.SILVER.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.PLATINUM.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()));
 
-        shaped2x2Recipe(r, CLBlockInit.SAPPHIRE_BLOCK.get(), 1, getTag("forge:shards/", CLItemInit.SAPPHIRE_SHARD.get()));
-        dustRecipes(r, CLItemInit.SAPPHIRE_DUST.get(), CLItemInit.SAPPHIRE_SHARD.get(), getTag("forge:shards/", CLItemInit.SAPPHIRE_SHARD.get()));
+        alloyMetalRecipes(r, CLMaterialInit.SIGNALUM);
+        shapelessRecipe(r, CLMaterialInit.SIGNALUM.getBlend().get(), 4, ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE);
 
-        gemRecipes(r, CLBlockInit.OPAL_BLOCK.get(), CLItemInit.OPAL.get(), CLItemInit.OPAL_DUST.get(), CLItemInit.OPAL_GEAR.get(), CLBlockInit.OPAL_ORE.get());
-        debrisRecipes(r, CLBlockInit.TITANIUM_BLOCK.get(), CLItemInit.TITANIUM_INGOT.get(), CLItemInit.TITANIUM_NUGGET.get(), CLItemInit.TITANIUM_DUST.get(), CLItemInit.TITANIUM_GEAR.get(), CLBlockInit.TITANIUM_ORE.get(), CLItemInit.TITANIUM_SCRAP.get());
-        metalRecipes(r, null, CLItemInit.URANIUM_INGOT.get(), CLItemInit.URANIUM_NUGGET.get(), CLItemInit.URANIUM_DUST.get(), null, CLBlockInit.URANIUM_ORE.get());
-        metalRecipes(r, CLBlockInit.COBALT_BLOCK.get(), CLItemInit.COBALT_INGOT.get(), CLItemInit.COBALT_NUGGET.get(), CLItemInit.COBALT_DUST.get(), CLItemInit.COBALT_GEAR.get(), CLBlockInit.COBALT_ORE.get());
-        metalRecipes(r, CLBlockInit.ZINC_BLOCK.get(), CLItemInit.ZINC_INGOT.get(), CLItemInit.ZINC_NUGGET.get(), CLItemInit.ZINC_DUST.get(), CLItemInit.ZINC_GEAR.get(), CLBlockInit.ZINC_ORE.get());
+        basicMetalRecipes(r, CLMaterialInit.TUNGSTEN);
 
-        alloyRecipes(r, CLBlockInit.BRASS_BLOCK.get(), CLItemInit.BRASS_INGOT.get(), CLItemInit.BRASS_NUGGET.get(), CLItemInit.BRASS_DUST.get(), CLItemInit.BRASS_GEAR.get(), CLItemInit.BRASS_BLEND.get());
-        shapelessRecipe(r, CLItemInit.BRASS_BLEND.get(), 4, getTag("forge:ingots/", CLItemInit.ZINC_INGOT.get()), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), getTag("forge:ingots/", CLItemInit.ZINC_INGOT.get()));
+        alloyMetalRecipes(r, CLMaterialInit.BRONZE);
+        shapelessRecipe(r, CLMaterialInit.BRONZE.getBlend().get(), 3, ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")));
 
-        metalRecipes(r, CLBlockInit.CHROMIUM_BLOCK.get(), CLItemInit.CHROMIUM_INGOT.get(), CLItemInit.CHROMIUM_NUGGET.get(), CLItemInit.CHROMIUM_DUST.get(), CLItemInit.CHROMIUM_GEAR.get(), CLBlockInit.CHROMIUM_ORE.get());
-        metalRecipes(r, null, CLItemInit.THORIUM_INGOT.get(), CLItemInit.THORIUM_NUGGET.get(), CLItemInit.THORIUM_DUST.get(), null, CLBlockInit.THORIUM_ORE.get());
+        geodeGemRecipes(r, CLMaterialInit.SAPPHIRE);
+
+        singleGemRecipes(r, CLMaterialInit.OPAL);
+
+        debrisMetalRecipes(r, CLMaterialInit.TITANIUM);
+
+        radioactiveMetalRecipes(r, CLMaterialInit.URANIUM);
+
+        singleMetalRecipes(r, CLMaterialInit.COBALT);
+
+        basicMetalRecipes(r, CLMaterialInit.ZINC);
+
+        alloyMetalRecipes(r, CLMaterialInit.BRASS);
+        shapelessRecipe(r, CLMaterialInit.BRASS.getIngot().get(), 4, getTag("forge:ingots/", CLMaterialInit.ZINC.getIngot().get()), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), getTag("forge:ingots/", CLMaterialInit.ZINC.getIngot().get()));
+
+        basicMetalRecipes(r, CLMaterialInit.CHROMIUM);
+
+        radioactiveMetalRecipes(r, CLMaterialInit.THORIUM);
 
         smeltingRecipe(r, CLItemInit.SULFUR_DUST.get(), getTag("forge:ores/", CLBlockInit.SULFUR_ORE.get()), 0.5f, 200);
         blastingRecipe(r, CLItemInit.SULFUR_DUST.get(), getTag("forge:ores/", CLBlockInit.SULFUR_ORE.get()), 0.5f, 400);

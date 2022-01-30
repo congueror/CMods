@@ -46,7 +46,7 @@ public class CGLangDataGen extends CGLangDataProvider {
 
             add("recipe.cgalaxy.fuel_refining", "Fuel Refining");
             add("recipe.cgalaxy.fuel_loading", "Fuel Loading");
-            add("recipe.cgalaxy.oxygen_compressing", "Oxygen Compressing");
+            add("recipe.cgalaxy.gas_extracting", "Gas Extracting");
 
             add("text.cgalaxy.insufficient_fuel", "Insufficient Fuel!");
             add("text.cgalaxy.about_to_launch", "You are about to go to space. Are you sure you wish to proceed?");

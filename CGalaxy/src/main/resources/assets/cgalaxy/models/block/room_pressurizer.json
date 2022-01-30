@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "top": "cgalaxy:block/machine_frame",
-    "front": "cgalaxy:block/room_pressurizer_unlit",
-    "side": "cgalaxy:block/machine_frame"
-  }
-}

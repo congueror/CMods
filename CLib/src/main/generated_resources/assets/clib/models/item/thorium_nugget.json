@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "clib:item/thorium_nugget"
+    "layer0": "clib:resource/thorium/thorium_nugget"
   }
 }

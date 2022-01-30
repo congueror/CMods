@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "clib:tungsten_ore"
+    "clib:tungsten_ore",
+    "clib:deepslate_tungsten_ore"
   ]
 }

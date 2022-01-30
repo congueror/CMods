@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "clib:nickel_ore"
+    "clib:nickel_ore",
+    "clib:deepslate_nickel_ore"
   ]
 }

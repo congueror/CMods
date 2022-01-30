@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.entity.animal.Panda;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -130,7 +129,8 @@ public class WorldHelper {
                         HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR),
                         SurfaceWaterDepthFilter.forMaxDepth(0),
                         BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(sapling.defaultBlockState(), BlockPos.ZERO)),
-                        CountPlacement.of(chance)));
+                        CountPlacement.of(1),
+                        RarityFilter.onAverageOnceEvery(chance)));
     }
 
     /**
@@ -145,6 +145,23 @@ public class WorldHelper {
     public static PlacedFeature registerConfiguredOre(RuleTest filler, Block block, int veinSize, int minHeight, int maxHeight, int count) {
         return Registry.register(BuiltinRegistries.PLACED_FEATURE, Objects.requireNonNull(block.getRegistryName()), Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, Objects.requireNonNull(block.getRegistryName()), Feature.ORE.configured(
                         new OreConfiguration(filler, block.defaultBlockState(), veinSize)))
+                .placed(List.of(CountPlacement.of(count), InSquarePlacement.spread(), HeightRangePlacement.triangle(VerticalAnchor.absolute(minHeight), VerticalAnchor.absolute(maxHeight)), BiomeFilter.biome())));
+    }
+
+    /**
+     * Used to register a configured ore feature to the {@link BuiltinRegistries} which will be placed in stone and deepslate.
+     *
+     * @param ore       The ore block.
+     * @param deepslate The deepslate ore block.
+     * @param veinSize  The maximum amount of blocks that will be adjacent to the ore. Must be greater than 1 for some reason
+     * @param maxHeight The maximum y value that the ore can spawn at. (Minimum is always the bottom)
+     * @param count     How many attempts it will make to spawn the ore each chunk.
+     */
+    public static PlacedFeature registerConfiguredOre(Block ore, Block deepslate, int veinSize, int minHeight, int maxHeight, int count) {
+        return Registry.register(BuiltinRegistries.PLACED_FEATURE, Objects.requireNonNull(ore.getRegistryName()), Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, Objects.requireNonNull(ore.getRegistryName()), Feature.ORE.configured(
+                        new OreConfiguration(List.of(
+                                OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, ore.defaultBlockState()),
+                                OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, deepslate.defaultBlockState())), veinSize)))
                 .placed(List.of(CountPlacement.of(count), InSquarePlacement.spread(), HeightRangePlacement.triangle(VerticalAnchor.absolute(minHeight), VerticalAnchor.absolute(maxHeight)), BiomeFilter.biome())));
     }
 

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "clib:block/chromium_block"
+    "all": "clib:resource/chromium/chromium_block"
   }
 }

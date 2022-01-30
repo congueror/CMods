@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "clib:block/silver_block"
+    "all": "clib:resource/silver/silver_block"
   }
 }

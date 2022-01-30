@@ -9,41 +9,29 @@ import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryRecipe;
-import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryScreen;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
 import net.congueror.clib.CLib;
+import net.congueror.clib.compat.jei.AbstractJeiCategory;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FuelRefiningCategory implements IRecipeCategory<FuelRefineryRecipe> {
-    IGuiHelper helper;
-    private final IDrawableAnimated arrow;
-    private final IDrawableStatic energy_glass;
-    private final IDrawableAnimated energy;
-    private final String localized;
+public class FuelRefiningCategory extends AbstractJeiCategory<FuelRefineryRecipe> {
 
     public FuelRefiningCategory(IGuiHelper helper) {
-        this.helper = helper;
-        int processTime = ((FuelRefineryRecipe) net.congueror.clib.compat.jei.JEICompat.getRecipes(CGRecipeSerializerInit.Types.FUEL_REFINING).get(0)).getProcessTime();
-        ResourceLocation e = new ResourceLocation(CLib.MODID, "textures/gui/screen_elements.png");
-        arrow = helper.drawableBuilder(e, 32, 43, 24, 17).buildAnimated(processTime, IDrawableAnimated.StartDirection.LEFT, false);
-        energy_glass = helper.drawableBuilder(e, 16, 0, 16, 60).build();
-        energy = helper.drawableBuilder(e, 0, 0, 16, 60).buildAnimated(666, IDrawableAnimated.StartDirection.TOP, true);
-        localized = I18n.get("recipe.cgalaxy.fuel_refining");
+        super(helper, "recipe.cgalaxy.fuel_refining",
+                ((FuelRefineryRecipe) net.congueror.clib.compat.jei.JEICompat.getRecipes(CGRecipeSerializerInit.Types.FUEL_REFINING).get(0)).getProcessTime(),
+                40000, 60, false);
     }
 
     @Nonnull
@@ -60,20 +48,8 @@ public class FuelRefiningCategory implements IRecipeCategory<FuelRefineryRecipe>
 
     @Nonnull
     @Override
-    public Component getTitle() {
-        return new TextComponent(localized);
-    }
-
-    @Nonnull
-    @Override
-    public IDrawable getBackground() {
-        return helper.createDrawable(FuelRefineryScreen.GUI, 21, 7, 172, 63);
-    }
-
-    @Nonnull
-    @Override
     public IDrawable getIcon() {
-        return helper.createDrawableIngredient(new ItemStack(CGBlockInit.FUEL_REFINERY.get()));
+        return createIcon(CGBlockInit.FUEL_REFINERY.get());
     }
 
     @Override
@@ -97,18 +73,10 @@ public class FuelRefiningCategory implements IRecipeCategory<FuelRefineryRecipe>
 
     @Override
     public void draw(@Nonnull FuelRefineryRecipe recipe, @Nonnull PoseStack poseStack, double mouseX, double mouseY) {
+        super.draw(recipe, poseStack, mouseX, mouseY);
         arrow.draw(poseStack, 63, 28);
-        energy.draw(poseStack, 151, 2);
-        energy_glass.draw(poseStack, 151, 2);
-    }
-
-    @Nonnull
-    @Override
-    public List<Component> getTooltipStrings(@Nonnull FuelRefineryRecipe recipe, double mouseX, double mouseY) {
-        List<Component> list = new ArrayList<>();
-        if (mouseX >= 151 && mouseX <= 167 && mouseY >= 2 && mouseY <= 62) {
-            list.add(new TranslatableComponent("key.clib.energy_usage").append(": 60FE/t"));
-        }
-        return list;
+        arrow_anim.draw(poseStack, 63, 28);
+        tank.draw(poseStack, 44, 10);
+        tank.draw(poseStack, 89, 10);
     }
 }

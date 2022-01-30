@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "clib:block/signalum_block"
+    "all": "clib:resource/signalum/signalum_block"
   }
 }

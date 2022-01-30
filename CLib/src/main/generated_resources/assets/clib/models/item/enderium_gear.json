@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "clib:item/enderium_gear"
+    "layer0": "clib:resource/enderium/enderium_gear"
   }
 }

@@ -1,0 +1,11 @@
+{
+  "type": "cgalaxy:gas_extracting",
+  "ingredient": {
+    "tag": "minecraft:leaves"
+  },
+  "result": {
+    "fluid1": {
+      "fluid": "cgalaxy:oxygen_still"
+    }
+  }
+}

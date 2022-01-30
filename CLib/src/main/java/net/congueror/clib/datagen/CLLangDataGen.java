@@ -12,7 +12,7 @@ public class CLLangDataGen extends LangDataProvider {
     @Override
     protected void addTranslations() {
         super.addTranslations();
-        add("itemGroup.clibitems", "CLItems");
+        add("itemGroup.clibresources", "CResources");
         add("itemGroup.clibblocks", "CLBlocks");
         add("itemGroup.cgalaxy", "CGalaxy");
         add("itemGroup.cmachinery", "CMachinery");
@@ -30,6 +30,7 @@ public class CLLangDataGen extends LangDataProvider {
         add("key.clib.error_invalid_recipe", "Invalid Recipe!");
         add("key.clib.error_insufficient_energy", "Insufficient Energy!");
         add("key.clib.error_insufficient_ingredients", "Insufficient Ingredients!");
+        add("key.clib.error_no_storage", "Not enough storage.");
         add("key.clib.upgrade_speed1", "Processing: Increases the processing speed of the machine.");
         add("key.clib.upgrade_speed2", "Generating: Increases energy outcome.");
 

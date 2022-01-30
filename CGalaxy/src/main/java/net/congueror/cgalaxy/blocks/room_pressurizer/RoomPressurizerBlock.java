@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -22,6 +23,14 @@ public class RoomPressurizerBlock extends AbstractFluidBlock {
     @Override
     public BlockEntity newBlockEntity(@Nonnull BlockPos pPos, @Nonnull BlockState pState) {
         return new RoomPressurizerBlockEntity(pPos, pState);
+    }
+
+    @Override
+    public void onRemove(BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, BlockState newState, boolean isMoving) {
+        if (worldIn.getBlockEntity(pos) instanceof RoomPressurizerBlockEntity be) {
+            be.resetAABB();
+        }
+        super.onRemove(state, worldIn, pos, newState, isMoving);
     }
 
     @Nonnull

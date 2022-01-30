@@ -3,7 +3,7 @@ package net.congueror.cgalaxy.util.events;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderScreen;
 import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryScreen;
-import net.congueror.cgalaxy.blocks.oxygen_compressor.OxygenCompressorScreen;
+import net.congueror.cgalaxy.blocks.gas_extractor.GasExtractorScreen;
 import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerScreen;
 import net.congueror.cgalaxy.client.AbstractRocketModel;
 import net.congueror.cgalaxy.client.effects.MoonSkyEffects;
@@ -30,6 +30,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -41,7 +42,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CGClientEvents {
+    public static final Map<Player, Boolean> isSpaceDown = new HashMap<>();
+
     @Mod.EventBusSubscriber(modid = CGalaxy.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModClientEvents {
         @SubscribeEvent
@@ -51,7 +57,7 @@ public class CGClientEvents {
 
             MenuScreens.register(CGContainerInit.FUEL_LOADER.get(), FuelLoaderScreen::new);
             MenuScreens.register(CGContainerInit.FUEL_REFINERY.get(), FuelRefineryScreen::new);
-            MenuScreens.register(CGContainerInit.OXYGEN_COMPRESSOR.get(), OxygenCompressorScreen::new);
+            MenuScreens.register(CGContainerInit.GAS_EXTRACTOR.get(), GasExtractorScreen::new);
             MenuScreens.register(CGContainerInit.ROOM_PRESSURIZER.get(), RoomPressurizerScreen::new);
             MenuScreens.register(CGContainerInit.GALAXY_MAP.get(), GalaxyMapScreen::new);
             MenuScreens.register(CGContainerInit.SPACE_SUIT.get(), SpaceSuitScreen::new);
