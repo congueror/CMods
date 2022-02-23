@@ -3,6 +3,7 @@ package net.congueror.cgalaxy.gui.galaxy_map;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.congueror.cgalaxy.CGalaxy;
+import net.congueror.cgalaxy.blocks.station_core.SpaceStationCoreContainer;
 import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.networking.PacketChangeMap;
@@ -16,6 +17,7 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -45,6 +47,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
     boolean unlocked;
     @Nullable
     GalacticObjectBuilder.GalacticObject<?> currentObj;
+    SpaceStationCoreContainer.SpaceStationCoreObject selectedSpaceStation;
 
     float zoom = 1.0F;
     int moveX = 0;
@@ -76,6 +79,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
 
     @Override
     protected void init() {
+        //The currentObj is unavailable here, so we have to register all buttons.
         super.init();
         nullButtons.clear();
         galaxyButtons.clear();
@@ -102,6 +106,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
             solarSystemButtons.add(new MutablePair<>(solarSystem.getKey().getId().toString(),
                     addBackButton(solarSystem.getKey().getType().getGalaxy())));
         }
+
         List<List<ResourceLocation>> moonList = new ArrayList<>();
 
         List<Map.Entry<GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.Planet>, GalacticObjectBuilder.GalacticObject<GalacticObjectBuilder.SolarSystem>>> planets = GalacticObjectBuilder.planets();
@@ -154,29 +159,29 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
     }
 
     private void resetButtons() {
-        for (Button button : nullButtons.stream().map(pair -> pair.right).collect(Collectors.toList())) {
+        for (Button button : nullButtons.stream().map(pair -> pair.right).toList()) {
             button.visible = false;
         }
-        for (Button button : galaxyButtons.stream().map(pair -> pair.right).collect(Collectors.toList())) {
+        for (Button button : galaxyButtons.stream().map(pair -> pair.right).toList()) {
             button.visible = false;
         }
-        for (Button button : solarSystemButtons.stream().map(pair -> pair.right).collect(Collectors.toList())) {
+        for (Button button : solarSystemButtons.stream().map(pair -> pair.right).toList()) {
             button.visible = false;
         }
-        for (Button button : planetButtons.stream().map(pair -> pair.right).collect(Collectors.toList())) {
+        for (Button button : planetButtons.stream().map(pair -> pair.right).toList()) {
             button.visible = false;
         }
-        for (Button button : moonButtons.stream().map(pair -> pair.right).collect(Collectors.toList())) {
+        for (Button button : moonButtons.stream().map(pair -> pair.right).toList()) {
             button.visible = false;
         }
-        for (Button button : moonMoonButtons.stream().map(pair -> pair.right).collect(Collectors.toList())) {
+        for (Button button : moonMoonButtons.stream().map(pair -> pair.right).toList()) {
             button.visible = false;
         }
     }
 
-    private void updateButtons(List<MutablePair<String, Button>> list, PoseStack stack) {
+    private void updateButtons(List<MutablePair<String, Button>> list) {
         if (list.stream().anyMatch(pair -> pair.left == null)) {
-            for (Button button : list.stream().map(pair -> pair.right).collect(Collectors.toList())) {
+            for (Button button : list.stream().map(pair -> pair.right).toList()) {
                 button.visible = true;
             }
             return;
@@ -184,7 +189,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
         for (MutablePair<String, Button> pair : list.stream().filter(pair -> {
             assert currentObj != null;
             return pair.left.equals(currentObj.getId().toString());
-        }).collect(Collectors.toList())) {
+        }).toList()) {
             pair.right.visible = true;
             if (pair.right instanceof GalacticMapButton button) {
                 var obj = button.getObject();
@@ -199,20 +204,40 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
                     int yOffset = 0;
                     Component message = TextComponent.EMPTY;
                     if (spaceStationScreenOpen) {
-                        if (inv.contains(new ItemStack(Items.GLOW_ITEM_FRAME))) {//TODO: Placeholder
-                            yOffset = 60;
+                        if (selectedSpaceStation == null) {
+                            if (inv.contains(new ItemStack(Items.GLOW_ITEM_FRAME))) {//TODO: Placeholder
+                                yOffset = 60;
+                            } else {
+                                yOffset = 40;
+                                message = new TranslatableComponent("key.cgalaxy.map_no_material").withStyle(ChatFormatting.RED);
+                            }
+                            button.setOnPress(pButton -> {
+                                //TODO: Space Station Creation
+                            });
                         } else {
-                            yOffset = 40;
-                            message = new TranslatableComponent("key.cgalaxy.map_no_material").withStyle(ChatFormatting.RED);
+                            String l = canLaunch(obj, true);
+                            if (l.contains("nope")) {
+                                int i = l.indexOf(" ");
+                                message = new TranslatableComponent(l.substring(i)).withStyle(ChatFormatting.RED);
+                            } else if (l.contains("yep")) {
+                                yOffset = 20;
+                            }
+                            button.setOnPress(pButton -> {
+                                if (canLaunch(obj, true).contains("yep")) {
+                                    Minecraft.getInstance().setScreen(null);
+                                    CGNetwork.sendToServer(new PacketTeleport(obj.getOrbitDimension().location(), selectedSpaceStation.getPosition(), true));
+                                }
+                            });
                         }
                     } else {
-                        String l = canLaunch(obj);
+                        String l = canLaunch(obj, false);
                         if (l.contains("nope")) {
                             int i = l.indexOf(" ");
                             message = new TranslatableComponent(l.substring(i)).withStyle(ChatFormatting.RED);
                         } else if (l.contains("yep")) {
                             yOffset = 20;
                         }
+                        button.setOnPress(pButton -> onLaunchButtonPress(obj));
                     }
                     Component finalMessage = message;
                     button.setYTexStart(yOffset);
@@ -228,11 +253,14 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
                     if (spaceStationScreenOpen) {
                         button.setXTexStart(141);
                         button.setPosition(button.x, this.topPos + 187 + 122);
-                        button.setOnPress(pButton -> spaceStationScreenOpen = false);
+                        button.setOnPress(pButton -> {
+                            spaceStationScreenOpen = false;
+                            selectedSpaceStation = null;
+                        });
                     } else {
                         button.setXTexStart(129);
                         button.setPosition(button.x, this.topPos + 187);
-                        button.setOnPress(pButton -> spaceStationScreenOpen = true);
+                        button.setOnPress(pButton -> onSpaceStationButtonPress());
                     }
                 }
             }
@@ -262,12 +290,12 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
         resetButtons();
 
         if (this.currentObj == null) {
-            updateButtons(nullButtons, pPoseStack);
+            updateButtons(nullButtons);
             RenderSystem.setShaderTexture(0, new ResourceLocation(CGalaxy.MODID, "textures/gui/galaxy_map/galaxy_map_empty_background.png"));
             blit(pPoseStack, 0, 0, 0, 0, mc.getWindow().getWidth(), mc.getWindow().getHeight(), width, height);
         } else {
             if (this.currentObj.getType() instanceof GalacticObjectBuilder.Galaxy) {
-                updateButtons(galaxyButtons, pPoseStack);
+                updateButtons(galaxyButtons);
                 RenderSystem.setShaderTexture(0, this.currentObj.getTexture());
                 blit(pPoseStack, 0, 0, 0, 0, mc.getWindow().getWidth(), mc.getWindow().getHeight(), width, height);
 
@@ -290,7 +318,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
                 pPoseStack.popPose();
             }
             if (this.currentObj.getType() instanceof GalacticObjectBuilder.SolarSystem) {
-                updateButtons(solarSystemButtons, pPoseStack);
+                updateButtons(solarSystemButtons);
                 RenderSystem.setShaderTexture(0, CGalaxy.location("textures/gui/galaxy_map/galaxy_map_empty_background.png"));
                 blit(pPoseStack, 0, 0, 0, 0, mc.getWindow().getWidth(), mc.getWindow().getHeight(), width, height);
 
@@ -331,9 +359,9 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
             }
             if (this.currentObj.getType() instanceof GalacticObjectBuilder.Planet || this.currentObj.getType() instanceof GalacticObjectBuilder.Moon) {
                 if (this.currentObj.getType() instanceof GalacticObjectBuilder.Planet) {
-                    updateButtons(planetButtons, pPoseStack);
+                    updateButtons(planetButtons);
                 } else {
-                    updateButtons(moonButtons, pPoseStack);
+                    updateButtons(moonButtons);
                 }
                 RenderSystem.setShaderTexture(0, CGalaxy.location("textures/gui/galaxy_map/galaxy_map_empty_background.png"));
                 blit(pPoseStack, 0, 0, 0, 0, mc.getWindow().getWidth(), mc.getWindow().getHeight(), width, height);
@@ -371,6 +399,13 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
                 if (spaceStationScreenOpen) {
                     RenderSystem.setShaderTexture(0, CGalaxy.location("textures/gui/galaxy_map/galaxy_map_info.png"));
                     blit(pPoseStack, this.width / 30 + 129, this.topPos + 187, 129, 15, 68, 122, 197, 160);
+
+                    if (selectedSpaceStation != null) {
+                        RenderSystem.setShaderTexture(0, player.connection.getPlayerInfo(selectedSpaceStation.getOwner()).getSkinLocation());
+                        blit(pPoseStack, this.leftPos + 113, this.topPos + 202, 32, 32, 8.0F, 8.0F, 8, 8, 64, 64);
+                        drawString(pPoseStack, this.font, player.connection.getPlayerInfo(selectedSpaceStation.getOwner()).getProfile().getName(), this.leftPos + 98, this.topPos + 240, infoColor);
+                        drawString(pPoseStack, this.font, "x: " + selectedSpaceStation.getPosition().getX() + ", z: " + selectedSpaceStation.getPosition().getZ(), this.leftPos + 98, this.topPos + 250, infoColor);
+                    }
                 }
 
                 pPoseStack.pushPose();
@@ -446,7 +481,12 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
     private Button addSpaceStationButton() {
         return addRenderableWidget(new GalacticMapButton(GalacticMapButton.Type.SPACE_STATION, this.width / 30 + 129, this.topPos + 187, 12, 15, 129, 0, 0,
                 CGalaxy.location("textures/gui/galaxy_map/galaxy_map_info.png"), 197, 160,
-                onPress -> spaceStationScreenOpen = true, currentObj));
+                onPress -> onSpaceStationButtonPress(), currentObj));
+    }
+
+    private void onSpaceStationButtonPress() {
+        spaceStationScreenOpen = true;
+        this.minecraft.pushGuiLayer(new SpaceStationSelectScreen(player.getUUID(), currentObj.getOrbitDimension()));
     }
 
     private Button addBackButton(GalacticObjectBuilder.GalacticObject<?> object) {
@@ -486,15 +526,19 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
                 0, 0, 0,
                 CGalaxy.location("textures/gui/galaxy_map/button.png"), 85, 80,
                 pButton -> {
-                    if (canLaunch(object).contains("yep") && player.level.dimension() != object.getDimension()) {
-                        Minecraft.getInstance().setScreen(null);
-                        CGNetwork.sendToServer(new PacketTeleport(object.getDimension().location()));
-                    }
+                    onLaunchButtonPress(object);
                 }, object));
     }
 
-    private String canLaunch(GalacticObjectBuilder.GalacticObject<?> object) {
-        if (object.getDimension() != null) {
+    private void onLaunchButtonPress(GalacticObjectBuilder.GalacticObject<?> object) {
+        if (canLaunch(object, false).contains("yep") && player.level.dimension() != object.getDimension()) {
+            Minecraft.getInstance().setScreen(null);
+            CGNetwork.sendToServer(new PacketTeleport(object.getDimension().location(), BlockPos.ZERO, false));
+        }
+    }
+
+    private String canLaunch(GalacticObjectBuilder.GalacticObject<?> object, boolean spaceStation) {
+        if ((spaceStation && object.getOrbitDimension() != null) || object.getDimension() != null) {
             if (this.unlocked) {
                 return "yep";
             }
@@ -529,7 +573,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
 
     public void drawRing(int x, int y, int radiusIn, int radiusOut, BufferBuilder buffer, GalacticObjectBuilder.GalacticObject<?> obj) {
         int[] color = {210, 0, 0, 255};
-        if (canLaunch(obj).contains("yep")) {
+        if (canLaunch(obj, false).contains("yep")) {
             color = new int[]{0, 210, 0, 255};
         }
         RenderingHelper.drawEllipse(buffer, x, y, radiusIn * zoom, radiusOut * zoom, color, color, 1.0f, 0.6f);
@@ -538,7 +582,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
     public void drawAsteroidBelt(int x, int y, int radiusIn, int radiusOut, BufferBuilder buffer, GalacticObjectBuilder.GalacticObject<?> obj) {
         int[] out = {210, 0, 0, 255};
         int[] in = {210, 0, 0, 180};
-        if (canLaunch(obj).contains("yep")) {
+        if (canLaunch(obj, false).contains("yep")) {
             out = new int[]{0, 210, 0, 255};
             in = new int[]{0, 210, 0, 180};
         }

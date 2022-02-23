@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "cgalaxy:block/lunac_crop_stage7"
+  }
+}

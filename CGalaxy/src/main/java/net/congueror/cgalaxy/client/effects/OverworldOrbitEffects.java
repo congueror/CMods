@@ -51,10 +51,14 @@ public class OverworldOrbitEffects extends AbstractEffects {
                 RenderSystem.defaultBlendFunc();
                 RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+                FogRenderer.setupNoFog();
                 this.starVBO.bind();
                 this.starVBO.drawWithShader(poseStack.last().pose(), RenderSystem.getProjectionMatrix(), shaderinstance);
+
                 VertexBuffer.unbind();
                 DefaultVertexFormat.POSITION.clearBufferState();
+
+                FogRenderer.levelFogColor();
 
                 float size; //size of the rectangle.
 

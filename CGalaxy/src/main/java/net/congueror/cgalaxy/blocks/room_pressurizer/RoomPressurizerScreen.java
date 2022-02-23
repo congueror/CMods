@@ -42,6 +42,7 @@ public class RoomPressurizerScreen extends AbstractFluidScreen<RoomPressurizerCo
         if (Minecraft.getInstance().screen instanceof RoomPressurizerSettingsScreen screen) {
             screen.update(container.getRange());
         }
+        //Updates the range reference inside the lambda.
         button.setOnPress(pButton -> Minecraft.getInstance().pushGuiLayer(new RoomPressurizerSettingsScreen(container.containerId, container.getRange())));
         renderEnergyTooltip(pPoseStack, pMouseX, pMouseY);
         renderFluidTankTooltip(pPoseStack, pMouseX, pMouseY, 72, 17, 0);

@@ -3,21 +3,26 @@ package net.congueror.cgalaxy.init;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.blocks.CoalTorchBlock;
 import net.congueror.cgalaxy.blocks.CoalWallTorchBlock;
+import net.congueror.cgalaxy.blocks.LunacCropBlock;
 import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderBlock;
 import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryBlock;
 import net.congueror.cgalaxy.blocks.launch_pad.LaunchPadBlock;
 import net.congueror.cgalaxy.blocks.meteorite.MeteoriteBlock;
 import net.congueror.cgalaxy.blocks.gas_extractor.GasExtractorBlock;
 import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerBlock;
+import net.congueror.cgalaxy.blocks.station_core.SpaceStationCoreBlock;
 import net.congueror.cgalaxy.item.CoalTorchBlockItem;
+import net.congueror.clib.api.data.ItemModelDataProvider;
 import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlock;
 import net.congueror.clib.blocks.generic.CLBlock;
 import net.congueror.clib.api.registry.BlockBuilder;
 import net.congueror.clib.init.CLMaterialInit;
 import net.congueror.clib.util.CreativeTabs;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -33,7 +38,7 @@ public class CGBlockInit {
     public static final RegistryObject<Block> COAL_TORCH = new BlockBuilder("coal_torch",
             new CoalTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().sound(SoundType.WOOD)))
             .withTranslation("Coal Torch")
-            .withItemModel((itemModelDataProvider, block) -> itemModelDataProvider.texture(block.asItem(), "block/coal_torch"))
+            .withItemModel((itemModelDataProvider, block) -> itemModelDataProvider.modTexture(block.asItem(), "block/coal_torch"))
             .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.torchBlock(block, "cgalaxy:block/coal_torch"))
             .withItem(block -> new CoalTorchBlockItem(block, new Item.Properties().tab(CreativeTabs.BlocksIG.instance)))
             .build(BLOCKS);
@@ -172,6 +177,16 @@ public class CGBlockInit {
             .withCreativeTab(CreativeTabs.CGalaxyIG.instance)
             .build(BLOCKS);
 
+    public static final RegistryObject<Block> LUNAC_CROP = new BlockBuilder("lunac_crop",
+            new LunacCropBlock(BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.CROP)))
+            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.age7CrossBlock(block, "cgalaxy:block/lunac_crop"))
+            .withItemModel((itemModelDataProvider, block) -> itemModelDataProvider.modTexture(block.asItem(), "item/lunac_seeds"))
+            .withRenderType(RenderType.cutout())
+            .withTranslation("Lunac Crop")
+            .withCreativeTab(CreativeTabs.CGalaxyIG.instance)
+            .withItem(block -> new ItemNameBlockItem(block, new Item.Properties().tab(CreativeTabs.CGalaxyIG.instance)))
+            .build(BLOCKS);
+
     public static final RegistryObject<Block> FUEL_LOADER = new BlockBuilder("fuel_loader",
             new FuelLoaderBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
@@ -219,6 +234,14 @@ public class CGBlockInit {
             .withTranslation("Room Pressurizer")
             .withCreativeTab(CreativeTabs.CGalaxyIG.instance)
             .withLootTable((lootTableDataProvider, block) -> lootTableDataProvider.createMachineDrop((AbstractFluidBlock) block))
+            .build(BLOCKS);
+    public static final RegistryObject<Block> SPACE_STATION_CORE = new BlockBuilder("space_station_core",
+            new SpaceStationCoreBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
+            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
+            .withBlockModel(null)
+            .withItemModel(ItemModelDataProvider::empty)
+            .withTranslation("Space Station Core")
+            .withCreativeTab(CreativeTabs.CGalaxyIG.instance)
             .build(BLOCKS);
 
     public static final RegistryObject<Block> KEROSENE = BlockBuilder.createFluid("kerosene",

@@ -13,6 +13,8 @@ public class CGLangDataGen extends CGLangDataProvider {
     protected void addTranslations() {
         super.addTranslations();
         if (locale.equals("en_us")) {
+            add("item.cgalaxy.lunac_crop", "Lunac Seeds");
+
             add("dimension.minecraft.overworld", "Overworld");
             add("dimension.minecraft.the_nether", "The Nether");
             add("dimension.minecraft.the_end", "The End");
@@ -30,8 +32,14 @@ public class CGLangDataGen extends CGLangDataProvider {
             add("key.cgalaxy.fuel_remaining", "Remaining Fuel");
             add("key.cgalaxy.fuel", "Fuel");
             add("key.cgalaxy.map_no_material", "No acceptable space station item detected in inventory.");
+            add("key.cgalaxy.private", "Private");
+            add("key.cgalaxy.public", "Public");
+            add("key.cgalaxy.blacklist", "Blacklist");
+            add("key.cgalaxy.whitelist", "Whitelist");
+            add("key.cgalaxy.selected_shift", "Hold shift to open list.");
             add("gui.cgalaxy.galaxy_map", "Galaxy Map");
             add("gui.cgalaxy.space_suit", "Space Suit Menu");
+            add("gui.cgalaxy.space_station_core", "Space Station Core");
 
             add("death.attack.noOxygen0", "%1$s thought he could breath in space.");
             add("death.attack.noOxygen1", "No one heard %1$s scream.");
@@ -41,8 +49,8 @@ public class CGLangDataGen extends CGLangDataProvider {
             add("death.attack.noHeat1", "%1$s forgot his heat protection.");
             add("death.attack.noCold0", "%1$s got too cool for space.");
             add("death.attack.noCold1", "%1$s forgot his cold protection.");
-            add("death.attack.noRadiation0", "%1$s got sick of the radiation.");
-            add("death.attack.noRadiation1", "%1$s forgot his radiation protection.");
+            add("death.attack.radiation0", "%1$s got sick of the radiation.");
+            add("death.attack.radiation1", "%1$s forgot his radiation protection.");
 
             add("recipe.cgalaxy.fuel_refining", "Fuel Refining");
             add("recipe.cgalaxy.fuel_loading", "Fuel Loading");

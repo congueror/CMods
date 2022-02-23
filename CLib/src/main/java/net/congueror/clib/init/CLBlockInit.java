@@ -123,7 +123,7 @@ public class CLBlockInit {
                 }
             }, BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)))
             .withBlockModel(BlockModelDataProvider::crossBlock)
-            .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.texture(block.asItem(), "block/rubber_sapling"))
+            .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.modTexture(block.asItem(), "block/rubber_sapling"))
             .withTranslation("Rubber Sapling")
             .withRenderType(RenderType.cutout())
             .build(BLOCKS);

@@ -76,80 +76,18 @@ public class BasicMetalRegistryObject {
         return block;
     }
 
-    public static class BasicMetalBuilder {
-        final String name;
-
-        ItemBuilder ingot;
-        ItemBuilder nugget;
-        ItemBuilder dust;
-        ItemBuilder gear;
-        ItemBuilder raw;
-
-        BlockBuilder ore;
-        BlockBuilder deepslate;
-        BlockBuilder block;
+    public static class BasicMetalBuilder extends ResourceBuilder<BasicMetalBuilder> {
 
         public BasicMetalBuilder(String name, CreativeModeTab tab, float hardness, HarvestLevels harvestLvl, int exp) {
-            this.name = name;
-            String capitalized = name.substring(0, 1).toUpperCase() + name.substring(1);
-            ingot = new ItemBuilder(name + "_ingot", new Item(new Item.Properties().tab(tab)))
-                    .withTranslation(capitalized + " Ingot")
-                    .withNewItemTag("forge:ingots/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-            nugget = new ItemBuilder(name + "_nugget", new Item(new Item.Properties().tab(tab)))
-                    .withTranslation(capitalized + " Nugget")
-                    .withNewItemTag("forge:nuggets/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-            dust = new ItemBuilder(name + "_dust", new Item(new Item.Properties().tab(tab)))
-                    .withTranslation(capitalized + " Dust")
-                    .withNewItemTag("forge:dusts/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-            gear = new ItemBuilder(name + "_gear", new Item(new Item.Properties().tab(tab)))
-                    .withTranslation(capitalized + " Gear")
-                    .withNewItemTag("forge:gears/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-            raw = new ItemBuilder("raw_" + name, new Item(new Item.Properties().tab(tab)))
-                    .withTranslation("Raw " + capitalized)
-                    .withNewItemTag("forge:ores/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-
-            ore = new BlockBuilder(name + "_ore", new CLOreBlock(BlockBehaviour.Properties
-                    .of(Material.STONE).requiresCorrectToolForDrops()
-                    .strength(3.0f, 3.0f)
-                    .sound(SoundType.STONE), exp))
-                    .withCreativeTab(tab)
-                    .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, harvestLvl.getTag())
-                    .withNewBlockTag("forge:ores/" + name)
-                    .withNewItemTag("forge:ores/" + name)
-                    .withTranslation(capitalized + " Ore")
-                    .withLootTable((lootTableDataProvider, block1) -> lootTableDataProvider.createOreDrop(block1, raw.getItem()))
-                    .withBlockModel((blockModelDataProvider, block1) -> blockModelDataProvider.cubeAllBlock(block1, "clib:resource/" + name + "/" + block1.getRegistryName().getPath()));
-            deepslate = new BlockBuilder("deepslate_" + name + "_ore", new CLOreBlock(BlockBehaviour.Properties
-                    .of(Material.STONE).requiresCorrectToolForDrops()
-                    .strength(4.5f, 3.0f)
-                    .sound(SoundType.DEEPSLATE), exp * 2))
-                    .withCreativeTab(tab)
-                    .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, harvestLvl.getTag())
-                    .withNewBlockTag("forge:ores/" + name)
-                    .withNewItemTag("forge:ores/" + name)
-                    .withTranslation(capitalized + " Ore")
-                    .withLootTable((lootTableDataProvider, block1) -> lootTableDataProvider.createSingleDrop(block1, raw.getItem()))
-                    .withBlockModel((blockModelDataProvider, block1) -> blockModelDataProvider.cubeAllBlock(block1, "clib:resource/" + name + "/" + block1.getRegistryName().getPath()));
-            block = new BlockBuilder(name + "_block", new Block(BlockBehaviour.Properties
-                    .of(Material.METAL).requiresCorrectToolForDrops()
-                    .strength(hardness, 6.0f)
-                    .sound(SoundType.METAL)))
-                    .withCreativeTab(tab)
-                    .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS, harvestLvl.getTag())
-                    .withNewBlockTag("forge:storage_blocks/" + name)
-                    .withNewItemTag("forge:storage_blocks/" + name)
-                    .withTranslation("Block of " + capitalized)
-                    .withBlockModel((blockModelDataProvider, block1) -> blockModelDataProvider.cubeAllBlock(block1, "clib:resource/" + name + "/" + block1.getRegistryName().getPath()));
-        }
-
-        public BasicMetalBuilder withOreAffix(String affix) {
-            this.ore.withTranslation(affix + " " + name.substring(0, 1).toUpperCase() + name.substring(1) + " Ore");
-            return this;
+            super(name, tab);
+            addIngot();
+            addNugget();
+            addDust();
+            addGear();
+            addRawIngot();
+            addOre(exp, harvestLvl);
+            addDeepslateOre(exp, harvestLvl);
+            addBlock(hardness, harvestLvl);
         }
 
         public BasicMetalRegistryObject build(DeferredRegister<Item> itemRegistry, DeferredRegister<Block> blockRegistry) {

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.api.events.AddVillagerProfessionsEvent;
+import net.congueror.cgalaxy.init.CGItemInit;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.Items;
@@ -32,12 +33,22 @@ public class LunarVillagerProfession implements IProfession {
         ArrayList<LunarVillagerProfession> profs = new ArrayList<>();
         profs.add(new LunarVillagerProfession("cartographer", LunarVillagerTrades.toIntMap(ImmutableMap.of(
                 1, new VillagerTrades.ItemListing[] {
-                        new LunarVillagerTrades.ItemsToEmeralds(Items.WHEAT, 20, 16, 2),
-                        new LunarVillagerTrades.ItemsToEmeralds(Items.ANDESITE_STAIRS, 1, 1, 1)},
+                        new LunarVillagerTrades.SapphiresToItems(Items.COMPASS, 10, 1, 5, 1),
+                        new LunarVillagerTrades.ItemsToSapphires(Items.WHEAT, 20, 16, 2),
+                        new LunarVillagerTrades.ItemsToSapphires(Items.ANDESITE_STAIRS, 1, 1, 1)
+                },
                 2, new VillagerTrades.ItemListing[] {
-                        new LunarVillagerTrades.ItemsToEmeralds(Items.ACACIA_BOAT, 1, 1, 1)}
+                        new LunarVillagerTrades.ItemsToSapphires(Items.ACACIA_BOAT, 1, 1, 1),
+                        new LunarVillagerTrades.ItemsToSapphires(Items.COMPASS, 10, 10, 10, 1)
+                }
         )), new ResourceLocation(CGalaxy.MODID, "textures/entity/lunar_villager_clothes.png")
                 , new ResourceLocation(CGalaxy.MODID, "textures/entity/lunar_cartographer.png")));
+
+        //Cartographer
+        //Technology Merchant
+        //Farmer
+        //Builder
+        //Nitwit
 
         AddVillagerProfessionsEvent event = new AddVillagerProfessionsEvent(profs);
         MinecraftForge.EVENT_BUS.post(event);

@@ -24,8 +24,8 @@ public class CGStructureInit {
 
     public static void setupStructures() {
         setupMapSpacingAndLand(LUNAR_VILLAGE.get(), new StructureFeatureConfiguration(
-                10 /*Distance between spawn attempts*/,
-                5 /*chunks between spawn attempts*/,
+                500 /*Distance between spawn attempts*/,
+                20 /*chunks between spawn attempts*/,
                 897593047), true);
     }
 

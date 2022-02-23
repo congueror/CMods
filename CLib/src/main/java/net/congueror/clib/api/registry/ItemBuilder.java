@@ -46,7 +46,7 @@ public class ItemBuilder {
 
     public final Map<Tag.Named<Item>, Tag.Named<Item>> itemTagsGen = new HashMap<>();
     public final Map<String, Tag.Named<Item>> itemTags = new HashMap<>();
-    public BiConsumer<ItemModelDataProvider, Item> itemModel = (itemModelDataProvider, item1) -> itemModelDataProvider.texture(item1, "item/" + item1);
+    public BiConsumer<ItemModelDataProvider, Item> itemModel = (itemModelDataProvider, item1) -> itemModelDataProvider.modTexture(item1, "item/" + item1);
     public final Map<String, String> locale = new HashMap<>();
     public final List<BiConsumer<Consumer<FinishedRecipe>, Item>> recipes = new ArrayList<>();
 
@@ -130,7 +130,7 @@ public class ItemBuilder {
     }
 
     /**
-     * Generates a new item model for this item. By default, a single item texture model is created.
+     * Generates a new item model for this item. By default, a single item modTexture model is created.
      * Passing null will result in no model at all.
      *
      * @param ctx A {@link BiConsumer} of types {@link ItemModelDataProvider} and {@link Item}.

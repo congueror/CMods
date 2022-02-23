@@ -2,6 +2,7 @@ package net.congueror.cgalaxy.util.events;
 
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.api.events.AddVillagerProfessionsEvent;
+import net.congueror.cgalaxy.api.registry.CGCropBlock;
 import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
 import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerBlockEntity;
 import net.congueror.cgalaxy.commands.CGCommands;
@@ -10,14 +11,13 @@ import net.congueror.cgalaxy.entity.AstroEnderman;
 import net.congueror.cgalaxy.entity.AstroZombie;
 import net.congueror.cgalaxy.entity.villagers.LunarVillager;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
-import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGCarverInit;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
 import net.congueror.cgalaxy.init.CGStructureInit;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.util.CGGalacticObjects;
-import net.congueror.cgalaxy.util.RoomPressurizerSavedData;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
+import net.congueror.cgalaxy.util.WorldSavedData;
 import net.congueror.cgalaxy.world.CGBiomes;
 import net.congueror.cgalaxy.world.CGDimensions;
 import net.congueror.cgalaxy.world.CGFeatureGen;
@@ -25,6 +25,7 @@ import net.congueror.cgalaxy.world.structures.CGStructures;
 import net.congueror.clib.api.events.BlockOnPlacedEvent;
 import net.congueror.clib.api.events.CropGrowEvent;
 import net.congueror.clib.api.events.SaplingAdvanceEvent;
+import net.congueror.clib.util.RenderingHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -40,8 +41,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCandleBlock;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -144,7 +143,7 @@ public class CGCommonEvents {
                             if (list1 == null) list1 = new ArrayList<>();
                             if (!list1.contains(e.getPos())) list1.add(e.getPos());
                             RoomPressurizerBlockEntity.AFFECTED_BLOCKS.put(level.dimension(), list1);
-                            RoomPressurizerSavedData.makeDirty((ServerLevel) level);
+                            WorldSavedData.makeDirty((ServerLevel) level);
                         } else {
                             RoomPressurizerBlockEntity.updateAffectedBlocks(newState, e.getPos(), level);
                         }
@@ -171,11 +170,22 @@ public class CGCommonEvents {
         public static void onCropGrow(CropGrowEvent e) {
             Level level = e.getLevel();
             Event.Result result = Event.Result.ALLOW;
-            if (!Objects.requireNonNull(CGDimensionBuilder.getObjectFromKey(level.dimension())).getBreathable()) {
-                result = Event.Result.DENY;
-                var list = RoomPressurizerBlockEntity.AABBS.get(level.dimension());
-                if (list != null && list.stream().anyMatch(aabb -> aabb.contains(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()))) {
-                    result = Event.Result.ALLOW;
+            CGDimensionBuilder.DimensionObject obj = CGDimensionBuilder.getObjectFromKey(level.dimension());
+            if (obj != null) {
+                boolean flag = false;
+                if (e.getBlock() instanceof CGCropBlock b) {
+                    if (!b.canSurvive(obj, RenderingHelper.isDayTime(level) ? obj.getDayTemp() : obj.getNightTemp())) {
+                        flag = true;
+                    }
+                } else if (!obj.getBreathable()) {
+                    flag = true;
+                }
+                if (flag) {
+                    result = Event.Result.DENY;
+                    var list = RoomPressurizerBlockEntity.AABBS.get(level.dimension());
+                    if (list != null && list.stream().anyMatch(aabb -> aabb.contains(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()))) {
+                        result = Event.Result.ALLOW;
+                    }
                 }
             }
             e.setResult(result);

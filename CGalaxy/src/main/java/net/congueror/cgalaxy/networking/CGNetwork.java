@@ -52,6 +52,11 @@ public class CGNetwork {
                 .decoder(PacketUpdateRoomPressurizerRange::new)
                 .consumer(PacketUpdateRoomPressurizerRange::handle)
                 .add();
+        INSTANCE.messageBuilder(PacketUpdateSSCore.class, nextID())
+                .encoder(PacketUpdateSSCore::toBytes)
+                .decoder(PacketUpdateSSCore::new)
+                .consumer(PacketUpdateSSCore::handle)
+                .add();
     }
 
     public static void sendToClient(Object packet, ServerPlayer player) {

@@ -84,7 +84,7 @@ public class SolarGeneratorRecipe implements ItemRecipe<Container> {
             recipe.dimension = GsonHelper.getAsString(serializedRecipe, "dimension", Level.OVERWORLD.location().toString());
             recipe.dayIntensity = GsonHelper.getAsFloat(serializedRecipe, "dayIntensity", 1.0f);
             recipe.nightIntensity = GsonHelper.getAsFloat(serializedRecipe, "nightIntensity", 0.0f);
-            recipe.texture = GsonHelper.getAsString(serializedRecipe, "texture", "clib:textures/gui/overworld.png");
+            recipe.texture = GsonHelper.getAsString(serializedRecipe, "modTexture", "clib:textures/gui/overworld.png");
             return recipe;
         }
 

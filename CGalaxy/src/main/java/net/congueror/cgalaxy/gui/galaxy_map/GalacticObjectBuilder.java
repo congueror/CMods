@@ -1,6 +1,7 @@
 package net.congueror.cgalaxy.gui.galaxy_map;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -245,6 +246,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         private double gravity;
         private int tier;
         private ResourceKey<Level> dim;
+        private ResourceKey<Level> orbitDim;
 
         public AbstractTerrestrialObject(ResourceLocation id) {
             super(id);
@@ -276,6 +278,10 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
         public ResourceKey<Level> getDim() {
             return dim;
+        }
+
+        public ResourceKey<Level> getOrbitDim() {
+            return orbitDim;
         }
 
         public float getDaysPerYear() {
@@ -314,6 +320,11 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
 
         public T withDim(ResourceKey<Level> dim) {
             this.dim = dim;
+            return self();
+        }
+
+        public T withOrbitDim(ResourceKey<Level> dim) {
+            this.orbitDim = dim;
             return self();
         }
 
@@ -529,6 +540,15 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
                 return ((Planet) builder).getDim();
             } else if (builder instanceof Moon) {
                 return ((Moon) builder).getDim();
+            }
+            return null;
+        }
+
+        public ResourceKey<Level> getOrbitDimension() {
+            if (builder instanceof Planet) {
+                return ((Planet) builder).getOrbitDim();
+            } else if (builder instanceof Moon) {
+                return ((Moon) builder).getOrbitDim();
             }
             return null;
         }

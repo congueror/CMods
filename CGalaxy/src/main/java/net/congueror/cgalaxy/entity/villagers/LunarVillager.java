@@ -1,5 +1,7 @@
 package net.congueror.cgalaxy.entity.villagers;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
 import net.congueror.cgalaxy.api.registry.CGEntity;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
@@ -21,15 +23,19 @@ import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.apache.commons.lang3.tuple.MutablePair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class LunarVillager extends AbstractVillager implements CGEntity {
     public LunarVillagerProfession profession;
@@ -87,18 +93,29 @@ public class LunarVillager extends AbstractVillager implements CGEntity {
 
     @Override
     protected void updateTrades() {
-        VillagerTrades.ItemListing[] avillagertrades$itemlisting = this.profession.trades.get(1);
-        VillagerTrades.ItemListing[] avillagertrades$itemlisting1 = this.profession.trades.get(2);
-        if (avillagertrades$itemlisting != null && avillagertrades$itemlisting1 != null) {
-            MerchantOffers merchantoffers = this.getOffers();
-            this.addOffersFromItemListings(merchantoffers, avillagertrades$itemlisting, 3);
-            int i = this.random.nextInt(avillagertrades$itemlisting1.length);
-            VillagerTrades.ItemListing villagertrades$itemlisting = avillagertrades$itemlisting1[i];
-            MerchantOffer merchantoffer = villagertrades$itemlisting.getOffer(this, this.random);
-            if (merchantoffer != null) {
-                merchantoffers.add(merchantoffer);
-            }
+        int maxTrades = 5;
+        Int2ObjectMap<VillagerTrades.ItemListing[]> trades = new Int2ObjectOpenHashMap<>(this.profession.trades);
 
+        for (int i = 1; i <= maxTrades; i++) {
+            List<Integer> weights = new ArrayList<>();
+            for (int j = 1; j <= trades.size(); j++) {
+                for (int k = 0; k < j; k++) {
+                    weights.add(j);
+                }
+            }
+            List<Item> aCostsItem = this.getOffers().stream().map(merchantOffer -> merchantOffer.getBaseCostA().getItem()).toList();
+            List<Integer> aCostsCount = this.getOffers().stream().map(merchantOffer -> merchantOffer.getBaseCostA().getCount()).toList();
+
+            VillagerTrades.ItemListing[] listings = trades.get((int) weights.get(this.random.nextInt(weights.size())));
+            VillagerTrades.ItemListing listing = listings[this.random.nextInt(listings.length)];
+            MerchantOffer offer = listing.getOffer(this, this.random);
+
+            if (aCostsItem.contains(offer.getBaseCostA().getItem()) &&
+                    aCostsCount.contains(offer.getBaseCostA().getCount())) {
+                i--;
+            } else {
+                this.getOffers().add(offer);
+            }
         }
     }
 
@@ -172,5 +189,15 @@ public class LunarVillager extends AbstractVillager implements CGEntity {
     @Override
     public boolean canBreath(CGDimensionBuilder.DimensionObject object) {
         return object.getDim().equals(CGDimensions.MOON.getDim());
+    }
+
+    @Override
+    public boolean canSurviveTemperature(int temperature) {
+        return true;
+    }
+
+    @Override
+    public boolean canSurviveRadiation(float radiation) {
+        return true;
     }
 }

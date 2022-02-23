@@ -2,10 +2,13 @@ package net.congueror.cgalaxy.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class MutableImageButton extends Button {
 
@@ -23,7 +26,15 @@ public class MutableImageButton extends Button {
     }
 
     public MutableImageButton(int pX, int pY, int pWidth, int pHeight, int pXTexStart, int pYTexStart, int pYDiffTex, ResourceLocation pResourceLocation, int pTextureWidth, int pTextureHeight, Button.OnPress pOnPress, Button.OnTooltip onTooltip) {
-        super(pX, pY, pWidth, pHeight, TextComponent.EMPTY, pButton -> {});
+        this(pX, pY, pWidth, pHeight, pXTexStart, pYTexStart, pYDiffTex, pResourceLocation, pTextureWidth, pTextureHeight, TextComponent.EMPTY, pOnPress, onTooltip);
+    }
+
+    public MutableImageButton(int pX, int pY, int pWidth, int pHeight, int pXTexStart, int pYTexStart, int pYDiffTex, ResourceLocation pResourceLocation, int pTextureWidth, int pTextureHeight, Component text, Button.OnPress pOnPress) {
+        this(pX, pY, pWidth, pHeight, pXTexStart, pYTexStart, pYDiffTex, pResourceLocation, pTextureWidth, pTextureHeight, text, pOnPress, NO_TOOLTIP);
+    }
+
+    public MutableImageButton(int pX, int pY, int pWidth, int pHeight, int pXTexStart, int pYTexStart, int pYDiffTex, ResourceLocation pResourceLocation, int pTextureWidth, int pTextureHeight, Component text, Button.OnPress pOnPress, Button.OnTooltip onTooltip) {
+        super(pX, pY, pWidth, pHeight, text, pButton -> {});
         this.xTexStart = pXTexStart;
         this.yTexStart = pYTexStart;
         this.yOffset = pYDiffTex;
@@ -94,6 +105,10 @@ public class MutableImageButton extends Button {
         blit(pPoseStack, this.x, this.y, (float) this.xTexStart, (float) i, this.width, this.height, this.textureWidth, this.textureHeight);
         if (this.isHovered) {
             this.renderToolTip(pPoseStack, pMouseX, pMouseY);
+        }
+
+        if (!getMessage().equals(TextComponent.EMPTY)) {
+            drawCenteredString(pPoseStack, Minecraft.getInstance().font, this.getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, getFGColor() | Mth.ceil(this.alpha * 255.0F) << 24);
         }
     }
 

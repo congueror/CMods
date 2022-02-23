@@ -1,11 +1,38 @@
 {
   "name": "cgalaxy:lunar_village",
-  "fallback": "minecraft:empty",
+  "fallback": "cgalaxy:lunar_village_end",
   "elements": [
     {
       "weight": 1,
       "element": {
         "location": "cgalaxy:lunar_village/corridor_1",
+        "processors": "minecraft:treasure_rooms",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "cgalaxy:lunar_village/corridor_2",
+        "processors": "minecraft:treasure_rooms",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "cgalaxy:lunar_village/corridor_3",
+        "processors": "minecraft:treasure_rooms",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "cgalaxy:lunar_village/corridor_4",
         "processors": "minecraft:treasure_rooms",
         "projection": "rigid",
         "element_type": "minecraft:single_pool_element"

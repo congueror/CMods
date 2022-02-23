@@ -1,7 +1,7 @@
 package net.congueror.clib.blocks.abstract_machine.item;
 
 import net.congueror.clib.api.capability.ModEnergyStorage;
-import net.congueror.clib.blocks.abstract_machine.tickable.AbstractTickableBlock;
+import net.congueror.clib.blocks.abstract_machine.TickingBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
@@ -23,7 +23,7 @@ import net.minecraftforge.network.NetworkHooks;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public abstract class AbstractItemBlock extends AbstractTickableBlock {
+public abstract class AbstractItemBlock extends Block implements TickingBlock {
     public AbstractItemBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.getStateDefinition().any().setValue(BlockStateProperties.LIT, false));

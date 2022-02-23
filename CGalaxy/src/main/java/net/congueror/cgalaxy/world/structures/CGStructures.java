@@ -1,15 +1,20 @@
 package net.congueror.cgalaxy.world.structures;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.mojang.serialization.Codec;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.init.CGStructureInit;
+import net.congueror.cgalaxy.world.CGBiomes;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.PlainVillagePools;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.FlatLevelSource;
 import net.minecraft.world.level.levelgen.StructureSettings;
@@ -48,6 +53,32 @@ public class CGStructures {
 
             StructureSettings worldStructureConfig = chunkGenerator.getSettings();
 
+            //////////// BIOME BASED STRUCTURE SPAWNING ////////////
+
+            // Create a mutable map we will use for easier adding to biomes
+            HashMap<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> CGStructureToMultiMap = new HashMap<>();
+
+            // Add the resourcekey of all biomes that this Configured Structure can spawn in.
+            for(Map.Entry<ResourceKey<Biome>, Biome> biomeEntry : serverLevel.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).entrySet()) {
+                // Skip all ocean, end, nether, and none category biomes.
+                // You can do checks for other traits that the biome has.
+                ResourceKey<Biome> biome = biomeEntry.getKey();
+                if (biome.equals(CGBiomes.THE_MOON)) {
+                    associateBiomeToConfiguredStructure(CGStructureToMultiMap, LUNAR_VILLAGE, biomeEntry.getKey());
+                }
+            }
+
+            // Grab the map that holds what ConfigureStructures a structure has and what biomes it can spawn in.
+            // Requires AccessTransformer  (see resources/META-INF/accesstransformer.cfg)
+            ImmutableMap.Builder<StructureFeature<?>, ImmutableMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> tempStructureToMultiMap = ImmutableMap.builder();
+            worldStructureConfig.configuredStructures.entrySet().stream().filter(entry -> !CGStructureToMultiMap.containsKey(entry.getKey())).forEach(tempStructureToMultiMap::put);
+
+            // Add our structures to the structure map/multimap and set the world to use this combined map/multimap.
+            CGStructureToMultiMap.forEach((key, value) -> tempStructureToMultiMap.put(key, ImmutableMultimap.copyOf(value)));
+
+            // Requires AccessTransformer  (see resources/META-INF/accesstransformer.cfg)
+            worldStructureConfig.configuredStructures = tempStructureToMultiMap.build();
+
 
             //////////// DIMENSION BASED STRUCTURE SPAWNING ////////////
 
@@ -70,11 +101,12 @@ public class CGStructures {
              * Makes sure this chunkgenerator and datapack dimensions can spawn our structure.
              *
              * putIfAbsent so people can override the spacing with dimension datapacks themselves if they wish to customize spacing more precisely per dimension.
-             * Requires AccessTransformer  (see resources/META-INF/accesstransformer.cfg)
              */
             Map<StructureFeature<?>, StructureFeatureConfiguration> tempMap = new HashMap<>(worldStructureConfig.structureConfig());
             tempMap.putIfAbsent(CGStructureInit.LUNAR_VILLAGE.get(), StructureSettings.DEFAULTS.get(CGStructureInit.LUNAR_VILLAGE.get()));
             worldStructureConfig.structureConfig = tempMap;
+
+
 
             /*
              * The above three lines can be changed to do dimension blacklists/whitelist for your structure.
@@ -88,23 +120,26 @@ public class CGStructures {
         }
     }
 
-    public static StructureSettings deepCopyDimensionStructuresSettings(StructureSettings settings) {
-        // Grab old copy of stronghold spacing settings
-        StrongholdConfiguration oldStrongholdSettings = settings.stronghold();
-
-        // Make a deep copy and wrap it in an optional as StructureSettings requires an optional
-        Optional<StrongholdConfiguration> newStrongholdSettings = oldStrongholdSettings == null ?
-                Optional.empty() :
-                Optional.of(new StrongholdConfiguration(
-                        oldStrongholdSettings.distance(),
-                        oldStrongholdSettings.spread(),
-                        oldStrongholdSettings.count()));
-
-        // Create new deep copied StructureSettings
-        // We do not need to create a new structure spacing map instance here as our patch into
-        // StructureSettings will already create the new map instance for us.
-        StructureSettings newStructureSettings = new StructureSettings(newStrongholdSettings, settings.structureConfig());
-        newStructureSettings.configuredStructures = ImmutableMap.copyOf(settings.configuredStructures);
-        return newStructureSettings;
+    /**
+     * Helper method that handles setting up the map to multimap relationship to help prevent issues.
+     */
+    private static void associateBiomeToConfiguredStructure(Map<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> CGStructureToMultiMap, ConfiguredStructureFeature<?, ?> configuredStructureFeature, ResourceKey<Biome> biomeRegistryKey) {
+        CGStructureToMultiMap.putIfAbsent(configuredStructureFeature.feature, HashMultimap.create());
+        HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>> configuredStructureToBiomeMultiMap = CGStructureToMultiMap.get(configuredStructureFeature.feature);
+        if(configuredStructureToBiomeMultiMap.containsValue(biomeRegistryKey)) {
+            CGalaxy.LOGGER.error("""
+                    Detected 2 ConfiguredStructureFeatures that share the same base StructureFeature trying to be added to same biome. One will be prevented from spawning.
+                    This issue happens with vanilla too and is why a Snowy Village and Plains Village cannot spawn in the same biome because they both use the Village base structure.
+                    The two conflicting ConfiguredStructures are: {}, {}
+                    The biome that is attempting to be shared: {}
+                """,
+                    BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureFeature),
+                    BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureToBiomeMultiMap.entries().stream().filter(e -> e.getValue() == biomeRegistryKey).findFirst().get().getKey()),
+                    biomeRegistryKey
+            );
+        }
+        else{
+            configuredStructureToBiomeMultiMap.put(configuredStructureFeature, biomeRegistryKey);
+        }
     }
 }

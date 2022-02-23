@@ -19,6 +19,7 @@ public class CGDimensionBuilder {
     private float radiation = 2.4F;
     private double airPressure = 101352.9D;
     private ResourceLocation yOverlay = new ResourceLocation(CGalaxy.MODID, "textures/gui/rocket_y_hud.png");
+    private boolean isOrbit;
 
     public CGDimensionBuilder(ResourceKey<Level> dim) {
         this.dim = dim;
@@ -45,8 +46,11 @@ public class CGDimensionBuilder {
     public double getAirPressure() {
         return airPressure;
     }
-    public ResourceLocation getyOverlay() {
+    public ResourceLocation getYOverlay() {
         return yOverlay;
+    }
+    public boolean getIsOrbit() {
+        return isOrbit;
     }
 
     /**
@@ -113,10 +117,18 @@ public class CGDimensionBuilder {
     }
 
     /**
-     * The y overlay texture shown when inside a rocket.
+     * The y overlay modTexture shown when inside a rocket.
      */
     public CGDimensionBuilder withYOverlayTexture(ResourceLocation texture) {
         this.yOverlay = texture;
+        return this;
+    }
+
+    /**
+     * Whether this dimension is an orbit of another dimension.
+     */
+    public CGDimensionBuilder withOrbit(boolean orbit) {
+        isOrbit = orbit;
         return this;
     }
 
@@ -156,7 +168,11 @@ public class CGDimensionBuilder {
         }
 
         public ResourceLocation getYOverlayTexture() {
-            return builder.getyOverlay();
+            return builder.getYOverlay();
+        }
+
+        public boolean getIsOrbit() {
+            return builder.getIsOrbit();
         }
     }
 }

@@ -9,6 +9,7 @@ import net.congueror.cgalaxy.blocks.gas_extractor.GasExtractorBlockEntity;
 import net.congueror.cgalaxy.blocks.gas_extractor.GasExtractorContainer;
 import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerBlockEntity;
 import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerContainer;
+import net.congueror.cgalaxy.blocks.station_core.SpaceStationCoreContainer;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
 import net.congueror.cgalaxy.gui.space_suit.SpaceSuitContainer;
 import net.minecraft.core.BlockPos;
@@ -56,4 +57,6 @@ public class CGContainerInit {
             IForgeMenuType.create((windowId, inv, data) -> new GalaxyMapContainer(windowId, inv.player, inv, false, null)));
     public static final RegistryObject<MenuType<SpaceSuitContainer>> SPACE_SUIT = MENU_TYPES.register("space_suit", () ->
             IForgeMenuType.create((windowId, inv, data) -> new SpaceSuitContainer(windowId, inv)));
+    public static final RegistryObject<MenuType<SpaceStationCoreContainer>> SPACE_STATION = MENU_TYPES.register("space_station_core", () ->
+            IForgeMenuType.create((windowId, inv, data) -> new SpaceStationCoreContainer(windowId, data.readBlockPos(), inv)));
 }

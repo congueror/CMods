@@ -61,51 +61,16 @@ public class AlloyMetalRegistryObject {
         return block;
     }
 
-    public static class AlloyMetalBuilder {
-        final String name;
-
-        ItemBuilder ingot;
-        ItemBuilder nugget;
-        ItemBuilder dust;
-        ItemBuilder gear;
-        ItemBuilder blend;
-
-        BlockBuilder block;
+    public static class AlloyMetalBuilder extends ResourceBuilder<AlloyMetalBuilder> {
 
         public AlloyMetalBuilder(String name, CreativeModeTab tab, float hardness, HarvestLevels harvestLvl) {
-            this.name = name;
-            String capitalized = name.substring(0, 1).toUpperCase() + name.substring(1);
-            ingot = new ItemBuilder(name + "_ingot", new Item(new Item.Properties().tab(tab)))
-                    .withTranslation(capitalized + " Ingot")
-                    .withNewItemTag("forge:ingots/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-            nugget = new ItemBuilder(name + "_nugget", new Item(new Item.Properties().tab(tab)))
-                    .withTranslation(capitalized + " Nugget")
-                    .withNewItemTag("forge:nuggets/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-            dust = new ItemBuilder(name + "_dust", new Item(new Item.Properties().tab(tab)))
-                    .withTranslation(capitalized + " Dust")
-                    .withNewItemTag("forge:dusts/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-            gear = new ItemBuilder(name + "_gear", new Item(new Item.Properties().tab(tab)))
-                    .withTranslation(capitalized + " Gear")
-                    .withNewItemTag("forge:gears/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-            blend = new ItemBuilder(name + "_blend", new Item(new Item.Properties().tab(tab)))
-                    .withTranslation(capitalized + " Blend")
-                    .withNewItemTag("forge:ores/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-
-            block = new BlockBuilder(name + "_block", new Block(BlockBehaviour.Properties
-                    .of(Material.METAL).requiresCorrectToolForDrops()
-                    .strength(hardness, 6.0f)
-                    .sound(SoundType.METAL)))
-                    .withCreativeTab(tab)
-                    .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS, harvestLvl.getTag())
-                    .withNewBlockTag("forge:storage_blocks/" + name)
-                    .withNewItemTag("forge:storage_blocks/" + name)
-                    .withTranslation("Block of " + capitalized)
-                    .withBlockModel((blockModelDataProvider, block1) -> blockModelDataProvider.cubeAllBlock(block1, "clib:resource/" + name + "/" + block1.getRegistryName().getPath()));
+            super(name, tab);
+            addIngot();
+            addNugget();
+            addDust();
+            addGear();
+            addBlend();
+            addBlock(hardness, harvestLvl);
         }
 
         public AlloyMetalRegistryObject build(DeferredRegister<Item> itemRegistry, DeferredRegister<Block> blockRegistry) {

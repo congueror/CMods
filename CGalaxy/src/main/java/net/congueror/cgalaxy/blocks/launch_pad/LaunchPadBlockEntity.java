@@ -1,13 +1,14 @@
 package net.congueror.cgalaxy.blocks.launch_pad;
 
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
-import net.congueror.clib.blocks.abstract_machine.tickable.AbstractTickableBlockEntity;
+import net.congueror.clib.blocks.abstract_machine.TickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public class LaunchPadBlockEntity extends AbstractTickableBlockEntity {
+public class LaunchPadBlockEntity extends BlockEntity implements TickingBlockEntity {
     public LaunchPadBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(CGBlockEntityInit.LAUNCH_PAD.get(), pWorldPosition, pBlockState);
     }

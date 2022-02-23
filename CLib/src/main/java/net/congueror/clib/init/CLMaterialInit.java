@@ -43,19 +43,26 @@ public class CLMaterialInit {
     public static final SingleGemRegistryObject OPAL = new SingleGemRegistryObject.SingleGemBuilder("opal",
             CreativeTabs.ResourcesIG.instance, 7.0f, HarvestLevels.DIAMOND, 17)
             .withOreAffix("End").build(CLItemInit.ITEMS, CLBlockInit.BLOCKS);
+
     public static final DebrisMetalRegistryObject TITANIUM = new DebrisMetalRegistryObject.DebrisMetalBuilder("titanium", "Recens Debris",
             CreativeTabs.ResourcesIG.instance, 9.0f, HarvestLevels.DIAMOND, 0).build(CLItemInit.ITEMS, CLBlockInit.BLOCKS);
+
     public static final RadioactiveMetalRegistryObject URANIUM = new RadioactiveMetalRegistryObject.RadioactiveMetalBuilder("uranium",
             CreativeTabs.ResourcesIG.instance, HarvestLevels.DIAMOND, 0).build(CLItemInit.ITEMS, CLBlockInit.BLOCKS);
+
     public static final SingleMetalRegistryObject COBALT = new SingleMetalRegistryObject.SingleMetalBuilder("cobalt",
             CreativeTabs.ResourcesIG.instance, 6.0f, HarvestLevels.DIAMOND, 0)
             .withOreAffix("Nether").build(CLItemInit.ITEMS, CLBlockInit.BLOCKS);
+
     public static final BasicMetalRegistryObject ZINC = new BasicMetalRegistryObject.BasicMetalBuilder("zinc",
             CreativeTabs.ResourcesIG.instance, 4.0f, HarvestLevels.IRON, 0).build(CLItemInit.ITEMS, CLBlockInit.BLOCKS);
+
     public static final AlloyMetalRegistryObject BRASS = new AlloyMetalRegistryObject.AlloyMetalBuilder("brass",
             CreativeTabs.ResourcesIG.instance, 4.0f, HarvestLevels.IRON).build(CLItemInit.ITEMS, CLBlockInit.BLOCKS);
+
     public static final BasicMetalRegistryObject CHROMIUM = new BasicMetalRegistryObject.BasicMetalBuilder("chromium",
             CreativeTabs.ResourcesIG.instance, 4.0f, HarvestLevels.IRON, 0).build(CLItemInit.ITEMS, CLBlockInit.BLOCKS);
+
     public static final RadioactiveMetalRegistryObject THORIUM = new RadioactiveMetalRegistryObject.RadioactiveMetalBuilder("thorium",
             CreativeTabs.ResourcesIG.instance, HarvestLevels.DIAMOND, 0).build(CLItemInit.ITEMS, CLBlockInit.BLOCKS);
 

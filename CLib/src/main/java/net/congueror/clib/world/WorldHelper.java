@@ -308,7 +308,7 @@ public class WorldHelper {
      */
     public static boolean isBiome(BiomeLoadingEvent e, ResourceKey<Biome> biome) {
         if (e.getName() != null) {
-            return e.getName().equals(biome.getRegistryName());
+            return e.getName().equals(biome.location());
         }
         return false;
     }

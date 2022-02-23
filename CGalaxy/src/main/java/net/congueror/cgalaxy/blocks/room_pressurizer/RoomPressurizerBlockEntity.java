@@ -4,7 +4,7 @@ import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
-import net.congueror.cgalaxy.util.RoomPressurizerSavedData;
+import net.congueror.cgalaxy.util.WorldSavedData;
 import net.congueror.clib.api.recipe.FluidRecipe;
 import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlockEntity;
 import net.congueror.clib.items.UpgradeItem;
@@ -295,7 +295,7 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
 
             AFFECTED_BLOCKS.put(level.dimension(), list1);
             if (level instanceof ServerLevel)
-                RoomPressurizerSavedData.makeDirty((ServerLevel) level);
+                WorldSavedData.makeDirty((ServerLevel) level);
         }
 
         var list1 = AABBS.get(level.dimension());

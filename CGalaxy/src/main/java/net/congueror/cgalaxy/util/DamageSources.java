@@ -20,7 +20,7 @@ public class DamageSources extends DamageSource {
     public static final DamageSource NO_OXYGEN = new DamageSources("noOxygen", 4).bypassArmor();
     public static final DamageSource HEAT = new DamageSources("noHeat", 2).bypassArmor();
     public static final DamageSource COLD = new DamageSources("noCold", 2).bypassArmor();
-    public static final DamageSource NO_RADIATION = new DamageSources("noRadiation", 2).bypassArmor();
+    public static final DamageSource RADIATION = new DamageSources("radiation", 2).bypassArmor();
     public static final DamageSource METEOR_HIT = new DamageSources("meteorHit", 1).setScalesWithDifficulty().setExplosion();
 
     @Nonnull

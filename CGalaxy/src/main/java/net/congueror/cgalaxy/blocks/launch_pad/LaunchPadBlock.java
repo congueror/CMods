@@ -2,7 +2,7 @@ package net.congueror.cgalaxy.blocks.launch_pad;
 
 import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.init.CGBlockInit;
-import net.congueror.clib.blocks.abstract_machine.tickable.AbstractTickableBlock;
+import net.congueror.clib.blocks.abstract_machine.TickingBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LaunchPadBlock extends AbstractTickableBlock {
+public class LaunchPadBlock extends Block implements TickingBlock {
     protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
     protected static final VoxelShape SHAPE_MID = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D);
 

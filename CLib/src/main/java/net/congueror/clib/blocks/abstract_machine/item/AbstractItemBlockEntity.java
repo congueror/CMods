@@ -1,8 +1,8 @@
 package net.congueror.clib.blocks.abstract_machine.item;
 
 import net.congueror.clib.api.capability.ModEnergyStorage;
-import net.congueror.clib.blocks.abstract_machine.tickable.AbstractTickableBlockEntity;
 import net.congueror.clib.api.recipe.ItemRecipe;
+import net.congueror.clib.blocks.abstract_machine.TickingBlockEntity;
 import net.congueror.clib.items.UpgradeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -34,7 +34,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class AbstractItemBlockEntity<R extends ItemRecipe<?>> extends AbstractTickableBlockEntity implements MenuProvider {
+public abstract class AbstractItemBlockEntity<R extends ItemRecipe<?>> extends BlockEntity implements MenuProvider, TickingBlockEntity {
     protected ItemStackHandler itemHandler = createHandler();
     protected final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
     protected RecipeWrapper wrapper = new RecipeWrapper(itemHandler);

@@ -20,6 +20,7 @@
     "cgalaxy:fuel_loader",
     "cgalaxy:fuel_refinery",
     "cgalaxy:gas_extractor",
-    "cgalaxy:room_pressurizer"
+    "cgalaxy:room_pressurizer",
+    "cgalaxy:space_station_core"
   ]
 }

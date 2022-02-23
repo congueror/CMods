@@ -78,11 +78,9 @@ public class GeodeGemRegistryObject {
         return budding;
     }
 
-    public static class GeodeGemBuilder {
-        final String name;
+    public static class GeodeGemBuilder extends ResourceBuilder<GeodeGemBuilder> {
 
         ItemBuilder shard;
-        ItemBuilder dust;
 
         BlockBuilder block;
         BlockBuilder small_bud;
@@ -92,17 +90,13 @@ public class GeodeGemRegistryObject {
         BlockBuilder budding;
 
         public GeodeGemBuilder(String name, CreativeModeTab tab) {
-            this.name = name;
-            String capitalized = name.substring(0, 1).toUpperCase() + name.substring(1);
+            super(name, tab);
             shard = new ItemBuilder(name + "_shard", new Item(new Item.Properties().tab(tab)))
                     .withTranslation(capitalized + " Shard")
                     .withNewItemTag("forge:shards/" + name)
                     .withNewItemTag("forge:gems/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-            dust = new ItemBuilder(name + "_dust", new Item(new Item.Properties().tab(tab)))
-                    .withTranslation(capitalized + " Gear")
-                    .withNewItemTag("forge:dusts/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
+                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.modTexture(item, "resource/" + name + "/" + item));
+            addDust();
 
             block = new BlockBuilder(name + "_block", new Block(BlockBehaviour.Properties.copy(Blocks.AMETHYST_BLOCK)))
                     .withCreativeTab(CreativeTabs.ResourcesIG.instance)
@@ -117,7 +111,7 @@ public class GeodeGemRegistryObject {
                     .withBlockModel((blockModelDataGenerator, block1) -> blockModelDataGenerator.directionalBlock(block1, blockModelDataGenerator.models()
                             .cross(block1.getRegistryName().getPath(),
                                     new ResourceLocation(block1.getRegistryName().getNamespace(), "resource/" + name + "/" + block1.getRegistryName().getPath()))))
-                    .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.texture(block.asItem(), "resource/" + name + "/" + block.getRegistryName().getPath()))
+                    .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.modTexture(block.asItem(), "resource/" + name + "/" + block.getRegistryName().getPath()))
                     .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createSilkTouchOnlyDrop(block, block))
                     .withTranslation("Small " + capitalized + " Bud")
                     .withRenderType(RenderType.cutout());
@@ -127,7 +121,7 @@ public class GeodeGemRegistryObject {
                     .withBlockModel((blockModelDataGenerator, block1) -> blockModelDataGenerator.directionalBlock(block1, blockModelDataGenerator.models()
                             .cross(block1.getRegistryName().getPath(),
                                     new ResourceLocation(block1.getRegistryName().getNamespace(), "resource/" + name + "/" + block1.getRegistryName().getPath()))))
-                    .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.texture(block.asItem(), "resource/" + name + "/" + block.getRegistryName().getPath()))
+                    .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.modTexture(block.asItem(), "resource/" + name + "/" + block.getRegistryName().getPath()))
                     .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createSilkTouchOnlyDrop(block, block))
                     .withTranslation("Medium " + capitalized + " Bud")
                     .withRenderType(RenderType.cutout());
@@ -137,7 +131,7 @@ public class GeodeGemRegistryObject {
                     .withBlockModel((blockModelDataGenerator, block1) -> blockModelDataGenerator.directionalBlock(block1, blockModelDataGenerator.models()
                             .cross(block1.getRegistryName().getPath(),
                                     new ResourceLocation(block1.getRegistryName().getNamespace(), "resource/" + name + "/" + block1.getRegistryName().getPath()))))
-                    .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.texture(block.asItem(), "resource/" + name + "/" + block.getRegistryName().getPath()))
+                    .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.modTexture(block.asItem(), "resource/" + name + "/" + block.getRegistryName().getPath()))
                     .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createSilkTouchOnlyDrop(block, block))
                     .withTranslation("Large " + capitalized + " Bud")
                     .withRenderType(RenderType.cutout());
@@ -147,7 +141,7 @@ public class GeodeGemRegistryObject {
                     .withBlockModel((blockModelDataGenerator, block1) -> blockModelDataGenerator.directionalBlock(block1, blockModelDataGenerator.models()
                             .cross(block1.getRegistryName().getPath(),
                                     new ResourceLocation(block1.getRegistryName().getNamespace(), "resource/" + name + "/" + block1.getRegistryName().getPath()))))
-                    .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.texture(block.asItem(), "resource/" + name + "/" + block.getRegistryName().getPath()))
+                    .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.modTexture(block.asItem(), "resource/" + name + "/" + block.getRegistryName().getPath()))
                     .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createClusterDrop(block, shard.getItem()))
                     .withTranslation(capitalized + " Cluster")
                     .withRenderType(RenderType.cutout());

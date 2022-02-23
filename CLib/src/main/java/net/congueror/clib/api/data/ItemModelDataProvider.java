@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.loaders.DynamicBucketModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -29,8 +28,19 @@ public class ItemModelDataProvider extends ItemModelProvider {
 
     /**
      * Simple single textured item.
+     *
+     * @param texture Texture location (e.g. <strong> modid:item/my_item </strong>)
      */
     public void texture(Item item, String texture) {
+        singleTexture(Objects.requireNonNull(item.getRegistryName()).getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(texture));
+    }
+
+    /**
+     * Simple single textured item.
+     *
+     * @param texture Texture location, mod id is the current mod's id.
+     */
+    public void modTexture(Item item, String texture) {
         singleTexture(Objects.requireNonNull(item.getRegistryName()).getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(modid, texture));
     }
 

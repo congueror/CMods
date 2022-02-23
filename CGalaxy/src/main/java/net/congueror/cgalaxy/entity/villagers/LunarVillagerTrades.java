@@ -3,6 +3,7 @@ package net.congueror.cgalaxy.entity.villagers;
 import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.congueror.cgalaxy.init.CGItemInit;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.Item;
@@ -21,16 +22,22 @@ public class LunarVillagerTrades {
         return new Int2ObjectOpenHashMap<>(pMap);
     }
 
-    public static class ItemsToEmeralds implements VillagerTrades.ItemListing {
+    public static class ItemsToSapphires implements VillagerTrades.ItemListing {
         private final Item item;
         private final int cost;
+        private final int sapphireAmount;
         private final int maxUses;
         private final int villagerXp;
         private final float priceMultiplier;
 
-        public ItemsToEmeralds(ItemLike pItem, int pCost, int pMaxUses, int pVillagerXp) {
+        public ItemsToSapphires(Item item, int cost, int maxUses, int villagerXp) {
+            this(item, cost, 1, maxUses, villagerXp);
+        }
+
+        public ItemsToSapphires(ItemLike pItem, int pCost, int sapphireAmount, int pMaxUses, int pVillagerXp) {
             this.item = pItem.asItem();
             this.cost = pCost;
+            this.sapphireAmount = sapphireAmount;
             this.maxUses = pMaxUses;
             this.villagerXp = pVillagerXp;
             this.priceMultiplier = 0.05F;
@@ -39,7 +46,7 @@ public class LunarVillagerTrades {
         @Override
         public MerchantOffer getOffer(@Nonnull Entity pTrader, @Nonnull Random pRand) {
             ItemStack itemstack = new ItemStack(this.item, this.cost);
-            return new MerchantOffer(itemstack, new ItemStack(Items.EMERALD), this.maxUses, this.villagerXp, this.priceMultiplier);
+            return new MerchantOffer(itemstack, new ItemStack(CGItemInit.ASTRAL_SAPPHIRE.get()), this.maxUses, this.villagerXp, this.priceMultiplier);
         }
     }
 
@@ -75,33 +82,33 @@ public class LunarVillagerTrades {
         }
     }
 
-    public static class EmeraldsToItems implements VillagerTrades.ItemListing {
+    public static class SapphiresToItems implements VillagerTrades.ItemListing {
         private final ItemStack itemStack;
-        private final int emeraldCost;
+        private final int sapphireCost;
         private final int numberOfItems;
         private final int maxUses;
         private final int villagerXp;
         private final float priceMultiplier;
 
-        public EmeraldsToItems(Block pBlock, int pEmeraldCost, int pNumberOfItems, int pMaxUses, int pVillagerXp) {
-            this(new ItemStack(pBlock), pEmeraldCost, pNumberOfItems, pMaxUses, pVillagerXp);
+        public SapphiresToItems(Block pBlock, int sapphireCost, int pNumberOfItems, int pMaxUses, int pVillagerXp) {
+            this(new ItemStack(pBlock), sapphireCost, pNumberOfItems, pMaxUses, pVillagerXp);
         }
 
-        public EmeraldsToItems(Item pItem, int pEmeraldCost, int pNumberOfItems, int pVillagerXp) {
-            this(new ItemStack(pItem), pEmeraldCost, pNumberOfItems, 12, pVillagerXp);
+        public SapphiresToItems(Item pItem, int sapphireCost, int pNumberOfItems, int pVillagerXp) {
+            this(new ItemStack(pItem), sapphireCost, pNumberOfItems, 12, pVillagerXp);
         }
 
-        public EmeraldsToItems(Item pItem, int pEmeraldCost, int pNumberOfItems, int pMaxUses, int pVillagerXp) {
-            this(new ItemStack(pItem), pEmeraldCost, pNumberOfItems, pMaxUses, pVillagerXp);
+        public SapphiresToItems(Item pItem, int sapphireCost, int pNumberOfItems, int pMaxUses, int pVillagerXp) {
+            this(new ItemStack(pItem), sapphireCost, pNumberOfItems, pMaxUses, pVillagerXp);
         }
 
-        public EmeraldsToItems(ItemStack pItemStack, int pEmeraldCost, int pNumberOfItems, int pMaxUses, int pVillagerXp) {
-            this(pItemStack, pEmeraldCost, pNumberOfItems, pMaxUses, pVillagerXp, 0.05F);
+        public SapphiresToItems(ItemStack pItemStack, int sapphireCost, int pNumberOfItems, int pMaxUses, int pVillagerXp) {
+            this(pItemStack, sapphireCost, pNumberOfItems, pMaxUses, pVillagerXp, 0.05F);
         }
 
-        public EmeraldsToItems(ItemStack pItemStack, int pEmeralCost, int pNumberOfItems, int pMaxUses, int pVillagerXp, float pPriceMultiplier) {
+        public SapphiresToItems(ItemStack pItemStack, int sapphireCost, int pNumberOfItems, int pMaxUses, int pVillagerXp, float pPriceMultiplier) {
             this.itemStack = pItemStack;
-            this.emeraldCost = pEmeralCost;
+            this.sapphireCost = sapphireCost;
             this.numberOfItems = pNumberOfItems;
             this.maxUses = pMaxUses;
             this.villagerXp = pVillagerXp;
@@ -110,7 +117,7 @@ public class LunarVillagerTrades {
 
         @Override
         public MerchantOffer getOffer(@Nonnull Entity pTrader, @Nonnull Random pRand) {
-            return new MerchantOffer(new ItemStack(Items.EMERALD, this.emeraldCost), new ItemStack(this.itemStack.getItem(), this.numberOfItems), this.maxUses, this.villagerXp, this.priceMultiplier);
+            return new MerchantOffer(new ItemStack(CGItemInit.ASTRAL_SAPPHIRE.get(), this.sapphireCost), new ItemStack(this.itemStack.getItem(), this.numberOfItems), this.maxUses, this.villagerXp, this.priceMultiplier);
         }
     }
 }

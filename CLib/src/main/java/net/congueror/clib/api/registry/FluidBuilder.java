@@ -207,8 +207,8 @@ public class FluidBuilder {
     //========================================Attributes==============================================
 
     /**
-     * The texture location of the source fluid. By default, this is the water texture
-     * @param texture The location of the texture including the modId, e.g. "modid:block/my_fluid"
+     * The modTexture location of the source fluid. By default, this is the water modTexture
+     * @param texture The location of the modTexture including the modId, e.g. "modid:block/my_fluid"
      */
     public final FluidBuilder withStillTexture(String texture) {
         stillTexture = new ResourceLocation(texture);
@@ -216,8 +216,8 @@ public class FluidBuilder {
     }
 
     /**
-     * The texture location of the flowing fluid. By default, this is the water texture
-     * @param texture The location of the texture including the modId, e.g. "modid:block/my_fluid"
+     * The modTexture location of the flowing fluid. By default, this is the water modTexture
+     * @param texture The location of the modTexture including the modId, e.g. "modid:block/my_fluid"
      */
     public final FluidBuilder withFlowingTexture(String texture) {
         flowingTexture = new ResourceLocation(texture);

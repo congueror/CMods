@@ -9,11 +9,10 @@ import net.congueror.clib.api.registry.ItemBuilder;
 import net.congueror.clib.items.UpgradeItem;
 import net.congueror.clib.items.generic.CLBucketItem;
 import net.congueror.clib.items.generic.CLItem;
-import net.congueror.clib.util.MathHelper;
 import net.congueror.clib.util.CreativeTabs;
+import net.congueror.clib.util.MathHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -96,7 +95,7 @@ public class CGItemInit {
             new CLItem(new Item.Properties().tab(CreativeTabs.ResourcesIG.instance)))
             .withTranslation("Raw Lunarite")
             .build(ITEMS);
-    public static final RegistryObject<Item> LURANITE_INGOT = new ItemBuilder("lunarite_ingot",
+    public static final RegistryObject<Item> LUNARITE_INGOT = new ItemBuilder("lunarite_ingot",
             new CLItem(new Item.Properties().tab(CreativeTabs.ResourcesIG.instance).rarity(Rarity.create("purple", ChatFormatting.DARK_PURPLE))))
             .withTranslation("Lunarite Ingot")
             .build(ITEMS);

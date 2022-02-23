@@ -81,7 +81,7 @@ public class MoonSkyEffects extends AbstractEffects {
             //Earth
             poseStack.pushPose();
             poseStack.mulPose(Vector3f.YP.rotationDegrees(-100.0F));
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(level.getTimeOfDay(partialTicks) * 360.0F + 45.0F));
+            poseStack.mulPose(Vector3f.XP.rotationDegrees(80F));
             poseStack.mulPose(Vector3f.ZP.rotationDegrees(30.0F));
             Matrix4f matrix4f2 = poseStack.last().pose();
             f12 = 15.0F;

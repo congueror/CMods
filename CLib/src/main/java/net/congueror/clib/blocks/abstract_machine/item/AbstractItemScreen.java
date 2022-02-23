@@ -72,9 +72,9 @@ public abstract class AbstractItemScreen<T extends AbstractItemContainer<?>> ext
     }
 
     /**
-     * Renders the gui texture in the background. Make sure this is called first inside {@link #renderBg(PoseStack, float, int, int)}.
+     * Renders the gui modTexture in the background. Make sure this is called first inside {@link #renderBg(PoseStack, float, int, int)}.
      *
-     * @param gui The location of the texture.
+     * @param gui The location of the modTexture.
      */
     public void renderBackground(PoseStack poseStack, ResourceLocation gui) {
         RenderSystem.setShaderColor(1, 1, 1, 1);

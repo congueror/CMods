@@ -1,7 +1,10 @@
 package net.congueror.cgalaxy.entity.villagers;
 
+import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
+import net.congueror.cgalaxy.api.registry.CGEntity;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
 import net.congueror.cgalaxy.init.CGItemInit;
+import net.congueror.cgalaxy.world.CGDimensions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,7 +28,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
-public class LunarZombieVillager extends Zombie {
+public class LunarZombieVillager extends Zombie implements CGEntity {
     private int villagerConversionTime;
     private UUID conversionSource;
 
@@ -151,4 +154,19 @@ public class LunarZombieVillager extends Zombie {
     protected ItemStack getSkull() {
         return ItemStack.EMPTY;
     }//todo
+
+    @Override
+    public boolean canBreath(CGDimensionBuilder.DimensionObject object) {
+        return object.getDim().equals(CGDimensions.MOON.getDim());
+    }
+
+    @Override
+    public boolean canSurviveTemperature(int temperature) {
+        return true;
+    }
+
+    @Override
+    public boolean canSurviveRadiation(float radiation) {
+        return true;
+    }
 }

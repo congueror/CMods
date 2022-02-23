@@ -69,65 +69,18 @@ public class DebrisMetalRegistryObject {
         return block;
     }
 
-    public static class DebrisMetalBuilder {
-        final String name;
+    public static class DebrisMetalBuilder extends ResourceBuilder<DebrisMetalBuilder> {
 
-        ItemBuilder ingot;
-        ItemBuilder nugget;
-        ItemBuilder dust;
-        ItemBuilder gear;
-        ItemBuilder scrap;
-
-        BlockBuilder ore;
-        BlockBuilder block;
 
         public DebrisMetalBuilder(String name, String debrisName, CreativeModeTab tab, float hardness, HarvestLevels harvestLvl, int exp) {
-            this.name = name;
-            String capitalized = name.substring(0, 1).toUpperCase() + name.substring(1);
-            ingot = new ItemBuilder(name + "_ingot", new Item(new Item.Properties().tab(tab)))
-                    .withTranslation(capitalized + " Ingot")
-                    .withNewItemTag("forge:ingots/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-            nugget = new ItemBuilder(name + "_nugget", new Item(new Item.Properties().tab(tab)))
-                    .withTranslation(capitalized + " Nugget")
-                    .withNewItemTag("forge:nuggets/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-            dust = new ItemBuilder(name + "_dust", new Item(new Item.Properties().tab(tab)))
-                    .withTranslation(capitalized + " Dust")
-                    .withNewItemTag("forge:dusts/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-            gear = new ItemBuilder(name + "_gear", new Item(new Item.Properties().tab(tab)))
-                    .withTranslation(capitalized + " Gear")
-                    .withNewItemTag("forge:gears/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-            scrap = new ItemBuilder(name + "_scrap", new Item(new Item.Properties().tab(tab)))
-                    .withTranslation(capitalized + " Scrap")
-                    .withNewItemTag("forge:scraps/" + name)
-                    .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.texture(item, "resource/" + name + "/" + item));
-
-            ore = new BlockBuilder(name + "_ore", new CLOreBlock(BlockBehaviour.Properties
-                    .of(Material.STONE).requiresCorrectToolForDrops()
-                    .strength(8.0f, 28.0f)
-                    .sound(SoundType.STONE), exp))
-                    .withCreativeTab(tab)
-                    .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, harvestLvl.getTag())
-                    .withNewBlockTag("forge:ores/" + name)
-                    .withNewItemTag("forge:ores/" + name)
-                    .withTranslation(debrisName)
-                    .withBlockModel((blockModelDataProvider, block1) ->
-                            blockModelDataProvider.cubeColumnBlock(block1,
-                                    block1.getRegistryName().getNamespace() + ":resource/" + name + "/" + block1.getRegistryName().getPath() + "_side",
-                                    block1.getRegistryName().getNamespace() + ":resource/" + name + "/" + block1.getRegistryName().getPath() + "_top"));
-            block = new BlockBuilder(name + "_block", new Block(BlockBehaviour.Properties
-                    .of(Material.METAL).requiresCorrectToolForDrops()
-                    .strength(hardness, 6.0f)
-                    .sound(SoundType.METAL)))
-                    .withCreativeTab(tab)
-                    .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS, harvestLvl.getTag())
-                    .withNewBlockTag("forge:storage_blocks/" + name)
-                    .withNewItemTag("forge:storage_blocks/" + name)
-                    .withTranslation("Block of " + capitalized)
-                    .withBlockModel((blockModelDataProvider, block1) -> blockModelDataProvider.cubeAllBlock(block1, block1.getRegistryName().getNamespace() + ":resource/" + name + "/" + block1.getRegistryName().getPath()));
+            super(name, tab);
+            addIngot();
+            addNugget();
+            addDust();
+            addGear();
+            addScrap();
+            addDebris(debrisName, exp, harvestLvl);
+            addBlock(hardness, harvestLvl);
         }
 
         public DebrisMetalRegistryObject build(DeferredRegister<Item> itemRegistry, DeferredRegister<Block> blockRegistry) {

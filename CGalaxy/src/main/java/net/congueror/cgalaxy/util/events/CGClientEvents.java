@@ -5,6 +5,7 @@ import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderScreen;
 import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryScreen;
 import net.congueror.cgalaxy.blocks.gas_extractor.GasExtractorScreen;
 import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerScreen;
+import net.congueror.cgalaxy.blocks.station_core.SpaceStationCoreScreen;
 import net.congueror.cgalaxy.client.AbstractRocketModel;
 import net.congueror.cgalaxy.client.effects.MoonSkyEffects;
 import net.congueror.cgalaxy.client.effects.OverworldOrbitEffects;
@@ -61,6 +62,7 @@ public class CGClientEvents {
             MenuScreens.register(CGContainerInit.ROOM_PRESSURIZER.get(), RoomPressurizerScreen::new);
             MenuScreens.register(CGContainerInit.GALAXY_MAP.get(), GalaxyMapScreen::new);
             MenuScreens.register(CGContainerInit.SPACE_SUIT.get(), SpaceSuitScreen::new);
+            MenuScreens.register(CGContainerInit.SPACE_STATION.get(), SpaceStationCoreScreen::new);
 
             ItemBlockRenderTypes.setRenderLayer(CGBlockInit.COAL_TORCH.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(CGBlockInit.COAL_WALL_TORCH.get(), RenderType.cutout());

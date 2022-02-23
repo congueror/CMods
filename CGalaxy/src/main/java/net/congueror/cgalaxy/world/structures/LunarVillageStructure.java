@@ -57,7 +57,7 @@ public class LunarVillageStructure extends StructureFeature<JigsawConfiguration>
         //Template Pool
         JigsawConfiguration newConfig = new JigsawConfiguration(() ->
                 context.registryAccess().ownedRegistryOrThrow(Registry.TEMPLATE_POOL_REGISTRY)
-                        .get(new ResourceLocation(CGalaxy.MODID, "lunar_village")), 6);
+                        .get(new ResourceLocation(CGalaxy.MODID, "lunar_village")), 3);
 
         PieceGeneratorSupplier.Context<JigsawConfiguration> newContext = new PieceGeneratorSupplier.Context<>(
                 context.chunkGenerator(),
@@ -75,7 +75,7 @@ public class LunarVillageStructure extends StructureFeature<JigsawConfiguration>
 
         Optional<PieceGenerator<JigsawConfiguration>> structurePiecesGenerator =
                 JigsawPlacement.addPieces(
-                        newContext, // Used for JigsawPlacement to get all the proper behaviors done.
+                        newContext, // Used for JigsawPlacement to makeDirty all the proper behaviors done.
                         PoolElementStructurePiece::new, // Needed in order to create a list of jigsaw pieces when making the structure's layout.
                         blockpos, // Position of the structure. Y value is ignored if last parameter is set to true.
                         false,  // Special boundary adjustments for villages. It's... hard to explain. Keep this false and make your pieces not be partially intersecting.

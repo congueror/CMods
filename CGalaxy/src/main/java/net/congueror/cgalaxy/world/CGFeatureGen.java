@@ -24,7 +24,7 @@ public class CGFeatureGen {
     public static PlacedFeature MOON_IRON;
     public static PlacedFeature MOON_SILICON;
     public static PlacedFeature MOON_ALUMINUM;
-    public static PlacedFeature MOON_TITANIUM;
+    public static PlacedFeature MOON_TITANIUM;//TODO: Glowstone ore, remove titanium
     public static PlacedFeature MOON_ICE_CLUSTER;
 
     public static PlacedFeature OIL_LAKE;

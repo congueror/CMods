@@ -31,6 +31,7 @@ public class CGDimensions {
             .withRadiation(300.0F)
             .withAirPressure(0)
             .withYOverlayTexture(CGalaxy.location("textures/gui/rocket_y_hud_moon"))//TODO
+            .withOrbit(true)
             .build();
 
     /**

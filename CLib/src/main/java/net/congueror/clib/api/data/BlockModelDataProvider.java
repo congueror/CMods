@@ -61,7 +61,7 @@ public class BlockModelDataProvider extends BlockStateProvider {
     /**
      * Block model with cube_all parent and simple blockstate.
      *
-     * @param texture (e.g. <strong> minecraft:block/my_textures_name </strong>)
+     * @param texture (e.g. <strong> modid:block/my_textures_name </strong>)
      */
     public void cubeAllBlock(Block block, String texture) {
         simpleBlock(block, models().cubeAll(block.getRegistryName().getPath(), new ResourceLocation(texture)));
@@ -70,9 +70,9 @@ public class BlockModelDataProvider extends BlockStateProvider {
     /**
      * Block model with cube_bottom_top parent and simple blockstate.
      *
-     * @param sideTexture   (e.g. <strong> minecraft:block/my_textures_name </strong>)
-     * @param bottomTexture (e.g. <strong> minecraft:block/my_textures_name </strong>)
-     * @param topTexture    (e.g. <strong> minecraft:block/my_textures_name </strong>)
+     * @param sideTexture   (e.g. <strong> modid:block/my_textures_name </strong>)
+     * @param bottomTexture (e.g. <strong> modid:block/my_textures_name </strong>)
+     * @param topTexture    (e.g. <strong> modid:block/my_textures_name </strong>)
      */
     public void cubeBottomTopBlock(Block block, String sideTexture, String bottomTexture, String topTexture) {
         simpleBlock(block, models().cubeBottomTop(block.getRegistryName().getPath(),
@@ -84,8 +84,8 @@ public class BlockModelDataProvider extends BlockStateProvider {
     /**
      * Block model with cube_column parent and simple blockstate (e.g. ANCIENT_DEBRIS)
      *
-     * @param sideTexture (e.g. <strong> minecraft:block/my_textures_name </strong>)
-     * @param endTexture  (e.g. <strong> minecraft:block/my_textures_name </strong>)
+     * @param sideTexture (e.g. <strong> modid:block/my_textures_name </strong>)
+     * @param endTexture  (e.g. <strong> modid:block/my_textures_name </strong>)
      */
     public void cubeColumnBlock(Block block, String sideTexture, String endTexture) {
         simpleBlock(block, models().cubeColumn(block.getRegistryName().getPath()
@@ -103,7 +103,7 @@ public class BlockModelDataProvider extends BlockStateProvider {
     /**
      * Block model and state for axis blocks (e.g. OAK_WOOD)
      *
-     * @param sideTexture (e.g. <strong> minecraft:block/my_textures_name </strong>)
+     * @param sideTexture (e.g. <strong> modid:block/my_textures_name </strong>)
      */
     public void axisBlock(Block block, String sideTexture) {
         axisBlock((RotatedPillarBlock) block,
@@ -122,7 +122,7 @@ public class BlockModelDataProvider extends BlockStateProvider {
     /**
      * Block model and state for slab block
      *
-     * @param texture (e.g. <strong> minecraft:block/my_textures_name </strong>)
+     * @param texture (e.g. <strong> modid:block/my_textures_name </strong>)
      */
     public void slabBlock(Block block, String texture) {
         slabBlock((SlabBlock) block,
@@ -133,7 +133,7 @@ public class BlockModelDataProvider extends BlockStateProvider {
     /**
      * Block model and state for stairs.
      *
-     * @param texture (e.g. <strong> minecraft:block/my_textures_name </strong>)
+     * @param texture (e.g. <strong> modid:block/my_textures_name </strong>)
      */
     public void stairsBlock(Block block, String texture) {
         stairsBlock((StairBlock) block,
@@ -151,7 +151,7 @@ public class BlockModelDataProvider extends BlockStateProvider {
     /**
      * Block model and state for torch blocks.
      *
-     * @param texture (e.g. <strong> minecraft:block/my_textures_name </strong>)
+     * @param texture (e.g. <strong> modid:block/my_textures_name </strong>)
      */
     public void torchBlock(Block block, String texture) {
         simpleBlock(block, models().torch(block.getRegistryName().getPath(),
@@ -161,7 +161,7 @@ public class BlockModelDataProvider extends BlockStateProvider {
     /**
      * Block model and state for wall torch blocks.
      *
-     * @param texture (e.g. <strong> minecraft:block/my_textures_name </strong>)
+     * @param texture (e.g. <strong> modid:block/my_textures_name </strong>)
      */
     public void wallTorchBlock(Block block, String texture) {
         ModelFile file = models().torchWall(block.getRegistryName().getPath(), new ResourceLocation(texture));
@@ -177,6 +177,36 @@ public class BlockModelDataProvider extends BlockStateProvider {
 
                 .partialState().with(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST)
                 .modelForState().rotationY(180).modelFile(file).addModel();
+    }
+
+    public void age7CrossBlock(Block block, String texture) {
+        ModelFile[] files = new ModelFile[8];
+        for (int i = 0; i <= 7; i++)
+            files[i] = models().cross(block.getRegistryName().getPath() + "_stage" + i, new ResourceLocation(texture + "_stage" + i));
+        getVariantBuilder(block)
+                .partialState().with(BlockStateProperties.AGE_7, 0)
+                .modelForState().modelFile(files[0]).addModel()
+
+                .partialState().with(BlockStateProperties.AGE_7, 1)
+                .modelForState().modelFile(files[1]).addModel()
+
+                .partialState().with(BlockStateProperties.AGE_7, 2)
+                .modelForState().modelFile(files[2]).addModel()
+
+                .partialState().with(BlockStateProperties.AGE_7, 3)
+                .modelForState().modelFile(files[3]).addModel()
+
+                .partialState().with(BlockStateProperties.AGE_7, 4)
+                .modelForState().modelFile(files[4]).addModel()
+
+                .partialState().with(BlockStateProperties.AGE_7, 5)
+                .modelForState().modelFile(files[5]).addModel()
+
+                .partialState().with(BlockStateProperties.AGE_7, 6)
+                .modelForState().modelFile(files[6]).addModel()
+
+                .partialState().with(BlockStateProperties.AGE_7, 7)
+                .modelForState().modelFile(files[7]).addModel();
     }
 
     @Override

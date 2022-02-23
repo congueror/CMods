@@ -46,7 +46,10 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class LootTableDataProvider extends LootTableProvider implements DataProvider {//net.minecraft.data.loot.BlockLoot
+/**
+ * {@link net.minecraft.data.loot.BlockLoot}
+ */
+public class LootTableDataProvider extends LootTableProvider implements DataProvider {
     public final String modid;
 
     public static final LootItemCondition.Builder HAS_SILK_TOUCH = MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))));
@@ -227,5 +230,9 @@ public class LootTableDataProvider extends LootTableProvider implements DataProv
                                 .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(BlockStateProperties.LIT, true)))
                                 .otherwise(LootItem.lootTableItem(drop)))))), LootContextParamSets.BLOCK);
+    }
+
+    public void createChestLootTable(ResourceLocation name, LootTable.Builder lootTable) {
+        addTable(name, lootTable, LootContextParamSets.CHEST);
     }
 }

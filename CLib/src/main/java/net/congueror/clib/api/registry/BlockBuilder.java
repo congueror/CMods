@@ -27,10 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
@@ -49,23 +46,24 @@ public class BlockBuilder {
 
     public static final Map<String, List<BlockBuilder>> OBJECTS = new HashMap<>();
 
-    public final Map<Tag.Named<Item>, Tag.Named<Item>> itemTagsGen = new HashMap<>();
-    public final Map<String, Tag.Named<Item>> itemTags = new HashMap<>();
     public final Map<Tag.Named<Block>, Tag.Named<Block>> blockTagsGen = new HashMap<>();
     public final Map<String, Tag.Named<Block>> blockTags = new HashMap<>();
     @Nullable
     public BiConsumer<BlockModelDataProvider, Block> blockModel = BlockStateProvider::simpleBlock;
-    @Nullable
-    public BiConsumer<ItemModelDataProvider, Block> itemModel;
     public BiConsumer<LootTableDataProvider, Block> lootTable = LootTableDataProvider::createStandardBlockDrop;
     public final Map<String, String> locale = new HashMap<>();
-    public final List<BiConsumer<Consumer<FinishedRecipe>, Block>> recipes = new ArrayList<>();
 
     public boolean generateBlockItem = true;
     private Function<Block, BlockItem> item = null;
     public Item.Properties itemProperties = new Item.Properties().tab(CreativeTabs.BlocksIG.instance);
     public int burnTime;
     public int containerType;
+
+    public final List<BiConsumer<Consumer<FinishedRecipe>, Block>> recipes = new ArrayList<>();
+    public final Map<Tag.Named<Item>, Tag.Named<Item>> itemTagsGen = new HashMap<>();
+    public final Map<String, Tag.Named<Item>> itemTags = new HashMap<>();
+    @Nullable
+    public BiConsumer<ItemModelDataProvider, Block> itemModel;
 
     public RenderType renderType = null;
 
@@ -107,34 +105,37 @@ public class BlockBuilder {
         RegistryObject<Block> obj = register.register(name, () -> block);
 
         if (generateBlockItem) {
-            BlockItem item = new BlockItem(block, itemProperties) {
-                @Override
-                public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-                    return burnTime;
-                }
-
-                @Override
-                public boolean hasContainerItem(ItemStack stack) {
-                    return containerType > 0;
-                }
-
-                @Override
-                public ItemStack getContainerItem(ItemStack itemStack) {
-                    if (containerType == 2) {
-                        ItemStack stack1 = new ItemStack(this.asItem());
-                        stack1.setDamageValue(itemStack.getDamageValue() + 1);
-                        if (stack1.getDamageValue() > stack1.getMaxDamage()) {
-                            return new ItemStack(Items.AIR);
-                        } else {
-                            return stack1;
-                        }
-                    }
-                    return super.getContainerItem(itemStack);
-                }
-            };
+            BlockItem item;
             if (this.item != null) {
                 item = this.item.apply(block);
+            } else {
+                item = new BlockItem(block, itemProperties) {
+                    @Override
+                    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
+                        return burnTime;
+                    }
+
+                    @Override
+                    public boolean hasContainerItem(ItemStack stack) {
+                        return containerType > 0;
+                    }
+
+                    @Override
+                    public ItemStack getContainerItem(ItemStack itemStack) {
+                        if (containerType == 2) {
+                            ItemStack stack1 = new ItemStack(this.asItem());
+                            stack1.setDamageValue(itemStack.getDamageValue() + 1);
+                            if (stack1.getDamageValue() > stack1.getMaxDamage()) {
+                                return new ItemStack(Items.AIR);
+                            } else {
+                                return stack1;
+                            }
+                        }
+                        return super.getContainerItem(itemStack);
+                    }
+                };
             }
+
             new ItemBuilder(name, item)
                     .withItemModel(null)
                     .build(ItemBuilder.REGISTERS.get(modid));
@@ -295,7 +296,13 @@ public class BlockBuilder {
     }
 
     /**
+     * The item instance that the generated block item will use. By default, this is a normal BlockItem. <br>
+     * Note: this overrides the {@link #withItemProperties(Item.Properties)} method.
+     * <p><strong>
+     * Requires {@link #withGeneratedBlockItem(boolean)} method.
+     * </p></strong>
      *
+     * @param item A function that takes in the final block instance and returns the item instance.
      */
     public BlockBuilder withItem(Function<Block, BlockItem> item) {
         this.item = item;

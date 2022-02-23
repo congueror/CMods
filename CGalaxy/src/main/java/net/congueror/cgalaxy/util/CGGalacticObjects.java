@@ -37,6 +37,7 @@ public class CGGalacticObjects {
             .withTexture(CGalaxy.location("textures/sky/earth.png"))
             .withRingIndex(2)
             .withDim(CGDimensions.OVERWORLD.getDim())
+            .withOrbitDim(CGDimensions.OVERWORLD_ORBIT.getDim())
             .build();
     public static final GalacticObject<Moon> MOON = new Moon(CGalaxy.location("moon"), EARTH)
             .withTranslation("Moon")
@@ -121,6 +122,18 @@ public class CGGalacticObjects {
             .withDaysPerYear(4380)
             .withTexture(CGalaxy.location("textures/sky/jupiter.png"))
             .withRingIndex(4)
+            .build();
+    public static final GalacticObject<Moon> EUROPA = new Moon(CGalaxy.location("europa"), JUPITER)
+            .withTranslation("Europa")
+            .withDiameter(3121.6, "km")
+            .withMoons(0)
+            .withAtmosphere("Negligible")
+            .withGravity(1.315)
+            .withTier(6)
+            .withAngle(9)
+            .withDaysPerYear(3.5f)
+            .withTexture(CGalaxy.location("textures/sky/jupiter.png"))
+            .withRingIndex(2)
             .build();
 
     public static void init() {}

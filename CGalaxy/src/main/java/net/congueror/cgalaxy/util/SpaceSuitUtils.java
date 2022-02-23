@@ -1,14 +1,12 @@
 package net.congueror.cgalaxy.util;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.api.events.AddVillagerProfessionsEvent;
 import net.congueror.cgalaxy.api.events.OxygenCheckEvent;
 import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
 import net.congueror.cgalaxy.api.registry.CGEntity;
 import net.congueror.cgalaxy.item.*;
 import net.congueror.cgalaxy.world.CGDimensions;
 import net.congueror.clib.util.RenderingHelper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -30,7 +28,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
@@ -72,7 +69,7 @@ public class SpaceSuitUtils {
                         le.hurt(DamageSources.COLD, 3.0f);
                     }
                     if (!SpaceSuitUtils.hasRadiationProtection(le, le.getPersistentData().getFloat(CGalaxy.LIVING_RADIATION))) {
-                        le.hurt(DamageSources.NO_RADIATION, 1.0f);
+                        le.hurt(DamageSources.RADIATION, 1.0f);
                     }
 
                     if (obj.getRadiation() < 100) {
