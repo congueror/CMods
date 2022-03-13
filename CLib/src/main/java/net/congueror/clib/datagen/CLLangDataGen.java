@@ -1,7 +1,7 @@
 package net.congueror.clib.datagen;
 
 import net.congueror.clib.CLib;
-import net.congueror.clib.api.data.LangDataProvider;
+import net.congueror.clib.util.registry.data.LangDataProvider;
 import net.minecraft.data.DataGenerator;
 
 public class CLLangDataGen extends LangDataProvider {
@@ -12,8 +12,8 @@ public class CLLangDataGen extends LangDataProvider {
     @Override
     protected void addTranslations() {
         super.addTranslations();
-        add("itemGroup.clibresources", "CResources");
-        add("itemGroup.clibblocks", "CLBlocks");
+        add("itemGroup.cresources", "CResources");
+        add("itemGroup.cassortments", "CAssortments");
         add("itemGroup.cgalaxy", "CGalaxy");
         add("itemGroup.cmachinery", "CMachinery");
 

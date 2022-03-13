@@ -1,15 +1,14 @@
 package net.congueror.clib.init;
 
 import net.congueror.clib.CLib;
-import net.congueror.clib.api.data.BlockModelDataProvider;
+import net.congueror.clib.util.registry.data.BlockModelDataProvider;
 import net.congueror.clib.blocks.abstract_machine.item.AbstractItemBlock;
-import net.congueror.clib.api.registry.BlockBuilder;
+import net.congueror.clib.util.registry.builders.BlockBuilder;
 import net.congueror.clib.blocks.generic.*;
 import net.congueror.clib.blocks.solar_generator.SolarGeneratorBlock;
 import net.congueror.clib.util.CreativeTabs;
 import net.congueror.clib.world.FeatureGen;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
@@ -26,7 +25,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
 import java.util.Random;
 
 public class CLBlockInit {
@@ -42,6 +40,7 @@ public class CLBlockInit {
             .withNewItemTag("forge:ores/saltpetre")
             .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createMultipleDrops(block, CLItemInit.SALTPETRE_DUST.get(), 4, 6))
             .withTranslation("Saltpetre Ore")
+            .withCreativeTab(CreativeTabs.ResourcesIG.instance)
             .build(BLOCKS);
     public static final RegistryObject<Block> SULFUR_ORE = new BlockBuilder("sulfur_ore", new CLOreBlock(BlockBehaviour.Properties
             .of(Material.STONE).requiresCorrectToolForDrops()
@@ -53,6 +52,7 @@ public class CLBlockInit {
             .withNewItemTag("forge:ores/sulfur")
             .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createMultipleDrops(block, CLItemInit.SULFUR_DUST.get(), 3, 6))
             .withTranslation("Nether Sulfur Ore")
+            .withCreativeTab(CreativeTabs.ResourcesIG.instance)
             .build(BLOCKS);
 
     public static final RegistryObject<Block> SALT_BLOCK = new BlockBuilder("salt_block",
@@ -60,6 +60,7 @@ public class CLBlockInit {
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_SHOVEL)
             .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createMultipleDrops(block, CLItemInit.SALT.get(), 4, 4))
             .withTranslation("Salt Block")
+            .withCreativeTab(CreativeTabs.ResourcesIG.instance)
             .build(BLOCKS);
 
     public static final RegistryObject<Block> RUBBER_STRIPPED_LOG = new BlockBuilder("stripped_rubber_log",

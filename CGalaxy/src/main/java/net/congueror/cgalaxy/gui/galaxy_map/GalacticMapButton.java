@@ -2,6 +2,7 @@ package net.congueror.cgalaxy.gui.galaxy_map;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.congueror.cgalaxy.gui.MutableImageButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.TextComponent;
@@ -13,17 +14,9 @@ import java.util.Random;
 import static net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapScreen.startRadius;
 import static net.minecraft.client.gui.screens.Screen.hasShiftDown;
 
-public class GalacticMapButton extends Button {
+public class GalacticMapButton extends MutableImageButton {
     private final Type type;
     private final GalacticObjectBuilder.GalacticObject<?> object;
-    private ResourceLocation resourceLocation;
-    private int yTexStart;
-    private final int yDiffTex;
-    private int xTexStart;
-    private int textureWidth;
-    private int textureHeight;
-    private OnTooltip onTooltip = NO_TOOLTIP;
-    private OnPress onPress;
 
     private int i, angle;
     private double zoom;
@@ -31,16 +24,9 @@ public class GalacticMapButton extends Button {
     public int xSel, ySel, sizeSel;
 
     public GalacticMapButton(Type type, int pX, int pY, int pWidth, int pHeight, int pXTexStart, int pYTexStart, int pYDiffTex, ResourceLocation pResourceLocation, int pTextureWidth, int pTextureHeight, OnPress pOnPress, GalacticObjectBuilder.GalacticObject<?> object) {
-        super(pX, pY, pWidth, pHeight, TextComponent.EMPTY, onPress -> {}, NO_TOOLTIP);
+        super(pX, pY, pWidth, pHeight, pXTexStart, pYTexStart, pYDiffTex, pResourceLocation, pTextureWidth, pTextureHeight, pOnPress);
         this.type = type;
         this.object = object;
-        this.textureWidth = pTextureWidth;
-        this.textureHeight = pTextureHeight;
-        this.xTexStart = pXTexStart;
-        this.yTexStart = pYTexStart;
-        this.yDiffTex = pYDiffTex;
-        this.resourceLocation = pResourceLocation;
-        this.onPress = pOnPress;
 
         angle = new Random().nextInt(361);
     }
@@ -83,39 +69,6 @@ public class GalacticMapButton extends Button {
         }
     }
 
-    public void setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public void setTextureWidth(int textureWidth) {
-        this.textureWidth = textureWidth;
-    }
-
-    public void setTextureHeight(int textureHeight) {
-        this.textureHeight = textureHeight;
-    }
-
-    public void setResourceLocation(ResourceLocation resourceLocation) {
-        this.resourceLocation = resourceLocation;
-    }
-
-    public void setXTexStart(int xTexStart) {
-        this.xTexStart = xTexStart;
-    }
-
-    public void setYTexStart(int yTexStart) {
-        this.yTexStart = yTexStart;
-    }
-
-    public void setOnTooltip(OnTooltip onTooltip) {
-        this.onTooltip = onTooltip;
-    }
-
-    public void setOnPress(OnPress onPress) {
-        this.onPress = onPress;
-    }
-
     @Override
     public void renderToolTip(@Nonnull PoseStack pMatrixStack, int pMouseX, int pMouseY) {
         this.onTooltip.onTooltip(this, pMatrixStack, pMouseX, pMouseY);
@@ -129,10 +82,10 @@ public class GalacticMapButton extends Button {
     public void renderButton(@Nonnull PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
         RenderSystem.enableBlend();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, this.resourceLocation);
+        RenderSystem.setShaderTexture(0, this.texture);
         int i = this.yTexStart;
         if (this.isHoveredOrFocused()) {
-            i += this.yDiffTex;
+            i += this.yOffset;
         }
 
         RenderSystem.enableDepthTest();

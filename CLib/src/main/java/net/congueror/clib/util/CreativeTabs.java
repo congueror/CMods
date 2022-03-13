@@ -6,7 +6,7 @@ import net.minecraft.world.item.CreativeModeTab;
 public class CreativeTabs {
     public static class ResourcesIG extends ModCreativeModeTab {
 
-        public static final ResourcesIG instance = new ResourcesIG(CreativeModeTab.TABS.length, "clibresources");
+        public static final ResourcesIG instance = new ResourcesIG(CreativeModeTab.TABS.length, "cresources");
         public ResourcesIG(int index, String label) {
             super(index, label);
         }
@@ -17,10 +17,10 @@ public class CreativeTabs {
         }
     }
 
-    public static class BlocksIG extends ModCreativeModeTab {
+    public static class AssortmentsIG extends ModCreativeModeTab {
 
-        public static final BlocksIG instance = new BlocksIG(CreativeModeTab.TABS.length, "clibblocks");
-        public BlocksIG(int index, String label) {
+        public static final AssortmentsIG instance = new AssortmentsIG(CreativeModeTab.TABS.length, "cassortments");
+        public AssortmentsIG(int index, String label) {
             super(index, label);
         }
 
@@ -57,7 +57,7 @@ public class CreativeTabs {
 
         @Override
         protected String getItemIconRegistryKey() {
-            return "cgalaxy:speed_upgrade";
+            return "clib:speed_upgrade";
         }
     }
 }

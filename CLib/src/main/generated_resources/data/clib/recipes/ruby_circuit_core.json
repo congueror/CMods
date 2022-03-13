@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "clib:pyrotheum_dust"
+    },
+    {
+      "item": "clib:ruby"
+    },
+    {
+      "item": "clib:ruby"
+    },
+    {
+      "item": "clib:ruby"
+    },
+    {
+      "item": "clib:iron_hammer"
+    },
+    {
+      "item": "clib:diamond_circuit_core"
+    },
+    {
+      "item": "minecraft:redstone_block"
+    }
+  ],
+  "result": {
+    "item": "clib:ruby_circuit_core"
+  }
+}

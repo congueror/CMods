@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "forge:ores/enderium"
-  },
-  "result": "clib:enderium_ingot",
-  "experience": 0.7,
-  "cookingtime": 800
-}

@@ -4,9 +4,13 @@ import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.api.events.AddVillagerProfessionsEvent;
+import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGItemInit;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -21,6 +25,8 @@ public class LunarVillagerProfession implements IProfession {
     public final Int2ObjectMap<VillagerTrades.ItemListing[]> trades;
     public final ResourceLocation clothesTexture;
     public final ResourceLocation professionClothesTexture;
+
+    public static void init() {}
 
     public LunarVillagerProfession(String name, Int2ObjectMap<VillagerTrades.ItemListing[]> trades, ResourceLocation clothesTexture, ResourceLocation professionClothesTexture) {
         this.name = name;
@@ -38,11 +44,23 @@ public class LunarVillagerProfession implements IProfession {
                         new LunarVillagerTrades.ItemsToSapphires(Items.ANDESITE_STAIRS, 1, 1, 1)
                 },
                 2, new VillagerTrades.ItemListing[] {
-                        new LunarVillagerTrades.ItemsToSapphires(Items.ACACIA_BOAT, 1, 1, 1),
                         new LunarVillagerTrades.ItemsToSapphires(Items.COMPASS, 10, 10, 10, 1)
+                },
+                3, new VillagerTrades.ItemListing[] {
+                        new LunarVillagerTrades.SapphiresToItems(makeSouthPoleCompass(), 29, 5, 6)
                 }
-        )), new ResourceLocation(CGalaxy.MODID, "textures/entity/lunar_villager_clothes.png")
-                , new ResourceLocation(CGalaxy.MODID, "textures/entity/lunar_cartographer.png")));
+        )), new ResourceLocation(CGalaxy.MODID, "textures/entity/lunar_villager_clothes.png"),
+                new ResourceLocation(CGalaxy.MODID, "textures/entity/lunar_cartographer.png")));
+
+        profs.add(new LunarVillagerProfession("farmer", LunarVillagerTrades.toIntMap(ImmutableMap.of(
+                1, new VillagerTrades.ItemListing[] {
+                        new LunarVillagerTrades.ItemsToSapphires(CGBlockInit.LUNAR_CARROTS.get().asItem(), 33, 100, 1)
+                },
+                2, new VillagerTrades.ItemListing[] {
+                        new LunarVillagerTrades.SapphiresToItems(CGBlockInit.LUNAC_CROP.get(), 128, 1, 5, 1)
+                }
+        )), CGalaxy.location("textures/entity/lunar_villager_clothes.png"),
+                CGalaxy.location("textures/entity/lunar_farmer.png")));
 
         //Cartographer
         //Technology Merchant
@@ -62,5 +80,11 @@ public class LunarVillagerProfession implements IProfession {
     @Nullable
     public static LunarVillagerProfession getProfessionFromString(String name) {
         return professions.stream().filter(lunarVillagerProfession -> lunarVillagerProfession.name.equals(name)).findFirst().orElse(null);
+    }
+
+    private static ItemStack makeSouthPoleCompass() {
+        ItemStack stack = new ItemStack(Items.COMPASS, 1);
+        stack.getOrCreateTag().putBoolean("SouthPoleTracked", true);
+        return stack;
     }
 }

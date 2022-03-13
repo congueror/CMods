@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:sapphire_circuit_core"
+    ]
+  },
+  "criteria": {
+    "has_shards/sapphire": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:shards/sapphire"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:sapphire_circuit_core"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_shards/sapphire",
+      "has_the_recipe"
+    ]
+  ]
+}

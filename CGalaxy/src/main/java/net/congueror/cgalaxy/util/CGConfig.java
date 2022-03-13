@@ -45,7 +45,9 @@ public class CGConfig {
     public enum TemperatureUnits {
         CELCIUS,
         KELVIN,
-        FARRENHEIT
+        FARRENHEIT;
+
+        public final String name = "Temperature";
     }
 
     public enum RadiationUnits {
@@ -61,26 +63,23 @@ public class CGConfig {
         ATMOSPHERES
     }
 
-    public enum GuiColors {//TODO
-
-        BLACK(MathHelper.calculateRGB(30, 30, 30)),//Brightness: -100 Contrast: 100
-        GREEN(MathHelper.calculateRGB(223, 255, 0)),
-        /*TODO
-        DARK_BLUE,
-        DARK_GREEN,
-        DARK_AQUA,
-        DARK_RED,
-        DARK_PURPLE,
-        GOLD,
-        GRAY,
-        DARK_GRAY,
-        BLUE,
-        GREEN,
-        AQUA,
-        RED,
-        LIGHT_PURPLE,
-        YELLOW,
-        WHITE*/
+    public enum GuiColors {
+        BLACK(MathHelper.RGBtoDecimalRGB(30, 30, 30)),
+        GREEN(MathHelper.RGBtoDecimalRGB(0, 255, 0)),
+        DARK_BLUE(MathHelper.RGBtoDecimalRGB(0, 0, 139)),
+        DARK_GREEN(MathHelper.RGBtoDecimalRGB(0, 100, 0)),
+        DARK_AQUA(MathHelper.RGBtoDecimalRGB(36, 157, 159)),
+        DARK_RED(MathHelper.RGBtoDecimalRGB(139, 0, 0)),
+        DARK_PURPLE(MathHelper.RGBtoDecimalRGB(48, 25, 52)),
+        GOLD(MathHelper.RGBtoDecimalRGB(255, 215, 0)),
+        GRAY(MathHelper.RGBtoDecimalRGB(128, 128, 128)),
+        DARK_GRAY(MathHelper.RGBtoDecimalRGB(105, 105, 105)),
+        BLUE(MathHelper.RGBtoDecimalRGB(0, 0, 255)),
+        AQUA(MathHelper.RGBtoDecimalRGB(0, 255, 255)),
+        RED(MathHelper.RGBtoDecimalRGB(255, 0, 0)),
+        LIGHT_PURPLE(MathHelper.RGBtoDecimalRGB(177, 156, 217)),
+        YELLOW(MathHelper.RGBtoDecimalRGB(255, 255, 0)),
+        WHITE(MathHelper.RGBtoDecimalRGB(255, 255, 255)),
         ;
 
         public final int rgb;

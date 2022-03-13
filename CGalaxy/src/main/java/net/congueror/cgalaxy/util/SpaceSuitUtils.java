@@ -1,10 +1,9 @@
 package net.congueror.cgalaxy.util;
 
-import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.api.events.OxygenCheckEvent;
 import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
 import net.congueror.cgalaxy.api.registry.CGEntity;
-import net.congueror.cgalaxy.item.*;
+import net.congueror.cgalaxy.items.*;
 import net.congueror.cgalaxy.world.CGDimensions;
 import net.congueror.clib.util.RenderingHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -46,7 +45,7 @@ public class SpaceSuitUtils {
                 if (entity instanceof LivingEntity le) {
                     boolean hasOxygen = SpaceSuitUtils.hasOxygen(le, obj);
                     SpaceSuitUtils.drainTanks(le);
-                    SpaceSuitUtils.drainProtection(le, player.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE), player.getPersistentData().getFloat(CGalaxy.LIVING_RADIATION));
+                    SpaceSuitUtils.drainProtection(le, getTemperature(player), getRadiation(player));
 
                     AttributeMap manager = le.getAttributes();
                     Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(obj.getGravity());
@@ -55,44 +54,44 @@ public class SpaceSuitUtils {
                         entity.hurt(DamageSources.NO_OXYGEN, 2.0f);
                     }
 
-                    le.getPersistentData().putDouble(CGalaxy.LIVING_AIR_PRESSURE, obj.getAirPressure());
+                    setAirPressure(le, obj.getAirPressure());
                     if (RenderingHelper.isDayTime(level)) {
-                        le.getPersistentData().putInt(CGalaxy.LIVING_TEMPERATURE, obj.getDayTemp());
+                        setTemperature(le, obj.getDayTemp());
                     } else {
-                        le.getPersistentData().putInt(CGalaxy.LIVING_TEMPERATURE, obj.getNightTemp());
+                        setTemperature(le, obj.getNightTemp());
                     }
-                    le.getPersistentData().putFloat(CGalaxy.LIVING_RADIATION, obj.getRadiation());
-                    if (!SpaceSuitUtils.hasHeatProtection(le, le.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE))) {
+                    setRadiation(le, obj.getRadiation());
+                    if (!SpaceSuitUtils.hasHeatProtection(le, getTemperature(le))) {
                         le.hurt(DamageSources.HEAT, 3.0f);
                     }
-                    if (!SpaceSuitUtils.hasColdProtection(le, le.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE))) {
+                    if (!SpaceSuitUtils.hasColdProtection(le, getTemperature(le))) {
                         le.hurt(DamageSources.COLD, 3.0f);
                     }
-                    if (!SpaceSuitUtils.hasRadiationProtection(le, le.getPersistentData().getFloat(CGalaxy.LIVING_RADIATION))) {
+                    if (!SpaceSuitUtils.hasRadiationProtection(le, getRadiation(le))) {
                         le.hurt(DamageSources.RADIATION, 1.0f);
                     }
 
                     if (obj.getRadiation() < 100) {
-                        entity.getPersistentData().putInt(CGalaxy.LIVING_RADIATION_TICK, 0);
+                        setRadiationTick(le, 0);
                     }
                     if (obj.getBreathable()) {
-                        entity.getPersistentData().putInt(CGalaxy.LIVING_OXYGEN_TICK, 0);
+                        setOxygenTick(le, 0);
                     }
-                    if (le.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE) < 60) {
-                        entity.getPersistentData().putInt(CGalaxy.LIVING_HEAT_TICK, 0);
+                    if (getTemperature(le) < 60) {
+                        setHeatTick(le, 0);
                     }
-                    if (le.getPersistentData().getInt(CGalaxy.LIVING_TEMPERATURE) > -60) {
-                        entity.getPersistentData().putInt(CGalaxy.LIVING_COLD_TICK, 0);
+                    if (getTemperature(le) > -60) {
+                        setColdTick(le, 0);
                     }
                 }
 
                 if (entity instanceof ItemEntity) {
                     //entity.setDeltaMovement(0.0D, -obj.getGravity() / 4.0D, 0.0D);
-                    if (level.dimension() == CGDimensions.MOON.getDim() && entity.getPersistentData().getDouble(CGalaxy.ITEM_GRAVITY) <= 1 && entity.getDeltaMovement().y() <= -0.1) {
-                        entity.getPersistentData().putDouble(CGalaxy.ITEM_GRAVITY, 2);
+                    if (level.dimension() == CGDimensions.MOON.getDim() && getItemGravity(entity) <= 1 && entity.getDeltaMovement().y() <= -0.1) {
+                        setItemGravity(entity, 2);
                         entity.setDeltaMovement((entity.getDeltaMovement().x()), ((entity.getDeltaMovement().y()) + (obj.getGravity() * 2.5)),
                                 (entity.getDeltaMovement().z()));
-                        entity.getPersistentData().putDouble(CGalaxy.ITEM_GRAVITY, 0);
+                        setItemGravity(entity, 0);
                     }
                 }
             }
@@ -104,6 +103,85 @@ public class SpaceSuitUtils {
                 entity.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof SpaceSuitItem &&
                 entity.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof SpaceSuitItem &&
                 entity.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof SpaceSuitItem;
+    }
+
+    public static boolean upgradeSpaceSuit(LivingEntity entity, SpaceSuitUpgradeItem upgrade) {
+        return ((SpaceSuitItem) entity.getItemBySlot(EquipmentSlot.HEAD).getItem()).upgradeArmor(entity.getItemBySlot(EquipmentSlot.HEAD), upgrade) &&
+        ((SpaceSuitItem) entity.getItemBySlot(EquipmentSlot.CHEST).getItem()).upgradeArmor(entity.getItemBySlot(EquipmentSlot.CHEST), upgrade) &&
+        ((SpaceSuitItem) entity.getItemBySlot(EquipmentSlot.LEGS).getItem()).upgradeArmor(entity.getItemBySlot(EquipmentSlot.LEGS), upgrade) &&
+        ((SpaceSuitItem) entity.getItemBySlot(EquipmentSlot.FEET).getItem()).upgradeArmor(entity.getItemBySlot(EquipmentSlot.FEET), upgrade);
+    }
+
+    public static int getTemperature(LivingEntity entity) {
+        return entity.getPersistentData().getInt("Temperature");
+    }
+
+    public static void setTemperature(LivingEntity entity, int temperature) {
+        entity.getPersistentData().putInt("Temperature", temperature);
+    }
+
+    public static float getRadiation(LivingEntity entity) {
+        return entity.getPersistentData().getFloat("Radiation");
+    }
+
+    public static void setRadiation(LivingEntity entity, float radiation) {
+        entity.getPersistentData().putFloat("Radiation", radiation);
+    }
+
+    public static double getAirPressure(LivingEntity entity) {
+        return entity.getPersistentData().getDouble("AirPressure");
+    }
+
+    public static void setAirPressure(LivingEntity entity, double airPressure) {
+        entity.getPersistentData().putDouble("AirPressure", airPressure);
+    }
+
+    public static int getHeatTick(LivingEntity entity) {
+        return entity.getPersistentData().getInt("HeatTick");
+    }
+
+    public static void setHeatTick(LivingEntity entity, int amount) {
+        entity.getPersistentData().putInt("HeatTick", amount);
+    }
+
+    public static int getColdTick(LivingEntity entity) {
+        return entity.getPersistentData().getInt("ColdTick");
+    }
+
+    public static void setColdTick(LivingEntity entity, int amount) {
+        entity.getPersistentData().putInt("ColdTick", amount);
+    }
+
+    public static int getOxygenTick(LivingEntity entity) {
+        return entity.getPersistentData().getInt("OxygenTick");
+    }
+
+    public static void setOxygenTick(LivingEntity entity, int amount) {
+        entity.getPersistentData().putInt("OxygenTick", amount);
+    }
+
+    public static int getRadiationTick(LivingEntity entity) {
+        return entity.getPersistentData().getInt("RadiationTick");
+    }
+
+    public static void setRadiationTick(LivingEntity entity, int amount) {
+        entity.getPersistentData().putInt("RadiationTick", amount);
+    }
+
+    public static boolean isPressurized(LivingEntity entity) {
+        return entity.getPersistentData().getBoolean("Pressurized");
+    }
+
+    public static void setPressurized(LivingEntity entity, boolean pressurized) {
+        entity.getPersistentData().putBoolean("Pressurized", pressurized);
+    }
+
+    public static double getItemGravity(Entity entity) {
+        return entity.getPersistentData().getDouble("ItemGravity");
+    }
+
+    public static void setItemGravity(Entity entity, double amount) {
+        entity.getPersistentData().putDouble("ItemGravity", amount);
     }
 
     public static ArrayList<ItemStack> deserializeContents(LivingEntity entity) {
@@ -131,7 +209,7 @@ public class SpaceSuitUtils {
         } else if (temperature < 60) {
             flag.set(true);
         } else {
-            if (entity.getPersistentData().getBoolean(CGalaxy.LIVING_PRESSURIZED)) {
+            if (isPressurized(entity)) {
                 flag.set(true);
             } else {
                 deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof HeatProtectionUnitItem).forEach(itemStack -> {
@@ -151,7 +229,7 @@ public class SpaceSuitUtils {
         } else if (temperature > -60) {
             flag.set(true);
         } else {
-            if (entity.getPersistentData().getBoolean(CGalaxy.LIVING_PRESSURIZED)) {
+            if (isPressurized(entity)) {
                 flag.set(true);
             } else {
                 deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof ColdProtectionUnitItem).forEach(itemStack -> {
@@ -171,7 +249,7 @@ public class SpaceSuitUtils {
         } else if (radiation < 100) {
             flag.set(true);
         } else {
-            if (entity.getPersistentData().getBoolean(CGalaxy.LIVING_PRESSURIZED)) {
+            if (isPressurized(entity)) {
                 flag.set(true);
             } else {
                 deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof RadiationProtectionUnitItem).forEach(itemStack -> {
@@ -204,7 +282,7 @@ public class SpaceSuitUtils {
                 return flag2.get() && flag3.get();
             }
 
-            if (entity.getPersistentData().getBoolean(CGalaxy.LIVING_PRESSURIZED)) {
+            if (isPressurized(entity)) {
                 return true;
             }
 
@@ -220,7 +298,7 @@ public class SpaceSuitUtils {
         for (ItemStack unit : stacks) {
             if (!unit.isEmpty()) {
                 if (temperature > 60 && unit.getItem() instanceof HeatProtectionUnitItem item) {
-                    if (entity.getPersistentData().getInt(CGalaxy.LIVING_HEAT_TICK) > 200) {
+                    if (getHeatTick(entity) > 200) {
                         if (entity instanceof Player && ((Player) entity).isCreative()) {
                             return;
                         } else {
@@ -235,13 +313,13 @@ public class SpaceSuitUtils {
                                     ((ItemStackHandler) iItemHandler).setStackInSlot(index, unit.copy());
                                 }
                             });
-                            entity.getPersistentData().putInt(CGalaxy.LIVING_HEAT_TICK, 0);
+                            setHeatTick(entity, 0);
                         }
                     } else {
-                        entity.getPersistentData().putInt(CGalaxy.LIVING_HEAT_TICK, entity.getPersistentData().getInt(CGalaxy.LIVING_HEAT_TICK) + 1);
+                        setHeatTick(entity, getHeatTick(entity) + 1);
                     }
                 } else if (temperature < -60 && unit.getItem() instanceof ColdProtectionUnitItem item) {
-                    if (entity.getPersistentData().getInt(CGalaxy.LIVING_COLD_TICK) > 200) {
+                    if (getColdTick(entity) > 200) {
                         if (entity instanceof Player && ((Player) entity).isCreative()) {
                             return;
                         } else {
@@ -256,15 +334,15 @@ public class SpaceSuitUtils {
                                     ((ItemStackHandler) iItemHandler).setStackInSlot(index, unit.copy());
                                 }
                             });
-                            entity.getPersistentData().putInt(CGalaxy.LIVING_COLD_TICK, 0);
+                            setColdTick(entity, 0);
                         }
                     } else {
-                        entity.getPersistentData().putInt(CGalaxy.LIVING_COLD_TICK, entity.getPersistentData().getInt(CGalaxy.LIVING_COLD_TICK) + 1);
+                        setColdTick(entity, getColdTick(entity) + 1);
                     }
                 }
 
                 if (radiation > 100 && unit.getItem() instanceof RadiationProtectionUnitItem item) {
-                    if (entity.getPersistentData().getInt(CGalaxy.LIVING_RADIATION_TICK) > 250) {
+                    if (getRadiationTick(entity) > 250) {
                         if (entity instanceof Player && ((Player) entity).isCreative()) {
                             return;
                         } else {
@@ -279,10 +357,10 @@ public class SpaceSuitUtils {
                                     ((ItemStackHandler) iItemHandler).setStackInSlot(index, unit.copy());
                                 }
                             });
-                            entity.getPersistentData().putInt(CGalaxy.LIVING_RADIATION_TICK, 0);
+                            setRadiationTick(entity, 0);
                         }
                     } else {
-                        entity.getPersistentData().putInt(CGalaxy.LIVING_RADIATION_TICK, entity.getPersistentData().getInt(CGalaxy.LIVING_RADIATION_TICK) + 1);
+                        setRadiationTick(entity, getRadiationTick(entity) + 1);
                     }
                 }
             }
@@ -292,7 +370,7 @@ public class SpaceSuitUtils {
     public static void drainTanks(LivingEntity entity) {
         ItemStack tank = SpaceSuitUtils.deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof OxygenTankItem && ((OxygenTankItem) itemStack.getItem()).getOxygen(itemStack) > 0).findFirst().orElse(ItemStack.EMPTY);
         if (!tank.isEmpty()) {
-            if (entity.getPersistentData().getInt(CGalaxy.LIVING_OXYGEN_TICK) > 90) {
+            if (getOxygenTick(entity) > 90) {
                 if (entity instanceof Player && ((Player) entity).isCreative()) {
                     return;
                 } else {
@@ -312,10 +390,10 @@ public class SpaceSuitUtils {
                         }
                     });
 
-                    entity.getPersistentData().putInt(CGalaxy.LIVING_OXYGEN_TICK, 0);
+                    setOxygenTick(entity, 0);
                 }
             } else {
-                entity.getPersistentData().putInt(CGalaxy.LIVING_OXYGEN_TICK, entity.getPersistentData().getInt(CGalaxy.LIVING_OXYGEN_TICK) + 1);
+                setOxygenTick(entity, getOxygenTick(entity) + 1);
             }
         }
     }

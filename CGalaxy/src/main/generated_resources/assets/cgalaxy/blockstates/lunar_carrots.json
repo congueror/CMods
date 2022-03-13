@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "cgalaxy:block/lunar_carrots_stage0"
+    },
+    "age=1": {
+      "model": "cgalaxy:block/lunar_carrots_stage0"
+    },
+    "age=2": {
+      "model": "cgalaxy:block/lunar_carrots_stage1"
+    },
+    "age=3": {
+      "model": "cgalaxy:block/lunar_carrots_stage1"
+    },
+    "age=4": {
+      "model": "cgalaxy:block/lunar_carrots_stage2"
+    },
+    "age=5": {
+      "model": "cgalaxy:block/lunar_carrots_stage2"
+    },
+    "age=6": {
+      "model": "cgalaxy:block/lunar_carrots_stage2"
+    },
+    "age=7": {
+      "model": "cgalaxy:block/lunar_carrots_stage3"
+    }
+  }
+}

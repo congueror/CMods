@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.init;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.clib.api.registry.FluidBuilder;
+import net.congueror.clib.util.registry.builders.FluidBuilder;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.Fluid;

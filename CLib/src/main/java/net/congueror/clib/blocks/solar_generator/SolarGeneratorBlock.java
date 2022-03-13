@@ -23,6 +23,7 @@ public class SolarGeneratorBlock extends AbstractItemBlock {
         super(p_49795_);
         this.generation = generation;
 
+
         if (tier == 0) {
             this.tier = 1000;
         } else if (tier - 1 == tiers) {

@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.data;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.clib.api.data.FluidTagsDataProvider;
+import net.congueror.clib.util.registry.data.FluidTagsDataProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 

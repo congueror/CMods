@@ -30,7 +30,6 @@ public class OverworldOrbitEffects extends AbstractEffects {
                 ResourceLocation EARTH = new ResourceLocation(CGalaxy.MODID, "textures/sky/earth.png");
                 //Forked from WorldRenderer.renderSky
                 RenderSystem.disableTexture();
-
                 Vec3 vec3 = level.getSkyColor(mc.gameRenderer.getMainCamera().getPosition(), partialTicks);
                 float f = (float) vec3.x;
                 float f1 = (float) vec3.y;
@@ -41,62 +40,54 @@ public class OverworldOrbitEffects extends AbstractEffects {
                 RenderSystem.setShaderColor(f, f1, f2, 1.0F);
                 ShaderInstance shaderinstance = RenderSystem.getShader();
                 assert mc.levelRenderer.skyBuffer != null;
+                assert shaderinstance != null;
                 mc.levelRenderer.skyBuffer.bind();
                 mc.levelRenderer.skyBuffer.drawWithShader(poseStack.last().pose(), RenderSystem.getProjectionMatrix(), shaderinstance);
                 VertexBuffer.unbind();
                 DefaultVertexFormat.POSITION.clearBufferState();
 
                 //Stars
-                RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
                 RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-                FogRenderer.setupNoFog();
+                FogRenderer.levelFogColor();
                 this.starVBO.bind();
                 this.starVBO.drawWithShader(poseStack.last().pose(), RenderSystem.getProjectionMatrix(), shaderinstance);
-
                 VertexBuffer.unbind();
                 DefaultVertexFormat.POSITION.clearBufferState();
 
-                FogRenderer.levelFogColor();
 
                 float size; //size of the rectangle.
 
                 //Sun
-                float test = level.getTimeOfDay(partialTicks);
-                float xRot = level.getTimeOfDay(partialTicks) * 360.0F;
-                if (xRot <= 120 || xRot >= 240) {
-                    RenderSystem.enableTexture();
-                    RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                    poseStack.pushPose();
-                    poseStack.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
-                    poseStack.mulPose(Vector3f.XP.rotationDegrees(xRot));
-                    Matrix4f matrix4f1 = poseStack.last().pose();
-                    size = 30.0F;
-                    RenderSystem.setShader(GameRenderer::getPositionTexShader);
-                    RenderSystem.setShaderTexture(0, SUN);
-                    bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-                    bufferbuilder.vertex(matrix4f1, -size, 100.0F, -size).uv(0.0F, 0.0F).endVertex();
-                    bufferbuilder.vertex(matrix4f1, size, 100.0F, -size).uv(1.0F, 0.0F).endVertex();
-                    bufferbuilder.vertex(matrix4f1, size, 100.0F, size).uv(1.0F, 1.0F).endVertex();
-                    bufferbuilder.vertex(matrix4f1, -size, 100.0F, size).uv(0.0F, 1.0F).endVertex();
-                    bufferbuilder.end();
-                    BufferUploader.end(bufferbuilder);
-                    poseStack.popPose();
-                }
-
-                //Earth
-                size = 140.0F;
                 RenderSystem.enableTexture();
-                RenderSystem.disableDepthTest();
+                RenderSystem.enableBlend();
                 RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                poseStack.pushPose();
+                poseStack.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
+                poseStack.mulPose(Vector3f.XP.rotationDegrees(level.getTimeOfDay(partialTicks) * 360.0F));
+                Matrix4f matrix4f1 = poseStack.last().pose();
+                size = 30.0F;
+                RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                RenderSystem.setShaderTexture(0, SUN);
+                bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+                bufferbuilder.vertex(matrix4f1, -size, 100.0F, -size).uv(0.0F, 0.0F).endVertex();
+                bufferbuilder.vertex(matrix4f1, size, 100.0F, -size).uv(1.0F, 0.0F).endVertex();
+                bufferbuilder.vertex(matrix4f1, size, 100.0F, size).uv(1.0F, 1.0F).endVertex();
+                bufferbuilder.vertex(matrix4f1, -size, 100.0F, size).uv(0.0F, 1.0F).endVertex();
+                bufferbuilder.end();
+                BufferUploader.end(bufferbuilder);
+                poseStack.popPose();
+                RenderSystem.disableBlend();
+
+                //Earth
                 poseStack.pushPose();
                 poseStack.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
                 poseStack.mulPose(Vector3f.XP.rotationDegrees(180.0F));
                 poseStack.translate(0, 0, 0);
                 Matrix4f matrix4f2 = poseStack.last().pose();
+                size = 140.0F;
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderTexture(0, EARTH);
                 bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
@@ -107,7 +98,6 @@ public class OverworldOrbitEffects extends AbstractEffects {
                 bufferbuilder.end();
                 BufferUploader.end(bufferbuilder);
                 poseStack.popPose();
-                RenderSystem.enableDepthTest();
 
                 RenderSystem.disableBlend();
                 if (level.effects().hasGround()) {

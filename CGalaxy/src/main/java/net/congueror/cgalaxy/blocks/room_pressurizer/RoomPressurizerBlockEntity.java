@@ -4,6 +4,7 @@ import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
+import net.congueror.cgalaxy.util.SpaceSuitUtils;
 import net.congueror.cgalaxy.util.WorldSavedData;
 import net.congueror.clib.api.recipe.FluidRecipe;
 import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlockEntity;
@@ -180,6 +181,9 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
             }
         }
 
+        for (LivingEntity entity : entities) {
+            SpaceSuitUtils.setPressurized(entity, true);
+        }
         return true;
     }
 
@@ -205,9 +209,6 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
 
     @Override
     public void execute() {
-        for (LivingEntity entity : entities) {
-            entity.getPersistentData().putBoolean(CGalaxy.LIVING_PRESSURIZED, true);
-        }
         int pSize = 10 * entities.size();
         tanks[0].drain((int) (pSize * getPercentages()[0]), FluidAction.EXECUTE);
         tanks[1].drain((int) (pSize * getPercentages()[1]), FluidAction.EXECUTE);
@@ -278,9 +279,11 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
     }
 
     public void resetAABB() {
-        entities.stream().filter(livingEntity -> livingEntity.getPersistentData().getBoolean(CGalaxy.LIVING_PRESSURIZED)).forEach(livingEntity -> {
-            livingEntity.getPersistentData().putBoolean(CGalaxy.LIVING_PRESSURIZED, false);
-        });
+        if (entities != null) {
+            entities.stream().filter(SpaceSuitUtils::isPressurized).forEach(livingEntity -> {
+                SpaceSuitUtils.setPressurized(livingEntity, false);
+            });
+        }
 
         var list = AFFECTED_BLOCKS.get(level.dimension());
         if (list != null) {

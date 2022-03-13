@@ -1,7 +1,7 @@
 package net.congueror.clib.util.registry;
 
-import net.congueror.clib.api.registry.BlockBuilder;
-import net.congueror.clib.api.registry.ItemBuilder;
+import net.congueror.clib.util.registry.builders.BlockBuilder;
+import net.congueror.clib.util.registry.builders.ItemBuilder;
 import net.congueror.clib.blocks.generic.CLBuddingBlock;
 import net.congueror.clib.util.CreativeTabs;
 import net.minecraft.client.renderer.RenderType;

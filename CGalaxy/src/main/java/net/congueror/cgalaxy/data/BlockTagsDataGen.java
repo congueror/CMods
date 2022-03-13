@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.data;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.clib.api.data.BlockTagsDataProvider;
+import net.congueror.clib.util.registry.data.BlockTagsDataProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;

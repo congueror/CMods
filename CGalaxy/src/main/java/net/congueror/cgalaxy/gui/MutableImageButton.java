@@ -12,14 +12,14 @@ import net.minecraft.util.Mth;
 
 public class MutableImageButton extends Button {
 
-    int xTexStart;
-    int yTexStart;
-    int yOffset;
-    ResourceLocation texture;
-    int textureWidth;
-    int textureHeight;
-    Button.OnPress onPress;
-    Button.OnTooltip onTooltip;
+    protected int xTexStart;
+    protected int yTexStart;
+    protected int yOffset;
+    protected ResourceLocation texture;
+    protected int textureWidth;
+    protected int textureHeight;
+    protected Button.OnPress onPress;
+    protected Button.OnTooltip onTooltip;
 
     public MutableImageButton(int pX, int pY, int pWidth, int pHeight, int pXTexStart, int pYTexStart, int pYDiffTex, ResourceLocation pResourceLocation, int pTextureWidth, int pTextureHeight, Button.OnPress pOnPress) {
         this(pX, pY, pWidth, pHeight, pXTexStart, pYTexStart, pYDiffTex, pResourceLocation, pTextureWidth, pTextureHeight, pOnPress, NO_TOOLTIP);
@@ -50,15 +50,15 @@ public class MutableImageButton extends Button {
         this.y = y;
     }
 
-    public void setxTexStart(int xTexStart) {
+    public void setXTexStart(int xTexStart) {
         this.xTexStart = xTexStart;
     }
 
-    public void setyTexStart(int yTexStart) {
+    public void setYTexStart(int yTexStart) {
         this.yTexStart = yTexStart;
     }
 
-    public void setyOffset(int yOffset) {
+    public void setYOffset(int yOffset) {
         this.yOffset = yOffset;
     }
 
@@ -112,15 +112,15 @@ public class MutableImageButton extends Button {
         }
     }
 
-    public int getxTexStart() {
+    public int getXTexStart() {
         return xTexStart;
     }
 
-    public int getyTexStart() {
+    public int getYTexStart() {
         return yTexStart;
     }
 
-    public int getyOffset() {
+    public int getYOffset() {
         return yOffset;
     }
 

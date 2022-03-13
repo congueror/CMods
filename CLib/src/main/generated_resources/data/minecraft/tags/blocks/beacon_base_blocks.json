@@ -12,7 +12,6 @@
     "clib:invar_block",
     "clib:electrum_block",
     "clib:platinum_block",
-    "clib:enderium_block",
     "clib:signalum_block",
     "clib:tungsten_block",
     "clib:bronze_block",

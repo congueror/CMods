@@ -118,9 +118,9 @@ public class SolarGeneratorBlockEntity extends AbstractItemBlockEntity<SolarGene
     public void execute() {
         assert level != null;
         Block block = level.getBlockState(getBlockPos()).getBlock();
-        if (block instanceof SolarGeneratorBlock) {
-            float fe = ((SolarGeneratorBlock) block).getGeneration() + ((getProgressSpeedFinal() - 1) * 5);
-            float in = RenderingHelper.isDayTime(level) ? getDayIntensity() : getNightIntensity();
+        if (block instanceof SolarGeneratorBlock sg) {
+            float fe = sg.getGeneration() + ((getProgressSpeedFinal() - 1) * 5);
+            float in = RenderingHelper.isDayTime(level) ? getDayIntensity() : (getNightIntensity() + ((sg.getTier() - 1) / 10f));
             energyGen = (int) (fe * in);
             energyStorage.generateEnergy(energyGen);
         }

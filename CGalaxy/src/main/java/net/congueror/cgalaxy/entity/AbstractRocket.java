@@ -1,6 +1,5 @@
 package net.congueror.cgalaxy.entity;
 
-import net.congueror.cgalaxy.CGalaxy;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -113,6 +112,14 @@ public abstract class AbstractRocket extends Entity {
         this.entityData.define(DATA_MODE, 0);
     }
 
+    public boolean getRocketLaunch() {
+        return this.getPersistentData().getBoolean("Launch");
+    }
+
+    public void setRocketLaunch(boolean rocketLaunch) {
+        this.getPersistentData().putBoolean("Launch", rocketLaunch);
+    }
+
     @Nonnull
     @Override
     public InteractionResult interact(@Nonnull Player pPlayer, @Nonnull InteractionHand pHand) {
@@ -137,7 +144,7 @@ public abstract class AbstractRocket extends Entity {
         super.tick();
 
         if (this.getMode() != 3) {
-            if (this.getPersistentData().getBoolean(CGalaxy.ROCKET_LAUNCH)) {
+            if (getRocketLaunch()) {
                 if (((this.getDeltaMovement().y()) <= 0.5)) {
                     this.setDeltaMovement(this.getDeltaMovement().x, this.getDeltaMovement().y + 0.1, this.getDeltaMovement().z);
                 }
@@ -236,7 +243,7 @@ public abstract class AbstractRocket extends Entity {
                     }
                 }
                 if (i >= 200) {
-                    this.getPersistentData().putBoolean(CGalaxy.ROCKET_LAUNCH, true);
+                    setRocketLaunch(true);
                     ((ServerLevel) level).sendParticles(ParticleTypes.FLAME, this.getX(), this.getY() - 2.2, this.getZ(), 100, 0.1, 0.1, 0.1, 0.001);
                     ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, this.getX(), this.getY() - 3.2, this.getZ(), 50, 0.1, 0.1, 0.1, 0.04);
                 }
@@ -244,7 +251,7 @@ public abstract class AbstractRocket extends Entity {
                 i = 0;
                 k = 0;
                 this.setMode(0);
-                this.getPersistentData().putBoolean(CGalaxy.ROCKET_LAUNCH, false);
+                setRocketLaunch(false);
             }
         } else {
             i = 0;

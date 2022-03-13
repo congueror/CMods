@@ -1,7 +1,7 @@
 package net.congueror.clib.datagen;
 
 import net.congueror.clib.CLib;
-import net.congueror.clib.api.data.RecipeDataProvider;
+import net.congueror.clib.util.registry.data.RecipeDataProvider;
 import net.congueror.clib.init.CLBlockInit;
 import net.congueror.clib.init.CLItemInit;
 import net.congueror.clib.init.CLMaterialInit;
@@ -49,9 +49,6 @@ public class RecipeDataGen extends RecipeDataProvider {
         shapelessRecipe(r, CLMaterialInit.ELECTRUM.getBlend().get(), 2, getTag("forge:ingots/", CLMaterialInit.SILVER.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.SILVER.getIngot().get()), Tags.Items.INGOTS_GOLD);
 
         basicMetalRecipes(r, CLMaterialInit.PLATINUM);
-
-        alloyMetalRecipes(r, CLMaterialInit.ENDERIUM);
-        shapelessRecipe(r, CLMaterialInit.ENDERIUM.getBlend().get(), 2, getTag("forge:ingots/", CLMaterialInit.PLATINUM.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.SILVER.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.PLATINUM.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()));
 
         alloyMetalRecipes(r, CLMaterialInit.SIGNALUM);
         shapelessRecipe(r, CLMaterialInit.SIGNALUM.getBlend().get(), 4, ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE);

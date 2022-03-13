@@ -279,7 +279,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
 
     @Override
     protected void renderBg(@Nonnull PoseStack pPoseStack, float pPartialTicks, int pMouseX, int pMouseY) {
-        int infoColor = MathHelper.calculateRGB(0, 150, 255);
+        int infoColor = MathHelper.RGBtoDecimalRGB(0, 150, 255);
 
         this.width = mc.getWindow().getGuiScaledWidth();
         this.height = mc.getWindow().getGuiScaledHeight();
@@ -313,8 +313,8 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
 
                 pPoseStack.pushPose();
                 pPoseStack.scale(0.8f, 0.8f, 0);
-                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.hover_tip1"), this.leftPos - 19, this.topPos + 320, MathHelper.calculateRGB(0, 100, 255));
-                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.hover_tip2"), this.leftPos - 19, this.topPos + 330, MathHelper.calculateRGB(0, 100, 255));
+                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.hover_tip1"), this.leftPos - 19, this.topPos + 320, MathHelper.RGBtoDecimalRGB(0, 100, 255));
+                drawString(pPoseStack, this.font, new TranslatableComponent("gui.cgalaxy.hover_tip2"), this.leftPos - 19, this.topPos + 330, MathHelper.RGBtoDecimalRGB(0, 100, 255));
                 pPoseStack.popPose();
             }
             if (this.currentObj.getType() instanceof GalacticObjectBuilder.SolarSystem) {
@@ -510,7 +510,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
             @Override
             public void renderButton(@Nonnull PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
                 super.renderButton(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
-                drawCenteredString(pMatrixStack, mc.font, getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, MathHelper.calculateRGB(255, 0, 255));
+                drawCenteredString(pMatrixStack, mc.font, getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, MathHelper.RGBtoDecimalRGB(255, 0, 255));
             }
         });
     }

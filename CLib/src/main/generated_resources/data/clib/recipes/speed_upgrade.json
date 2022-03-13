@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DGD",
+    "RBR",
+    "DGD"
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "G": {
+      "item": "clib:gold_gear"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "B": {
+      "item": "clib:tier_1_circuit_board"
+    }
+  },
+  "result": {
+    "item": "clib:speed_upgrade"
+  }
+}

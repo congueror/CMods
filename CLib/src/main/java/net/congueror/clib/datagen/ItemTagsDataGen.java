@@ -1,7 +1,7 @@
 package net.congueror.clib.datagen;
 
 import net.congueror.clib.CLib;
-import net.congueror.clib.api.data.ItemTagsDataProvider;
+import net.congueror.clib.util.registry.data.ItemTagsDataProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;

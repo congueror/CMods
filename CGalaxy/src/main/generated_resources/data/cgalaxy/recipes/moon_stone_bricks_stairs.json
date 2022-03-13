@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S  ",
+    "SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "cgalaxy:moon_stone_bricks"
+    }
+  },
+  "result": {
+    "item": "cgalaxy:moon_stone_bricks_stairs",
+    "count": 4
+  }
+}

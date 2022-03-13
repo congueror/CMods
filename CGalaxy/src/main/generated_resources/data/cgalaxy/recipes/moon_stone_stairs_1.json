@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "cgalaxy:moon_stone"
+  },
+  "result": "cgalaxy:moon_stone_stairs",
+  "count": 1
+}

@@ -18,28 +18,6 @@ public class CGalaxy {
     public static final String MODID = "cgalaxy";
     public static final Logger LOGGER = LogManager.getLogger();
 
-    //Persistent Data Constant Strings
-    /**Integer*/
-    public static final String LIVING_TEMPERATURE = "Temperature";
-    /**Float*/
-    public static final String LIVING_RADIATION = "Radiation";
-    /**Double*/
-    public static final String LIVING_AIR_PRESSURE = "AirPressure";
-    /**Integer*/
-    public static final String LIVING_HEAT_TICK = "HeatTick";
-    /**Integer*/
-    public static final String LIVING_COLD_TICK = "ColdTick";
-    /**Integer*/
-    public static final String LIVING_OXYGEN_TICK = "OxygenTick";
-    /**Integer*/
-    public static final String LIVING_RADIATION_TICK = "RadiationTick";
-    /**Boolean*/
-    public static final String LIVING_PRESSURIZED = "Pressurized";
-    /**Boolean*/
-    public static final String ROCKET_LAUNCH = "Launch";
-    /**Integer*/
-    public static final String ITEM_GRAVITY = "ItemGravity";
-
     public CGalaxy() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CGConfig.CLIENT_CONFIG);
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, CGConfig.SERVER_CONFIG);

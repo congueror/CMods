@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "aa ",
+    "aa ",
+    "   "
+  ],
+  "key": {
+    "a": {
+      "item": "cgalaxy:moon_regolith"
+    }
+  },
+  "result": {
+    "item": "cgalaxy:moon_stone"
+  }
+}

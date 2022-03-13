@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:tier_3_circuit_board"
+    ]
+  },
+  "criteria": {
+    "has_hammer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "clib:hammer"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:tier_3_circuit_board"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_hammer",
+      "has_the_recipe"
+    ]
+  ]
+}

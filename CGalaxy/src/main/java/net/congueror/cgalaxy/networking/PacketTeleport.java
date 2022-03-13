@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.networking;
 
 import net.congueror.cgalaxy.entity.AbstractRocket;
-import net.congueror.cgalaxy.item.AbstractRocketItem;
+import net.congueror.cgalaxy.items.AbstractRocketItem;
 import net.congueror.clib.networking.IPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -14,7 +14,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
-import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.function.Supplier;
 

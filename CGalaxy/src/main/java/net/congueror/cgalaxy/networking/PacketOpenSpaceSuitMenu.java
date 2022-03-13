@@ -10,6 +10,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkHooks;
@@ -43,7 +44,7 @@ public class PacketOpenSpaceSuitMenu implements IPacket {
                     @Nonnull
                     @Override
                     public AbstractContainerMenu createMenu(int pContainerId, @Nonnull Inventory pInventory, @Nonnull Player pPlayer) {
-                        return new SpaceSuitContainer(pContainerId, pInventory);
+                        return new SpaceSuitContainer(pContainerId, pInventory, ContainerLevelAccess.create(pPlayer.level, pPlayer.getOnPos()));
                     }
                 });
             }

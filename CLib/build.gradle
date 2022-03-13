@@ -98,7 +98,7 @@ repositories {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.18.1-39.0.63"
+    minecraft "net.minecraftforge:forge:1.18.1-39.1.2"
 
     //compileOnly fg.deobf('slimeknights.tconstruct:TConstruct:1.16.5-3.1.0.231')
     //compileOnly fg.deobf('slimeknights.mantle:Mantle:1.16.5-1.6.114')

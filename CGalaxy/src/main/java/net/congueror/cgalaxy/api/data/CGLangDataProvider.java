@@ -1,10 +1,10 @@
 package net.congueror.cgalaxy.api.data;
 
 import net.congueror.cgalaxy.gui.galaxy_map.GalacticObjectBuilder;
-import net.congueror.clib.api.data.LangDataProvider;
-import net.congueror.clib.api.registry.BlockBuilder;
-import net.congueror.clib.api.registry.FluidBuilder;
-import net.congueror.clib.api.registry.ItemBuilder;
+import net.congueror.clib.util.registry.data.LangDataProvider;
+import net.congueror.clib.util.registry.builders.BlockBuilder;
+import net.congueror.clib.util.registry.builders.FluidBuilder;
+import net.congueror.clib.util.registry.builders.ItemBuilder;
 import net.minecraft.data.DataGenerator;
 
 import java.util.Map;

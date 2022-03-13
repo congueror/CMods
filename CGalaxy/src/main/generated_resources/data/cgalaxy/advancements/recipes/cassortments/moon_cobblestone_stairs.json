@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cgalaxy:moon_cobblestone_stairs"
+    ]
+  },
+  "criteria": {
+    "has_Block{cgalaxy:moon_cobblestone}": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "cgalaxy:moon_cobblestone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cgalaxy:moon_cobblestone_stairs"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_Block{cgalaxy:moon_cobblestone}",
+      "has_the_recipe"
+    ]
+  ]
+}

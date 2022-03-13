@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "clib:iron_hammer"
+    },
+    {
+      "item": "clib:silicon"
+    },
+    {
+      "item": "clib:silicon"
+    }
+  ],
+  "result": {
+    "item": "clib:silicon_circuit"
+  }
+}

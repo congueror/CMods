@@ -1,15 +1,9 @@
 package net.congueror.clib.util.registry;
 
-import net.congueror.clib.api.registry.BlockBuilder;
-import net.congueror.clib.api.registry.ItemBuilder;
 import net.congueror.clib.util.HarvestLevels;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 

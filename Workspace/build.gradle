@@ -34,7 +34,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            args '--username', '<BadDev_#>'
+            args '--username', 'BadDev_#'
 
             mods {
                 workspace {
@@ -115,10 +115,9 @@ repositories {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.18.1-39.0.63"
+    minecraft "net.minecraftforge:forge:1.18.1-39.1.2"
 
-    //implementation fg.deobf("curse.maven:world-stripper-250603:3400494")
-    //implementation fg.deobf("curse.maven:solargeneration-336538:3418138")
+    implementation fg.deobf("curse.maven:world-stripper-250603:3624497")
 
     //compile fg.deobf('slimeknights.tconstruct:TConstruct:1.16.5-3.1.0.231')
     //compile fg.deobf('slimeknights.mantle:Mantle:1.16.5-1.6.114')

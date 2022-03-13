@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "SSS",
+    "   "
+  ],
+  "key": {
+    "S": {
+      "item": "cgalaxy:moon_stone"
+    }
+  },
+  "result": {
+    "item": "cgalaxy:moon_stone_slab",
+    "count": 6
+  }
+}

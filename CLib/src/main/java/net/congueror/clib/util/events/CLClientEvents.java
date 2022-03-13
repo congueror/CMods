@@ -1,15 +1,14 @@
 package net.congueror.clib.util.events;
 
+import com.google.common.collect.Sets;
 import net.congueror.clib.CLib;
-import net.congueror.clib.api.registry.BlockBuilder;
+import net.congueror.clib.util.registry.builders.BlockBuilder;
 import net.congueror.clib.blocks.solar_generator.SolarGeneratorScreen;
-import net.congueror.clib.init.CLBlockInit;
 import net.congueror.clib.init.CLContainerInit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -19,6 +18,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -48,7 +48,7 @@ public class CLClientEvents {
             if (event.getFlags().isAdvanced()) {
                 Item item = event.getItemStack().getItem();
                 CompoundTag nbt = event.getItemStack().getTag();
-                Set<ResourceLocation> blockTags = Block.byItem(item).getTags();
+                Set<ResourceLocation> blockTags = !Block.byItem(item).equals(Blocks.AIR) ? Block.byItem(item).getTags() : Sets.newHashSet();
                 Set<ResourceLocation> itemTags = item.getTags();
                 if (!blockTags.isEmpty() || !itemTags.isEmpty() || nbt != null) {
                     List<Component> lines = event.getToolTip();

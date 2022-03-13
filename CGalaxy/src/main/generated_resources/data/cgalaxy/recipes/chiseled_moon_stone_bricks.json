@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A",
+    "A",
+    " "
+  ],
+  "key": {
+    "A": {
+      "item": "cgalaxy:moon_stone_bricks_slab"
+    }
+  },
+  "result": {
+    "item": "cgalaxy:chiseled_moon_stone_bricks"
+  }
+}

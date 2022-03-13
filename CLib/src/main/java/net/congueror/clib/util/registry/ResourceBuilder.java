@@ -1,7 +1,7 @@
 package net.congueror.clib.util.registry;
 
-import net.congueror.clib.api.registry.BlockBuilder;
-import net.congueror.clib.api.registry.ItemBuilder;
+import net.congueror.clib.util.registry.builders.BlockBuilder;
+import net.congueror.clib.util.registry.builders.ItemBuilder;
 import net.congueror.clib.blocks.generic.CLOreBlock;
 import net.congueror.clib.util.HarvestLevels;
 import net.minecraft.tags.BlockTags;
@@ -99,6 +99,7 @@ public abstract class ResourceBuilder<T extends ResourceBuilder<T>> {
     }
 
     protected void addOre(int exp, HarvestLevels harvestLvl) {
+        Item drop = raw == null ? gem.getItem() : raw.getItem();
         ore = new BlockBuilder(name + "_ore", new CLOreBlock(BlockBehaviour.Properties
                 .of(Material.STONE).requiresCorrectToolForDrops()
                 .strength(3.0f, 3.0f)
@@ -108,7 +109,7 @@ public abstract class ResourceBuilder<T extends ResourceBuilder<T>> {
                 .withNewBlockTag("forge:ores/" + name)
                 .withNewItemTag("forge:ores/" + name)
                 .withTranslation(capitalized + " Ore")
-                .withLootTable((lootTableDataProvider, block1) -> lootTableDataProvider.createOreDrop(block1, raw.getItem()))
+                .withLootTable((lootTableDataProvider, block1) -> lootTableDataProvider.createOreDrop(block1, drop))
                 .withBlockModel((blockModelDataProvider, block1) -> blockModelDataProvider.cubeAllBlock(block1, "clib:resource/" + name + "/" + block1.getRegistryName().getPath()));
     }
 

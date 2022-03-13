@@ -31,20 +31,20 @@ public abstract class AbstractSettingsScreen extends Screen {
         super.init();
         leftPos = (this.width - 110) / 2;
         topPos = (this.height - 140) / 2;
-        addRenderableWidget(new ImageButton(this.leftPos + 99, this.topPos + 4, 7, 7, 0, 0, 0, new ResourceLocation(CLib.MODID, "textures/gui/blank.png"), width, height, pButton -> {
+        RenderSystem.setShaderColor(1, 1, 1, 1);
+        addRenderableWidget(new ImageButton(this.leftPos + 99, this.topPos + 4, 7, 7, 99, 4, 0, TEXTURE, 115, 140, pButton -> {
             Minecraft.getInstance().popGuiLayer();
         }));
     }
 
     @Override
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
         renderBg(pPoseStack);
+        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
     }
 
     protected void renderBg(PoseStack poseStack) {
         this.renderBackground(poseStack);
-        RenderSystem.setShaderColor(1, 1, 1, 1);
         RenderSystem.enableBlend();
         RenderSystem.setShaderTexture(0, TEXTURE);
         blit(poseStack, leftPos, topPos, 0, 0, 110, 140, 115, 140);

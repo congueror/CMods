@@ -3,7 +3,7 @@ package net.congueror.cgalaxy.client.renderers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.congueror.cgalaxy.client.models.RocketTier1Model;
-import net.congueror.cgalaxy.item.RocketTier1Item;
+import net.congueror.cgalaxy.items.RocketTier1Item;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;

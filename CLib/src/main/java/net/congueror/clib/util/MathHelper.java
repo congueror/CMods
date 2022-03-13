@@ -6,10 +6,20 @@ import java.text.DecimalFormat;
 
 public class MathHelper {
     /**
-     * Converts RGB to a decimal
+     * Converts RGB to Decimal RGB
      */
-    public static int calculateRGB(int R, int G, int B) {
+    public static int RGBtoDecimalRGB(int R, int G, int B) {
         return (R * 65536) + (G * 256) + B;
+    }
+
+    /**
+     * Converts Decimal RGB to RGB array
+     */
+    public static int[] DecimalRGBtoRGB(int decimal) {
+        int r = (int) Math.floor(decimal / (65536D));
+        int g = (int) (Math.floor(decimal / 256D) % 256);
+        int b = (int) (decimal % 256D);
+        return new int[] {r, g, b};
     }
 
     /**

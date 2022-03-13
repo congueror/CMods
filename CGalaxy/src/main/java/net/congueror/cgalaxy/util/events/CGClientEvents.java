@@ -18,7 +18,7 @@ import net.congueror.cgalaxy.gui.space_suit.SpaceSuitScreen;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
-import net.congueror.cgalaxy.item.AbstractRocketItem;
+import net.congueror.cgalaxy.items.AbstractRocketItem;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.networking.PacketLaunchSequence;
 import net.congueror.cgalaxy.networking.PacketOpenSpaceSuitMenu;
@@ -31,7 +31,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -43,11 +42,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class CGClientEvents {
-    public static final Map<Player, Boolean> isSpaceDown = new HashMap<>();
 
     @Mod.EventBusSubscriber(modid = CGalaxy.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModClientEvents {
@@ -96,10 +91,11 @@ public class CGClientEvents {
             e.registerLayerDefinition(OxygenMaskModel.LAYER_LOCATION, OxygenMaskModel::createBodyLayer);
         }
 
+        @SuppressWarnings({"ConstantConditions", "unchecked", "rawtypes"})
         @SubscribeEvent
         public static void addLayers(EntityRenderersEvent.AddLayers e) {
-            //noinspection ConstantConditions,unchecked,rawtypes
             e.getSkin("default").addLayer(new SpaceSuitLayer(e.getSkin("default")));
+            e.getSkin("slim").addLayer(new SpaceSuitLayer(e.getSkin("slim")));
         }
     }
 

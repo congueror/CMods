@@ -1,7 +1,7 @@
 package net.congueror.clib.datagen;
 
 import net.congueror.clib.CLib;
-import net.congueror.clib.api.data.BlockModelDataProvider;
+import net.congueror.clib.util.registry.data.BlockModelDataProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 

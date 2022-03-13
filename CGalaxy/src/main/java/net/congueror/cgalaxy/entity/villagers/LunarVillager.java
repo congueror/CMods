@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
 
 public class LunarVillager extends AbstractVillager implements CGEntity {
     public LunarVillagerProfession profession;
+    private int j;
 
     public LunarVillager(EntityType<? extends AbstractVillager> entityType, Level level) {
         super(entityType, level);
@@ -98,11 +99,12 @@ public class LunarVillager extends AbstractVillager implements CGEntity {
 
         for (int i = 1; i <= maxTrades; i++) {
             List<Integer> weights = new ArrayList<>();
-            for (int j = 1; j <= trades.size(); j++) {
-                for (int k = 0; k < j; k++) {
+            for (int j = trades.size(); j > 0; j--) {
+                for (int k = 0; k <= trades.size() - j; k++) {
                     weights.add(j);
                 }
             }
+
             List<Item> aCostsItem = this.getOffers().stream().map(merchantOffer -> merchantOffer.getBaseCostA().getItem()).toList();
             List<Integer> aCostsCount = this.getOffers().stream().map(merchantOffer -> merchantOffer.getBaseCostA().getCount()).toList();
 
@@ -113,8 +115,14 @@ public class LunarVillager extends AbstractVillager implements CGEntity {
             if (aCostsItem.contains(offer.getBaseCostA().getItem()) &&
                     aCostsCount.contains(offer.getBaseCostA().getCount())) {
                 i--;
+                j++;
             } else {
                 this.getOffers().add(offer);
+            }
+
+            if (j >= trades.size() * 50) {
+                j = 0;
+                break;
             }
         }
     }

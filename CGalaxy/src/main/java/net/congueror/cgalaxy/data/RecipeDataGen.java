@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.data;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.clib.api.data.RecipeDataProvider;
+import net.congueror.clib.util.registry.data.RecipeDataProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 

@@ -2,15 +2,12 @@ package net.congueror.cgalaxy.blocks.room_pressurizer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.networking.PacketUpdateRoomPressurizerRange;
 import net.congueror.clib.blocks.abstract_machine.AbstractSettingsScreen;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 
 import java.util.Map;
 
@@ -34,10 +31,10 @@ public class RoomPressurizerSettingsScreen extends AbstractSettingsScreen {
 
         for (int i = 0; i < Direction.values().length; i++) {
             int finalI = i;
-            addRenderableWidget(new ImageButton(leftPos + 48, topPos + 24 + (11 * i), 5, 9, 110, 0, 0, TEXTURE, 115, 140, pButton -> {
+            addRenderableWidget(new ImageButton(leftPos + 48, topPos + 24 + (11 * i), 5, 9, 110, 9, 0, TEXTURE, 115, 140, pButton -> {
                 CGNetwork.INSTANCE.sendToServer(new PacketUpdateRoomPressurizerRange(containerId, true, finalI));
             }));
-            addRenderableWidget(new ImageButton(leftPos + 98, topPos + 24 + (11 * i), 5, 9, 110, 9, 0, TEXTURE, 115, 140, pButton -> {
+            addRenderableWidget(new ImageButton(leftPos + 98, topPos + 24 + (11 * i), 5, 9, 110, 0, 0, TEXTURE, 115, 140, pButton -> {
                 CGNetwork.INSTANCE.sendToServer(new PacketUpdateRoomPressurizerRange(containerId, false, finalI));
             }));
         }
@@ -45,14 +42,9 @@ public class RoomPressurizerSettingsScreen extends AbstractSettingsScreen {
 
     @Override
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+        RenderSystem.setShaderColor(1, 1, 1, 1);
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
         assert minecraft != null;
-
-        RenderSystem.setShaderTexture(0, TEXTURE);
-        for (int i = 0; i < Direction.values().length; i++) {
-            blit(pPoseStack, leftPos + 48, topPos + 24 + (11 * i), 110, 9, 5, 9, 115, 140);
-            blit(pPoseStack, leftPos + 98, topPos + 24 + (11 * i), 110, 0, 5, 9, 115, 140);
-        }
 
         pPoseStack.pushPose();
         pPoseStack.scale(0.6f, 0.6f, 0.6f);

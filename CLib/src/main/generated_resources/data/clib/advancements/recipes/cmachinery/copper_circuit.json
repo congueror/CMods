@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:copper_circuit"
+    ]
+  },
+  "criteria": {
+    "has_ingots/copper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/copper"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:copper_circuit"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ingots/copper",
+      "has_the_recipe"
+    ]
+  ]
+}

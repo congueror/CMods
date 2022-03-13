@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "cgalaxy:moon_stone"
+  },
+  "result": "cgalaxy:smooth_moon_stone",
+  "experience": 0.1,
+  "cookingtime": 200
+}
