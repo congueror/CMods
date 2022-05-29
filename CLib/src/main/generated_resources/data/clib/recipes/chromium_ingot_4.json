@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "tag": "forge:dusts/chromium"
+    "tag": "forge:raw_materials/raw"
   },
   "result": "clib:chromium_ingot",
   "experience": 0.7,

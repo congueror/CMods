@@ -41,7 +41,7 @@ public class GasExtractorBlockEntity extends AbstractFluidBlockEntity {
     @Override
     public FluidRecipe<?> getRecipe() {
         assert level != null;
-        return level.getRecipeManager().getRecipeFor(CGRecipeSerializerInit.Types.GAS_EXTRACTING, wrapper, level).orElse(null);
+        return level.getRecipeManager().getRecipeFor(CGRecipeSerializerInit.GAS_EXTRACTING_TYPE.get(), wrapper, level).orElse(null);
     }
 
     @Override

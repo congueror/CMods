@@ -13,15 +13,14 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class CLRecipeSerializerInit {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, CLib.MODID);
+    public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, CLib.MODID);
 
     public static final RegistryObject<RecipeSerializer<SolarGeneratorRecipe>> SOLAR_ENERGY = RECIPE_SERIALIZERS.register("solar_energy", SolarGeneratorRecipe.Serializer::new);
 
-    public static final class Types {
-        public static final RecipeType<SolarGeneratorRecipe> SOLAR_ENERGY = registerType("solar_energy");
-    }
+    public static final RegistryObject<RecipeType<SolarGeneratorRecipe>> SOLAR_ENERGY_TYPE = registerType("solar_energy");
 
-    private static <T extends Recipe<?>> RecipeType<T> registerType(String name) {
-        return Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(CLib.MODID, name), new RecipeType<T>() {
+    private static <T extends Recipe<?>> RegistryObject<RecipeType<T>> registerType(String name) {
+        return RECIPE_TYPES.register(name, () -> new RecipeType<>() {
             @Override
             public String toString() {
                 return new ResourceLocation(CLib.MODID, name).toString();

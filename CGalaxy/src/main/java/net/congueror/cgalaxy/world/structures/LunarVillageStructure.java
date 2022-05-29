@@ -3,21 +3,18 @@ package net.congueror.cgalaxy.world.structures;
 import com.mojang.serialization.Codec;
 import net.congueror.cgalaxy.CGalaxy;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.NoiseColumn;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
-import net.minecraft.world.level.levelgen.feature.structures.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
 import net.minecraft.world.level.levelgen.structure.PostPlacementProcessor;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
+import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import org.apache.logging.log4j.Level;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class LunarVillageStructure extends StructureFeature<JigsawConfiguration> {
@@ -40,6 +37,7 @@ public class LunarVillageStructure extends StructureFeature<JigsawConfiguration>
         return true;
     }
 
+    @NotNull
     public static Optional<PieceGenerator<JigsawConfiguration>> createPiecesGenerator(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
         if (!LunarVillageStructure.isFeatureChunk(context)) {
             return Optional.empty();
@@ -54,28 +52,12 @@ public class LunarVillageStructure extends StructureFeature<JigsawConfiguration>
          * An example of a custom JigsawPlacement.addPieces in action can be found here:
          * https://github.com/TelepathicGrunt/RepurposedStructures/blob/1.18/src/main/java/com/telepathicgrunt/repurposedstructures/world/structures/pieces/PieceLimitedJigsawManager.java
          */
-        //Template Pool
-        JigsawConfiguration newConfig = new JigsawConfiguration(() ->
-                context.registryAccess().ownedRegistryOrThrow(Registry.TEMPLATE_POOL_REGISTRY)
-                        .get(new ResourceLocation(CGalaxy.MODID, "lunar_village")), 3);
 
-        PieceGeneratorSupplier.Context<JigsawConfiguration> newContext = new PieceGeneratorSupplier.Context<>(
-                context.chunkGenerator(),
-                context.biomeSource(),
-                context.seed(),
-                context.chunkPos(),
-                newConfig,
-                context.heightAccessor(),
-                context.validBiome(),
-                context.structureManager(),
-                context.registryAccess()
-        );
-
-        BlockPos blockpos = context.chunkPos().getMiddleBlockPosition(60);
+        BlockPos blockpos = context.chunkPos().getMiddleBlockPosition(30);
 
         Optional<PieceGenerator<JigsawConfiguration>> structurePiecesGenerator =
                 JigsawPlacement.addPieces(
-                        newContext, // Used for JigsawPlacement to makeDirty all the proper behaviors done.
+                        context, // Used for JigsawPlacement to makeDirty all the proper behaviors done.
                         PoolElementStructurePiece::new, // Needed in order to create a list of jigsaw pieces when making the structure's layout.
                         blockpos, // Position of the structure. Y value is ignored if last parameter is set to true.
                         false,  // Special boundary adjustments for villages. It's... hard to explain. Keep this false and make your pieces not be partially intersecting.

@@ -3,15 +3,16 @@ package net.congueror.cgalaxy.world;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
 import net.congueror.clib.world.WorldHelper;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
 public class CGDimensions {
-    public static final CGDimensionBuilder.DimensionObject OVERWORLD = new CGDimensionBuilder(Level.OVERWORLD)
+    public static final CGDimensionBuilder.DimensionObject OVERWORLD = new CGDimensionBuilder(Holder.direct(Level.OVERWORLD))
             .build();
-    public static final CGDimensionBuilder.DimensionObject NETHER = new CGDimensionBuilder(Level.NETHER)
+    public static final CGDimensionBuilder.DimensionObject NETHER = new CGDimensionBuilder(Holder.direct(Level.NETHER))
             .build();
-    public static final CGDimensionBuilder.DimensionObject END = new CGDimensionBuilder(Level.END)
+    public static final CGDimensionBuilder.DimensionObject END = new CGDimensionBuilder(Holder.direct(Level.END))
             .build();
 
     public static final CGDimensionBuilder.DimensionObject MOON = new CGDimensionBuilder(WorldHelper.registerDim(CGalaxy.MODID, "moon"))

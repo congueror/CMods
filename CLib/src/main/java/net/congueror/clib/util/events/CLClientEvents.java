@@ -2,6 +2,7 @@ package net.congueror.clib.util.events;
 
 import com.google.common.collect.Sets;
 import net.congueror.clib.CLib;
+import net.congueror.clib.util.TagHelper;
 import net.congueror.clib.util.registry.builders.BlockBuilder;
 import net.congueror.clib.blocks.solar_generator.SolarGeneratorScreen;
 import net.congueror.clib.init.CLContainerInit;
@@ -26,6 +27,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CLClientEvents {
     @Mod.EventBusSubscriber(modid = CLib.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -34,7 +36,7 @@ public class CLClientEvents {
         public static void clientSetup(final FMLClientSetupEvent event) {
             BlockBuilder.OBJECTS.values().forEach(blockBuilders -> blockBuilders.forEach(blockBuilder -> {
                 if (blockBuilder.renderType != null)
-                    ItemBlockRenderTypes.setRenderLayer(blockBuilder.block, blockBuilder.renderType);
+                    ItemBlockRenderTypes.setRenderLayer(blockBuilder.regObject.get(), blockBuilder.renderType);
             }));
 
             MenuScreens.register(CLContainerInit.SOLAR_GENERATOR.get(), SolarGeneratorScreen::new);
@@ -48,8 +50,8 @@ public class CLClientEvents {
             if (event.getFlags().isAdvanced()) {
                 Item item = event.getItemStack().getItem();
                 CompoundTag nbt = event.getItemStack().getTag();
-                Set<ResourceLocation> blockTags = !Block.byItem(item).equals(Blocks.AIR) ? Block.byItem(item).getTags() : Sets.newHashSet();
-                Set<ResourceLocation> itemTags = item.getTags();
+                Set<ResourceLocation> blockTags = !Block.byItem(item).equals(Blocks.AIR) ? TagHelper.getBlockTags(Block.byItem(item)).map(blockTagKey -> blockTagKey.location()).collect(Collectors.toSet()) : Sets.newHashSet();
+                Set<ResourceLocation> itemTags = TagHelper.getItemTags(item).map(itemTagKey -> itemTagKey.location()).collect(Collectors.toSet());
                 if (!blockTags.isEmpty() || !itemTags.isEmpty() || nbt != null) {
                     List<Component> lines = event.getToolTip();
                     if (Screen.hasControlDown()) {

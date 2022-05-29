@@ -20,6 +20,7 @@ public class CLib {
         CLItemInit.ITEMS.register(modEventBus);
         CLBlockInit.BLOCKS.register(modEventBus);
         CLRecipeSerializerInit.RECIPE_SERIALIZERS.register(modEventBus);
+        CLRecipeSerializerInit.RECIPE_TYPES.register(modEventBus);
         CLBlockEntityInit.BLOCK_ENTITY_TYPES.register(modEventBus);
         CLContainerInit.MENU_TYPES.register(modEventBus);
 

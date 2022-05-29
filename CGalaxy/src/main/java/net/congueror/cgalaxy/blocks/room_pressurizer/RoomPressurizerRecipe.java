@@ -83,7 +83,7 @@ public class RoomPressurizerRecipe implements FluidRecipe<IItemFluidInventory> {
     @Nonnull
     @Override
     public RecipeType<?> getType() {
-        return CGRecipeSerializerInit.Types.ROOM_PRESSURIZING;
+        return CGRecipeSerializerInit.ROOM_PRESSURIZING_TYPE.get();
     }
 
     public static class Serializer extends FluidRecipeSerializer<RoomPressurizerRecipe> {

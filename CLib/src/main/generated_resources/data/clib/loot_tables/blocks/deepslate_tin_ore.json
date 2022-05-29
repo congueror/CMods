@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "clib:raw_tin"
+          "name": "clib:deepslate_tin_ore"
         }
       ],
       "conditions": [

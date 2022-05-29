@@ -39,7 +39,7 @@ public class FuelRefineryBlockEntity extends AbstractFluidBlockEntity {
     @Override
     public FluidRecipe<?> getRecipe() {
         assert level != null;
-        return level.getRecipeManager().getRecipeFor(CGRecipeSerializerInit.Types.FUEL_REFINING, wrapper, level).orElse(null);
+        return level.getRecipeManager().getRecipeFor(CGRecipeSerializerInit.FUEL_REFINING_TYPE.get(), wrapper, level).orElse(null);
     }
 
     @Override

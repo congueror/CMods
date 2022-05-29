@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "MMM",
+    "CPC",
+    "MMM"
+  ],
+  "key": {
+    "M": {
+      "item": "clib:opal"
+    },
+    "C": {
+      "item": "clib:tier_3_circuit_board"
+    },
+    "P": {
+      "item": "cgalaxy:titanium_plating"
+    }
+  },
+  "result": {
+    "item": "cgalaxy:opal_plating"
+  }
+}

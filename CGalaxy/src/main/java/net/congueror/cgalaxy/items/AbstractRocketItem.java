@@ -16,6 +16,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
@@ -28,7 +29,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
-public abstract class AbstractRocketItem extends CLItem {
+public abstract class AbstractRocketItem extends Item {
 
     public AbstractRocketItem(Properties properties) {
         super(properties);

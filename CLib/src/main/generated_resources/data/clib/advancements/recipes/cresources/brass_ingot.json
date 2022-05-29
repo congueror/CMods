@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "has_ingots/zinc": {
+    "has_dusts/brass": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/zinc"
+            "tag": "forge:dusts/brass"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_ingots/zinc",
+      "has_dusts/brass",
       "has_the_recipe"
     ]
   ]

@@ -23,7 +23,7 @@ public class RecipeDataGen extends RecipeDataProvider {
 
     @Override
     protected void buildCraftingRecipes(@Nonnull Consumer<FinishedRecipe> r) {
-        super.buildCraftingRecipes(r);
+        super.buildCraftingRecipes(r);/*TODO
         basicMetalRecipes(r, CLMaterialInit.TIN);
 
         alloyMetalRecipes(r, CLMaterialInit.STEEL);
@@ -51,12 +51,12 @@ public class RecipeDataGen extends RecipeDataProvider {
         basicMetalRecipes(r, CLMaterialInit.PLATINUM);
 
         alloyMetalRecipes(r, CLMaterialInit.SIGNALUM);
-        shapelessRecipe(r, CLMaterialInit.SIGNALUM.getBlend().get(), 4, ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE);
+        shapelessRecipe(r, CLMaterialInit.SIGNALUM.getBlend().get(), 4, Tags.Items.INGOTS_COPPER, getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), Tags.Items.INGOTS_COPPER, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE, Tags.Items.DUSTS_REDSTONE);
 
         basicMetalRecipes(r, CLMaterialInit.TUNGSTEN);
 
         alloyMetalRecipes(r, CLMaterialInit.BRONZE);
-        shapelessRecipe(r, CLMaterialInit.BRONZE.getBlend().get(), 3, ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")));
+        shapelessRecipe(r, CLMaterialInit.BRONZE.getBlend().get(), 3, Tags.Items.INGOTS_COPPER, getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), getTag("forge:ingots/", CLMaterialInit.TIN.getIngot().get()), Tags.Items.INGOTS_COPPER);
 
         geodeGemRecipes(r, CLMaterialInit.SAPPHIRE);
 
@@ -71,11 +71,11 @@ public class RecipeDataGen extends RecipeDataProvider {
         basicMetalRecipes(r, CLMaterialInit.ZINC);
 
         alloyMetalRecipes(r, CLMaterialInit.BRASS);
-        shapelessRecipe(r, CLMaterialInit.BRASS.getIngot().get(), 4, getTag("forge:ingots/", CLMaterialInit.ZINC.getIngot().get()), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")), getTag("forge:ingots/", CLMaterialInit.ZINC.getIngot().get()));
+        shapelessRecipe(r, CLMaterialInit.BRASS.getIngot().get(), 4, getTag("forge:ingots/", CLMaterialInit.ZINC.getIngot().get()), Tags.Items.INGOTS_COPPER, Tags.Items.INGOTS_COPPER, Tags.Items.INGOTS_COPPER, getTag("forge:ingots/", CLMaterialInit.ZINC.getIngot().get()));
 
         basicMetalRecipes(r, CLMaterialInit.CHROMIUM);
 
-        radioactiveMetalRecipes(r, CLMaterialInit.THORIUM);
+        radioactiveMetalRecipes(r, CLMaterialInit.THORIUM);*/
 
         smeltingRecipe(r, CLItemInit.SULFUR_DUST.get(), getTag("forge:ores/", CLBlockInit.SULFUR_ORE.get()), 0.5f, 200);
         blastingRecipe(r, CLItemInit.SULFUR_DUST.get(), getTag("forge:ores/", CLBlockInit.SULFUR_ORE.get()), 0.5f, 400);
@@ -86,8 +86,8 @@ public class RecipeDataGen extends RecipeDataProvider {
         shapelessRecipe(r, CLItemInit.COAL_NUGGET.get(), 9, ItemTags.COALS, 1);
         shapelessRecipe(r, Items.COAL, 1, getTag("forge:nuggets/", CLItemInit.COAL_NUGGET.get()), 9);
 
-        smeltingRecipe(r, CLItemInit.SILICON.get(), getTag("forge:dusts/silica"), 0.5f, 200);
-        blastingRecipe(r, CLItemInit.SILICON.get(), getTag("forge:dusts/silica"), 0.5f, 400);
+        smeltingRecipe(r, CLItemInit.SILICON.get(), getTag("forge:gems/quartz"), 0.5f, 200);
+        blastingRecipe(r, CLItemInit.SILICON.get(), getTag("forge:gems/quartz"), 0.5f, 400);
 
         ShapedRecipeBuilder.shaped(CLBlockInit.SALT_BLOCK.get(), 1)
                 .pattern("aa ")
@@ -102,7 +102,7 @@ public class RecipeDataGen extends RecipeDataProvider {
                 .pattern(" sa")
                 .pattern("s  ")
                 .define('a', Tags.Items.INGOTS_IRON)
-                .define('s', ItemTags.createOptional(new ResourceLocation("forge:sticks")))
+                .define('s', ItemTags.create(new ResourceLocation("forge:sticks")))
                 .unlockedBy("has_iron_ingot", has(Tags.Items.INGOTS_IRON))
                 .save(r);
 
@@ -112,29 +112,29 @@ public class RecipeDataGen extends RecipeDataProvider {
                 .pattern("bb ")
                 .pattern("rs ")
                 .pattern("   ")
-                .define('b', ItemTags.createOptional(new ResourceLocation("forge:dusts/blaze_powder")))
+                .define('b', ItemTags.create(new ResourceLocation("forge:dusts/blaze_powder")))
                 .define('r', Tags.Items.DUSTS_REDSTONE)
                 .define('s', getTag("forge:dusts/", CLItemInit.SULFUR_DUST.get()))
-                .unlockedBy("has_blaze_powder", has(ItemTags.createOptional(new ResourceLocation("forge:dusts/blaze_powder"))))
+                .unlockedBy("has_blaze_powder", has(ItemTags.create(new ResourceLocation("forge:dusts/blaze_powder"))))
                 .save(r);
 
-        shapelessRecipe(r, CLItemInit.WOOD_DUST.get(), 1, getTag("forge:dusts/", CLItemInit.WOOD_DUST.get()), ItemTags.LOGS, ItemTags.createOptional(new ResourceLocation("clib:hammer")));
+        shapelessRecipe(r, CLItemInit.WOOD_DUST.get(), 1, getTag("forge:dusts/", CLItemInit.WOOD_DUST.get()), ItemTags.LOGS, ItemTags.create(new ResourceLocation("clib:hammer")));
         dustRecipes(r, CLItemInit.COAL_DUST.get(), Items.COAL, ItemTags.COALS);
         dustRecipes(r, CLItemInit.IRON_DUST.get(), Items.IRON_INGOT, Tags.Items.INGOTS_IRON);
-        dustRecipes(r, CLItemInit.COPPER_DUST.get(), Items.COPPER_INGOT, ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")));//TODO
+        dustRecipes(r, CLItemInit.COPPER_DUST.get(), Items.COPPER_INGOT, Tags.Items.INGOTS_COPPER);
         dustRecipes(r, CLItemInit.GOLD_DUST.get(), Items.GOLD_INGOT, Tags.Items.INGOTS_GOLD);
         dustRecipes(r, CLItemInit.LAPIS_DUST.get(), Items.LAPIS_LAZULI, Tags.Items.GEMS_LAPIS);
         dustRecipes(r, CLItemInit.QUARTZ_DUST.get(), Items.QUARTZ, Tags.Items.GEMS_QUARTZ);
-        dustRecipes(r, CLItemInit.AMETHYST_DUST.get(), Items.AMETHYST_SHARD, ItemTags.createOptional(new ResourceLocation("forge:gems/amethyst")));
+        dustRecipes(r, CLItemInit.AMETHYST_DUST.get(), Items.AMETHYST_SHARD, ItemTags.create(new ResourceLocation("forge:gems/amethyst")));
         dustRecipes(r, CLItemInit.DIAMOND_DUST.get(), Items.DIAMOND, Tags.Items.GEMS_DIAMOND);
         dustRecipes(r, CLItemInit.EMERALD_DUST.get(), Items.EMERALD, Tags.Items.GEMS_EMERALD);
         dustRecipes(r, CLItemInit.NETHERITE_DUST.get(), Items.NETHERITE_INGOT, Tags.Items.INGOTS_NETHERITE);
-        shapelessRecipe(r, CLItemInit.OBSIDIAN_DUST.get(), 1, getTag("forge:dusts/", CLItemInit.OBSIDIAN_DUST.get()), Tags.Items.OBSIDIAN, ItemTags.createOptional(new ResourceLocation("clib:hammer")));
+        shapelessRecipe(r, CLItemInit.OBSIDIAN_DUST.get(), 1, getTag("forge:dusts/", CLItemInit.OBSIDIAN_DUST.get()), Tags.Items.OBSIDIAN, ItemTags.create(new ResourceLocation("clib:hammer")));
 
         gearRecipe(r, CLItemInit.WOOD_GEAR.get(), ItemTags.LOGS);
         gearRecipe(r, CLItemInit.STONE_GEAR.get(), Tags.Items.STONE);
         gearRecipe(r, CLItemInit.IRON_GEAR.get(), Tags.Items.INGOTS_IRON);
-        gearRecipe(r, CLItemInit.COPPER_GEAR.get(), ItemTags.createOptional(new ResourceLocation("forge:ingots/copper")));//TODO
+        gearRecipe(r, CLItemInit.COPPER_GEAR.get(), Tags.Items.INGOTS_COPPER);
         gearRecipe(r, CLItemInit.GOLD_GEAR.get(), Tags.Items.INGOTS_GOLD);
         gearRecipe(r, CLItemInit.LAPIS_GEAR.get(), Tags.Items.GEMS_LAPIS);
         gearRecipe(r, CLItemInit.QUARTZ_GEAR.get(), Tags.Items.GEMS_QUARTZ);
@@ -149,7 +149,7 @@ public class RecipeDataGen extends RecipeDataProvider {
                 .define('a', ItemTags.PLANKS)
                 .unlockedBy("has_planks", has(ItemTags.PLANKS))
                 .save(r);
-        shapelessRecipe(r, CLItemInit.RUBBER.get(), 1, getTag("forge:rubber_logs"), getTag("forge:rubber_logs"), getTag("forge:rubber_logs"), getTag("forge:rubber_logs"), getTag("forge:rubber_logs"), ItemTags.createOptional(new ResourceLocation("clib:tree_tap")));
+        shapelessRecipe(r, CLItemInit.RUBBER.get(), 1, getTag("forge:rubber_logs"), getTag("forge:rubber_logs"), getTag("forge:rubber_logs"), getTag("forge:rubber_logs"), getTag("forge:rubber_logs"), ItemTags.create(new ResourceLocation("clib:tree_tap")));
         shapelessRecipe(r, CLBlockInit.RUBBER_PLANKS.get(), 4, getTag("forge:rubber_logs"), 1);
         ShapedRecipeBuilder.shaped(CLBlockInit.RUBBER_WOOD.get(), 3)
                 .pattern("aa ")

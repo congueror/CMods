@@ -1,6 +1,7 @@
 package net.congueror.cgalaxy.api.registry;
 
 import net.congueror.cgalaxy.CGalaxy;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 
 public class CGDimensionBuilder {
     public static final ArrayList<DimensionObject> OBJECTS = new ArrayList<>();
-    private final ResourceKey<Level> dim;
+    private final Holder<ResourceKey<Level>> dim;
     private boolean breathable = true;
     private double gravity = ForgeMod.ENTITY_GRAVITY.get().getDefaultValue();
     private int dayTemp = 30;
@@ -21,11 +22,11 @@ public class CGDimensionBuilder {
     private ResourceLocation yOverlay = new ResourceLocation(CGalaxy.MODID, "textures/gui/rocket_y_hud.png");
     private boolean isOrbit;
 
-    public CGDimensionBuilder(ResourceKey<Level> dim) {
+    public CGDimensionBuilder(Holder<ResourceKey<Level>> dim) {
         this.dim = dim;
     }
 
-    private ResourceKey<Level> getDim() {
+    private Holder<ResourceKey<Level>> getDim() {
         return dim;
     }
     private boolean getIsBreathable() {
@@ -59,7 +60,7 @@ public class CGDimensionBuilder {
      */
     @Nullable
     public static DimensionObject getObjectFromKey(ResourceKey<Level> key) {
-        return OBJECTS.stream().filter(object -> object.getDim().equals(key)).findAny().orElse(null);
+        return OBJECTS.stream().filter(object -> object.getDim().value().equals(key)).findAny().orElse(null);
     }
 
     public final DimensionObject build() {
@@ -139,7 +140,7 @@ public class CGDimensionBuilder {
             this.builder = builder;
         }
 
-        public ResourceKey<Level> getDim() {
+        public Holder<ResourceKey<Level>> getDim() {
             return builder.getDim();
         }
 

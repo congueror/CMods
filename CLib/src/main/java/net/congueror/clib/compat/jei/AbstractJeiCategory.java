@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.congueror.clib.CLib;
@@ -72,15 +73,14 @@ public abstract class AbstractJeiCategory<T> implements IRecipeCategory<T> {
     }
 
     @Override
-    public void draw(T recipe, @NotNull PoseStack stack, double mouseX, double mouseY) {
+    public void draw(T recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
         energy_slot.draw(stack, 150, 1);
         energy.draw(stack, 151, 2);
         energy_glass.draw(stack, 151, 2);
     }
 
-    @Nonnull
     @Override
-    public List<Component> getTooltipStrings(@Nonnull T recipe, double mouseX, double mouseY) {
+    public List<Component> getTooltipStrings(T recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         List<Component> list = new ArrayList<>();
         if (mouseX >= 151 && mouseX <= 167 && mouseY >= 2 && mouseY <= 62) {
             if (isGenerator) {

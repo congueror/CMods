@@ -5,6 +5,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -20,11 +21,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Flow;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
-public class FluidBuilder {
+public class FluidBuilder implements Builder<FlowingFluid> {
     private final String name;
     private final Function<ForgeFlowingFluid.Properties, FlowingFluid> stillFluid;
     private final Function<ForgeFlowingFluid.Properties, FlowingFluid> flowingFluid;
@@ -36,8 +38,8 @@ public class FluidBuilder {
     /**
      * All the fluid tags added via the {@link #withNewFluidTag(String)} method. The string is simply the full name of the tag, e.g. "forge:storage_blocks/steel".
      */
-    public static final Map<String, Tag.Named<Fluid>> FLUID_TAGS = new HashMap<>();
-    public final Map<String, Tag.Named<Fluid>> fluidTags = new HashMap<>();
+    public static final Map<String, TagKey<Fluid>> FLUID_TAGS = new HashMap<>();
+    public final Map<String, TagKey<Fluid>> fluidTags = new HashMap<>();
     public final Map<String, String> locale = new HashMap<>();
 
     private Supplier<? extends LiquidBlock> block;
@@ -140,6 +142,11 @@ public class FluidBuilder {
         newList.add(this);
         OBJECTS.put(modid, newList);
         return new FluidObject(this);
+    }
+
+    @Override
+    public RegistryObject<FlowingFluid> build() {
+        return null;
     }
 
     /**
@@ -324,9 +331,9 @@ public class FluidBuilder {
      * Adds an existing tag to this fluid.
      */
     @SafeVarargs
-    public final FluidBuilder withExistingFluidTags(Tag.Named<Fluid>... tags) {
-        for (Tag.Named<Fluid> tag : tags) {
-            fluidTags.put(tag.getName().toString(), tag);
+    public final FluidBuilder withExistingFluidTags(TagKey<Fluid>... tags) {
+        for (TagKey<Fluid> tag : tags) {
+            fluidTags.put(tag.location().toString(), tag);
         }
         return this;
     }
@@ -336,7 +343,7 @@ public class FluidBuilder {
      * @param tagName The name with modid, e.g. "forge:my_fluid"
      */
     public FluidBuilder withNewFluidTag(String tagName) {
-        Tag.Named<Fluid> tag = FluidTags.createOptional(new ResourceLocation(tagName));
+        TagKey<Fluid> tag = FluidTags.create(new ResourceLocation(tagName));
         fluidTags.put(tagName, tag);
         FLUID_TAGS.put(tagName, tag);
         return this;

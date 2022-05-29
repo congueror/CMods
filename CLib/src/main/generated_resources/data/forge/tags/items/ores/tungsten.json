@@ -2,7 +2,6 @@
   "replace": false,
   "values": [
     "clib:tungsten_ore",
-    "clib:deepslate_tungsten_ore",
-    "clib:raw_tungsten"
+    "clib:deepslate_tungsten_ore"
   ]
 }

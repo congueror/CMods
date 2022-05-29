@@ -43,7 +43,7 @@ public class JEICompat implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         registration.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM, Collections.singletonList(new ItemStack(CLItemInit.GHOST_ITEM.get())));
-        registration.addRecipes(getRecipes(CLRecipeSerializerInit.Types.SOLAR_ENERGY), SOLAR_ENERGY);
+        registration.addRecipes(getRecipes(CLRecipeSerializerInit.SOLAR_ENERGY_TYPE.get()), SOLAR_ENERGY);
     }
 
     public static List<Recipe<?>> getRecipes(RecipeType<?> recipe) {

@@ -9,6 +9,7 @@ import net.congueror.cgalaxy.util.WorldSavedData;
 import net.congueror.clib.api.recipe.FluidRecipe;
 import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlockEntity;
 import net.congueror.clib.items.UpgradeItem;
+import net.congueror.clib.util.TagHelper;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -67,7 +68,7 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
     @Override
     public FluidRecipe<?> getRecipe() {
         assert level != null;
-        return level.getRecipeManager().getRecipeFor(CGRecipeSerializerInit.Types.ROOM_PRESSURIZING, wrapper, level).orElse(null);
+        return level.getRecipeManager().getRecipeFor(CGRecipeSerializerInit.ROOM_PRESSURIZING_TYPE.get(), wrapper, level).orElse(null);
     }
 
     @Override
@@ -260,17 +261,17 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
 
     public static void updateAffectedBlocks(BlockState state, BlockPos pos, Level level) {
         Block block = state.getBlock();
-        if (BlockTags.FIRE.contains(block))
+        if (TagHelper.tagContains(BlockTags.FIRE, block))
             level.removeBlock(pos, false);
 
-        else if (BlockTags.CAMPFIRES.contains(block) && CampfireBlock.isLitCampfire(state)) {
+        else if (TagHelper.tagContains(BlockTags.CAMPFIRES, block) && CampfireBlock.isLitCampfire(state)) {
             level.levelEvent(null, 1009, pos, 0);
             CampfireBlock.dowse(null, level, pos, state);
             level.setBlockAndUpdate(pos, state.setValue(CampfireBlock.LIT, Boolean.FALSE));
-        } else if (BlockTags.CANDLES.contains(block) && AbstractCandleBlock.isLit(state))
+        } else if (TagHelper.tagContains(BlockTags.CANDLES, block) && AbstractCandleBlock.isLit(state))
             AbstractCandleBlock.extinguish(null, state, level, pos);
 
-        else if (BlockTags.createOptional(CGalaxy.location("torches")).contains(block)) {
+        else if (TagHelper.tagContains(BlockTags.create(CGalaxy.location("torches")), block)) {
             BlockState state1 = state.hasProperty(BlockStateProperties.HORIZONTAL_FACING) ?
                     CGBlockInit.COAL_WALL_TORCH.get().defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, state.getValue(BlockStateProperties.HORIZONTAL_FACING)) :
                     CGBlockInit.COAL_TORCH.get().defaultBlockState();

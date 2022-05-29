@@ -16,6 +16,10 @@ public class CGLangDataGen extends CGLangDataProvider {
             add("item.cgalaxy.lunac_crop", "Lunac Seeds");
             add("item.cgalaxy.lunar_carrots", "Lunar Carrot");
 
+            add("enchantment.cgalaxy.polarized", "Polarized");
+
+            add("entity.cgalaxy.lunar_villager", "Lunar Villager");
+
             add("dimension.minecraft.overworld", "Overworld");
             add("dimension.minecraft.the_nether", "The Nether");
             add("dimension.minecraft.the_end", "The End");

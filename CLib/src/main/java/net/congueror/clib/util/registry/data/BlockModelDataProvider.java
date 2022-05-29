@@ -14,6 +14,10 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
+
 public class BlockModelDataProvider extends BlockStateProvider {
     String modid;
     ExistingFileHelper helper;
@@ -231,10 +235,10 @@ public class BlockModelDataProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         BlockBuilder.OBJECTS.get(modid).forEach(builder -> {
             if (builder.blockModel != null) {
-                builder.blockModel.accept(this, builder.block);
+                ((BiConsumer<BlockModelDataProvider, Block>) builder.blockModel).accept(this, builder.regObject.get());
             }
             if (builder.itemModel == null && builder.generateBlockItem) {
-                basicBlockItem(builder.block);
+                basicBlockItem(builder.regObject.get());
             }
         });
     }

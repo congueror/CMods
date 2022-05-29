@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "clib:raw_zinc"
+          "name": "clib:deepslate_zinc_ore"
         }
       ],
       "conditions": [

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "MMM",
+    "CMC",
+    "MMM"
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:copper_ingot"
+    },
+    "C": {
+      "item": "clib:tier_1_circuit_board"
+    }
+  },
+  "result": {
+    "item": "cgalaxy:copper_plating"
+  }
+}

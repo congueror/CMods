@@ -87,7 +87,7 @@ public class SpaceSuitUtils {
 
                 if (entity instanceof ItemEntity) {
                     //entity.setDeltaMovement(0.0D, -obj.getGravity() / 4.0D, 0.0D);
-                    if (level.dimension() == CGDimensions.MOON.getDim() && getItemGravity(entity) <= 1 && entity.getDeltaMovement().y() <= -0.1) {
+                    if (level.dimension() == CGDimensions.MOON.getDim().value() && getItemGravity(entity) <= 1 && entity.getDeltaMovement().y() <= -0.1) {
                         setItemGravity(entity, 2);
                         entity.setDeltaMovement((entity.getDeltaMovement().x()), ((entity.getDeltaMovement().y()) + (obj.getGravity() * 2.5)),
                                 (entity.getDeltaMovement().z()));

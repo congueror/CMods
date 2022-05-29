@@ -33,7 +33,7 @@ public class GasExtractingCategory extends AbstractJeiCategory<GasExtractorRecip
 
     public GasExtractingCategory(IGuiHelper helper) {
         super(helper, "recipe.cgalaxy.gas_extracting",
-                ((GasExtractorRecipe) net.congueror.clib.compat.jei.JEICompat.getRecipes(CGRecipeSerializerInit.Types.GAS_EXTRACTING).get(0)).getProcessTime(),
+                ((GasExtractorRecipe) net.congueror.clib.compat.jei.JEICompat.getRecipes(CGRecipeSerializerInit.GAS_EXTRACTING_TYPE.get()).get(0)).getProcessTime(),
                 40000, 50, false);
     }
 

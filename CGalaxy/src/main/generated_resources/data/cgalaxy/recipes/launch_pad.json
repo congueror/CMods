@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "IBI",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "clib:steel_ingot"
+    },
+    "B": {
+      "item": "clib:steel_block"
+    }
+  },
+  "result": {
+    "item": "cgalaxy:launch_pad",
+    "count": 3
+  }
+}

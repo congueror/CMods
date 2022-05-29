@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "clib:raw_lead"
+          "name": "clib:deepslate_lead_ore"
         }
       ],
       "conditions": [

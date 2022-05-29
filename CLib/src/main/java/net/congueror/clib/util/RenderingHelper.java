@@ -24,7 +24,10 @@ import java.util.Random;
 
 import static net.minecraft.util.Mth.TWO_PI;
 
-public class RenderingHelper {
+public final class RenderingHelper {
+
+    private RenderingHelper() {}
+
     /**
      * Renders an entity on the screen.
      *

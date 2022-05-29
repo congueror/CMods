@@ -72,7 +72,7 @@ public class FuelRefineryRecipe implements FluidRecipe<IItemFluidInventory> {
     @Nonnull
     @Override
     public RecipeType<?> getType() {
-        return CGRecipeSerializerInit.Types.FUEL_REFINING;
+        return CGRecipeSerializerInit.FUEL_REFINING_TYPE.get();
     }
 
     public static class Serializer extends FluidRecipeSerializer<FuelRefineryRecipe> {

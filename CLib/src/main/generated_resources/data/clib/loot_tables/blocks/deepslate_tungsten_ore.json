@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "clib:raw_tungsten"
+          "name": "clib:deepslate_tungsten_ore"
         }
       ],
       "conditions": [

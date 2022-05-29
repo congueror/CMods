@@ -5,7 +5,6 @@ import net.minecraft.world.item.CreativeModeTab;
 
 public class CreativeTabs {
     public static class ResourcesIG extends ModCreativeModeTab {
-
         public static final ResourcesIG instance = new ResourcesIG(CreativeModeTab.TABS.length, "cresources");
         public ResourcesIG(int index, String label) {
             super(index, label);

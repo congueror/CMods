@@ -18,7 +18,7 @@ import net.minecraftforge.client.ISkyRenderHandler;
 
 public class MoonSkyEffects extends AbstractEffects {
     public MoonSkyEffects() {
-        super(CGalaxy.location("moon"), Float.NaN, false, DimensionSpecialEffects.SkyType.NONE, false, false);
+        super(CGalaxy.location("moon_effect"), Float.NaN, false, DimensionSpecialEffects.SkyType.NONE, false, false);
     }
 
     @Override
@@ -51,9 +51,13 @@ public class MoonSkyEffects extends AbstractEffects {
                 RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                 FogRenderer.levelFogColor();
+                poseStack.pushPose();
+                poseStack.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
+                poseStack.mulPose(Vector3f.XP.rotationDegrees(level.getTimeOfDay(partialTicks) * 0.2f * 360.0F));
                 this.starVBO.bind();
                 this.starVBO.drawWithShader(poseStack.last().pose(), RenderSystem.getProjectionMatrix(), shaderinstance);
                 VertexBuffer.unbind();
+                poseStack.popPose();
                 DefaultVertexFormat.POSITION.clearBufferState();
 
                 float size; //Size of the rectangle

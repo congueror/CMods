@@ -3,10 +3,14 @@ package net.congueror.clib.api.recipe;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import net.congueror.clib.util.TagHelper;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -17,18 +21,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class FluidIngredient implements Predicate<FluidStack> {
 
     public static final FluidIngredient EMPTY = new FluidIngredient();
 
     @Nullable
-    private final Tag.Named<Fluid> tag;
+    private final TagKey<Fluid> tag;
     @Nullable
     private final Fluid fluid;
     private final int amount;
 
-    public FluidIngredient(Tag.Named<Fluid> tag, Fluid fluid, int amount) {
+    public FluidIngredient(TagKey<Fluid> tag, Fluid fluid, int amount) {
         this.tag = tag;
         this.fluid = fluid;
         this.amount = amount;
@@ -38,7 +43,7 @@ public class FluidIngredient implements Predicate<FluidStack> {
         this(null, fluid, amount);
     }
 
-    public FluidIngredient(Tag.Named<Fluid> tag, int amount) {
+    public FluidIngredient(TagKey<Fluid> tag, int amount) {
         this(tag, null, amount);
     }
 
@@ -59,7 +64,7 @@ public class FluidIngredient implements Predicate<FluidStack> {
         if (fluid != null) {
             return Collections.singletonList(new FluidStack(fluid, amount));
         } else if (tag != null) {
-            return tag.getValues().stream().map(fluid1 -> new FluidStack(fluid1, amount)).collect(Collectors.toList());
+            return TagHelper.getFluidTagValues(tag).map(fluid1 -> new FluidStack(fluid1, amount)).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }
@@ -68,14 +73,14 @@ public class FluidIngredient implements Predicate<FluidStack> {
         ResourceLocation id = buf.readResourceLocation();
         int amount = buf.readVarInt();
         boolean isTag = buf.readBoolean();
-        return isTag ? new FluidIngredient(FluidTags.bind(id.toString()), amount) : new FluidIngredient(ForgeRegistries.FLUIDS.getValue(id), amount);
+        return isTag ? new FluidIngredient(FluidTags.create(id), amount) : new FluidIngredient(ForgeRegistries.FLUIDS.getValue(id), amount);
     }
 
     public void write(FriendlyByteBuf buf) {
         boolean isTag = (tag != null);
         buf.writeBoolean(isTag);
         if (isTag) {
-            buf.writeResourceLocation(tag.getName());
+            buf.writeResourceLocation(tag.location());
         } else if (fluid != null) {
             buf.writeResourceLocation(fluid.getRegistryName());
         } else {
@@ -94,7 +99,7 @@ public class FluidIngredient implements Predicate<FluidStack> {
             }
             if (obj.has("tag")) {
                 ResourceLocation tagId = new ResourceLocation(GsonHelper.getAsString(obj, "tag"));
-                return new FluidIngredient(FluidTags.bind(tagId.toString()), amount);
+                return new FluidIngredient(FluidTags.create(tagId), amount);
             }
             throw new JsonSyntaxException("Must have either \"fluid\" or \"tag\"");
         }

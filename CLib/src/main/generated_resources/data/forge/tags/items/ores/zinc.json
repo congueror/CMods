@@ -2,7 +2,6 @@
   "replace": false,
   "values": [
     "clib:zinc_ore",
-    "clib:deepslate_zinc_ore",
-    "clib:raw_zinc"
+    "clib:deepslate_zinc_ore"
   ]
 }

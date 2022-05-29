@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class RoomPressurizingCategory extends AbstractJeiCategory<RoomPressurizerRecipe> {
     public RoomPressurizingCategory(IGuiHelper helper) {
         super(helper, "recipe.cgalaxy.room_pressurizing",
-                ((RoomPressurizerRecipe) net.congueror.clib.compat.jei.JEICompat.getRecipes(CGRecipeSerializerInit.Types.ROOM_PRESSURIZING).get(0)).getProcessTime(),
+                ((RoomPressurizerRecipe) net.congueror.clib.compat.jei.JEICompat.getRecipes(CGRecipeSerializerInit.ROOM_PRESSURIZING_TYPE.get()).get(0)).getProcessTime(),
                 40000, 160, false);
     }
 

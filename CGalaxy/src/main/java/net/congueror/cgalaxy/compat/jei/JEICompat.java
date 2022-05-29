@@ -46,10 +46,10 @@ public class JEICompat implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        registration.addRecipes(getRecipes(CGRecipeSerializerInit.Types.FUEL_REFINING), FUEL_REFINING);
-        registration.addRecipes(getRecipes(CGRecipeSerializerInit.Types.GAS_EXTRACTING), OXYGEN_COMPRESSING);
-        registration.addRecipes(getRecipes(CGRecipeSerializerInit.Types.FUEL_LOADING), FUEL_LOADING);
-        registration.addRecipes(getRecipes(CGRecipeSerializerInit.Types.ROOM_PRESSURIZING), ROOM_PRESSURIZING);
+        registration.addRecipes(getRecipes(CGRecipeSerializerInit.FUEL_REFINING_TYPE.get()), FUEL_REFINING);
+        registration.addRecipes(getRecipes(CGRecipeSerializerInit.GAS_EXTRACTING_TYPE.get()), OXYGEN_COMPRESSING);
+        registration.addRecipes(getRecipes(CGRecipeSerializerInit.FUEL_LOADING_TYPE.get()), FUEL_LOADING);
+        registration.addRecipes(getRecipes(CGRecipeSerializerInit.ROOM_PRESSURIZING_TYPE.get()), ROOM_PRESSURIZING);
     }
 
     @Override

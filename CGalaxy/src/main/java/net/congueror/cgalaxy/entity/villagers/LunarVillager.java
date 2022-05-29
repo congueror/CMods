@@ -23,23 +23,18 @@ import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import org.apache.commons.lang3.tuple.MutablePair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class LunarVillager extends AbstractVillager implements CGEntity {
     public LunarVillagerProfession profession;
-    private int j;
 
     public LunarVillager(EntityType<? extends AbstractVillager> entityType, Level level) {
         super(entityType, level);
@@ -97,32 +92,21 @@ public class LunarVillager extends AbstractVillager implements CGEntity {
         int maxTrades = 5;
         Int2ObjectMap<VillagerTrades.ItemListing[]> trades = new Int2ObjectOpenHashMap<>(this.profession.trades);
 
+        ArrayList<Integer> nums = new ArrayList<>();
+
         for (int i = 1; i <= maxTrades; i++) {
-            List<Integer> weights = new ArrayList<>();
-            for (int j = trades.size(); j > 0; j--) {
-                for (int k = 0; k <= trades.size() - j; k++) {
-                    weights.add(j);
-                }
-            }
-
-            List<Item> aCostsItem = this.getOffers().stream().map(merchantOffer -> merchantOffer.getBaseCostA().getItem()).toList();
-            List<Integer> aCostsCount = this.getOffers().stream().map(merchantOffer -> merchantOffer.getBaseCostA().getCount()).toList();
-
-            VillagerTrades.ItemListing[] listings = trades.get((int) weights.get(this.random.nextInt(weights.size())));
-            VillagerTrades.ItemListing listing = listings[this.random.nextInt(listings.length)];
-            MerchantOffer offer = listing.getOffer(this, this.random);
-
-            if (aCostsItem.contains(offer.getBaseCostA().getItem()) &&
-                    aCostsCount.contains(offer.getBaseCostA().getCount())) {
-                i--;
-                j++;
-            } else {
+            int r = this.random.nextInt(trades.size());
+            if (!nums.contains(r)) {
+                VillagerTrades.ItemListing[] listings = trades.get(r);
+                VillagerTrades.ItemListing listing = listings[this.random.nextInt(listings.length)];
+                MerchantOffer offer = listing.getOffer(this, this.random);
                 this.getOffers().add(offer);
-            }
-
-            if (j >= trades.size() * 50) {
-                j = 0;
-                break;
+                nums.add(r);
+            } else {
+                i--;
+                if (nums.size() == trades.size()) {
+                    break;
+                }
             }
         }
     }

@@ -225,7 +225,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
                             button.setOnPress(pButton -> {
                                 if (canLaunch(obj, true).contains("yep")) {
                                     Minecraft.getInstance().setScreen(null);
-                                    CGNetwork.sendToServer(new PacketTeleport(obj.getOrbitDimension().location(), selectedSpaceStation.getPosition(), true));
+                                    CGNetwork.sendToServer(new PacketTeleport(obj.getOrbitDimension().value().location(), selectedSpaceStation.getPosition(), true));
                                 }
                             });
                         }
@@ -332,9 +332,8 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
                 BufferBuilder buffer = tessellator.getBuilder();
                 buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
                 var list = GalacticObjectBuilder.planets().stream().filter(entry -> entry.getValue().equals(currentObj)).map(Map.Entry::getKey).sorted(Comparator.comparingInt(GalacticObjectBuilder.GalacticObject::getRingIndex)).collect(Collectors.toList());
-                for (int i = 0; i < list.size(); i++) {
-                    GalacticObjectBuilder.GalacticObject<?> obj = list.get(i);
-                    int radius = startRadius + (49 * i);
+                for (GalacticObjectBuilder.GalacticObject<?> obj : list) {
+                    int radius = startRadius + (49 * obj.getRingIndex());
                     drawRing(this.width / 2 + 56 + moveX, this.height / 2 + 9 + moveY, radius - 3, radius, buffer, obj);
                 }
                 tessellator.end();
@@ -377,16 +376,14 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
                 buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
                 if (this.currentObj.getType() instanceof GalacticObjectBuilder.Planet) {
                     var list = GalacticObjectBuilder.moons().stream().filter(entry -> entry.getValue().equals(currentObj)).map(Map.Entry::getKey).sorted(Comparator.comparingInt(GalacticObjectBuilder.GalacticObject::getRingIndex)).collect(Collectors.toList());
-                    for (int i = 0; i < list.size(); i++) {
-                        GalacticObjectBuilder.GalacticObject<?> obj = list.get(i);
-                        int radius = startRadius + (49 * i);
+                    for (GalacticObjectBuilder.GalacticObject<?> obj : list) {
+                        int radius = startRadius + (49 * obj.getRingIndex());
                         drawRing(this.width / 2 + 56 + moveX, this.height / 2 + 9 + moveY, radius - 3, radius, buffer, obj);
                     }
                 } else if (this.currentObj.getType() instanceof GalacticObjectBuilder.Moon moon) {
                     var list = GalacticObjectBuilder.moons().stream().filter(entry -> entry.getValue().equals(moon.getPlanet())).map(Map.Entry::getKey).sorted(Comparator.comparingInt(GalacticObjectBuilder.GalacticObject::getRingIndex)).collect(Collectors.toList());
-                    for (int i = 0; i < list.size(); i++) {
-                        GalacticObjectBuilder.GalacticObject<?> obj = list.get(i);
-                        int radius = startRadius + (49 * i);
+                    for (GalacticObjectBuilder.GalacticObject<?> obj : list) {
+                        int radius = startRadius + (49 * obj.getRingIndex());
                         drawRing(this.width / 2 + 56 + moveX, this.height / 2 + 9 + moveY, radius - 3, radius, buffer, obj);
                     }
                 }
@@ -486,7 +483,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
 
     private void onSpaceStationButtonPress() {
         spaceStationScreenOpen = true;
-        this.minecraft.pushGuiLayer(new SpaceStationSelectScreen(player.getUUID(), currentObj.getOrbitDimension()));
+        this.minecraft.pushGuiLayer(new SpaceStationSelectScreen(player.getUUID(), currentObj.getOrbitDimension().value()));
     }
 
     private Button addBackButton(GalacticObjectBuilder.GalacticObject<?> object) {
@@ -533,7 +530,7 @@ public class GalaxyMapScreen extends AbstractContainerScreen<GalaxyMapContainer>
     private void onLaunchButtonPress(GalacticObjectBuilder.GalacticObject<?> object) {
         if (canLaunch(object, false).contains("yep") && player.level.dimension() != object.getDimension()) {
             Minecraft.getInstance().setScreen(null);
-            CGNetwork.sendToServer(new PacketTeleport(object.getDimension().location(), BlockPos.ZERO, false));
+            CGNetwork.sendToServer(new PacketTeleport(object.getDimension().value().location(), BlockPos.ZERO, false));
         }
     }
 

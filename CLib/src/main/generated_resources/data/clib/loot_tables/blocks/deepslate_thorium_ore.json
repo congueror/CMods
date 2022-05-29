@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "clib:raw_thorium"
+          "name": "clib:deepslate_thorium_ore"
         }
       ],
       "conditions": [

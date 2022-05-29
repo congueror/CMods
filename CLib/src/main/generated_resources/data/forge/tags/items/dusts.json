@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "#forge:dusts/silica",
     "#forge:dusts/saltpetre",
     "#forge:dusts/sulfur",
     "#forge:dusts/salt",

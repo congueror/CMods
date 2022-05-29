@@ -10,10 +10,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolAction;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
-public class CLRotatedPillarBlock extends RotatedPillarBlock implements ICLibBlock {
+public class CLRotatedPillarBlock extends RotatedPillarBlock {
 
     private final Map<ToolAction, Supplier<? extends Block>> modifiedState = new HashMap<>();
 
@@ -30,8 +31,8 @@ public class CLRotatedPillarBlock extends RotatedPillarBlock implements ICLibBlo
         return null;
     }
 
-    @Override
-    public void setModifiedState(ToolAction action, Supplier<? extends Block> block) {
+    public CLRotatedPillarBlock setModifiedState(ToolAction action, Supplier<? extends Block> block) {
         modifiedState.put(action, block);
+        return this;
     }
 }

@@ -82,7 +82,7 @@ public class GasExtractorRecipe implements FluidRecipe<IItemFluidInventory> {
     @Nonnull
     @Override
     public RecipeType<?> getType() {
-        return CGRecipeSerializerInit.Types.GAS_EXTRACTING;
+        return CGRecipeSerializerInit.GAS_EXTRACTING_TYPE.get();
     }
 
     public static class Serializer extends FluidRecipeSerializer<GasExtractorRecipe> {

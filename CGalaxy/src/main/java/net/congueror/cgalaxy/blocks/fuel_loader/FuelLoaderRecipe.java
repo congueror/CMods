@@ -69,7 +69,7 @@ public class FuelLoaderRecipe implements FluidRecipe<IItemFluidInventory> {
     @Nonnull
     @Override
     public RecipeType<?> getType() {
-        return CGRecipeSerializerInit.Types.FUEL_LOADING;
+        return CGRecipeSerializerInit.FUEL_LOADING_TYPE.get();
     }
 
     public static class Serializer extends FluidRecipeSerializer<FuelLoaderRecipe> {

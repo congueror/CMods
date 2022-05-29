@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "clib:raw_nickel"
+          "name": "clib:deepslate_nickel_ore"
         }
       ],
       "conditions": [

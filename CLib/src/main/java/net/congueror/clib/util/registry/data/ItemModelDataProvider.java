@@ -4,6 +4,7 @@ import net.congueror.clib.util.registry.builders.BlockBuilder;
 import net.congueror.clib.util.registry.builders.ItemBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -12,6 +13,8 @@ import net.minecraftforge.client.model.generators.loaders.DynamicBucketModelBuil
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
 public class ItemModelDataProvider extends ItemModelProvider {
 
@@ -64,13 +67,13 @@ public class ItemModelDataProvider extends ItemModelProvider {
         if (BlockBuilder.OBJECTS.get(modid) != null)
             BlockBuilder.OBJECTS.get(modid).forEach(builder -> {
             if (builder.itemModel != null) {
-                builder.itemModel.accept(this, builder.block);
+                ((BiConsumer<ItemModelDataProvider, Block>) builder.itemModel).accept(this, builder.regObject.get());
             }
         });
         if (ItemBuilder.OBJECTS.get(modid) != null)
             ItemBuilder.OBJECTS.get(modid).forEach(builder -> {
             if (builder.itemModel != null) {
-                builder.itemModel.accept(this, builder.getItem());
+                builder.itemModel.accept(this, builder.regObject.get());
             }
         });
     }

@@ -73,7 +73,7 @@ public class SolarGeneratorRecipe implements ItemRecipe<Container> {
 
     @Override
     public @NotNull RecipeType<?> getType() {
-        return CLRecipeSerializerInit.Types.SOLAR_ENERGY;
+        return CLRecipeSerializerInit.SOLAR_ENERGY_TYPE.get();
     }
 
     public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<SolarGeneratorRecipe> {

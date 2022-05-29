@@ -4,7 +4,10 @@ import com.mojang.math.Vector4f;
 
 import java.text.DecimalFormat;
 
-public class MathHelper {
+public final class MathHelper {
+
+    private MathHelper() {}
+
     /**
      * Converts RGB to Decimal RGB
      */

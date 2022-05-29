@@ -42,13 +42,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
- * {@link net.minecraft.data.loot.BlockLoot}
+ * {@link net.minecraft.data.loot.BlockLoot} <br> {@link net.minecraft.data.loot.ChestLoot}
  */
 public class LootTableDataProvider extends LootTableProvider implements DataProvider {
     public final String modid;
@@ -77,7 +78,7 @@ public class LootTableDataProvider extends LootTableProvider implements DataProv
         tables.clear();
         BlockBuilder.OBJECTS.get(modid).forEach(builder -> {
             if (builder.lootTable != null) {
-                builder.lootTable.accept(this, builder.block);
+                ((BiConsumer<LootTableDataProvider, Block>) builder.lootTable).accept(this, builder.regObject.get());
             }
         });
         return tables;

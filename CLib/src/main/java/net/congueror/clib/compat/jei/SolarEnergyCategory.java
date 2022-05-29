@@ -38,7 +38,7 @@ public class SolarEnergyCategory implements IRecipeCategory<SolarGeneratorRecipe
 
     public SolarEnergyCategory(IGuiHelper helper) {
         this.helper = helper;
-        int processTime = ((SolarGeneratorRecipe) JEICompat.getRecipes(CLRecipeSerializerInit.Types.SOLAR_ENERGY).get(0)).getProcessTime();
+        int processTime = ((SolarGeneratorRecipe) JEICompat.getRecipes(CLRecipeSerializerInit.SOLAR_ENERGY_TYPE.get()).get(0)).getProcessTime();
         ResourceLocation e = new ResourceLocation(CLib.MODID, "textures/gui/screen_elements.png");
         arrow = helper.drawableBuilder(e, 32, 43, elementWidth, elementHeight).build();
         energy_glass = helper.drawableBuilder(e, 16, 0, elementWidth, elementHeight).build();

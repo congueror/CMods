@@ -17,6 +17,6 @@ public class BlockTagsDataGen extends BlockTagsDataProvider {
     @Override
     protected void addTags() {
         super.addTags();
-        tag(BlockTags.createOptional(CGalaxy.location("torches"))).add(Blocks.TORCH, Blocks.WALL_TORCH, Blocks.SOUL_TORCH, Blocks.SOUL_WALL_TORCH, Blocks.REDSTONE_TORCH, Blocks.REDSTONE_WALL_TORCH);
+        tag(BlockTags.create(CGalaxy.location("torches"))).add(Blocks.TORCH, Blocks.WALL_TORCH, Blocks.SOUL_TORCH, Blocks.SOUL_WALL_TORCH, Blocks.REDSTONE_TORCH, Blocks.REDSTONE_WALL_TORCH);
     }
 }

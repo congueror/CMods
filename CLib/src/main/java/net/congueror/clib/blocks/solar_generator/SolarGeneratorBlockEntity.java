@@ -45,7 +45,7 @@ public class SolarGeneratorBlockEntity extends AbstractItemBlockEntity<SolarGene
     @Override
     public SolarGeneratorRecipe getRecipe() {
         assert level != null;
-        return level.getRecipeManager().getRecipeFor(CLRecipeSerializerInit.Types.SOLAR_ENERGY, wrapper, level).orElse(null);
+        return level.getRecipeManager().getRecipeFor(CLRecipeSerializerInit.SOLAR_ENERGY_TYPE.get(), wrapper, level).orElse(null);
     }
 
     @Override

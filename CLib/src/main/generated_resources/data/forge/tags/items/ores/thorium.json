@@ -2,7 +2,6 @@
   "replace": false,
   "values": [
     "clib:thorium_ore",
-    "clib:deepslate_thorium_ore",
-    "clib:raw_thorium"
+    "clib:deepslate_thorium_ore"
   ]
 }

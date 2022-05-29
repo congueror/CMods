@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "clib:raw_chromium"
+          "name": "clib:deepslate_chromium_ore"
         }
       ],
       "conditions": [

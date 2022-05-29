@@ -2,7 +2,6 @@
   "replace": false,
   "values": [
     "clib:silver_ore",
-    "clib:deepslate_silver_ore",
-    "clib:raw_silver"
+    "clib:deepslate_silver_ore"
   ]
 }

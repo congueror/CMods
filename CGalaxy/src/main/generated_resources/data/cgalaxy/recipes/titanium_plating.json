@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "MMM",
+    "CPC",
+    "MMM"
+  ],
+  "key": {
+    "M": {
+      "item": "clib:titanium_ingot"
+    },
+    "C": {
+      "item": "clib:tier_3_circuit_board"
+    },
+    "P": {
+      "item": "cgalaxy:netherite_plating"
+    }
+  },
+  "result": {
+    "item": "cgalaxy:titanium_plating"
+  }
+}

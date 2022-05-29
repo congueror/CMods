@@ -48,6 +48,10 @@ public class CGClientEvents {
     public static class ModClientEvents {
         @SubscribeEvent
         public static void clientSetup(FMLClientSetupEvent e) {
+            e.enqueueWork(() -> {
+                new MoonSkyEffects().build();
+                new OverworldOrbitEffects().build();
+            });
             ClientRegistry.registerKeyBinding(KeyMappings.LAUNCH_ROCKET);
             ClientRegistry.registerKeyBinding(KeyMappings.OPEN_SPACE_SUIT_MENU);
 
@@ -63,9 +67,6 @@ public class CGClientEvents {
             ItemBlockRenderTypes.setRenderLayer(CGBlockInit.COAL_WALL_TORCH.get(), RenderType.cutout());
 
             OverlayRegistry.registerOverlayAbove(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, "cgalaxy_rocket_y_element", new RocketHUDOverlay());
-
-            new MoonSkyEffects().build();
-            new OverworldOrbitEffects().build();
         }
 
         @SubscribeEvent

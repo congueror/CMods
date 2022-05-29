@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "tag": "forge:dusts/tungsten"
+    "tag": "forge:raw_materials/raw"
   },
   "result": "clib:tungsten_ingot",
   "experience": 0.7,

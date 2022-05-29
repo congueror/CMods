@@ -2,6 +2,7 @@ package net.congueror.clib.util;
 
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 
@@ -15,13 +16,13 @@ public enum HarvestLevels {
     NETHERITE(Tags.Blocks.NEEDS_NETHERITE_TOOL)
     ;
 
-    Tag.Named<Block> tag;
+    TagKey<Block> tag;
 
-    HarvestLevels(Tag.Named<Block> tag) {
+    HarvestLevels(TagKey<Block> tag) {
         this.tag = tag;
     }
 
-    public Tag.Named<Block> getTag() {
+    public TagKey<Block> getTag() {
         return tag;
     }
 }

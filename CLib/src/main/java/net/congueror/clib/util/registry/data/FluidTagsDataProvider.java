@@ -4,6 +4,7 @@ import net.congueror.clib.util.registry.builders.FluidBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.FluidTagsProvider;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -18,7 +19,7 @@ public class FluidTagsDataProvider extends FluidTagsProvider {
     @Override
     protected void addTags() {
         FluidBuilder.OBJECTS.get(modId).forEach(fluidBuilder -> {
-            for (Map.Entry<String, Tag.Named<Fluid>> tags : fluidBuilder.fluidTags.entrySet()) {
+            for (Map.Entry<String, TagKey<Fluid>> tags : fluidBuilder.fluidTags.entrySet()) {
                 tag(tags.getValue()).add(fluidBuilder.getStill().get());
             }
         });

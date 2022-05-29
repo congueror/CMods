@@ -11,10 +11,10 @@ public class SpaceSuitUpgradeItem extends Item {
     private final int defense;
     private final float toughness;
     private final float knockbackResistance;
-    private final Supplier<Item>[] previousTiers;
+    private final Supplier<SpaceSuitUpgradeItem>[] previousTiers;
 
     @SafeVarargs
-    public SpaceSuitUpgradeItem(Properties properties, int defense, float toughness, float knockbackResistance, Supplier<Item>... previousTier) {
+    public SpaceSuitUpgradeItem(Properties properties, int defense, float toughness, float knockbackResistance, Supplier<SpaceSuitUpgradeItem>... previousTier) {
         super(properties.stacksTo(4));
         this.defense = defense;
         this.toughness = toughness;
@@ -36,8 +36,8 @@ public class SpaceSuitUpgradeItem extends Item {
 
     public SpaceSuitUpgradeItem[] getPreviousTiers() {
         return Arrays.stream(previousTiers)
-                .filter(itemSupplier -> itemSupplier.get() instanceof SpaceSuitUpgradeItem)
-                .map(itemSupplier -> (SpaceSuitUpgradeItem) itemSupplier.get())
+                .filter(itemSupplier -> itemSupplier.get() != null)
+                .map(Supplier::get)
                 .toArray(SpaceSuitUpgradeItem[]::new);
     }
 

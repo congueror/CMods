@@ -231,7 +231,7 @@ public class OxygenMaskItem extends SpaceSuitItem {
                         String planetName = "Planet: " + I18n.get(locale);
                         GuiComponent.drawString(poseStack, mc.font, planetName, 2, 10, textColor);
 
-                        String locale1 = "biome." + level.getBiome(player.blockPosition()).getRegistryName().getNamespace() + "." + level.getBiome(player.blockPosition()).getRegistryName().getPath();
+                        String locale1 = "biome." + level.getBiome(player.blockPosition()).value().getRegistryName().getNamespace() + "." + level.getBiome(player.blockPosition()).value().getRegistryName().getPath();
                         String biomeName = "Biome: " + I18n.get(locale1);
                         GuiComponent.drawString(poseStack, mc.font, biomeName, 2, 20, textColor);
 

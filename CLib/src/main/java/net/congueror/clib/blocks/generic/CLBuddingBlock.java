@@ -3,9 +3,6 @@ package net.congueror.clib.blocks.generic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AmethystBlock;
 import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.Block;
@@ -13,18 +10,17 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraftforge.common.ToolAction;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
-public class CLBuddingBlock extends AmethystBlock implements ICLibBlock {
+public class CLBuddingBlock extends AmethystBlock {
     public static final int GROWTH_CHANCE = 5;
     private static final Direction[] DIRECTIONS = Direction.values();
-    private final Map<ToolAction, Supplier<? extends Block>> modifiedState = new HashMap<>();
 
     private final List<Supplier<? extends Block>> list = new ArrayList<>();
 
@@ -69,19 +65,5 @@ public class CLBuddingBlock extends AmethystBlock implements ICLibBlock {
 
     public static boolean canClusterGrowAtState(BlockState pState) {
         return pState.isAir() || pState.is(Blocks.WATER) && pState.getFluidState().getAmount() == 8;
-    }
-
-    @Nullable
-    @Override
-    public BlockState getToolModifiedState(BlockState state, Level world, BlockPos pos, Player player, ItemStack stack, ToolAction toolAction) {
-        if (this.modifiedState.containsKey(toolAction)) {
-            return modifiedState.get(toolAction).get().defaultBlockState();
-        }
-        return null;
-    }
-
-    @Override
-    public void setModifiedState(ToolAction action, Supplier<? extends Block> block) {
-        modifiedState.put(action, block);
     }
 }

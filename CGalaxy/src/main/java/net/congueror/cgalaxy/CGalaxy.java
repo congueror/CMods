@@ -28,19 +28,17 @@ public class CGalaxy {
         CGBlockEntityInit.BLOCK_ENTITY_TYPES.register(modEventBus);
         CGContainerInit.MENU_TYPES.register(modEventBus);
         CGRecipeSerializerInit.RECIPE_SERIALIZERS.register(modEventBus);
+        CGRecipeSerializerInit.RECIPE_TYPES.register(modEventBus);
         CGFluidInit.FLUIDS.register(modEventBus);
         CGEntityTypeInit.ENTITY_TYPES.register(modEventBus);
         CGCarverInit.CARVERS.register(modEventBus);
         CGFeatureInit.FEATURES.register(modEventBus);
         CGSoundInit.SOUNDS.register(modEventBus);
         CGStructureInit.STRUCTURES.register(modEventBus);
+        CGEnchantmentInit.ENCHANTMENTS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
-//TODO: Lunar Crop
-//TODO: Moon Village/Villagers
-//TODO: Moon Boss
-//TODO: Space Station (Zero-G: 0 Gravity Attribute, delta movement x - 0.4 unless tethered or in air, ability to go up or down)
 
     public static ResourceLocation location(String texture) {
         return new ResourceLocation(CGalaxy.MODID, texture);

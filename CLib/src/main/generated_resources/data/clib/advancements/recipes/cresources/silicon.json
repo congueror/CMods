@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "has_dusts/silica": {
+    "has_gems/quartz": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:dusts/silica"
+            "tag": "forge:gems/quartz"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_dusts/silica",
+      "has_gems/quartz",
       "has_the_recipe"
     ]
   ]

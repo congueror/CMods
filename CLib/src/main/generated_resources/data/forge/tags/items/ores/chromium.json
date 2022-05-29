@@ -2,7 +2,6 @@
   "replace": false,
   "values": [
     "clib:chromium_ore",
-    "clib:deepslate_chromium_ore",
-    "clib:raw_chromium"
+    "clib:deepslate_chromium_ore"
   ]
 }

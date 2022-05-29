@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "MMM",
+    "CPC",
+    "MMM"
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "C": {
+      "item": "clib:tier_3_circuit_board"
+    },
+    "P": {
+      "item": "cgalaxy:diamond_plating"
+    }
+  },
+  "result": {
+    "item": "cgalaxy:netherite_plating"
+  }
+}

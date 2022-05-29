@@ -3,12 +3,14 @@ package net.congueror.cgalaxy.world;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGFeatureInit;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
@@ -16,22 +18,24 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.List;
+
 import static net.congueror.clib.world.WorldHelper.*;
 
 @Mod.EventBusSubscriber(modid = CGalaxy.MODID)
 public class CGFeatureGen {
 
-    public static PlacedFeature MOON_IRON;
-    public static PlacedFeature MOON_SILICON;
-    public static PlacedFeature MOON_ALUMINUM;
-    public static PlacedFeature MOON_GLOWSTONE;
-    public static PlacedFeature MOON_ICE_CLUSTER;
-    public static PlacedFeature MOON_CHEESE_CLUSTER;
+    public static Holder<PlacedFeature> MOON_IRON;
+    public static Holder<PlacedFeature> MOON_SILICON;
+    public static Holder<PlacedFeature> MOON_ALUMINUM;
+    public static Holder<PlacedFeature> MOON_GLOWSTONE;
+    public static Holder<PlacedFeature> MOON_ICE_CLUSTER;
+    public static Holder<PlacedFeature> MOON_CHEESE_CLUSTER;
 
-    public static PlacedFeature OIL_LAKE;
-    public static PlacedFeature METEORITE;
-    public static PlacedFeature SAPPHIRE_METEORITE;
-    public static PlacedFeature METEORITE_OVERWORLD;
+    public static Holder<PlacedFeature> OIL_LAKE;
+    public static Holder<PlacedFeature> METEORITE;
+    public static Holder<PlacedFeature> SAPPHIRE_METEORITE;
+    public static Holder<PlacedFeature> METEORITE_OVERWORLD;
 
     public static void registerFeatures() {
         RuleTest moon = blockRuleTest(CGBlockInit.MOON_STONE.get());
@@ -45,14 +49,17 @@ public class CGFeatureGen {
 
         OIL_LAKE = registerConfiguredLake(CGBlockInit.OIL.get(), 14, 34, 34);
 
-        METEORITE = Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation(CGalaxy.MODID, "meteorite"), CGFeatureInit.METEORITE.get().configured(new BlockStateConfiguration(CGBlockInit.METEORITE.get().defaultBlockState())))
-                .placed(CountPlacement.of(1), HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE), RarityFilter.onAverageOnceEvery(10), BiomeFilter.biome(), InSquarePlacement.spread());
+        METEORITE = registerConfiguredFeature(new ResourceLocation(CGalaxy.MODID, "meteorite").toString(), CGFeatureInit.METEORITE.get(),
+                new BlockStateConfiguration(CGBlockInit.METEORITE.get().defaultBlockState()),
+                CountPlacement.of(1), HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE), RarityFilter.onAverageOnceEvery(10), BiomeFilter.biome(), InSquarePlacement.spread());
 
-        SAPPHIRE_METEORITE = Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation(CGalaxy.MODID, "astral_sapphire_meteorite"), CGFeatureInit.METEORITE.get().configured(new BlockStateConfiguration(CGBlockInit.ASTRAL_SAPPHIRE_ORE.get().defaultBlockState())))
-                .placed(CountPlacement.of(1), HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE), RarityFilter.onAverageOnceEvery(100), BiomeFilter.biome(), InSquarePlacement.spread());
+        SAPPHIRE_METEORITE = registerConfiguredFeature(new ResourceLocation(CGalaxy.MODID, "astral_sapphire_meteorite").toString(), CGFeatureInit.METEORITE.get(),
+                new BlockStateConfiguration(CGBlockInit.ASTRAL_SAPPHIRE_ORE.get().defaultBlockState()),
+                CountPlacement.of(1), HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE), RarityFilter.onAverageOnceEvery(100), BiomeFilter.biome(), InSquarePlacement.spread());
 
-        METEORITE_OVERWORLD = Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation(CGalaxy.MODID, "meteorite_overworld"), CGFeatureInit.METEORITE.get().configured(new BlockStateConfiguration(CGBlockInit.METEORITE.get().defaultBlockState())))
-                .placed(CountPlacement.of(1), HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE), RarityFilter.onAverageOnceEvery(100), BiomeFilter.biome(), InSquarePlacement.spread());
+        METEORITE_OVERWORLD = registerConfiguredFeature(new ResourceLocation(CGalaxy.MODID, "meteorite_overworld").toString(), CGFeatureInit.METEORITE.get(),
+                new BlockStateConfiguration(CGBlockInit.METEORITE.get().defaultBlockState()),
+                CountPlacement.of(1), HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE), RarityFilter.onAverageOnceEvery(100), BiomeFilter.biome(), InSquarePlacement.spread());
     }
 
     @SubscribeEvent

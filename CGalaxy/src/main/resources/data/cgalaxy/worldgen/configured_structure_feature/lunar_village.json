@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:village",
+  "config": {
+    "start_pool": "cgalaxy:lunar_village",
+    "size": 3
+  },
+
+  "biomes": "cgalaxy:the_moon",
+  "adapt_noise": false,
+  "spawn_overrides": {}
+}

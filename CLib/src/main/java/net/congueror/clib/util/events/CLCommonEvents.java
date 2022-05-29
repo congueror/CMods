@@ -2,6 +2,7 @@ package net.congueror.clib.util.events;
 
 import net.congueror.clib.CLib;
 import net.congueror.clib.networking.CLNetwork;
+import net.congueror.clib.util.CreativeTabs;
 import net.congueror.clib.world.FeatureGen;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "cgalaxy:lunar_village",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 897593047,
+    "spacing": 130,
+    "separation": 100,
+    "type": "minecraft:random_spread"
+  }
+}

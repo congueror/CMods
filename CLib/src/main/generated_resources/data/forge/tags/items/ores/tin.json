@@ -2,7 +2,6 @@
   "replace": false,
   "values": [
     "clib:tin_ore",
-    "clib:deepslate_tin_ore",
-    "clib:raw_tin"
+    "clib:deepslate_tin_ore"
   ]
 }

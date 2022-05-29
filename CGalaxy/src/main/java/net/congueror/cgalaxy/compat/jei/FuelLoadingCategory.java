@@ -33,7 +33,7 @@ public class FuelLoadingCategory extends AbstractJeiCategory<FuelLoaderRecipe> {
 
     public FuelLoadingCategory(IGuiHelper helper) {
         super(helper, "recipe.cgalaxy.fuel_loading",
-                ((FuelLoaderRecipe) net.congueror.clib.compat.jei.JEICompat.getRecipes(CGRecipeSerializerInit.Types.FUEL_LOADING).get(0)).getProcessTime(),
+                ((FuelLoaderRecipe) net.congueror.clib.compat.jei.JEICompat.getRecipes(CGRecipeSerializerInit.FUEL_LOADING_TYPE.get()).get(0)).getProcessTime(),
                 40000, 30, false);
     }
 

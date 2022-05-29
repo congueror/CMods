@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "cgalaxy:astral_sapphire"
+    },
+    {
+      "item": "cgalaxy:astral_sapphire"
+    },
+    {
+      "item": "cgalaxy:astral_sapphire"
+    },
+    {
+      "item": "cgalaxy:astral_sapphire"
+    },
+    {
+      "item": "cgalaxy:astral_sapphire"
+    },
+    {
+      "item": "cgalaxy:astral_sapphire"
+    },
+    {
+      "item": "cgalaxy:astral_sapphire"
+    },
+    {
+      "item": "cgalaxy:astral_sapphire"
+    },
+    {
+      "item": "cgalaxy:astral_sapphire"
+    }
+  ],
+  "result": {
+    "item": "cgalaxy:astral_sapphire_block"
+  }
+}

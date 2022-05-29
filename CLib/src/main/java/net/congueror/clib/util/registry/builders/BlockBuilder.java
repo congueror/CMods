@@ -1,24 +1,21 @@
 package net.congueror.clib.util.registry.builders;
 
+import net.congueror.clib.util.CreativeTabs;
+import net.congueror.clib.util.ListMap;
 import net.congueror.clib.util.registry.data.BlockModelDataProvider;
 import net.congueror.clib.util.registry.data.ItemModelDataProvider;
 import net.congueror.clib.util.registry.data.LootTableDataProvider;
-import net.congueror.clib.blocks.generic.ICLibBlock;
-import net.congueror.clib.util.CreativeTabs;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -27,89 +24,90 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
  * A class that can be used for registering blocks and block items to the game. This builder class provides many methods that can be used to ease the burden of registering blocks.
  */
 @SuppressWarnings("unused")
-public class BlockBuilder {
-    private final String name;
-    public final Block block;
-    public RegistryObject<Block> regObject;
+public class BlockBuilder<B extends Block, I extends BlockItem> implements Builder<B> {
+    public RegistryObject<B> regObject;
+
+    @Nullable
+    private final DeferredRegister<Item> register;
+
+    public static final ListMap<String, BlockBuilder<?, ?>> OBJECTS = new ListMap<>();
 
     /**
      * All the block tags added via the {@link #withNewItemTag(String)} method. The string is simply the full name of the tag, e.g. "forge:storage_blocks/steel".
      */
-    public static final Map<String, Tag.Named<Block>> BLOCK_TAGS = new HashMap<>();
+    public static final Map<String, TagKey<Block>> BLOCK_TAGS = new HashMap<>();
+    public final Map<TagKey<Block>, TagKey<Block>> blockTagsGen = new HashMap<>();
+    public final Map<String, TagKey<Block>> blockTags = new HashMap<>();
 
-    public static final Map<String, List<BlockBuilder>> OBJECTS = new HashMap<>();
-
-    public final Map<Tag.Named<Block>, Tag.Named<Block>> blockTagsGen = new HashMap<>();
-    public final Map<String, Tag.Named<Block>> blockTags = new HashMap<>();
     @Nullable
-    public BiConsumer<BlockModelDataProvider, Block> blockModel = BlockStateProvider::simpleBlock;
-    public BiConsumer<LootTableDataProvider, Block> lootTable = LootTableDataProvider::createStandardBlockDrop;
+    public BiConsumer<BlockModelDataProvider, B> blockModel = BlockStateProvider::simpleBlock;
+    @Nullable
+    public BiConsumer<ItemModelDataProvider, B> itemModel;
+
+    public BiConsumer<LootTableDataProvider, B> lootTable = LootTableDataProvider::createStandardBlockDrop;
+    public final List<BiConsumer<Consumer<FinishedRecipe>, Block>> recipes = new ArrayList<>();
     public final Map<String, String> locale = new HashMap<>();
 
+    public RenderType renderType = null;
+
+
     public boolean generateBlockItem = true;
-    private Function<Block, BlockItem> item = null;
+    private Function<B, I> item = null;
     public Item.Properties itemProperties = new Item.Properties().tab(CreativeTabs.AssortmentsIG.instance);
     public int burnTime;
     public int containerType;
 
-    public final List<BiConsumer<Consumer<FinishedRecipe>, Block>> recipes = new ArrayList<>();
-    public final Map<Tag.Named<Item>, Tag.Named<Item>> itemTagsGen = new HashMap<>();
-    public final Map<String, Tag.Named<Item>> itemTags = new HashMap<>();
-    @Nullable
-    public BiConsumer<ItemModelDataProvider, Block> itemModel;
+    public final Map<TagKey<Item>, TagKey<Item>> itemTagsGen = new HashMap<>();
+    public final Map<String, TagKey<Item>> itemTags = new HashMap<>();
 
-    public RenderType renderType = null;
+    public record BlockDeferredRegister(DeferredRegister<Block> register, DeferredRegister<Item> itemRegister) {
 
-    /**
-     * Convenience method for creating a fluid block
-     */
-    public static BlockBuilder createFluid(String name, LiquidBlock block) {
-        return new BlockBuilder(name, block)
-                .withLootTable(null)
-                .withBlockModel(null)
-                .withGeneratedBlockItem(false);
+        public <B extends Block, I extends BlockItem> BlockBuilder<B, I> create(String name, Supplier<B> block) {
+            return new BlockBuilder<>(register.register(name, block), itemRegister);
+        }
+
+        public <B extends LiquidBlock, I extends BlockItem> BlockBuilder<B, I> createFluid(String name, Supplier<B> block) {
+            return new BlockBuilder<B, I>(register.register(name, block), itemRegister)
+                    .withLootTable(null)
+                    .withBlockModel(null)
+                    .withGeneratedBlockItem(false);
+        }
+    }
+
+    public BlockBuilder(RegistryObject<B> regObject, @Nullable DeferredRegister<Item> items) {
+        this.regObject = regObject;
+        this.register = items;
     }
 
     /**
-     * This is the main constructor of the builder.
-     *
-     * @param name  The name of the block. e.g. "my_ore"
-     * @param block A new instance of a class which extends {@link Block}.
+     * Returns a stream of all block builders.
      */
-    public BlockBuilder(String name, Block block) {
-        this.name = name;
-        this.block = block;
-    }
-
-    private static Stream<BlockBuilder> stream() {
-        List<BlockBuilder> list = new ArrayList<>();
+    private static Stream<BlockBuilder<?, ?>> stream() {
+        List<BlockBuilder<?, ?>> list = new ArrayList<>();
         OBJECTS.values().forEach(list::addAll);
         return list.stream();
     }
 
-    /**
-     * Builds/Registers this BlockBuilder object to the DeferredRegister passed in.
-     *
-     * @param register The block {@link DeferredRegister} of your mod.
-     * @return The registered {@link RegistryObject}.
-     */
-    public RegistryObject<Block> build(DeferredRegister<Block> register) {
-        String modid = ObfuscationReflectionHelper.getPrivateValue(DeferredRegister.class, register, "modid");
-        RegistryObject<Block> obj = register.register(name, () -> block);
+    public RegistryObject<B> build() {
+        String modid = this.regObject.getId().getNamespace();
 
         if (generateBlockItem) {
-            BlockItem item;
+            Supplier<I> item;
             if (this.item != null) {
-                item = this.item.apply(block);
+                item = () -> this.item.apply(regObject.get());
             } else {
-                item = new BlockItem(block, itemProperties) {
+                //noinspection unchecked
+                item = () -> (I) new BlockItem(regObject.get(), itemProperties) {
                     @Override
                     public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
                         return burnTime;
@@ -136,21 +134,13 @@ public class BlockBuilder {
                 };
             }
 
-            new ItemBuilder(name, item)
+            new ItemBuilder<>(register.register(this.regObject.getId().getPath(), item))
                     .withItemModel(null)
-                    .build(ItemBuilder.REGISTERS.get(modid));
+                    .build();
         }
 
-        List<BlockBuilder> newList;
-        if (OBJECTS.get(modid) != null) {
-            newList = new ArrayList<>(OBJECTS.get(modid));
-        } else {
-            newList = new ArrayList<>();
-        }
-        newList.add(this);
-        OBJECTS.put(modid, newList);
-        this.regObject = obj;
-        return obj;
+        OBJECTS.addEntry(modid, this);
+        return regObject;
     }
 
     /**
@@ -159,27 +149,27 @@ public class BlockBuilder {
      * @param tags An array of tags to be added to the block's item.
      */
     @SafeVarargs
-    public final BlockBuilder withExistingItemTags(Tag.Named<Item>... tags) {
-        for (Tag.Named<Item> tag : tags) {
-            itemTags.put(tag.getName().toString(), tag);
+    public final BlockBuilder<B, I> withExistingItemTags(TagKey<Item>... tags) {
+        for (TagKey<Item> tag : tags) {
+            itemTags.put(tag.location().toString(), tag);
         }
         return this;
     }
 
     /**
-     * A new tag to be added to the block's item. Accessible through the {@link ItemBuilder#ITEM_TAGS} field. For already defined tags use {@link #withExistingItemTags(Tag.Named[])}.
+     * A new tag to be added to the block's item. Accessible through the {@link ItemBuilder#ITEM_TAGS} field. For already defined tags use {@link #withExistingItemTags(TagKey[])}.
      * Note that if the string has a Backslash("/") it will create and add 2 tags, e.g. Passing this string will add the following tags:
      * <p>
      * "forge:ores/my_ore" -> "forge:ores", "forge:ores/my_ore"
      *
      * @param tagName The full name of the tag, e.g. "forge:ores/my_ore"
      */
-    public BlockBuilder withNewItemTag(String tagName) {
-        itemTags.putIfAbsent(tagName, ItemTags.createOptional(new ResourceLocation(tagName)));
-        ItemBuilder.ITEM_TAGS.putIfAbsent(tagName, ItemTags.createOptional(new ResourceLocation(tagName)));
+    public BlockBuilder<B, I> withNewItemTag(String tagName) {
+        itemTags.putIfAbsent(tagName, ItemTags.create(new ResourceLocation(tagName)));
+        ItemBuilder.ITEM_TAGS.putIfAbsent(tagName, ItemTags.create(new ResourceLocation(tagName)));
         if (tagName.contains("/")) {
             String parent = tagName.substring(0, tagName.indexOf("/"));
-            itemTagsGen.putIfAbsent(ItemTags.createOptional(new ResourceLocation(parent)), ItemTags.createOptional(new ResourceLocation(tagName)));
+            itemTagsGen.putIfAbsent(ItemTags.create(new ResourceLocation(parent)), ItemTags.create(new ResourceLocation(tagName)));
         }
         return this;
     }
@@ -190,28 +180,28 @@ public class BlockBuilder {
      * @param tags An array of tags to be added to the block.
      */
     @SafeVarargs
-    public final BlockBuilder withExistingBlockTags(Tag.Named<Block>... tags) {
-        for (Tag.Named<Block> tag : tags) {
-            blockTags.put(tag.getName().toString(), tag);
+    public final BlockBuilder<B, I> withExistingBlockTags(TagKey<Block>... tags) {
+        for (TagKey<Block> tag : tags) {
+            blockTags.put(tag.location().toString(), tag);
         }
         return this;
     }
 
     /**
-     * A new tag to be added to the block. Accessible through the {@link #BLOCK_TAGS} field. For already defined tags use {@link #withExistingBlockTags(Tag.Named[])}.
+     * A new tag to be added to the block. Accessible through the {@link #BLOCK_TAGS} field. For already defined tags use {@link #withExistingBlockTags(TagKey[])}.
      * Note that if the string has a Backslash("/") it will create and add 2 tags, e.g. Passing this string will add the following tags:
      * <p>
      * "forge:ores/my_ore" -> "forge:ores", "forge:ores/my_ore"
      *
      * @param tagName The full name of the tag, e.g. "forge:ores/my_ore"
      */
-    public BlockBuilder withNewBlockTag(String tagName) {
-        Tags.IOptionalNamedTag<Block> tag = BlockTags.createOptional(new ResourceLocation(tagName));
+    public BlockBuilder<B, I> withNewBlockTag(String tagName) {
+        TagKey<Block> tag = BlockTags.create(new ResourceLocation(tagName));
         blockTags.putIfAbsent(tagName, tag);
         BLOCK_TAGS.putIfAbsent(tagName, tag);
         if (tagName.contains("/")) {
             String parent = tagName.substring(0, tagName.indexOf("/"));
-            blockTagsGen.putIfAbsent(BlockTags.createOptional(new ResourceLocation(parent)), tag);
+            blockTagsGen.putIfAbsent(BlockTags.create(new ResourceLocation(parent)), tag);
         }
         return this;
     }
@@ -223,7 +213,7 @@ public class BlockBuilder {
      * @param ctx A {@link BiConsumer} of types {@link BlockModelDataProvider} and {@link Block}.
      *            You can find many useful methods for generating block states inside the {@link BlockModelDataProvider} class
      */
-    public BlockBuilder withBlockModel(BiConsumer<BlockModelDataProvider, Block> ctx) {
+    public BlockBuilder<B, I> withBlockModel(BiConsumer<BlockModelDataProvider, B> ctx) {
         this.blockModel = ctx;
         return this;
     }
@@ -235,7 +225,7 @@ public class BlockBuilder {
      * @param ctx A {@link BiConsumer} of types {@link ItemModelDataProvider} and {@link Block}.
      *            You can find many useful methods for generating item models inside the {@link ItemModelDataProvider} class
      */
-    public BlockBuilder withItemModel(BiConsumer<ItemModelDataProvider, Block> ctx) {
+    public BlockBuilder<B, I> withItemModel(BiConsumer<ItemModelDataProvider, B> ctx) {
         this.itemModel = ctx;
         return this;
     }
@@ -247,7 +237,7 @@ public class BlockBuilder {
      * @param ctx A {@link BiConsumer} of types {@link LootTableDataProvider} and {@link Block}.
      *            You can find many useful methods for generating item models inside the {@link LootTableDataProvider} class
      */
-    public BlockBuilder withLootTable(BiConsumer<LootTableDataProvider, Block> ctx) {
+    public BlockBuilder<B, I> withLootTable(BiConsumer<LootTableDataProvider, B> ctx) {
         this.lootTable = ctx;
         return this;
     }
@@ -257,7 +247,7 @@ public class BlockBuilder {
      *
      * @param translation The name of the translated block, e.g. "My Ore"
      */
-    public BlockBuilder withTranslation(String translation) {
+    public BlockBuilder<B, I> withTranslation(String translation) {
         this.locale.put("en_us", translation);
         return this;
     }
@@ -268,17 +258,17 @@ public class BlockBuilder {
      * @param translation The name of the translated block, e.g. "My Ore"
      * @param locale      The localization this translation will be added to, e.g. "en_us"
      */
-    public BlockBuilder withTranslation(String translation, String locale) {
+    public BlockBuilder<B, I> withTranslation(String translation, String locale) {
         this.locale.put(locale, translation);
         return this;
     }
 
-    public BlockBuilder withRecipe(BiConsumer<Consumer<FinishedRecipe>, Block> recipe) {
+    public BlockBuilder<B, I> withRecipe(BiConsumer<Consumer<FinishedRecipe>, Block> recipe) {
         this.recipes.add(recipe);
         return this;
     }
 
-    public BlockBuilder withRenderType(RenderType type) {
+    public BlockBuilder<B, I> withRenderType(RenderType type) {
         this.renderType = type;
         return this;
     }
@@ -290,7 +280,7 @@ public class BlockBuilder {
      * Methods that need this one will be mentioned in their documentation.
      * </p>
      */
-    public BlockBuilder withGeneratedBlockItem(boolean shouldGenerate) {
+    public BlockBuilder<B, I> withGeneratedBlockItem(boolean shouldGenerate) {
         this.generateBlockItem = shouldGenerate;
         return this;
     }
@@ -304,7 +294,7 @@ public class BlockBuilder {
      *
      * @param item A function that takes in the final block instance and returns the item instance.
      */
-    public BlockBuilder withItem(Function<Block, BlockItem> item) {
+    public BlockBuilder<B, I> withItem(Function<B, I> item) {
         this.item = item;
         return this;
     }
@@ -318,7 +308,7 @@ public class BlockBuilder {
      *
      * @param tab The {@link CreativeModeTab} you want your block in
      */
-    public BlockBuilder withCreativeTab(CreativeModeTab tab) {
+    public BlockBuilder<B, I> withCreativeTab(CreativeModeTab tab) {
         this.itemProperties.tab(tab);
         return this;
     }
@@ -331,7 +321,7 @@ public class BlockBuilder {
      *
      * @param burnTime The amount in ticks that this item will burn for.
      */
-    public BlockBuilder withBurnTime(int burnTime) {
+    public BlockBuilder<B, I> withBurnTime(int burnTime) {
         this.burnTime = burnTime;
         return this;
     }
@@ -342,7 +332,7 @@ public class BlockBuilder {
      * Requires {@link #withGeneratedBlockItem(boolean)} method.
      * </p></strong>
      */
-    public BlockBuilder withContainerItem() {
+    public BlockBuilder<B, I> withContainerItem() {
         this.containerType = 1;
         return this;
     }
@@ -353,7 +343,7 @@ public class BlockBuilder {
      * Requires {@link #withGeneratedBlockItem(boolean)} method.
      * </p></strong>
      */
-    public BlockBuilder withDamageableContainerItem() {
+    public BlockBuilder<B, I> withDamageableContainerItem() {
         this.containerType = 2;
         return this;
     }
@@ -364,26 +354,8 @@ public class BlockBuilder {
      * Requires {@link #withGeneratedBlockItem(boolean)} method.
      * </p></strong>
      */
-    public BlockBuilder withItemProperties(Item.Properties properties) {
+    public BlockBuilder<B, I> withItemProperties(Item.Properties properties) {
         this.itemProperties = properties;
-        return this;
-    }
-
-    //============================CLBlock Exclusive============================
-
-    /**
-     * The result of right-clicking this block with a tool. Similar to stripping wood.
-     * <p><strong>
-     * This method is exclusive for blocks that implement {@link ICLibBlock} interface.
-     * </strong></p>
-     *
-     * @param action The {@link ToolAction} that must be used, for all vanilla tool actions see {@link net.minecraftforge.common.ToolActions}
-     * @param block  The block that results from the tool action.
-     */
-    public BlockBuilder withModifiedState(ToolAction action, Supplier<? extends Block> block) {
-        if (this.block instanceof ICLibBlock clBlock) {
-            clBlock.setModifiedState(action, block);
-        }
         return this;
     }
 }

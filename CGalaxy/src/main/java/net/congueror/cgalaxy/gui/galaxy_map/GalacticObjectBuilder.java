@@ -2,6 +2,7 @@ package net.congueror.cgalaxy.gui.galaxy_map;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.PlayerInfo;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -245,8 +246,8 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
         private int moons;
         private double gravity;
         private int tier;
-        private ResourceKey<Level> dim;
-        private ResourceKey<Level> orbitDim;
+        private Holder<ResourceKey<Level>> dim;
+        private Holder<ResourceKey<Level>> orbitDim;
 
         public AbstractTerrestrialObject(ResourceLocation id) {
             super(id);
@@ -276,11 +277,11 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             return tier;
         }
 
-        public ResourceKey<Level> getDim() {
+        public Holder<ResourceKey<Level>> getDim() {
             return dim;
         }
 
-        public ResourceKey<Level> getOrbitDim() {
+        public Holder<ResourceKey<Level>> getOrbitDim() {
             return orbitDim;
         }
 
@@ -318,12 +319,12 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             return self();
         }
 
-        public T withDim(ResourceKey<Level> dim) {
+        public T withDim(Holder<ResourceKey<Level>> dim) {
             this.dim = dim;
             return self();
         }
 
-        public T withOrbitDim(ResourceKey<Level> dim) {
+        public T withOrbitDim(Holder<ResourceKey<Level>> dim) {
             this.orbitDim = dim;
             return self();
         }
@@ -535,7 +536,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             return -1;
         }
 
-        public ResourceKey<Level> getDimension() {
+        public Holder<ResourceKey<Level>> getDimension() {
             if (builder instanceof Planet) {
                 return ((Planet) builder).getDim();
             } else if (builder instanceof Moon) {
@@ -544,7 +545,7 @@ public abstract class GalacticObjectBuilder<T extends GalacticObjectBuilder<T>> 
             return null;
         }
 
-        public ResourceKey<Level> getOrbitDimension() {
+        public Holder<ResourceKey<Level>> getOrbitDimension() {
             if (builder instanceof Planet) {
                 return ((Planet) builder).getOrbitDim();
             } else if (builder instanceof Moon) {

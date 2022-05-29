@@ -13,10 +13,9 @@ import net.congueror.cgalaxy.entity.villagers.LunarVillager;
 import net.congueror.cgalaxy.entity.villagers.LunarVillagerProfession;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
 import net.congueror.cgalaxy.init.CGCarverInit;
+import net.congueror.cgalaxy.init.CGEnchantmentInit;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
-import net.congueror.cgalaxy.init.CGStructureInit;
 import net.congueror.cgalaxy.items.SpaceSuitItem;
-import net.congueror.cgalaxy.items.SpaceSuitUpgradeItem;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.util.CGGalacticObjects;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
@@ -24,12 +23,12 @@ import net.congueror.cgalaxy.util.WorldSavedData;
 import net.congueror.cgalaxy.world.CGBiomes;
 import net.congueror.cgalaxy.world.CGDimensions;
 import net.congueror.cgalaxy.world.CGFeatureGen;
-import net.congueror.cgalaxy.world.structures.CGStructures;
 import net.congueror.clib.api.events.BlockOnPlacedEvent;
 import net.congueror.clib.api.events.CompassTickEvent;
 import net.congueror.clib.api.events.CropGrowEvent;
 import net.congueror.clib.api.events.SaplingAdvanceEvent;
 import net.congueror.clib.util.RenderingHelper;
+import net.congueror.clib.util.TagHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -42,9 +41,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Inventory;
@@ -52,6 +48,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.AbstractCandleBlock;
@@ -62,7 +59,6 @@ import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -86,13 +82,13 @@ public class CGCommonEvents {
                 CGFeatureGen.registerFeatures();
                 CGCarverInit.registerCarvers();
                 CGBiomes.registerBiomes();
-                CGStructureInit.setupStructures();
-                CGStructures.registerConfiguredStructures();
 
                 SpawnPlacements.register(CGEntityTypeInit.ASTRO_ZOMBIE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
                 SpawnPlacements.register(CGEntityTypeInit.ASTRO_ZOMBIE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
             });
+
             CGGalacticObjects.init();
+
             LunarVillagerProfession.init();
         }
 
@@ -107,11 +103,6 @@ public class CGCommonEvents {
 
     @Mod.EventBusSubscriber(modid = CGalaxy.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class ForgeCommonEvents {
-
-        @SubscribeEvent
-        public static void worldLoadEvent(WorldEvent.Load e) {
-            CGStructures.addDimensionalSpacing(e);
-        }
 
         @SubscribeEvent
         public static void registerCommands(RegisterCommandsEvent e) {
@@ -155,15 +146,15 @@ public class CGCommonEvents {
             Level level = e.getLevel();
             if (!level.isClientSide) {
                 ItemStack stack = e.getItemStack();
-                if (stack.getItem() instanceof CompassItem && stack.getTag() != null && stack.getTag().getBoolean("SouthPoleTracked")) {
-                    if (level.dimension().equals(CGDimensions.MOON.getDim()) && level instanceof ServerLevel sl) {
+                if (stack.getItem() instanceof CompassItem && stack.getTag() != null && EnchantmentHelper.deserializeEnchantments(stack.getEnchantmentTags()).containsKey(CGEnchantmentInit.POLARIZED.get())) {
+                    if (level.dimension().equals(CGDimensions.MOON.getDim().value()) && level instanceof ServerLevel sl) {
                         Biome biome = sl.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getOptional(CGBiomes.THE_MOON_SOUTH).orElse(null);
-                        if (biome != null && !sl.getBiome(e.getEntity().blockPosition()).equals(biome)) {
-                            BlockPos pos = sl.findNearestBiome(biome, e.getEntity().blockPosition(), 6400, 8);
+                        if (biome != null && !sl.getBiome(e.getEntity().blockPosition()).value().equals(biome)) {
+                            BlockPos pos = sl.findNearestBiome(biomeHolder -> biomeHolder.value().equals(biome), e.getEntity().blockPosition(), 6400, 8).getFirst();
                             if (pos != null) {
                                 if (!stack.getOrCreateTag().getBoolean("LodestoneTracked")) {
                                     stack.getOrCreateTag().put("LodestonePos", NbtUtils.writeBlockPos(pos));
-                                    Level.RESOURCE_KEY_CODEC.encodeStart(NbtOps.INSTANCE, CGDimensions.MOON.getDim()).resultOrPartial(LOGGER::error).ifPresent((p_40731_) -> {
+                                    Level.RESOURCE_KEY_CODEC.encodeStart(NbtOps.INSTANCE, CGDimensions.MOON.getDim().value()).resultOrPartial(LOGGER::error).ifPresent((p_40731_) -> {
                                         stack.getOrCreateTag().put("LodestoneDimension", p_40731_);
                                     });
                                     stack.getOrCreateTag().putBoolean("LodestoneTracked", true);
@@ -171,7 +162,9 @@ public class CGCommonEvents {
                             }
                         } else {
                             if (stack.getOrCreateTag().getBoolean("LodestoneTracked")) {
-                                stack.getOrCreateTag().putBoolean("LodestoneTracked", false);
+                                stack.getOrCreateTag().remove("LodestonePos");
+                                stack.getOrCreateTag().remove("LodestoneDimension");
+                                stack.getOrCreateTag().remove("LodestoneTracked");
                             }
                         }
                     }
@@ -191,10 +184,10 @@ public class CGCommonEvents {
             Level level = e.getLevel();
             BlockState newState = e.getLevel().getBlockState(e.getPos());
             if (
-                    BlockTags.FIRE.contains(e.getNewBlock()) ||
-                            (BlockTags.CAMPFIRES.contains(e.getNewBlock()) && CampfireBlock.isLitCampfire(newState)) ||
-                            (BlockTags.CANDLES.contains(e.getNewBlock()) && AbstractCandleBlock.isLit(newState)) ||
-                            (BlockTags.createOptional(CGalaxy.location("torches")).contains(e.getNewBlock()))
+                    TagHelper.tagContains(BlockTags.FIRE, e.getNewBlock()) ||
+                            TagHelper.tagContains(BlockTags.CAMPFIRES, e.getNewBlock()) && CampfireBlock.isLitCampfire(newState) ||
+                            TagHelper.tagContains(BlockTags.CANDLES, e.getNewBlock()) && AbstractCandleBlock.isLit(newState) ||
+                            TagHelper.tagContains(BlockTags.create(CGalaxy.location("torches")), e.getNewBlock())
             ) {
                 CGDimensionBuilder.DimensionObject object = CGDimensionBuilder.getObjectFromKey(level.dimension());
                 if (object != null) {

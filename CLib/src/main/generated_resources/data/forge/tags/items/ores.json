@@ -29,24 +29,12 @@
     "#forge:ores/chromium",
     "#forge:ores/thorium",
     "#forge:ores/thorium",
-    "#forge:ores/tin",
     "#forge:ores/steel",
-    "#forge:ores/aluminum",
-    "#forge:ores/lead",
-    "#forge:ores/silver",
     "#forge:ores/lumium",
-    "#forge:ores/nickel",
     "#forge:ores/invar",
     "#forge:ores/electrum",
-    "#forge:ores/platinum",
     "#forge:ores/signalum",
-    "#forge:ores/tungsten",
     "#forge:ores/bronze",
-    "#forge:ores/uranium",
-    "#forge:ores/cobalt",
-    "#forge:ores/zinc",
-    "#forge:ores/brass",
-    "#forge:ores/chromium",
-    "#forge:ores/thorium"
+    "#forge:ores/brass"
   ]
 }

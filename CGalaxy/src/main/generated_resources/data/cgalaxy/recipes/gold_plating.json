@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "MMM",
+    "CPC",
+    "MMM"
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "clib:tier_2_circuit_board"
+    },
+    "P": {
+      "item": "cgalaxy:iron_plating"
+    }
+  },
+  "result": {
+    "item": "cgalaxy:gold_plating"
+  }
+}

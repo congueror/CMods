@@ -4,6 +4,7 @@ import net.congueror.clib.util.registry.builders.BlockBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -19,10 +20,10 @@ public class BlockTagsDataProvider extends BlockTagsProvider {
     @Override
     protected void addTags() {
         BlockBuilder.OBJECTS.get(modId).forEach(block -> {
-            for (Map.Entry<String, Tag.Named<Block>> tags : block.blockTags.entrySet()) {
-                tag(tags.getValue()).add(block.block);
+            for (Map.Entry<String, TagKey<Block>> tags : block.blockTags.entrySet()) {
+                tag(tags.getValue()).add(block.regObject.get());
             }
-            for (Map.Entry<Tag.Named<Block>, Tag.Named<Block>> tags : block.blockTagsGen.entrySet()) {
+            for (Map.Entry<TagKey<Block>, TagKey<Block>> tags : block.blockTagsGen.entrySet()) {
                 tag(tags.getKey()).addTag(tags.getValue());
             }
         });

@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "clib:raw_platinum"
+          "name": "clib:deepslate_platinum_ore"
         }
       ],
       "conditions": [

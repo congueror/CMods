@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "MMM",
+    "CPC",
+    "MMM"
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:diamond"
+    },
+    "C": {
+      "item": "clib:tier_2_circuit_board"
+    },
+    "P": {
+      "item": "cgalaxy:gold_plating"
+    }
+  },
+  "result": {
+    "item": "cgalaxy:diamond_plating"
+  }
+}
