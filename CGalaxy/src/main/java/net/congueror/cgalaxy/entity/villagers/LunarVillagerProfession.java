@@ -3,25 +3,20 @@ package net.congueror.cgalaxy.entity.villagers;
 import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.api.events.AddVillagerProfessionsEvent;
+import net.congueror.cgalaxy.util.events.AddVillagerProfessionsEvent;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGEnchantmentInit;
 import net.congueror.cgalaxy.init.CGItemInit;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 
 public class LunarVillagerProfession implements IProfession {
 
@@ -47,7 +42,7 @@ public class LunarVillagerProfession implements IProfession {
                         new LunarVillagerTrades.SapphiresToItems(Items.COMPASS, 10, 1, 5, 1),
                 },
                 1, new VillagerTrades.ItemListing[] {
-                        new LunarVillagerTrades.ItemsToSapphires(Items.COMPASS, 10, 10, 10, 1),
+                        new LunarVillagerTrades.ItemsToSapphires(Items.COMPASS, 10, 1, 10, 1),
                 },
                 2, new VillagerTrades.ItemListing[] {
                         new LunarVillagerTrades.SapphiresToItems(makeSouthPoleCompass(), 29, 5, 6),

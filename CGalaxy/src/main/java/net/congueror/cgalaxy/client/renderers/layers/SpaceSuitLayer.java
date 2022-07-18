@@ -5,8 +5,9 @@ import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.client.models.OxygenGearModel;
 import net.congueror.cgalaxy.client.models.OxygenMaskModel;
 import net.congueror.cgalaxy.client.models.OxygenTankModels;
-import net.congueror.cgalaxy.items.OxygenGearItem;
-import net.congueror.cgalaxy.items.OxygenTankItem;
+import net.congueror.cgalaxy.client.models.SpaceSuitModel;
+import net.congueror.cgalaxy.items.space_suit.OxygenGearItem;
+import net.congueror.cgalaxy.items.space_suit.OxygenTankItem;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -29,10 +30,16 @@ public class SpaceSuitLayer<T extends LivingEntity, M extends HumanoidModel<T>> 
     public static final ResourceLocation OXYGEN_MASK_TEXTURE = new ResourceLocation(CGalaxy.MODID, "textures/models/space_suit.png");
 
     private final EntityModelSet entityModelSet;
+    private final boolean shouldRenderArmor;
 
-    public SpaceSuitLayer(RenderLayerParent<T, M> p_117346_) {
+    public SpaceSuitLayer(RenderLayerParent<T, M> p_117346_, boolean shouldRenderArmor) {
         super(p_117346_);
+        this.shouldRenderArmor = shouldRenderArmor;
         this.entityModelSet = Minecraft.getInstance().getEntityModels();
+    }
+
+    public SpaceSuitLayer(RenderLayerParent<T, M> pRenderer) {
+        this(pRenderer, false);
     }
 
     @Override
@@ -53,11 +60,22 @@ public class SpaceSuitLayer<T extends LivingEntity, M extends HumanoidModel<T>> 
                 pMatrixStack.translate(0.0f, 0.75f, 0.0f);
                 pMatrixStack.scale(0.75f, 0.75f, 0.75f);
             }
+            if (shouldRenderArmor) {
+                renderArmor(pMatrixStack, pBuffer, pPackedLight, pLivingEntity);
+            }
             renderOxygenGear(pMatrixStack, pBuffer, pPackedLight, pLivingEntity);
             renderOxygenTank(new OxygenTankModels.Heavy<>(entityModelSet.bakeLayer(OxygenTankModels.Heavy.LAYER_LOCATION), true), pMatrixStack, pBuffer, pPackedLight, pLivingEntity);
             renderOxygenMask(pMatrixStack, pBuffer, pPackedLight, pLivingEntity);
             pMatrixStack.popPose();
         }
+    }
+
+    protected void renderArmor(PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn) {
+        /*TODO
+        poseStack.pushPose();
+        this.getParentModel().body.translateAndRotate(poseStack);
+        renderColoredCutoutModel(new SpaceSuitModel(SpaceSuitModel.createBodyLayer()), OXYGEN_GEAR_TEXTURE, poseStack, bufferIn, packedLightIn, entitylivingbaseIn, 1.0f, 1.0f, 1.0f);
+        poseStack.popPose();*/
     }
 
     protected void renderOxygenGear(PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn) {

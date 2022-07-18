@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "cgalaxy:block/space_station_creator"
+    },
+    "facing=south": {
+      "model": "cgalaxy:block/space_station_creator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cgalaxy:block/space_station_creator",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "cgalaxy:block/space_station_creator",
+      "y": 90
+    }
+  }
+}

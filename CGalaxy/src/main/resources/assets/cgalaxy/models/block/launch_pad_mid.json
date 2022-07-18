@@ -1,6 +1,6 @@
 {
   "credit": "Made with Blockbench",
-  "parent": "launch_pad",
+  "parent": "cgalaxy:launch_pad_mid",
   "textures": {
     "all": "cgalaxy:block/launch_pad",
     "particle": "cgalaxy:block/launch_pad",

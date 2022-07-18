@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.networking.PacketUpdateRoomPressurizerRange;
-import net.congueror.clib.blocks.abstract_machine.AbstractSettingsScreen;
+import net.congueror.clib.blocks.machine_base.AbstractSettingsScreen;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TranslatableComponent;

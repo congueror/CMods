@@ -47,6 +47,7 @@ public class PacketTeleport implements IPacket {
                 ResourceKey<Level> dim = ResourceKey.create(Registry.DIMENSION_REGISTRY, level);
                 ServerLevel world = Objects.requireNonNull(player.level.getServer()).getLevel(dim);
                 int x = isSpaceStation ? pos.getX() : player.getBlockX();
+                int y = isSpaceStation ? pos.getY() : 200;
                 int z = isSpaceStation ? pos.getZ() : player.getBlockZ();
                 if (world != null && player.getVehicle() instanceof AbstractRocket) {
                     int fuel = ((AbstractRocket) player.getVehicle()).getFuel() - 500;
@@ -60,7 +61,7 @@ public class PacketTeleport implements IPacket {
                     player.startRiding(rocket, true);
                     rocket.setMode(3);
                 } else if (world != null) {
-                    player.teleportTo(world, x, 200, z, 0, 0);
+                    player.teleportTo(world, x, y, z, 0, 0);
                 }
             }
         });

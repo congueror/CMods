@@ -2,9 +2,9 @@ package net.congueror.cgalaxy.blocks.gas_extractor;
 
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
-import net.congueror.cgalaxy.items.OxygenTankItem;
-import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlockEntity;
-import net.congueror.clib.api.recipe.FluidRecipe;
+import net.congueror.cgalaxy.items.space_suit.OxygenTankItem;
+import net.congueror.clib.blocks.machine_base.machine.AbstractFluidMachineBlockEntity;
+import net.congueror.clib.util.recipe.FluidRecipe;
 import net.congueror.clib.items.UpgradeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,6 +14,7 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nonnull;
@@ -21,7 +22,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class GasExtractorBlockEntity extends AbstractFluidBlockEntity {
+public class GasExtractorBlockEntity extends AbstractFluidMachineBlockEntity {
     double chance = Math.random();
 
     public GasExtractorBlockEntity(BlockPos pos, BlockState state) {
@@ -30,11 +31,43 @@ public class GasExtractorBlockEntity extends AbstractFluidBlockEntity {
     }
 
     @Override
-    public int getSlotLimits(int slot) {
+    public int getInvSize() {
+        return 7;
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
         if (slot == 2) {
             return 1;
         }
-        return super.getSlotLimits(slot);
+        return super.getSlotLimit(slot);
+    }
+
+    @Override
+    public boolean canItemFit(int slot, ItemStack stack) {
+        if (slot == 0) {
+            return true;
+        }
+        if (slot == 1) {
+            return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
+        }
+        if (slot == 2) {
+            return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
+        }
+        if (slot >= 3 && slot <= 6) {
+            return stack.getItem() instanceof UpgradeItem;
+        }
+        return false;
+    }
+
+    @Override
+    public int getTanks() {
+        return 1;
+    }
+
+    @Override
+    public int getTankCapacity(int tank) {
+        return 1200;
     }
 
     @Nullable
@@ -42,11 +75,6 @@ public class GasExtractorBlockEntity extends AbstractFluidBlockEntity {
     public FluidRecipe<?> getRecipe() {
         assert level != null;
         return level.getRecipeManager().getRecipeFor(CGRecipeSerializerInit.GAS_EXTRACTING_TYPE.get(), wrapper, level).orElse(null);
-    }
-
-    @Override
-    public int[] invSize() {
-        return new int[]{0, 1, 2, 3, 4, 5, 6};
     }
 
     @Override
@@ -63,23 +91,6 @@ public class GasExtractorBlockEntity extends AbstractFluidBlockEntity {
         map.put("tanks", new int[]{0});
         map.put("slots", new int[]{2});
         return map;
-    }
-
-    @Override
-    public boolean canItemFit(int slot, ItemStack stack) {
-        if (slot == 0) {
-            return true;
-        }
-        if (slot == 1) {
-            return stack.getItem() instanceof BucketItem;
-        }
-        if (slot == 2) {
-            return stack.getItem().equals(Items.BUCKET) || stack.getItem() instanceof OxygenTankItem;
-        }
-        if (slot >= 3 && slot <= 6) {
-            return stack.getItem() instanceof UpgradeItem;
-        }
-        return false;
     }
 
     @Override
@@ -110,8 +121,8 @@ public class GasExtractorBlockEntity extends AbstractFluidBlockEntity {
 
     @Override
     public void executeExtra() {
-        emptyBucketSlot(0, 1);
-        fillBucketSlot(0, 2);
+        emptyFluidSlot(0, 1);
+        fillFluidSlot(0, 2);
         ItemStack slot1 = wrapper.getItem(2);
         if (slot1.getItem() instanceof OxygenTankItem) {
             if (tanks[0].getFluid().getAmount() > 0) {

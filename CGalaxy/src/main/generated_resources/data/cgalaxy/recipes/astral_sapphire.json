@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "cgalaxy:astral_sapphire_block"
+    }
+  ],
+  "result": {
+    "item": "cgalaxy:astral_sapphire",
+    "count": 9
+  }
+}

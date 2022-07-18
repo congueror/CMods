@@ -5,9 +5,10 @@ import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
-import net.congueror.cgalaxy.util.WorldSavedData;
-import net.congueror.clib.api.recipe.FluidRecipe;
-import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlockEntity;
+import net.congueror.cgalaxy.util.events.AddSealedBlocksEvent;
+import net.congueror.cgalaxy.util.saved_data.WorldSavedData;
+import net.congueror.clib.util.recipe.FluidRecipe;
+import net.congueror.clib.blocks.machine_base.machine.AbstractFluidMachineBlockEntity;
 import net.congueror.clib.items.UpgradeItem;
 import net.congueror.clib.util.TagHelper;
 import net.minecraft.Util;
@@ -33,6 +34,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nonnull;
@@ -40,7 +43,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
+public class RoomPressurizerBlockEntity extends AbstractFluidMachineBlockEntity {
     private List<LivingEntity> entities;
     Map<Direction, Integer> range = Util.make(() -> {
         Map<Direction, Integer> map = new HashMap<>();
@@ -56,7 +59,6 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
 
     private AABB aabb;
     public static final Map<ResourceKey<Level>, List<AABB>> AABBS = new HashMap<>();
-    public static final Map<ResourceKey<Level>, List<BlockPos>> AFFECTED_BLOCKS = new HashMap<>();
 
     public RoomPressurizerBlockEntity(BlockPos pos, BlockState state) {
         super(CGBlockEntityInit.ROOM_PRESSURIZER.get(), pos, state);
@@ -64,16 +66,35 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
         sendOutFluid = false;
     }
 
+    @Override
+    public int getInvSize() {
+        return 8;
+    }
+
+    @Override
+    public boolean canItemFit(int slot, ItemStack stack) {
+        if (slot <= 4) {
+            return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
+        } else {
+            return stack.getItem() instanceof UpgradeItem;
+        }
+    }
+
+    @Override
+    public int getTanks() {
+        return 2;
+    }
+
+    @Override
+    public int getTankCapacity(int tank) {
+        return 10000;
+    }
+
     @Nullable
     @Override
     public FluidRecipe<?> getRecipe() {
         assert level != null;
         return level.getRecipeManager().getRecipeFor(CGRecipeSerializerInit.ROOM_PRESSURIZING_TYPE.get(), wrapper, level).orElse(null);
-    }
-
-    @Override
-    public int[] invSize() {
-        return new int[]{0, 1, 2, 3, 4, 5, 6, 7};
     }
 
     @Override
@@ -90,15 +111,6 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
         map.put("tanks", new int[]{});
         map.put("slots", new int[]{1, 3});
         return map;
-    }
-
-    @Override
-    public boolean canItemFit(int slot, ItemStack stack) {
-        if (slot <= 4) {
-            return stack.getItem() instanceof BucketItem;
-        } else {
-            return stack.getItem() instanceof UpgradeItem;
-        }
     }
 
     @Override
@@ -197,7 +209,9 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
         if (s.isAir()) {
             flag = true;
         }
-        if (!flag && !s.isCollisionShapeFullBlock(level, pos)) {
+        AddSealedBlocksEvent event = new AddSealedBlocksEvent();
+        MinecraftForge.EVENT_BUS.post(event);
+        if (!flag && (!s.isCollisionShapeFullBlock(level, pos)) || !event.getBlocks().contains(s.getBlock())) {
             flag1 = !s.isFaceSturdy(level, pos, direction);
             flag2 = !s.isFaceSturdy(level, pos, direction.getOpposite());
             BlockPos pos1 = pos.relative(direction);
@@ -227,10 +241,10 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
 
     @Override
     public void executeExtra() {
-        emptyBucketSlot(0, 0);
-        emptyBucketSlot(1, 2);
-        fillBucketSlot(0, 1);
-        fillBucketSlot(1, 3);
+        emptyFluidSlot(0, 0);
+        emptyFluidSlot(1, 2);
+        fillFluidSlot(0, 1);
+        fillFluidSlot(1, 3);
         if (info.contains("working")) {
             var list = AABBS.get(level.dimension());
             if (list == null) {
@@ -249,7 +263,7 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
 
     public boolean hasOxygenReceiver() {
         boolean flag = false;
-        var list = AFFECTED_BLOCKS.get(level.dimension());
+        var list = WorldSavedData.AFFECTED_BLOCKS.get(level.dimension());
         if (list != null && aabb != null) {
             for (BlockPos pos : list) {
                 flag = aabb.contains(pos.getX(), pos.getY(), pos.getZ());
@@ -286,9 +300,9 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
             });
         }
 
-        var list = AFFECTED_BLOCKS.get(level.dimension());
+        var list = WorldSavedData.AFFECTED_BLOCKS.get(level.dimension());
         if (list != null) {
-            List<BlockPos> list1 = new ArrayList<>(AFFECTED_BLOCKS.get(level.dimension()));
+            List<BlockPos> list1 = new ArrayList<>(WorldSavedData.AFFECTED_BLOCKS.get(level.dimension()));
             for (BlockPos pos : list) {
                 if (aabb.contains(pos.getX(), pos.getY(), pos.getZ())) {
                     list1.remove(pos);
@@ -297,7 +311,7 @@ public class RoomPressurizerBlockEntity extends AbstractFluidBlockEntity {
                 }
             }
 
-            AFFECTED_BLOCKS.put(level.dimension(), list1);
+            WorldSavedData.AFFECTED_BLOCKS.put(level.dimension(), list1);
             if (level instanceof ServerLevel)
                 WorldSavedData.makeDirty((ServerLevel) level);
         }

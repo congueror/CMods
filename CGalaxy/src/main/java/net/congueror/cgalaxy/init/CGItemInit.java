@@ -3,26 +3,28 @@ package net.congueror.cgalaxy.init;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.client.models.OxygenTankModels;
 import net.congueror.cgalaxy.items.*;
+import net.congueror.cgalaxy.items.space_suit.*;
 import net.congueror.cgalaxy.util.CGFoods;
 import net.congueror.clib.init.CLItemInit;
 import net.congueror.clib.init.CLMaterialInit;
-import net.congueror.clib.util.registry.ResourceBuilder;
+import net.congueror.clib.util.CLTags;
 import net.congueror.clib.util.registry.data.ItemModelDataProvider;
 import net.congueror.clib.util.registry.builders.ItemBuilder;
 import net.congueror.clib.items.generic.CLBucketItem;
-import net.congueror.clib.items.generic.CLItem;
 import net.congueror.clib.util.CreativeTabs;
 import net.congueror.clib.util.MathHelper;
 import net.congueror.clib.util.registry.data.RecipeDataProvider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -51,6 +53,11 @@ public class CGItemInit {
             .withTranslation("Nitrogen Bucket")
             .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.bucketTexture((BucketItem) item))
             .build();
+    public static final RegistryObject<CLBucketItem> CARBON_DIOXIDE_BUCKET = REGISTER.create("carbon_dioxide_bucket", () ->
+            new CLBucketItem(CGFluidInit.CARBON_DIOXIDE.getStill(), new Item.Properties().tab(CreativeTabs.ResourcesIG.instance)))
+            .withTranslation("Carbon Dioxide Bucket")
+            .withItemModel((itemModelDataProvider, item) -> itemModelDataProvider.bucketTexture((BucketItem) item))
+            .build();
 
     public static final RegistryObject<ForgeSpawnEggItem> ASTRO_ENDERMAN_EGG = REGISTER.create("astro_enderman_spawn_egg", () ->
             new ForgeSpawnEggItem(CGEntityTypeInit.ASTRO_ENDERMAN, MathHelper.RGBtoDecimalRGB(0, 0, 139), 0,
@@ -76,6 +83,27 @@ public class CGItemInit {
             .withTranslation("Lunar Zombie Villager Spawn Egg")
             .withItemModel(ItemModelDataProvider::spawnEggTexture)
             .build();
+    public static final RegistryObject<ForgeSpawnEggItem> MARTIAN_SKELETON_EGG = REGISTER.create("martian_skeleton_spawn_egg", () ->
+                    new ForgeSpawnEggItem(CGEntityTypeInit.MARTIAN_SKELETON, MathHelper.RGBtoDecimalRGB(180, 88, 46), 4802889,
+                            new Item.Properties().tab(CreativeTabs.CGalaxyIG.instance)))
+            .withTranslation("Martian Skeleton Spawn Egg")
+            .withItemModel(ItemModelDataProvider::spawnEggTexture)
+            .build();
+    public static final RegistryObject<ForgeSpawnEggItem> GALACTIC_VISITOR_EGG = REGISTER.create("galactic_visitor_spawn_egg", () ->
+                    new ForgeSpawnEggItem(CGEntityTypeInit.GALACTIC_VISITOR, MathHelper.RGBtoDecimalRGB(0, 0, 0), MathHelper.RGBtoDecimalRGB(209, 83, 0),
+                            new Item.Properties().tab(CreativeTabs.CGalaxyIG.instance)))
+            .withTranslation("Galactic Visitor Spawn Egg")
+            .withItemModel(ItemModelDataProvider::spawnEggTexture)
+            .build();
+
+    public static final RegistryObject<Item> CHEESE_SLICE = REGISTER.create("cheese_slice", () ->
+            new Item(new Item.Properties().tab(CreativeTabs.AssortmentsIG.instance).food(CGFoods.CHEESE_SLICE)))
+            .withTranslation("Cheese Slice")
+            .withRecipe((finishedRecipeConsumer, item) -> ShapelessRecipeBuilder.shapeless(item, 9)
+                    .requires(CGBlockInit.MOON_CHEESE.get())
+                    .unlockedBy("has_moon_cheese", RecipeProvider.has(CGBlockInit.MOON_CHEESE.get()))
+                    .save(finishedRecipeConsumer))
+            .build();
 
     public static final RegistryObject<Item> DIAMOND_APPLE = REGISTER.create("diamond_apple", () ->
             new Item(new Item.Properties().tab(CreativeTabs.CGalaxyIG.instance).food(CGFoods.DIAMOND_APPLE).rarity(Rarity.RARE)))
@@ -94,7 +122,7 @@ public class CGItemInit {
             new RocketTier1Item(new Item.Properties().tab(CreativeTabs.CGalaxyIG.instance)))
             .withTranslation("Rocket Tier 1")
             .withItemModel(null)
-            .withNewItemTag("cgalaxy:rocket")
+            .withItemTag("cgalaxy:rocket")
             .build();
 
     public static final RegistryObject<Item> METEORITE_CHUNK = REGISTER.create("meteorite_chunk", () ->
@@ -103,17 +131,27 @@ public class CGItemInit {
             .build();
 
     public static final RegistryObject<Item> LUNARITE_INGOT = REGISTER.create("lunarite_ingot", () ->
-            new Item(new Item.Properties().tab(CreativeTabs.ResourcesIG.instance).rarity(Rarity.create("purple", ChatFormatting.DARK_PURPLE))))
+            new Item(new Item.Properties().tab(CreativeTabs.ResourcesIG.instance)
+                    .rarity(Rarity.create("LUNARITE", style -> style.withColor(MathHelper.RGBtoDecimalRGB(182, 86, 231))))))
             .withTranslation("Lunarite Ingot")
             .build();
 
     public static final RegistryObject<Item> ASTRAL_SAPPHIRE = REGISTER.create("astral_sapphire", () ->
             new Item(new Item.Properties().tab(CreativeTabs.ResourcesIG.instance).rarity(Rarity.create("dark_blue", ChatFormatting.DARK_BLUE))))
             .withTranslation("Astral Sapphire")
+            .withRecipe((finishedRecipeConsumer, item) -> RecipeDataProvider.shapelessRecipe(finishedRecipeConsumer, item, 9, CGBlockInit.ASTRAL_SAPPHIRE_BLOCK.get(), 1))
+            .withItemTag("forge:gems/astral_sapphire")
             .build();
     public static final RegistryObject<Item> ASTRAL_SAPPHIRE_DUST = REGISTER.create("astral_sapphire_dust", () ->
             new Item(new Item.Properties().tab(CreativeTabs.ResourcesIG.instance).rarity(Rarity.create("dark_blue", ChatFormatting.DARK_BLUE))))
             .withTranslation("Astral Sapphire Dust")
+            .withRecipe((finishedRecipeConsumer, item) -> RecipeDataProvider.dustRecipes(finishedRecipeConsumer, item, CGItemInit.ASTRAL_SAPPHIRE.get(), RecipeDataProvider.getTag("forge:gems/astral_sapphire")))
+            .build();
+
+    public static final RegistryObject<LaserBlasterItem> LASER_BLASTER = REGISTER.create("laser_blaster", () ->
+            new LaserBlasterItem(new Item.Properties().tab(CreativeTabs.CGalaxyIG.instance).rarity(Rarity.RARE)))
+            .withItemModel(null)
+            .withTranslation("Laser Blaster")
             .build();
 
     public static final RegistryObject<OxygenMaskItem> SPACE_SUIT_HELM = REGISTER.create("oxygen_mask", () ->
@@ -138,23 +176,32 @@ public class CGItemInit {
             new OxygenTankItem(new Item.Properties().tab(CreativeTabs.CGalaxyIG.instance), 1000,
                     (entityModelSet, aBoolean) -> new OxygenTankModels.Light<>(entityModelSet.bakeLayer(OxygenTankModels.Light.LAYER_LOCATION), aBoolean)))
             .withTranslation("Light Oxygen Tank")
+            .withRecipe((finishedRecipeConsumer, item) -> ShapedRecipeBuilder.shaped(item)
+                    .pattern("IGI")
+                    .pattern("A A")
+                    .pattern("AAA")
+                    .define('G', Tags.Items.DYES_LIME)
+                    .define('A', CLTags.Items.INGOTS_ALUMINUM)
+                    .define('I', CLTags.Items.INGOTS_BRASS)
+                    .unlockedBy("has_aluminum_ingot", RecipeDataProvider.has(CLTags.Items.INGOTS_ALUMINUM))
+                    .save(finishedRecipeConsumer))
             .build();
     public static final RegistryObject<OxygenGearItem> OXYGEN_GEAR = REGISTER.create("oxygen_gear", () ->
             new OxygenGearItem(new Item.Properties()))
             .withTranslation("Oxygen Gear")
             .build();
 
-    public static final RegistryObject<HeatProtectionUnitItem> HEAT_PROTECTION_1 = REGISTER.create("heat_protection_unit_tier_1", () ->
+    public static final RegistryObject<HeatProtectionUnitItem> HEAT_PROTECTION_1 = REGISTER.create("weak_heat_protection_unit", () ->
             new HeatProtectionUnitItem(new Item.Properties(), 1000))
-            .withTranslation("Tier 1 Heat Protection Unit")
+            .withTranslation("Weak Heat Protection Unit")
             .build();
-    public static final RegistryObject<ColdProtectionUnitItem> COLD_PROTECTION_1 = REGISTER.create("cold_protection_unit_tier_1", () ->
+    public static final RegistryObject<ColdProtectionUnitItem> COLD_PROTECTION_1 = REGISTER.create("weak_cold_protection_unit", () ->
             new ColdProtectionUnitItem(new Item.Properties(), 1000))
-            .withTranslation("Tier 1 Cold Protection Unit")
+            .withTranslation("Weak Cold Protection Unit")
             .build();
-    public static final RegistryObject<RadiationProtectionUnitItem> RADIATION_PROTECTION_1 = REGISTER.create("radiation_protection_unit_tier_1", () ->
+    public static final RegistryObject<RadiationProtectionUnitItem> RADIATION_PROTECTION_1 = REGISTER.create("weak_radiation_protection_unit", () ->
             new RadiationProtectionUnitItem(new Item.Properties(), 1500))
-            .withTranslation("Tier 1 Radiation Protection Unit")
+            .withTranslation("Weak Radiation Protection Unit")
             .build();
 
     public static final RegistryObject<SpaceSuitUpgradeItem> COPPER_PLATING = REGISTER.create("copper_plating", () ->
@@ -164,7 +211,7 @@ public class CGItemInit {
                     .pattern("MMM")
                     .pattern("CMC")
                     .pattern("MMM")
-                    .define('M', Items.COPPER_INGOT)
+                    .define('M', Tags.Items.INGOTS_COPPER)
                     .define('C', CLItemInit.TIER_1_CIRCUIT_BOARD.get())
                     .unlockedBy("has_tier_1_circuit_board", RecipeDataProvider.has(CLItemInit.TIER_1_CIRCUIT_BOARD.get()))
                     .save(finishedRecipeConsumer))
@@ -176,7 +223,7 @@ public class CGItemInit {
                     .pattern("MMM")
                     .pattern("CPC")
                     .pattern("MMM")
-                    .define('M', Items.IRON_INGOT)
+                    .define('M', Tags.Items.INGOTS_IRON)
                     .define('C', CLItemInit.TIER_1_CIRCUIT_BOARD.get())
                     .define('P', CGItemInit.COPPER_PLATING.get())
                     .unlockedBy("has_tier_1_circuit_board", RecipeDataProvider.has(CLItemInit.TIER_1_CIRCUIT_BOARD.get()))
@@ -189,7 +236,7 @@ public class CGItemInit {
                     .pattern("MMM")
                     .pattern("CPC")
                     .pattern("MMM")
-                    .define('M', Items.GOLD_INGOT)
+                    .define('M', Tags.Items.INGOTS_GOLD)
                     .define('C', CLItemInit.TIER_2_CIRCUIT_BOARD.get())
                     .define('P', CGItemInit.IRON_PLATING.get())
                     .unlockedBy("has_tier_2_circuit_board", RecipeDataProvider.has(CLItemInit.TIER_2_CIRCUIT_BOARD.get()))
@@ -202,7 +249,7 @@ public class CGItemInit {
                     .pattern("MMM")
                     .pattern("CPC")
                     .pattern("MMM")
-                    .define('M', Items.DIAMOND)
+                    .define('M', Tags.Items.GEMS_DIAMOND)
                     .define('C', CLItemInit.TIER_2_CIRCUIT_BOARD.get())
                     .define('P', CGItemInit.GOLD_PLATING.get())
                     .unlockedBy("has_tier_2_circuit_board", RecipeDataProvider.has(CLItemInit.TIER_2_CIRCUIT_BOARD.get()))
@@ -215,7 +262,7 @@ public class CGItemInit {
                     .pattern("MMM")
                     .pattern("CPC")
                     .pattern("MMM")
-                    .define('M', Items.NETHERITE_INGOT)
+                    .define('M', Tags.Items.INGOTS_NETHERITE)
                     .define('C', CLItemInit.TIER_3_CIRCUIT_BOARD.get())
                     .define('P', CGItemInit.DIAMOND_PLATING.get())
                     .unlockedBy("has_tier_3_circuit_board", RecipeDataProvider.has(CLItemInit.TIER_3_CIRCUIT_BOARD.get()))
@@ -246,5 +293,15 @@ public class CGItemInit {
                     .define('P', CGItemInit.TITANIUM_PLATING.get())
                     .unlockedBy("has_tier_3_circuit_board", RecipeDataProvider.has(CLItemInit.TIER_3_CIRCUIT_BOARD.get()))
                     .save(finishedRecipeConsumer))
+            .build();
+
+    public static final RegistryObject<BlueprintItem> BLUEPRINT = REGISTER.create("blueprint", () ->
+            new BlueprintItem(new Item.Properties().tab(CreativeTabs.CGalaxyIG.instance)))
+            .withTranslation("Blueprint")
+            .build();
+
+    public static final RegistryObject<SpaceStationItem> SPACE_STATION = REGISTER.create("space_station", () ->
+            new SpaceStationItem(new Item.Properties().tab(CreativeTabs.CGalaxyIG.instance).stacksTo(1)))
+            .withTranslation("Space Station")
             .build();
 }

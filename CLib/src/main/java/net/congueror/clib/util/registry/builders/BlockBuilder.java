@@ -43,7 +43,7 @@ public class BlockBuilder<B extends Block, I extends BlockItem> implements Build
     public static final ListMap<String, BlockBuilder<?, ?>> OBJECTS = new ListMap<>();
 
     /**
-     * All the block tags added via the {@link #withNewItemTag(String)} method. The string is simply the full name of the tag, e.g. "forge:storage_blocks/steel".
+     * All the block tags added via the {@link #withItemTag(String)} method. The string is simply the full name of the tag, e.g. "forge:storage_blocks/steel".
      */
     public static final Map<String, TagKey<Block>> BLOCK_TAGS = new HashMap<>();
     public final Map<TagKey<Block>, TagKey<Block>> blockTagsGen = new HashMap<>();
@@ -149,24 +149,28 @@ public class BlockBuilder<B extends Block, I extends BlockItem> implements Build
      * @param tags An array of tags to be added to the block's item.
      */
     @SafeVarargs
-    public final BlockBuilder<B, I> withExistingItemTags(TagKey<Item>... tags) {
+    public final BlockBuilder<B, I> withItemTags(TagKey<Item>... tags) {
         for (TagKey<Item> tag : tags) {
-            itemTags.put(tag.location().toString(), tag);
+            String name = tag.location().toString();
+            itemTags.put(name, tag);
+            if (name.contains("/")) {
+                String parent = name.substring(0, name.indexOf("/"));
+                itemTagsGen.put(ItemTags.create(new ResourceLocation(parent)), tag);
+            }
         }
         return this;
     }
 
     /**
-     * A new tag to be added to the block's item. Accessible through the {@link ItemBuilder#ITEM_TAGS} field. For already defined tags use {@link #withExistingItemTags(TagKey[])}.
+     * A new tag to be added to the block's item. For already defined tags use {@link #withItemTags(TagKey[])}.
      * Note that if the string has a Backslash("/") it will create and add 2 tags, e.g. Passing this string will add the following tags:
      * <p>
      * "forge:ores/my_ore" -> "forge:ores", "forge:ores/my_ore"
      *
      * @param tagName The full name of the tag, e.g. "forge:ores/my_ore"
      */
-    public BlockBuilder<B, I> withNewItemTag(String tagName) {
+    public BlockBuilder<B, I> withItemTag(String tagName) {
         itemTags.putIfAbsent(tagName, ItemTags.create(new ResourceLocation(tagName)));
-        ItemBuilder.ITEM_TAGS.putIfAbsent(tagName, ItemTags.create(new ResourceLocation(tagName)));
         if (tagName.contains("/")) {
             String parent = tagName.substring(0, tagName.indexOf("/"));
             itemTagsGen.putIfAbsent(ItemTags.create(new ResourceLocation(parent)), ItemTags.create(new ResourceLocation(tagName)));
@@ -289,7 +293,7 @@ public class BlockBuilder<B extends Block, I extends BlockItem> implements Build
      * The item instance that the generated block item will use. By default, this is a normal BlockItem. <br>
      * Note: this overrides the {@link #withItemProperties(Item.Properties)} method.
      * <p><strong>
-     * Requires {@link #withGeneratedBlockItem(boolean)} method.
+     * Requires {@link #withGeneratedBlockItem(boolean)} method to be true.
      * </p></strong>
      *
      * @param item A function that takes in the final block instance and returns the item instance.
@@ -303,12 +307,12 @@ public class BlockBuilder<B extends Block, I extends BlockItem> implements Build
      * Adds this block to the given creative tab. If you do not use this method the default will be {@link CreativeTabs.AssortmentsIG}.
      * If {@link #withItemProperties(Item.Properties)} was used, the tab that was set last will be the final tab.
      * <p><strong>
-     * Requires {@link #withGeneratedBlockItem(boolean)} method.
+     * Requires {@link #withGeneratedBlockItem(boolean)} method to be true.
      * </p></strong>
      *
      * @param tab The {@link CreativeModeTab} you want your block in
      */
-    public BlockBuilder<B, I> withCreativeTab(CreativeModeTab tab) {
+    public BlockBuilder<B, I> withCreativeTab(@Nullable CreativeModeTab tab) {
         this.itemProperties.tab(tab);
         return this;
     }
@@ -316,7 +320,7 @@ public class BlockBuilder<B extends Block, I extends BlockItem> implements Build
     /**
      * Adds a burn time to this block's item so that it can be used as fuel in furnaces.
      * <p><strong>
-     * Requires {@link #withGeneratedBlockItem(boolean)} method.
+     * Requires {@link #withGeneratedBlockItem(boolean)} method to be true.
      * </p></strong>
      *
      * @param burnTime The amount in ticks that this item will burn for.
@@ -329,7 +333,7 @@ public class BlockBuilder<B extends Block, I extends BlockItem> implements Build
     /**
      * Makes the block's item stay in the crafting grid when crafted with.
      * <p><strong>
-     * Requires {@link #withGeneratedBlockItem(boolean)} method.
+     * Requires {@link #withGeneratedBlockItem(boolean)} method to be true.
      * </p></strong>
      */
     public BlockBuilder<B, I> withContainerItem() {
@@ -340,7 +344,7 @@ public class BlockBuilder<B extends Block, I extends BlockItem> implements Build
     /**
      * Adds the functionality of {@link #withContainerItem()} but the block's item will be damaged when crafted with by 1 durability point.
      * <p><strong>
-     * Requires {@link #withGeneratedBlockItem(boolean)} method.
+     * Requires {@link #withGeneratedBlockItem(boolean)} method to be true.
      * </p></strong>
      */
     public BlockBuilder<B, I> withDamageableContainerItem() {
@@ -351,7 +355,7 @@ public class BlockBuilder<B extends Block, I extends BlockItem> implements Build
     /**
      * The properties will be passed on to the block item create.
      * <p><strong>
-     * Requires {@link #withGeneratedBlockItem(boolean)} method.
+     * Requires {@link #withGeneratedBlockItem(boolean)} method to be true.
      * </p></strong>
      */
     public BlockBuilder<B, I> withItemProperties(Item.Properties properties) {

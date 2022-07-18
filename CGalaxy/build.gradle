@@ -7,6 +7,7 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.36', changing: true
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
         classpath 'org.parchmentmc:librarian:1.+'
     }
 }
@@ -16,6 +17,7 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'idea'
 apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
 
 version = "0.1.0"
 group = 'net.congueror.cgalaxy'
@@ -28,7 +30,7 @@ sourceSets {
 }
 
 minecraft {
-    mappings channel: 'parchment', version: '2022.05.22-1.18.2'
+    mappings channel: 'parchment', version: '2022.07.10-1.18.2'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -88,11 +90,18 @@ repositories {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.18.2-40.1.25"
+    minecraft "net.minecraftforge:forge:1.18.2-40.1.68"
 
-    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.5.174:api")
+    compileOnly fg.deobf("mezz.jei:jei-1.18.2-common-api:10.1.0.223")
+    compileOnly fg.deobf("mezz.jei:jei-1.18.2-forge-api:10.1.0.223")
+    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 
     implementation project(':CLib')
+}
+
+mixin {
+    add sourceSets.main, "cgalaxy.mixin-refmap.json"
+    config 'cgalaxy.mixin.json'
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
@@ -106,6 +115,9 @@ jar {
                 "Implementation-Version"  : project.jar.archiveVersion,
                 //"Implementation-Vendor": "cgalaxy authors",
                 //"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "TweakClass"              : "org.spongepowered.asm.launch.MixinTweaker",
+                "TweakOrder"              : 0,
+                "MixinConfigs"            : "cgalaxy.mixin.json"
         ])
     }
 }

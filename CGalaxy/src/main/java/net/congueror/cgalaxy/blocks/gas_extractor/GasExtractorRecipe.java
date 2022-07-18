@@ -2,15 +2,14 @@ package net.congueror.cgalaxy.blocks.gas_extractor;
 
 import com.google.gson.JsonObject;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
-import net.congueror.clib.api.recipe.FluidRecipe;
-import net.congueror.clib.api.recipe.FluidRecipeSerializer;
-import net.congueror.clib.api.recipe.IItemFluidInventory;
+import net.congueror.clib.util.recipe.FluidRecipe;
+import net.congueror.clib.util.recipe.RecipeSerializer;
+import net.congueror.clib.util.recipe.IItemFluidInventory;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,7 +19,6 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.Random;
 
 public class GasExtractorRecipe implements FluidRecipe<IItemFluidInventory> {
     final ResourceLocation id;
@@ -75,7 +73,7 @@ public class GasExtractorRecipe implements FluidRecipe<IItemFluidInventory> {
 
     @Nonnull
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public net.minecraft.world.item.crafting.RecipeSerializer<?> getSerializer() {
         return CGRecipeSerializerInit.GAS_EXTRACTING.get();
     }
 
@@ -85,7 +83,7 @@ public class GasExtractorRecipe implements FluidRecipe<IItemFluidInventory> {
         return CGRecipeSerializerInit.GAS_EXTRACTING_TYPE.get();
     }
 
-    public static class Serializer extends FluidRecipeSerializer<GasExtractorRecipe> {
+    public static class Serializer extends RecipeSerializer<GasExtractorRecipe> {
 
         @Nonnull
         @Override

@@ -1,0 +1,16 @@
+{
+  "type": "moon",
+  "id": "cgalaxy:deimos",
+  "parent": "cgalaxy:mars",
+  "diameter": {
+    "distance": 12.4,
+    "unit": "km"
+  },
+  "atmosphere": "None",
+  "gravity": 0.003,
+  "tier": 1,
+  "angle": 140,
+  "daysPerYear": 1.25,
+  "ringIndex": 1,
+  "texture": "cgalaxy:textures/sky/deimos.png"
+}

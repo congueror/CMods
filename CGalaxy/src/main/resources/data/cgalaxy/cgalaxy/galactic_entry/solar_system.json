@@ -1,0 +1,14 @@
+{
+  "type": "solar_system",
+  "id": "cgalaxy:solar_system",
+  "parent": "cgalaxy:milky_way",
+  "age": 4.6e9,
+  "diameter": {
+    "distance": 284.46e9,
+    "unit": "km"
+  },
+  "celestialObjects": 7,
+  "x": 10,
+  "y": 10,
+  "texture": "cgalaxy:textures/sky/sun.png"
+}

@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.networking;
 
-import net.congueror.cgalaxy.gui.galaxy_map.GalacticObjectBuilder;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
+import net.congueror.cgalaxy.util.json_managers.GalacticEntryManager;
 import net.congueror.clib.networking.IPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -50,7 +50,7 @@ public class PacketChangeMap implements IPacket {
                     @Nonnull
                     @Override
                     public AbstractContainerMenu createMenu(int pContainerId, @Nonnull Inventory pInventory, @Nonnull Player pPlayer) {
-                        return new GalaxyMapContainer(pContainerId, player, pInventory, true, GalacticObjectBuilder.getObjectFromId(name));
+                        return new GalaxyMapContainer(pContainerId, player, pInventory, true, GalacticEntryManager.getObjectFromId(name));
                     }
                 });
             }

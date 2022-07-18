@@ -1,0 +1,34 @@
+package net.congueror.clib.data;
+
+import net.congueror.clib.CLib;
+import net.congueror.clib.util.registry.data.LangDataProvider;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+
+@Mod.EventBusSubscriber(modid = CLib.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public class CLDataGenerators {
+    @SubscribeEvent
+    public static void gatherData(GatherDataEvent event) {
+        DataGenerator generator = event.getGenerator();
+
+        if (event.includeServer()) {
+            CLib.LOGGER.debug("Starting Server Data Generators for CLib");
+            BlockTagsProvider blockTags = new BlockTagsDataGen(generator, event.getExistingFileHelper());
+            generator.addProvider(new CLRecipeDataGen(generator));
+            generator.addProvider(blockTags);
+            generator.addProvider(new ItemTagsDataGen(generator, blockTags, event.getExistingFileHelper()));
+            generator.addProvider(new LootTableDataGen(generator));
+        }
+        if (event.includeClient()) {
+            CLib.LOGGER.debug("Starting Client Data Generators for CLib");
+            generator.addProvider(new ItemModelDataGen(generator, event.getExistingFileHelper()));
+            generator.addProvider(new BlockModelDataGen(generator, event.getExistingFileHelper()));
+            LangDataProvider.create(generator, CLib.MODID);
+            generator.addProvider(new CLLangDataGen(generator, "en_us"));
+            generator.addProvider(new CLLangDataGen(generator, "zh_cn"));
+        }
+    }
+}

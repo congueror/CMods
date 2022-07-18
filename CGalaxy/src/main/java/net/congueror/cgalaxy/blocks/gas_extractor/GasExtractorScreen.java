@@ -2,14 +2,14 @@ package net.congueror.cgalaxy.blocks.gas_extractor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidScreen;
+import net.congueror.clib.blocks.machine_base.machine.AbstractFluidMachineScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 import javax.annotation.Nonnull;
 
-public class GasExtractorScreen extends AbstractFluidScreen<GasExtractorContainer> {
+public class GasExtractorScreen extends AbstractFluidMachineScreen<GasExtractorContainer> {
     public static ResourceLocation GUI = new ResourceLocation(CGalaxy.MODID, "textures/gui/gas_extractor.png");
     GasExtractorContainer container;
 

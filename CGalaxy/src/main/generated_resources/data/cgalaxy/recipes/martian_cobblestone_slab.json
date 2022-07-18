@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "SSS",
+    "   "
+  ],
+  "key": {
+    "S": {
+      "item": "cgalaxy:martian_cobblestone"
+    }
+  },
+  "result": {
+    "item": "cgalaxy:martian_cobblestone_slab",
+    "count": 6
+  }
+}

@@ -3,8 +3,11 @@ package net.congueror.cgalaxy.gui.galaxy_map;
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.networking.PacketSyncMap;
-import net.congueror.clib.blocks.abstract_machine.AbstractInventoryContainer;
+import net.congueror.cgalaxy.util.json_managers.GalacticEntryManager;
+import net.congueror.cgalaxy.util.saved_data.WorldSavedData;
+import net.congueror.clib.blocks.machine_base.AbstractInventoryContainer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -17,14 +20,15 @@ public class GalaxyMapContainer extends AbstractInventoryContainer {
     public boolean unlocked;
     private boolean unlockedLastTick;
     @Nullable
-    public GalacticObjectBuilder.GalacticObject<?> map;
+    public GalacticEntryBuilder.GalacticEntry<?> map;
     Player player;
 
-    public GalaxyMapContainer(int id, Player player, Inventory playerInv, boolean unlocked, @Nullable GalacticObjectBuilder.GalacticObject<?> map) {
+    public GalaxyMapContainer(int id, Player player, Inventory playerInv, boolean unlocked, @Nullable GalacticEntryBuilder.GalacticEntry<?> map) {
         super(CGContainerInit.GALAXY_MAP.get(), id, playerInv);
         this.player = player;
         this.unlocked = unlocked;
         this.map = map;
+        if (player.level instanceof ServerLevel l) WorldSavedData.updateAll(l);
     }
 
     @Override
@@ -41,7 +45,7 @@ public class GalaxyMapContainer extends AbstractInventoryContainer {
 
     public void sync(boolean unlocked, ResourceLocation name) {
         this.unlocked = unlocked;
-        this.map = GalacticObjectBuilder.getObjectFromId(name);
+        this.map = GalacticEntryManager.getObjectFromId(name);
     }
 
     @Override

@@ -1,5 +1,5 @@
 {
-  "type": "clib:solar_energy",
+  "type": "cgalaxy:solar_energy",
   "dimension": "cgalaxy:moon",
   "dayIntensity": 1.8,
   "nightIntensity": 0,

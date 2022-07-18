@@ -1,0 +1,11 @@
+{
+  "type": "galaxy",
+  "id": "cgalaxy:milky_way",
+  "age": 13.51e9,
+  "diameter": {
+    "distance": 105700,
+    "unit": "LY"
+  },
+  "stars": 250e9,
+  "texture": "cgalaxy:textures/gui/galaxy_map/milky_way.png"
+}

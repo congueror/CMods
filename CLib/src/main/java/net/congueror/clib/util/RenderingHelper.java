@@ -10,16 +10,26 @@ import net.congueror.clib.CLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.model.data.IDynamicBakedModel;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 import static net.minecraft.util.Mth.TWO_PI;
@@ -27,6 +37,24 @@ import static net.minecraft.util.Mth.TWO_PI;
 public final class RenderingHelper {
 
     private RenderingHelper() {}
+
+    public static void registerBakedModel(ModelBakeEvent e, Block block, IDynamicBakedModel model) {
+        for (BlockState state : block.getStateDefinition().getPossibleStates()) {
+            e.getModelRegistry().put(BlockModelShaper.stateToModelLocation(block.getRegistryName(), state), model);
+        }
+    }
+
+    @Nullable
+    public static ItemStack getFirstItemInInventory(Inventory inv, Item item) {
+        if (inv.contains(new ItemStack(item))) {
+            for(int i = 0; i < inv.items.size(); ++i) {
+                if (!inv.items.get(i).isEmpty() && inv.items.get(i).is(item)) {
+                    return inv.items.get(i);
+                }
+            }
+        }
+        return null;
+    }
 
     /**
      * Renders an entity on the screen.
@@ -96,7 +124,7 @@ public final class RenderingHelper {
         RenderSystem.setShaderColor(r, g, b, 1.0f);
         RenderSystem.enableBlend();
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_TEX);
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         bufferbuilder.vertex(matrix, (float) x1, (float) y2, (float) blitOffset).uv(sprite.getU0(), sprite.getV1()).endVertex();
         bufferbuilder.vertex(matrix, (float) x2, (float) y2, (float) blitOffset).uv(sprite.getU1(), sprite.getV1()).endVertex();
         bufferbuilder.vertex(matrix, (float) x2, (float) y1, (float) blitOffset).uv(sprite.getU1(), sprite.getV0()).endVertex();

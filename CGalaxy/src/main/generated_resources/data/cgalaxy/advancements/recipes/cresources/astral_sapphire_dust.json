@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cgalaxy:astral_sapphire_dust"
+    ]
+  },
+  "criteria": {
+    "has_dusts/astral_sapphire": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/astral_sapphire"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cgalaxy:astral_sapphire_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dusts/astral_sapphire",
+      "has_the_recipe"
+    ]
+  ]
+}

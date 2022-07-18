@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.blocks.fuel_refinery;
 
 
-import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlock;
+import net.congueror.clib.blocks.machine_base.machine.AbstractFluidMachineBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class FuelRefineryBlock extends AbstractFluidBlock {
+public class FuelRefineryBlock extends AbstractFluidMachineBlock {
     public FuelRefineryBlock(Properties properties) {
         super(properties);
     }

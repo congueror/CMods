@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.blocks.gas_extractor;
 
 import net.congueror.cgalaxy.init.CGContainerInit;
-import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidContainer;
+import net.congueror.clib.blocks.machine_base.machine.AbstractFluidMachineContainer;
 import net.congueror.clib.items.UpgradeItem;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -17,7 +17,7 @@ import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
-public class GasExtractorContainer extends AbstractFluidContainer<GasExtractorBlockEntity> {
+public class GasExtractorContainer extends AbstractFluidMachineContainer<GasExtractorBlockEntity> {
     GasExtractorBlockEntity te;
 
     public GasExtractorContainer(int id, Player player, Inventory playerInventory, GasExtractorBlockEntity tile, ContainerData dataIn) {

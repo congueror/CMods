@@ -2,8 +2,8 @@ package net.congueror.cgalaxy.entity.villagers;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
-import net.congueror.cgalaxy.api.registry.CGEntity;
+import net.congueror.cgalaxy.util.registry.CGDimensionBuilder;
+import net.congueror.cgalaxy.util.registry.CGEntity;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
 import net.congueror.cgalaxy.world.CGDimensions;
 import net.minecraft.nbt.CompoundTag;
@@ -180,7 +180,7 @@ public class LunarVillager extends AbstractVillager implements CGEntity {
 
     @Override
     public boolean canBreath(CGDimensionBuilder.DimensionObject object) {
-        return object.getDim().equals(CGDimensions.MOON.getDim());
+        return object.getDim().equals(CGDimensions.MOON);
     }
 
     @Override

@@ -7,7 +7,7 @@
   ],
   "key": {
     "M": {
-      "item": "minecraft:netherite_ingot"
+      "tag": "forge:ingots/netherite"
     },
     "C": {
       "item": "clib:tier_3_circuit_board"

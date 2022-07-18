@@ -13,11 +13,12 @@ import javax.annotation.Nonnull;
 
 public abstract class AbstractRocketModel<T extends Entity> extends EntityModel<T> {
 
-    protected static int rotation;
+    private static int rotation;
     private static int rotation1;
 
     /**
      * Sets and increments the rotation of the rocket item. Called from a {@link net.minecraftforge.event.TickEvent.ClientTickEvent} event
+     * TODO: Come up with better solution?
      */
     public static void setupItemRotation() {
         LocalPlayer player = Minecraft.getInstance().player;

@@ -2,23 +2,16 @@ package net.congueror.cgalaxy.gui.space_suit;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.gui.MutableImageButton;
 import net.congueror.cgalaxy.util.CGConfig;
-import net.congueror.clib.CLib;
-import net.congueror.clib.blocks.abstract_machine.AbstractSettingsScreen;
+import net.congueror.clib.blocks.machine_base.AbstractSettingsScreen;
 import net.congueror.clib.util.MathHelper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class SpaceSuitSettingsScreen extends AbstractSettingsScreen {
 

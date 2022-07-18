@@ -1,25 +1,21 @@
 package net.congueror.clib.init;
 
 import net.congueror.clib.CLib;
-import net.congueror.clib.util.registry.data.BlockModelDataProvider;
-import net.congueror.clib.blocks.abstract_machine.item.AbstractItemBlock;
-import net.congueror.clib.util.registry.builders.BlockBuilder;
-import net.congueror.clib.blocks.generic.*;
-import net.congueror.clib.blocks.solar_generator.SolarGeneratorBlock;
+import net.congueror.clib.blocks.generic.CLOreBlock;
+import net.congueror.clib.blocks.generic.CLRotatedPillarBlock;
 import net.congueror.clib.util.CreativeTabs;
-import net.congueror.clib.util.registry.data.LootTableDataProvider;
+import net.congueror.clib.util.registry.builders.BlockBuilder;
+import net.congueror.clib.util.registry.data.BlockModelDataProvider;
 import net.congueror.clib.world.FeatureGen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -39,9 +35,10 @@ public class CLBlockInit {
             , 1))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withNewBlockTag("forge:ores/saltpetre")
-            .withNewItemTag("forge:ores/saltpetre")
+            .withItemTag("forge:ores/saltpetre")
             .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createMultipleDrops(block, CLItemInit.SALTPETRE_DUST.get(), 4, 6))
             .withTranslation("Saltpetre Ore")
+            .withTranslation("\u785d\u77f3\u77ff\u77f3", "zh_cn")
             .withCreativeTab(CreativeTabs.ResourcesIG.instance)
             .build();
     public static final RegistryObject<CLOreBlock> SULFUR_ORE = REGISTER.create("sulfur_ore", () -> new CLOreBlock(BlockBehaviour.Properties
@@ -51,9 +48,10 @@ public class CLBlockInit {
             , 2))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
             .withNewBlockTag("forge:ores/sulfur")
-            .withNewItemTag("forge:ores/sulfur")
+            .withItemTag("forge:ores/sulfur")
             .withLootTable((lootTableDataGenerator, block) -> lootTableDataGenerator.createMultipleDrops(block, CLItemInit.SULFUR_DUST.get(), 3, 6))
             .withTranslation("Nether Sulfur Ore")
+            .withTranslation("\u4e0b\u754c\u786b\u77ff\u77f3", "zh_cn")
             .withCreativeTab(CreativeTabs.ResourcesIG.instance)
             .build();
 
@@ -69,7 +67,7 @@ public class CLBlockInit {
             new CLRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_LOG)))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_AXE)
             .withNewBlockTag("forge:rubber_logs")
-            .withNewItemTag("forge:rubber_logs")
+            .withItemTag("forge:rubber_logs")
             .withBlockModel(BlockModelDataProvider::logBlock)
             .withTranslation("Stripped Rubber Log")
             .build();
@@ -78,7 +76,7 @@ public class CLBlockInit {
             new CLRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_WOOD)))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_AXE)
             .withNewBlockTag("forge:rubber_logs")
-            .withNewItemTag("forge:rubber_logs")
+            .withItemTag("forge:rubber_logs")
             .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.axisBlock(block, "clib:block/stripped_rubber_log"))
             .withTranslation("Stripped Rubber Wood")
             .build();
@@ -87,7 +85,7 @@ public class CLBlockInit {
             new CLRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)).setModifiedState(ToolActions.AXE_STRIP, RUBBER_STRIPPED_LOG))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS)
             .withNewBlockTag("forge:rubber_logs")
-            .withNewItemTag("forge:rubber_logs")
+            .withItemTag("forge:rubber_logs")
             .withBlockModel(BlockModelDataProvider::logBlock)
             .withTranslation("Rubber Log")
             .build();
@@ -96,7 +94,7 @@ public class CLBlockInit {
             new CLRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)).setModifiedState(ToolActions.AXE_STRIP, RUBBER_STRIPPED_WOOD))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_AXE)
             .withNewBlockTag("forge:rubber_logs")
-            .withNewItemTag("forge:rubber_logs")
+            .withItemTag("forge:rubber_logs")
             .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.axisBlock(block, "clib:block/rubber_log"))
             .withTranslation("Rubber Wood")
             .build();
@@ -111,7 +109,7 @@ public class CLBlockInit {
     public static final RegistryObject<Block> RUBBER_PLANKS = REGISTER.create("rubber_planks", () ->
             new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)))
             .withExistingBlockTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.PLANKS)
-            .withExistingItemTags(ItemTags.PLANKS)
+            .withItemTags(ItemTags.PLANKS)
             .withTranslation("Rubber Planks")
             .build();
 
@@ -127,38 +125,5 @@ public class CLBlockInit {
             .withItemModel((itemModelDataGenerator, block) -> itemModelDataGenerator.modTexture(block.asItem(), "block/rubber_sapling"))
             .withTranslation("Rubber Sapling")
             .withRenderType(RenderType.cutout())
-            .build();
-
-    public static final RegistryObject<SolarGeneratorBlock> SOLAR_GENERATOR_1 = REGISTER.create("solar_generator_1", () ->
-            new SolarGeneratorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 20, 1))//TODO
-            .withCreativeTab(CreativeTabs.MachinesIG.instance)
-            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
-            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.cubeBottomTopBlock(block, "clib:block/solar_generator_side", "clib:block/machine_frame", "clib:block/solar_generator_1_top"))
-            .withTranslation("Tier 1 Solar Generator")
-            .withLootTable(LootTableDataProvider::createMachineDrop)
-            .build();
-    public static final RegistryObject<SolarGeneratorBlock> SOLAR_GENERATOR_2 = REGISTER.create("solar_generator_2", () ->
-            new SolarGeneratorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 50, 2))
-            .withCreativeTab(CreativeTabs.MachinesIG.instance)
-            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
-            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.cubeBottomTopBlock(block, "clib:block/solar_generator_side", "clib:block/machine_frame", "clib:block/solar_generator_2_top"))
-            .withTranslation("Tier 2 Solar Generator")
-            .withLootTable(LootTableDataProvider::createMachineDrop)
-            .build();
-    public static final RegistryObject<SolarGeneratorBlock> SOLAR_GENERATOR_3 = REGISTER.create("solar_generator_3", () ->
-            new SolarGeneratorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 120, 3))
-            .withCreativeTab(CreativeTabs.MachinesIG.instance)
-            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
-            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.cubeBottomTopBlock(block, "clib:block/solar_generator_side", "clib:block/machine_frame", "clib:block/solar_generator_3_top"))
-            .withTranslation("Tier 3 Solar Generator")
-            .withLootTable(LootTableDataProvider::createMachineDrop)
-            .build();
-    public static final RegistryObject<SolarGeneratorBlock> SOLAR_GENERATOR_CREATIVE = REGISTER.create("solar_generator_creative", () ->
-            new SolarGeneratorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 10000, 0))
-            .withCreativeTab(CreativeTabs.MachinesIG.instance)
-            .withExistingBlockTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_STONE_TOOL)
-            .withBlockModel((blockModelDataProvider, block) -> blockModelDataProvider.cubeBottomTopBlock(block, "clib:block/solar_generator_side", "clib:block/machine_frame", "clib:block/solar_generator_3_top"))
-            .withTranslation("Creative Solar Generator")
-            .withLootTable(LootTableDataProvider::createMachineDrop)
             .build();
 }

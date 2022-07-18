@@ -1,6 +1,6 @@
 package net.congueror.cgalaxy.blocks.room_pressurizer;
 
-import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlock;
+import net.congueror.clib.blocks.machine_base.machine.AbstractFluidMachineBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class RoomPressurizerBlock extends AbstractFluidBlock {
+public class RoomPressurizerBlock extends AbstractFluidMachineBlock {
     public RoomPressurizerBlock(Properties properties) {
         super(properties);
     }

@@ -232,12 +232,14 @@ public class FluidBuilder implements Builder<FlowingFluid> {
     }
 
     /**
-     * The Color used by universal bucket and the ModelFluid baked model.
+     * The ARGB Color used by universal bucket and the ModelFluid baked model.
      * Note that this int includes the alpha so converting this to RGB with alpha would be
+     * <code>
      *   float r = ((color >> 16) & 0xFF) / 255f; // red
      *   float g = ((color >> 8) & 0xFF) / 255f; // green
      *   float b = ((color >> 0) & 0xFF) / 255f; // blue
      *   float a = ((color >> 24) & 0xFF) / 255f; // alpha
+     * </code>
      * @param color The color in hex, e.g. 0xFFFFFFFF
      */
     public final FluidBuilder withColor(int color) {

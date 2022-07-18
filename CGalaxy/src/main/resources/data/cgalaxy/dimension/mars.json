@@ -1,0 +1,40 @@
+{
+  "type": "cgalaxy:mars_type",
+  "generator": {
+    "type": "minecraft:noise",
+    "seed": 394302040,
+    "biome_source": {
+      "type": "cgalaxy:planet",
+      "south": "cgalaxy:mars_south",
+      "maxX": 8000,
+      "maxZ": 8000,
+      "biomes": [
+        {
+          "biome": "cgalaxy:mars",
+          "parameters": {
+            "temperature": 0,
+            "humidity": 0,
+            "continentalness": 0,
+            "erosion": 0,
+            "weirdness": 0,
+            "depth": 0,
+            "offset": 0
+          }
+        },
+        {
+          "biome": "cgalaxy:mars_basalt",
+          "parameters": {
+            "temperature": -0.3,
+            "humidity": 0,
+            "continentalness": 0,
+            "erosion": 0,
+            "weirdness": 0,
+            "depth": 0,
+            "offset": 0
+          }
+        }
+      ]
+    },
+    "settings": "cgalaxy:mars_noise"
+  }
+}

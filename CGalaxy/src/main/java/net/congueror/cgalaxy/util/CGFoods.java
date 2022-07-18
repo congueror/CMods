@@ -18,4 +18,8 @@ public class CGFoods {
             .nutrition(6)
             .saturationMod(1.8f)
             .build();
+    public static final FoodProperties CHEESE_SLICE = new FoodProperties.Builder()
+            .nutrition(4)
+            .saturationMod(0.3f)
+            .build();
 }

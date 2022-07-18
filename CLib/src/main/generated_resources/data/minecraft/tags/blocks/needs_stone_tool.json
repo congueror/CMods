@@ -3,10 +3,6 @@
   "values": [
     "clib:saltpetre_ore",
     "clib:sulfur_ore",
-    "clib:solar_generator_1",
-    "clib:solar_generator_2",
-    "clib:solar_generator_3",
-    "clib:solar_generator_creative",
     "clib:tin_ore",
     "clib:deepslate_tin_ore",
     "clib:tin_block"

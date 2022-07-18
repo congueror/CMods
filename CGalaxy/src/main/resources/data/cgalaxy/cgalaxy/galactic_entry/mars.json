@@ -1,0 +1,17 @@
+{
+  "type": "planet",
+  "id": "cgalaxy:mars",
+  "parent": "cgalaxy:solar_system",
+  "diameter": {
+    "distance": 6779,
+    "unit": "km"
+  },
+  "moons": 2,
+  "atmosphere": "Thin",
+  "gravity": 3.721,
+  "tier": 2,
+  "angle": 243,
+  "daysPerYear": 687,
+  "ringIndex": 3,
+  "texture": "cgalaxy:textures/sky/mars.png"
+}

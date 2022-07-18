@@ -3,13 +3,14 @@ package net.congueror.clib.util.registry.data;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import net.congueror.clib.util.registry.builders.BlockBuilder;
-import net.congueror.clib.blocks.abstract_machine.item.AbstractItemBlock;
+import net.congueror.clib.blocks.machine_base.machine.AbstractItemMachineBlock;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -19,7 +20,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CarrotBlock;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -42,7 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -123,7 +123,7 @@ public class LootTableDataProvider extends LootTableProvider implements DataProv
                         .add(LootItem.lootTableItem(b))), LootContextParamSets.BLOCK);
     }
 
-    public void createMachineDrop(AbstractItemBlock b) {//TODO
+    public void createMachineDrop(AbstractItemMachineBlock b) {//TODO
         addTable(b.getLootTable(), LootTable.lootTable().withPool(
                 LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(ExplosionCondition.survivesExplosion())
                         .add(LootItem.lootTableItem(b))
@@ -247,6 +247,10 @@ public class LootTableDataProvider extends LootTableProvider implements DataProv
                         .withPool(LootPool.lootPool().when(l).add(LootItem.lootTableItem(block)
                                 .apply(ApplyBonusCount.addBonusBinomialDistributionCount(Enchantments.BLOCK_FORTUNE, 0.5714286F, 3)))))
                 , LootContextParamSets.BLOCK);
+    }
+
+    public void createDoorDrop(DoorBlock block) {
+        addTable(block.getLootTable(), BlockLoot.createDoorTable(block), LootContextParamSets.BLOCK);
     }
 
     public void createChestLootTable(ResourceLocation name, LootTable.Builder lootTable) {

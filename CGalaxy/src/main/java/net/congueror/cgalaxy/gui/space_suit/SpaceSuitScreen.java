@@ -3,7 +3,7 @@ package net.congueror.cgalaxy.gui.space_suit;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.items.*;
+import net.congueror.cgalaxy.items.space_suit.*;
 import net.congueror.cgalaxy.util.CGConfig;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
 import net.congueror.clib.CLib;

@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.entity.villagers;
 
-import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
-import net.congueror.cgalaxy.api.registry.CGEntity;
+import net.congueror.cgalaxy.util.registry.CGDimensionBuilder;
+import net.congueror.cgalaxy.util.registry.CGEntity;
 import net.congueror.cgalaxy.init.CGEntityTypeInit;
 import net.congueror.cgalaxy.init.CGItemInit;
 import net.congueror.cgalaxy.world.CGDimensions;
@@ -157,7 +157,7 @@ public class LunarZombieVillager extends Zombie implements CGEntity {
 
     @Override
     public boolean canBreath(CGDimensionBuilder.DimensionObject object) {
-        return object.getDim().equals(CGDimensions.MOON.getDim());
+        return object.getDim().equals(CGDimensions.MOON);
     }
 
     @Override

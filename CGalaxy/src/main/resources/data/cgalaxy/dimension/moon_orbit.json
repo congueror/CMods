@@ -1,0 +1,12 @@
+{
+  "type": "cgalaxy:moon_orbit_type",
+  "generator": {
+    "type": "minecraft:noise",
+    "seed": 0,
+    "settings": "cgalaxy:orbit_noise",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "cgalaxy:orbit"
+    }
+  }
+}

@@ -1,23 +1,20 @@
 package net.congueror.clib.util.registry.data;
 
-import net.congueror.clib.util.TagHelper;
 import net.congueror.clib.util.registry.builders.BlockBuilder;
 import net.congueror.clib.util.registry.builders.ItemBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import javax.annotation.Nullable;
 import java.util.Map;
+
+import static net.congueror.clib.util.CLTags.Items.*;
 
 public class ItemTagsDataProvider extends ItemTagsProvider {
 
@@ -28,6 +25,7 @@ public class ItemTagsDataProvider extends ItemTagsProvider {
         this.modid = modId;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void addTags() {
         if (BlockBuilder.OBJECTS.get(this.modid) != null)
@@ -48,10 +46,11 @@ public class ItemTagsDataProvider extends ItemTagsProvider {
                     tag(tags.getKey()).addTags(tags.getValue());
                 }
             });
-        tag(ItemTags.create(new ResourceLocation("forge:sticks"))).add(Items.STICK);
 
-        tag(TagHelper.STICKS).addTags(ItemTags.create(new ResourceLocation("forge:dusts/blaze_powder")));
-        tag(TagHelper.DUSTS_BLAZE_POWDER).add(Items.BLAZE_POWDER);
-        tag(TagHelper.SHARDS_AMETHYST).add(Items.AMETHYST_SHARD);
+        tag(STICKS).add(Items.STICK);
+        tag(Tags.Items.DUSTS).addTags(DUSTS_BLAZE_POWDER);
+        tag(DUSTS_BLAZE_POWDER).add(Items.BLAZE_POWDER);
+        tag(SHARDS_AMETHYST).add(Items.AMETHYST_SHARD);
+        tag(SHARDS).addTags(SHARDS_AMETHYST);
     }
 }

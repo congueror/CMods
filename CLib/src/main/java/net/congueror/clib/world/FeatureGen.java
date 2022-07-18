@@ -3,7 +3,6 @@ package net.congueror.clib.world;
 import net.congueror.clib.CLib;
 import net.congueror.clib.init.CLBlockInit;
 import net.congueror.clib.init.CLMaterialInit;
-import net.congueror.clib.util.registry.ResourceBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.biome.Biomes;
@@ -19,6 +18,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import static net.congueror.clib.world.WorldHelper.*;
+import static net.congueror.clib.util.CLConfig.*;
 
 @Mod.EventBusSubscriber(modid = CLib.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class FeatureGen {
@@ -54,10 +54,10 @@ public class FeatureGen {
                 BlockStateProvider.simple(CLBlockInit.RUBBER_LEAVES.get().defaultBlockState()),
                 new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                 new TwoLayersFeatureSize(1, 0, 1)).ignoreVines().build());
-        RUBBER_TREE_PLACEMENT = registerTreePlacement(CLib.MODID, "rubber_tree", RUBBER_TREE, CLBlockInit.RUBBER_SAPLING.get(), 100);
+        RUBBER_TREE_PLACEMENT = registerTreePlacement(CLib.MODID, "rubber_tree", RUBBER_TREE, CLBlockInit.RUBBER_SAPLING.get(), RUBBER_TREE_RARITY.get());
 
-        TIN = registerConfiguredOre(CLMaterialInit.TIN.ore().get(), CLMaterialInit.TIN.deepslate().get(), 8, -24, 56, 25);
-        ALUMINUM = registerConfiguredOre(CLMaterialInit.ALUMINUM.ore().get(), CLMaterialInit.ALUMINUM.deepslate().get(), 7, -24, 63, 8);
+        TIN = registerConfiguredOre(CLMaterialInit.TIN.ore().get(), CLMaterialInit.TIN.deepslate().get(), TIN_VEIN.get(), TIN_MIN.get(), TIN_MAX.get(), TIN_COUNT.get());
+        ALUMINUM = registerConfiguredOre(CLMaterialInit.ALUMINUM.ore().get(), CLMaterialInit.ALUMINUM.deepslate().get(), ALUMINUM_VEIN.get(), ALUMINUM_MIN.get(), ALUMINUM_MAX.get(), ALUMINUM_COUNT.get());
         LEAD = registerConfiguredOre(CLMaterialInit.LEAD.ore().get(), CLMaterialInit.LEAD.deepslate().get(), 7, -24, 31, 4);
         RUBY = registerConfiguredOre(nether, CLMaterialInit.RUBY.ore().get(), 3, 0, 18, 1);
         SILVER = registerConfiguredOre(CLMaterialInit.SILVER.ore().get(), CLMaterialInit.SILVER.deepslate().get(), 0, -24, 16, 3);

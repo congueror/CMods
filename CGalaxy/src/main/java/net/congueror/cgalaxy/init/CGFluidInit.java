@@ -57,4 +57,14 @@ public class CGFluidInit {
             .withNewFluidTag("forge:nitrogen")
             .withTranslation("Nitrogen")
             .build(FLUIDS);
+
+    public static final FluidBuilder.FluidObject CARBON_DIOXIDE = new FluidBuilder("carbon_dioxide", ForgeFlowingFluid.Source::new, ForgeFlowingFluid.Flowing::new)
+            .withColor(0xFF000000)
+            .withGaseousForm()
+            .withDensity(-1)
+            .withTemperature(437)
+            .withBucket(() -> CGItemInit.CARBON_DIOXIDE_BUCKET.get())
+            .withNewFluidTag("forge:co2")
+            .withTranslation("Carbon Dioxide")
+            .build(FLUIDS);
 }

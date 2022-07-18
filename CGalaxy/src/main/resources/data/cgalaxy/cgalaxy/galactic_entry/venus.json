@@ -1,0 +1,17 @@
+{
+  "type": "planet",
+  "id": "cgalaxy:venus",
+  "parent": "cgalaxy:solar_system",
+  "diameter": {
+    "distance": 12104,
+    "unit": "km"
+  },
+  "moons": 0,
+  "atmosphere": "Very Thick",
+  "gravity": 8.87,
+  "tier": 4,
+  "angle": 135,
+  "daysPerYear": 225,
+  "ringIndex": 1,
+  "texture": "cgalaxy:textures/sky/venus.png"
+}

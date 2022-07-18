@@ -1,8 +1,7 @@
 package net.congueror.cgalaxy.init;
 
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.entity.AstroEnderman;
-import net.congueror.cgalaxy.entity.AstroZombie;
+import net.congueror.cgalaxy.entity.*;
 import net.congueror.cgalaxy.entity.rockets.RocketTier1;
 import net.congueror.cgalaxy.entity.villagers.LunarVillager;
 import net.congueror.cgalaxy.entity.villagers.LunarZombieVillager;
@@ -46,4 +45,23 @@ public class CGEntityTypeInit {
                     .sized(0.6f, 1.95f)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(CGalaxy.MODID, "lunar_zombie_villager").toString()));
+
+    public static final RegistryObject<EntityType<GalacticVisitor>> GALACTIC_VISITOR = ENTITY_TYPES.register("galactic_visitor", () ->
+            EntityType.Builder.of(GalacticVisitor::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.8f)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(CGalaxy.MODID, "galactic_visitor").toString()));
+
+    public static final RegistryObject<EntityType<LaserBlast>> LASER_BLAST = ENTITY_TYPES.register("laser_blast", () ->
+            EntityType.Builder.<LaserBlast>of(LaserBlast::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(4)
+                    .updateInterval(20)
+                    .build(new ResourceLocation(CGalaxy.MODID, "laser_blast").toString()));
+
+    public static final RegistryObject<EntityType<MartianSkeleton>> MARTIAN_SKELETON = ENTITY_TYPES.register("martian_skeleton", () ->
+            EntityType.Builder.of(MartianSkeleton::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.99F)
+                    .clientTrackingRange(8)
+                    .build(CGalaxy.location("martian_skeleton").toString()));
 }

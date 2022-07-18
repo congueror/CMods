@@ -1,11 +1,14 @@
-package net.congueror.clib.blocks.solar_generator;
+package net.congueror.cgalaxy.blocks.solar_generator;
 
-import net.congueror.clib.blocks.abstract_machine.item.AbstractItemBlockEntity;
+import net.congueror.cgalaxy.init.CGBlockEntityInit;
+import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
+import net.congueror.clib.blocks.machine_base.machine.AbstractRecipeItemBlockEntity;
 import net.congueror.clib.init.CLBlockEntityInit;
 import net.congueror.clib.init.CLRecipeSerializerInit;
 import net.congueror.clib.items.UpgradeItem;
 import net.congueror.clib.util.RenderingHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -17,12 +20,15 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.Set;
 
-public class SolarGeneratorBlockEntity extends AbstractItemBlockEntity<SolarGeneratorRecipe> {
+public class SolarGeneratorBlockEntity extends AbstractRecipeItemBlockEntity<SolarGeneratorRecipe> {
     int energyGen;
 
     public SolarGeneratorBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-        super(CLBlockEntityInit.SOLAR_GENERATOR.get(), pWorldPosition, pBlockState);
+        super(CGBlockEntityInit.SOLAR_GENERATOR.get(), pWorldPosition, pBlockState);
+        activeItemFaces = Set.of(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST, Direction.DOWN);
+        activeEnergyFaces = Set.of(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST, Direction.DOWN);
     }
 
     public int getEnergyGen() {
@@ -45,7 +51,7 @@ public class SolarGeneratorBlockEntity extends AbstractItemBlockEntity<SolarGene
     @Override
     public SolarGeneratorRecipe getRecipe() {
         assert level != null;
-        return level.getRecipeManager().getRecipeFor(CLRecipeSerializerInit.SOLAR_ENERGY_TYPE.get(), wrapper, level).orElse(null);
+        return level.getRecipeManager().getRecipeFor(CGRecipeSerializerInit.SOLAR_ENERGY_TYPE.get(), wrapper, level).orElse(null);
     }
 
     @Override
@@ -59,8 +65,8 @@ public class SolarGeneratorBlockEntity extends AbstractItemBlockEntity<SolarGene
     }
 
     @Override
-    public int[] invSize() {
-        return new int[]{0, 1, 2, 3, 4};
+    public int getInvSize() {
+        return 5;
     }
 
     @Override

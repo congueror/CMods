@@ -1,6 +1,6 @@
 package net.congueror.cgalaxy.blocks.fuel_loader;
 
-import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlock;
+import net.congueror.clib.blocks.machine_base.machine.AbstractFluidMachineBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -13,7 +13,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class FuelLoaderBlock extends AbstractFluidBlock {
+public class FuelLoaderBlock extends AbstractFluidMachineBlock {
     public FuelLoaderBlock(Properties properties) {
         super(properties);
     }

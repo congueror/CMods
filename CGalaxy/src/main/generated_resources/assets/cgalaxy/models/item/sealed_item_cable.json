@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "cgalaxy:block/sealed_item_cable"
+  }
+}

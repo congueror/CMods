@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:iron_ingot"
+    ]
+  },
+  "criteria": {
+    "has_ores/iron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ores/iron"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:iron_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ores/iron",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "cgalaxy:martian_stone"
+  },
+  "result": "cgalaxy:martian_stone_slab",
+  "count": 2
+}

@@ -26,7 +26,7 @@ public class RocketItemRenderer extends BlockEntityWithoutLevelRenderer {
     @Override
     public void renderByItem(@Nonnull ItemStack itemStack, @Nonnull ItemTransforms.TransformType type, @Nonnull PoseStack poseStack, @Nonnull MultiBufferSource bufferSource, int p_108834_, int p_108835_) {
         if (itemStack.getItem() instanceof RocketTier1Item) {
-            poseStack.pushPose();//TODO: Player hand rotation
+            poseStack.pushPose();
             VertexConsumer vertexconsumer = ItemRenderer.getFoilBufferDirect(bufferSource, this.model.renderType(RocketTier1Renderer.TEXTURE), false, itemStack.hasFoil());
             this.model.renderItemToBuffer(poseStack, vertexconsumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F, type);
             poseStack.popPose();

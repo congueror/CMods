@@ -1,0 +1,17 @@
+{
+  "type": "planet",
+  "id": "cgalaxy:jupiter",
+  "parent": "cgalaxy:solar_system",
+  "diameter": {
+    "distance": 139820,
+    "unit": "km"
+  },
+  "moons": 79,
+  "atmosphere": "Gas Giant",
+  "gravity": 24.79,
+  "tier": 5,
+  "angle": 50,
+  "daysPerYear": 4380,
+  "ringIndex": 4,
+  "texture": "cgalaxy:textures/sky/jupiter.png"
+}

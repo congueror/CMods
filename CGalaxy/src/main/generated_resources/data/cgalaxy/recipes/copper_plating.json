@@ -7,7 +7,7 @@
   ],
   "key": {
     "M": {
-      "item": "minecraft:copper_ingot"
+      "tag": "forge:ingots/copper"
     },
     "C": {
       "item": "clib:tier_1_circuit_board"

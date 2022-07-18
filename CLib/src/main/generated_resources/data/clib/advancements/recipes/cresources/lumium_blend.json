@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "clib:lumium_blend"
+    ]
+  },
+  "criteria": {
+    "has_ingots/silver": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/silver"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "clib:lumium_blend"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ingots/silver",
+      "has_the_recipe"
+    ]
+  ]
+}

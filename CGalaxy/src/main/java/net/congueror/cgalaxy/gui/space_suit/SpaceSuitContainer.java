@@ -1,9 +1,9 @@
 package net.congueror.cgalaxy.gui.space_suit;
 
 import net.congueror.cgalaxy.init.CGContainerInit;
-import net.congueror.cgalaxy.items.*;
+import net.congueror.cgalaxy.items.space_suit.*;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
-import net.congueror.clib.blocks.abstract_machine.AbstractInventoryContainer;
+import net.congueror.clib.blocks.machine_base.AbstractInventoryContainer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;

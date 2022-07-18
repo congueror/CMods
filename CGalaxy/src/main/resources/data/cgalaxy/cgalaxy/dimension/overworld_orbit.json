@@ -1,0 +1,10 @@
+{
+  "dimension": "cgalaxy:overworld_orbit",
+  "gravity": 0,
+  "breathable": false,
+  "dayTemperature": 121,
+  "nightTemperature": -157,
+  "radiation": 300,
+  "airPressure": 0,
+  "isOrbit": true
+}

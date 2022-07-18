@@ -1,0 +1,18 @@
+{
+  "type": "moon",
+  "id": "cgalaxy:moon",
+  "parent": "cgalaxy:earth",
+  "diameter": {
+    "distance": 3474.2,
+    "unit": "km"
+  },
+  "atmosphere": "Negligible",
+  "gravity": 1.62,
+  "tier": 1,
+  "angle": 0,
+  "daysPerYear": 27,
+  "ringIndex": 0,
+  "texture": "cgalaxy:textures/sky/moon.png",
+  "dimension": "cgalaxy:moon",
+  "orbitDimension": "cgalaxy:moon_orbit"
+}

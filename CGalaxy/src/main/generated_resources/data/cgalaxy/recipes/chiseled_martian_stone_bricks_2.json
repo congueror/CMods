@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "cgalaxy:martian_stone_bricks"
+  },
+  "result": "cgalaxy:chiseled_martian_stone_bricks",
+  "count": 1
+}

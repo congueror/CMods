@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IGI",
+    "A A",
+    "AAA"
+  ],
+  "key": {
+    "G": {
+      "tag": "forge:dyes/lime"
+    },
+    "A": {
+      "tag": "forge:ingots/aluminum"
+    },
+    "I": {
+      "tag": "forge:ingots/brass"
+    }
+  },
+  "result": {
+    "item": "cgalaxy:light_oxygen_tank"
+  }
+}

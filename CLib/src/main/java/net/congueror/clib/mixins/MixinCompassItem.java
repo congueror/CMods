@@ -1,6 +1,6 @@
 package net.congueror.clib.mixins;
 
-import net.congueror.clib.api.events.CompassTickEvent;
+import net.congueror.clib.util.events.CompassTickEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.item.ItemStack;

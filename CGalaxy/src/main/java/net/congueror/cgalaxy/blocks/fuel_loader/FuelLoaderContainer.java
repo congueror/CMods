@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.blocks.fuel_loader;
 
 import net.congueror.cgalaxy.init.CGContainerInit;
-import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidContainer;
+import net.congueror.clib.blocks.machine_base.machine.AbstractFluidMachineContainer;
 import net.congueror.clib.items.UpgradeItem;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -17,7 +17,7 @@ import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
-public class FuelLoaderContainer extends AbstractFluidContainer<FuelLoaderBlockEntity> {
+public class FuelLoaderContainer extends AbstractFluidMachineContainer<FuelLoaderBlockEntity> {
     FuelLoaderBlockEntity te;
 
     public FuelLoaderContainer(int id, Player player, Inventory playerInventory, FuelLoaderBlockEntity tile, ContainerData dataIn) {

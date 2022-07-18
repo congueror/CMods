@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "tag": "forge:raw_materials/raw"
+    "tag": "forge:raw_materials/cobalt"
   },
   "result": "clib:cobalt_ingot",
   "experience": 0.7,

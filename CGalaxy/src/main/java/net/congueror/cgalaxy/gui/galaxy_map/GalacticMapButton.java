@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.congueror.cgalaxy.gui.MutableImageButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
@@ -16,14 +15,14 @@ import static net.minecraft.client.gui.screens.Screen.hasShiftDown;
 
 public class GalacticMapButton extends MutableImageButton {
     private final Type type;
-    private final GalacticObjectBuilder.GalacticObject<?> object;
+    private final GalacticEntryBuilder.GalacticEntry<?> object;
 
     private int i, angle;
     private double zoom;
     private int moveX, moveY;
     public int xSel, ySel, sizeSel;
 
-    public GalacticMapButton(Type type, int pX, int pY, int pWidth, int pHeight, int pXTexStart, int pYTexStart, int pYDiffTex, ResourceLocation pResourceLocation, int pTextureWidth, int pTextureHeight, OnPress pOnPress, GalacticObjectBuilder.GalacticObject<?> object) {
+    public GalacticMapButton(Type type, int pX, int pY, int pWidth, int pHeight, int pXTexStart, int pYTexStart, int pYDiffTex, ResourceLocation pResourceLocation, int pTextureWidth, int pTextureHeight, OnPress pOnPress, GalacticEntryBuilder.GalacticEntry<?> object) {
         super(pX, pY, pWidth, pHeight, pXTexStart, pYTexStart, pYDiffTex, pResourceLocation, pTextureWidth, pTextureHeight, pOnPress);
         this.type = type;
         this.object = object;
@@ -31,7 +30,7 @@ public class GalacticMapButton extends MutableImageButton {
         angle = new Random().nextInt(361);
     }
 
-    public void updateOrbiter(GalacticObjectBuilder.GalacticObject<?> obj, int width, int height, int size, double zoom, int moveX, int moveY, Button.OnTooltip onTooltip) {
+    public void updateOrbiter(GalacticEntryBuilder.GalacticEntry<?> obj, int width, int height, int size, double zoom, int moveX, int moveY, Button.OnTooltip onTooltip) {
         if (type.equals(Type.ORBITER)) {
             setWidth(size);
             setHeight(size);
@@ -58,7 +57,7 @@ public class GalacticMapButton extends MutableImageButton {
             x = (int) ((width / 2 + 56) + zoom * r1 * Math.cos(Math.toRadians(angle)) - (size / 2) + moveX);
             y = (int) ((height / 2 + 9) + zoom * r2 * Math.sin(Math.toRadians(angle)) - (size / 2) + moveY);
 
-            if (obj.getType() instanceof GalacticObjectBuilder.Moon) {
+            if (obj.getType() instanceof GalacticEntryBuilder.Moon) {
                 sizeSel = (int) (18 * zoom);
                 xSel = (int) ((width / 2 + 56) + zoom * r1 * Math.cos(Math.toRadians(angle)) - (sizeSel / 2) + moveX);
                 ySel = (int) ((height / 2 + 9) + zoom * r2 * Math.sin(Math.toRadians(angle)) - (sizeSel / 2) + moveY);
@@ -80,19 +79,21 @@ public class GalacticMapButton extends MutableImageButton {
     }
 
     public void renderButton(@Nonnull PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
-        RenderSystem.enableBlend();
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, this.texture);
-        int i = this.yTexStart;
-        if (this.isHoveredOrFocused()) {
-            i += this.yOffset;
-        }
+        if (this.texture != null) {
+            RenderSystem.enableBlend();
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShaderTexture(0, this.texture);
+            int i = this.yTexStart;
+            if (this.isHoveredOrFocused()) {
+                i += this.yOffset;
+            }
 
-        RenderSystem.enableDepthTest();
-        blit(pMatrixStack, this.x, this.y, (float) this.xTexStart, (float) i, this.width, this.height, this.textureWidth, this.textureHeight);
+            RenderSystem.enableDepthTest();
+            blit(pMatrixStack, this.x, this.y, (float) this.xTexStart, (float) i, this.width, this.height, this.textureWidth, this.textureHeight);
 
-        if (this.isHoveredOrFocused()) {
-            this.renderToolTip(pMatrixStack, pMouseX, pMouseY);
+            if (this.isHoveredOrFocused()) {
+                this.renderToolTip(pMatrixStack, pMouseX, pMouseY);
+            }
         }
     }
 
@@ -100,7 +101,7 @@ public class GalacticMapButton extends MutableImageButton {
         return type;
     }
 
-    public GalacticObjectBuilder.GalacticObject<?> getObject() {
+    public GalacticEntryBuilder.GalacticEntry<?> getObject() {
         return object;
     }
 
@@ -108,6 +109,7 @@ public class GalacticMapButton extends MutableImageButton {
         ORBITER,
         LAUNCH,
         ORBITEE,
-        SPACE_STATION
+        SPACE_STATION,
+        SOLAR_SYSTEM,
     }
 }

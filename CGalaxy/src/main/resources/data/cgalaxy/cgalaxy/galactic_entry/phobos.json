@@ -1,0 +1,16 @@
+{
+  "type": "moon",
+  "id": "cgalaxy:phobos",
+  "parent": "cgalaxy:mars",
+  "diameter": {
+    "distance": 22.5,
+    "unit": "km"
+  },
+  "atmosphere": "None",
+  "gravity": 0.0057,
+  "tier": 1,
+  "angle": 180,
+  "daysPerYear": 0.3,
+  "ringIndex": 0,
+  "texture": "cgalaxy:textures/sky/phobos.png"
+}

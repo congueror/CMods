@@ -1,6 +1,6 @@
 package net.congueror.clib.networking;
 
-import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidContainer;
+import net.congueror.clib.blocks.machine_base.machine.AbstractFluidMachineContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -44,8 +44,8 @@ public class PacketUpdateFluidTanks implements IPacket {
                 Player player = mc.player;
                 if (windowId != -1 && player != null) {
                     if (windowId == player.containerMenu.containerId) {
-                        if (player.containerMenu instanceof AbstractFluidContainer) {
-                            ((AbstractFluidContainer<?>) player.containerMenu).updateTanks(fluid, amount, tankId);
+                        if (player.containerMenu instanceof AbstractFluidMachineContainer) {
+                            ((AbstractFluidMachineContainer<?>) player.containerMenu).updateTanks(fluid, amount, tankId);
                         }
                     }
                 }

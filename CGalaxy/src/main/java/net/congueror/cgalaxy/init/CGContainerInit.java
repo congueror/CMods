@@ -9,6 +9,10 @@ import net.congueror.cgalaxy.blocks.gas_extractor.GasExtractorBlockEntity;
 import net.congueror.cgalaxy.blocks.gas_extractor.GasExtractorContainer;
 import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerBlockEntity;
 import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerContainer;
+import net.congueror.cgalaxy.blocks.solar_generator.SolarGeneratorBlockEntity;
+import net.congueror.cgalaxy.blocks.solar_generator.SolarGeneratorContainer;
+import net.congueror.cgalaxy.blocks.space_station_creator.SpaceStationCreatorBlockEntity;
+import net.congueror.cgalaxy.blocks.space_station_creator.SpaceStationCreatorContainer;
 import net.congueror.cgalaxy.blocks.station_core.SpaceStationCoreContainer;
 import net.congueror.cgalaxy.gui.galaxy_map.GalaxyMapContainer;
 import net.congueror.cgalaxy.gui.space_suit.SpaceSuitContainer;
@@ -23,6 +27,14 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class CGContainerInit {
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, CGalaxy.MODID);
+
+    public static final RegistryObject<MenuType<SolarGeneratorContainer>> SOLAR_GENERATOR = MENU_TYPES.register("solar_generator", () ->
+            IForgeMenuType.create((windowId, inv, data) -> {
+                BlockPos pos = data.readBlockPos();
+                BlockEntity tile = inv.player.getCommandSenderWorld().getBlockEntity(pos);
+                SolarGeneratorBlockEntity te = (SolarGeneratorBlockEntity) tile;
+                return new SolarGeneratorContainer(windowId, inv.player, inv, te, new SimpleContainerData(SolarGeneratorBlockEntity.FIELDS_COUNT));
+            }));
 
     public static final RegistryObject<MenuType<FuelLoaderContainer>> FUEL_LOADER = MENU_TYPES.register("fuel_loader", () ->
             IForgeMenuType.create((windowId, inv, data) -> {
@@ -51,6 +63,14 @@ public class CGContainerInit {
                 BlockEntity tile = inv.player.getCommandSenderWorld().getBlockEntity(pos);
                 RoomPressurizerBlockEntity te = (RoomPressurizerBlockEntity) tile;
                 return new RoomPressurizerContainer(windowId, inv.player, inv, te, new SimpleContainerData(RoomPressurizerBlockEntity.FIELDS_COUNT));
+            }));
+
+    public static final RegistryObject<MenuType<SpaceStationCreatorContainer>> SPACE_STATION_CREATOR = MENU_TYPES.register("space_station_creator", () ->
+            IForgeMenuType.create((windowId, inv, data) -> {
+                BlockPos pos = data.readBlockPos();
+                BlockEntity tile = inv.player.getCommandSenderWorld().getBlockEntity(pos);
+                SpaceStationCreatorBlockEntity te = (SpaceStationCreatorBlockEntity) tile;
+                return new SpaceStationCreatorContainer(windowId, inv.player, inv, te, new SimpleContainerData(SpaceStationCreatorBlockEntity.FIELDS_COUNT));
             }));
 
     public static final RegistryObject<MenuType<GalaxyMapContainer>> GALAXY_MAP = MENU_TYPES.register("galaxy_map", () ->

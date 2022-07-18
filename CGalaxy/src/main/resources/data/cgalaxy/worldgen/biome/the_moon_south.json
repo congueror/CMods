@@ -12,8 +12,8 @@
     "fog_color": 0,
     "water_color": 4869496,
     "water_fog_color": 329011,
-    "grass_color": 2842157,
-    "foliage_color": 3888192,
+    "grass_color": 6908265,
+    "foliage_color": 6915945,
     "grass_color_modifier": "none"
   },
   "carvers": {
@@ -23,21 +23,6 @@
   },
   "features": [],
   "starts": [],
-  "spawners": {
-    "monster": [
-      {
-        "type": "cgalaxy:astro_enderman",
-        "weight": 1,
-        "minCount": 0,
-        "maxCount": 1
-      },
-      {
-        "type": "cgalaxy:astro_zombie",
-        "weight": 1,
-        "minCount": 0,
-        "maxCount": 1
-      }
-    ]
-  },
+  "spawners": {},
   "spawn_costs": {}
 }

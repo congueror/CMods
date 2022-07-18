@@ -7,7 +7,7 @@
   ],
   "key": {
     "M": {
-      "item": "minecraft:gold_ingot"
+      "tag": "forge:ingots/gold"
     },
     "C": {
       "item": "clib:tier_2_circuit_board"

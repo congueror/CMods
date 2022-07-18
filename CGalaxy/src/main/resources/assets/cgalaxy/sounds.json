@@ -3,5 +3,10 @@
     "sounds": [
       "cgalaxy:oxygen_mask_equip"
     ]
+  },
+  "laser_blast": {
+    "sounds": [
+      "cgalaxy:laser_blast"
+    ]
   }
 }

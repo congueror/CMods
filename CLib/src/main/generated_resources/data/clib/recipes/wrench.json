@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " II",
+    " RI",
+    "I  "
+  ],
+  "key": {
+    "I": {
+      "item": "clib:chromium_ingot"
+    },
+    "R": {
+      "item": "minecraft:red_dye"
+    }
+  },
+  "result": {
+    "item": "clib:wrench"
+  }
+}

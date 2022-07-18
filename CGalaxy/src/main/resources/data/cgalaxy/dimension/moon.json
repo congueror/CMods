@@ -2,10 +2,26 @@
   "type": "cgalaxy:moon_type",
   "generator": {
     "type": "minecraft:noise",
-    "seed": 0,
+    "seed": -652329775,
     "biome_source": {
-      "type": "cgalaxy:moon",
-      "seed": 0
+      "type": "cgalaxy:planet",
+      "south": "cgalaxy:the_moon_south",
+      "maxX": 3000,
+      "maxZ": 3000,
+      "biomes": [
+        {
+          "biome": "cgalaxy:the_moon",
+          "parameters": {
+            "temperature": 0,
+            "humidity": 0,
+            "continentalness": 0,
+            "erosion": 0,
+            "weirdness": 0,
+            "depth": 0,
+            "offset": 0
+          }
+        }
+      ]
     },
     "settings": "cgalaxy:moon_noise"
   }

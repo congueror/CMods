@@ -3,9 +3,8 @@ package net.congueror.cgalaxy.blocks.room_pressurizer;
 import net.congueror.cgalaxy.init.CGContainerInit;
 import net.congueror.cgalaxy.networking.CGNetwork;
 import net.congueror.cgalaxy.networking.PacketUpdateRoomPressurizer;
-import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidContainer;
+import net.congueror.clib.blocks.machine_base.machine.AbstractFluidMachineContainer;
 import net.congueror.clib.items.UpgradeItem;
-import net.congueror.clib.networking.CLNetwork;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -24,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class RoomPressurizerContainer extends AbstractFluidContainer<RoomPressurizerBlockEntity> {
+public class RoomPressurizerContainer extends AbstractFluidMachineContainer<RoomPressurizerBlockEntity> {
     final RoomPressurizerBlockEntity be;
     Map<Direction, Integer> rangeLastTick;
 

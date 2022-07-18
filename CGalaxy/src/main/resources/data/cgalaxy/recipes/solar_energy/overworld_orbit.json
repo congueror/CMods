@@ -1,0 +1,7 @@
+{
+  "type": "cgalaxy:solar_energy",
+  "dimension": "cgalaxy:overworld_orbit",
+  "dayIntensity": 1.5,
+  "nightIntensity": 0,
+  "texture": "cgalaxy:textures/gui/overworld.png"
+}

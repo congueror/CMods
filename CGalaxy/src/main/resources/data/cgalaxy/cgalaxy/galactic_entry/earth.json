@@ -1,0 +1,18 @@
+{
+  "type": "planet",
+  "id": "cgalaxy:earth",
+  "parent": "cgalaxy:solar_system",
+  "diameter": {
+    "distance": 12742,
+    "unit": "km"
+  },
+  "moons": 1,
+  "atmosphere": "Breathable",
+  "tier": 0,
+  "angle": 20,
+  "daysPerYear": 365,
+  "ringIndex": 2,
+  "texture": "cgalaxy:textures/sky/earth.png",
+  "dimension": "minecraft:overworld",
+  "orbitDimension": "cgalaxy:overworld_orbit"
+}

@@ -1,0 +1,11 @@
+{
+  "type": "cgalaxy:gas_extracting",
+  "ingredient": {
+    "item": "cgalaxy:dry_ice"
+  },
+  "result": {
+    "fluid1": {
+      "fluid": "cgalaxy:carbon_dioxide_still"
+    }
+  }
+}

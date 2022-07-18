@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "cgalaxy:item/cold_protection_unit_tier_1"
-  }
-}

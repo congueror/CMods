@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cgalaxy:cheese_slice"
+    ]
+  },
+  "criteria": {
+    "has_moon_cheese": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "cgalaxy:moon_cheese"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cgalaxy:cheese_slice"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_moon_cheese",
+      "has_the_recipe"
+    ]
+  ]
+}

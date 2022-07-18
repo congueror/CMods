@@ -3,9 +3,10 @@ package net.congueror.cgalaxy.client.overlays;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
+import net.congueror.cgalaxy.util.registry.CGDimensionBuilder;
 import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.init.CGFluidInit;
+import net.congueror.cgalaxy.util.json_managers.DimensionManager;
 import net.congueror.clib.util.MathHelper;
 import net.congueror.clib.util.RenderingHelper;
 import net.minecraft.client.Minecraft;
@@ -22,7 +23,7 @@ public class RocketHUDOverlay extends GuiComponent implements IIngameOverlay {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
         if (player != null) {
-            CGDimensionBuilder.DimensionObject obj = CGDimensionBuilder.getObjectFromKey(player.level.dimension());
+            CGDimensionBuilder.DimensionObject obj = DimensionManager.getObjectFromKey(player.level.dimension());
             if (obj != null && player.getVehicle() instanceof AbstractRocket rocket) {
                 RenderSystem.setShaderTexture(0, obj.getYOverlayTexture());
                 blit(mStack, 0, 100, 0, 0, 16, 102, 26, 102);

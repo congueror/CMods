@@ -5,6 +5,7 @@ import net.congueror.cgalaxy.blocks.fuel_loader.FuelLoaderRecipe;
 import net.congueror.cgalaxy.blocks.fuel_refinery.FuelRefineryRecipe;
 import net.congueror.cgalaxy.blocks.gas_extractor.GasExtractorRecipe;
 import net.congueror.cgalaxy.blocks.room_pressurizer.RoomPressurizerRecipe;
+import net.congueror.cgalaxy.blocks.solar_generator.SolarGeneratorRecipe;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -26,6 +27,7 @@ public class CGRecipeSerializerInit {
     public static final RegistryObject<RecipeSerializer<FuelRefineryRecipe>> FUEL_REFINING = RECIPE_SERIALIZERS.register("fuel_refining", FuelRefineryRecipe.Serializer::new);
     public static final RegistryObject<RecipeSerializer<GasExtractorRecipe>> GAS_EXTRACTING = RECIPE_SERIALIZERS.register("gas_extracting", GasExtractorRecipe.Serializer::new);
     public static final RegistryObject<RecipeSerializer<RoomPressurizerRecipe>> ROOM_PRESSURIZER = RECIPE_SERIALIZERS.register("room_pressurizing", RoomPressurizerRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<SolarGeneratorRecipe>> SOLAR_ENERGY = RECIPE_SERIALIZERS.register("solar_energy", SolarGeneratorRecipe.Serializer::new);
 
     public static final RegistryObject<RecipeType<FuelLoaderRecipe>> FUEL_LOADING_TYPE = registerType("fuel_loading");
     public static final RegistryObject<RecipeType<FuelRefineryRecipe>> FUEL_REFINING_TYPE = registerType("fuel_refining");

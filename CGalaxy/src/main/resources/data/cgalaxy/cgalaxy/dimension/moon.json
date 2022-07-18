@@ -1,0 +1,11 @@
+{
+  "dimension": "cgalaxy:moon",
+  "gravity": 1.62,
+  "breathable": false,
+  "dayTemperature": 127,
+  "nightTemperature": -173,
+  "radiation": 380,
+  "airPressure": 0.0000000003,
+  "isOrbit": false,
+  "southBiome": "cgalaxy:the_moon_south"
+}

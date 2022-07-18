@@ -1,6 +1,6 @@
 package net.congueror.clib.mixins;
 
-import net.congueror.clib.api.events.SaplingAdvanceEvent;
+import net.congueror.clib.util.events.SaplingAdvanceEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.SaplingBlock;

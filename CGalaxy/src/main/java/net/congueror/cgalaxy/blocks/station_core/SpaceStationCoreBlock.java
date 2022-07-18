@@ -1,10 +1,14 @@
 package net.congueror.cgalaxy.blocks.station_core;
 
-import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
+import net.congueror.cgalaxy.util.json_managers.DimensionManager;
+import net.congueror.cgalaxy.util.saved_data.SpaceStationCoreObject;
+import net.congueror.cgalaxy.util.registry.CGDimensionBuilder;
+import net.congueror.cgalaxy.util.saved_data.WorldSavedData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
-import static net.congueror.cgalaxy.blocks.station_core.SpaceStationCoreContainer.CORE_LOCATIONS;
+import static net.congueror.cgalaxy.util.saved_data.WorldSavedData.CORE_LOCATIONS;
 
 public class SpaceStationCoreBlock extends Block {
     public SpaceStationCoreBlock(Properties p_49795_) {
@@ -28,9 +32,9 @@ public class SpaceStationCoreBlock extends Block {
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide && !pPlayer.isCrouching()) {
-            CGDimensionBuilder.DimensionObject obj = CGDimensionBuilder.getObjectFromKey(pLevel.dimension());
+            CGDimensionBuilder.DimensionObject obj = DimensionManager.getObjectFromKey(pLevel.dimension());
             if (obj != null) {
-                if (obj.getIsOrbit()) {
+                if (obj.isOrbit()) {
                     NetworkHooks.openGui((ServerPlayer) pPlayer, new MenuProvider() {
                         @Override
                         public Component getDisplayName() {
@@ -45,6 +49,7 @@ public class SpaceStationCoreBlock extends Block {
                 } else {
                     pPlayer.sendMessage(new TextComponent("Invalid Dimension"), pPlayer.getUUID());
                 }
+                return InteractionResult.SUCCESS;
             }
         }
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
@@ -52,9 +57,10 @@ public class SpaceStationCoreBlock extends Block {
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        if (pLevel instanceof ServerLevel l) WorldSavedData.update(l);
         var list = CORE_LOCATIONS.get(pLevel.dimension());
         if (list != null) {
-            SpaceStationCoreContainer.SpaceStationCoreObject obj = list.stream().filter(o -> o.position.equals(pPos)).findFirst().orElse(null);
+            SpaceStationCoreObject obj = list.stream().filter(o -> o.getPosition().equals(pPos)).findFirst().orElse(null);
             if (obj != null) {
                 list.remove(obj);
                 CORE_LOCATIONS.put(pLevel.dimension(), list);

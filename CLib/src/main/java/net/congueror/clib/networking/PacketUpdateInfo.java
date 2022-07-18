@@ -1,6 +1,6 @@
 package net.congueror.clib.networking;
 
-import net.congueror.clib.blocks.abstract_machine.item.AbstractItemContainer;
+import net.congueror.clib.blocks.machine_base.machine.AbstractItemMachineContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -35,8 +35,8 @@ public class PacketUpdateInfo implements IPacket {
                 Player player = mc.player;
                 if (windowId != -1 && player != null) {
                     if (windowId == player.containerMenu.containerId) {
-                        if (player.containerMenu instanceof AbstractItemContainer) {
-                            ((AbstractItemContainer<?>) player.containerMenu).updateInfo(info);
+                        if (player.containerMenu instanceof AbstractItemMachineContainer) {
+                            ((AbstractItemMachineContainer<?>) player.containerMenu).updateInfo(info);
                         }
                     }
                 }

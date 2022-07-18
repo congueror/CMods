@@ -1,4 +1,4 @@
-package net.congueror.clib.compat.jei;
+package net.congueror.cgalaxy.compat.jei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -30,7 +30,7 @@ public class SolarEnergyCategory extends AbstractJeiCategory<SolarGeneratorRecip
 
     @Override
     public IDrawable getIcon() {
-        return helper.createDrawableIngredient(new ItemStack(CLBlockInit.SOLAR_GENERATOR_1.get()));
+        return createIcon(CGBlockInit.SOLAR_GENERATOR_1.get());
     }
 
     @Override

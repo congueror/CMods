@@ -30,7 +30,7 @@ sourceSets {
 }
 
 minecraft {
-    mappings channel: 'parchment', version: '2022.05.22-1.18.2'
+    mappings channel: 'parchment', version: '2022.07.10-1.18.2'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -98,11 +98,12 @@ repositories {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.18.2-40.1.25"
+    minecraft "net.minecraftforge:forge:1.18.2-40.1.68"
 
     //compileOnly fg.deobf('slimeknights.tconstruct:TConstruct:1.16.5-3.1.0.231')
     //compileOnly fg.deobf('slimeknights.mantle:Mantle:1.16.5-1.6.114')
-    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.5.174:api")
+    compileOnly fg.deobf("mezz.jei:jei-1.18.2-common-api:10.1.0.223")
+    compileOnly fg.deobf("mezz.jei:jei-1.18.2-forge-api:10.1.0.223")
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }
 

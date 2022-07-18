@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "aa ",
+    "aa ",
+    "   "
+  ],
+  "key": {
+    "a": {
+      "item": "cgalaxy:martian_stone"
+    }
+  },
+  "result": {
+    "item": "cgalaxy:martian_stone_bricks",
+    "count": 4
+  }
+}

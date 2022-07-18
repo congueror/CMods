@@ -2,6 +2,7 @@ package net.congueror.cgalaxy.networking;
 
 import net.congueror.cgalaxy.blocks.station_core.SpaceStationCoreContainer;
 import net.congueror.clib.networking.IPacket;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
@@ -14,12 +15,14 @@ import java.util.function.Supplier;
 public class PacketUpdateSSCore implements IPacket {
     int containerId;
     UUID owner;
+    BlockPos launchPadPos;
     int visibility;
     Set<UUID> blacklist;
 
-    public PacketUpdateSSCore(int containerId, UUID owner, int visibility, Set<UUID> blacklist) {
+    public PacketUpdateSSCore(int containerId, UUID owner, BlockPos launchPadPos, int visibility, Set<UUID> blacklist) {
         this.containerId = containerId;
         this.owner = owner;
+        this.launchPadPos = launchPadPos;
         this.visibility = visibility;
         this.blacklist = blacklist;
     }
@@ -27,6 +30,7 @@ public class PacketUpdateSSCore implements IPacket {
     public PacketUpdateSSCore(FriendlyByteBuf buf) {
         this.containerId = buf.readInt();
         this.owner = buf.readUUID();
+        this.launchPadPos = buf.readBlockPos();
         this.visibility = buf.readVarInt();
         this.blacklist = new HashSet<>();
         int setSize = buf.readInt();
@@ -39,6 +43,7 @@ public class PacketUpdateSSCore implements IPacket {
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(this.containerId);
         buf.writeUUID(this.owner);
+        buf.writeBlockPos(this.launchPadPos);
         buf.writeVarInt(this.visibility);
         buf.writeInt(this.blacklist.size());
         for (UUID id : blacklist) {
@@ -53,7 +58,7 @@ public class PacketUpdateSSCore implements IPacket {
             if (containerId != -1 && player != null) {
                 if (containerId == player.containerMenu.containerId) {
                     if (player.containerMenu instanceof SpaceStationCoreContainer c) {
-                        c.setCore(owner, visibility, blacklist);
+                        c.setCore(owner, launchPadPos, visibility, blacklist);
                     }
                 }
             }

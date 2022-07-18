@@ -11,20 +11,17 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
-          "quality": 1,
+          "weight": 6,
           "name": "cgalaxy:astral_sapphire"
         },
         {
           "type": "minecraft:item",
           "weight": 10,
-          "quality": 2,
           "name": "cgalaxy:lunar_carrots"
         },
         {
           "type": "minecraft:item",
-          "weight": 6,
-          "quality": 10,
+          "weight": 20,
           "name": "cgalaxy:moon_regolith"
         }
       ]

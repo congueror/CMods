@@ -2,15 +2,14 @@ package net.congueror.cgalaxy.blocks.fuel_loader;
 
 import com.google.gson.JsonObject;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
-import net.congueror.clib.api.recipe.FluidIngredient;
-import net.congueror.clib.api.recipe.FluidRecipe;
-import net.congueror.clib.api.recipe.IItemFluidInventory;
-import net.congueror.clib.api.recipe.FluidRecipeSerializer;
+import net.congueror.clib.util.recipe.FluidIngredient;
+import net.congueror.clib.util.recipe.FluidRecipe;
+import net.congueror.clib.util.recipe.IItemFluidInventory;
+import net.congueror.clib.util.recipe.RecipeSerializer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
@@ -62,7 +61,7 @@ public class FuelLoaderRecipe implements FluidRecipe<IItemFluidInventory> {
 
     @Nonnull
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public net.minecraft.world.item.crafting.RecipeSerializer<?> getSerializer() {
         return CGRecipeSerializerInit.FUEL_LOADING.get();
     }
 
@@ -72,7 +71,7 @@ public class FuelLoaderRecipe implements FluidRecipe<IItemFluidInventory> {
         return CGRecipeSerializerInit.FUEL_LOADING_TYPE.get();
     }
 
-    public static class Serializer extends FluidRecipeSerializer<FuelLoaderRecipe> {
+    public static class Serializer extends RecipeSerializer<FuelLoaderRecipe> {
 
         @Nonnull
         @Override

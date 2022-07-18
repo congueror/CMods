@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.entity;
 
-import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
-import net.congueror.cgalaxy.api.registry.CGEntity;
+import net.congueror.cgalaxy.util.registry.CGDimensionBuilder;
+import net.congueror.cgalaxy.util.registry.CGEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;

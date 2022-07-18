@@ -1,12 +1,13 @@
 package net.congueror.cgalaxy.blocks.fuel_loader;
 
-import net.congueror.cgalaxy.blocks.launch_pad.LaunchPadBlock;
+import net.congueror.cgalaxy.blocks.LaunchPadBlock;
 import net.congueror.cgalaxy.entity.AbstractRocket;
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
-import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlockEntity;
-import net.congueror.clib.api.recipe.FluidRecipe;
+import net.congueror.cgalaxy.util.CGConfig;
+import net.congueror.clib.blocks.machine_base.machine.AbstractFluidMachineBlockEntity;
+import net.congueror.clib.util.recipe.FluidRecipe;
 import net.congueror.clib.items.UpgradeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,27 +17,52 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
-import java.util.stream.IntStream;
+import java.util.function.Predicate;
 
-public class FuelLoaderBlockEntity extends AbstractFluidBlockEntity {
+public class FuelLoaderBlockEntity extends AbstractFluidMachineBlockEntity {
     AbstractRocket entity;
 
     public FuelLoaderBlockEntity(BlockPos pos, BlockState state) {
         super(CGBlockEntityInit.FUEL_LOADER.get(), pos, state);
-        this.tanks = IntStream.range(0, 1).mapToObj(value -> new FluidTank(15000)).toArray(FluidTank[]::new);
     }
 
     @Override
-    public int getSlotLimits(int slot) {
+    public int getInvSize() {
+        return 6;
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
         if (slot == 1) {
             return 1;
         }
-        return super.getSlotLimits(slot);
+        return super.getSlotLimit(slot);
+    }
+
+    @Override
+    public boolean canItemFit(int slot, ItemStack stack) {
+        if (slot == 0 || slot == 1) {
+            return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
+        } else if (slot >= 2) {
+            return stack.getItem() instanceof UpgradeItem;
+        }
+        return false;
+    }
+
+    @Override
+    public int getTanks() {
+        return 1;
+    }
+
+    @Override
+    public int getTankCapacity(int tank) {
+        return 3400;
     }
 
     @Nullable
@@ -44,11 +70,6 @@ public class FuelLoaderBlockEntity extends AbstractFluidBlockEntity {
     public FluidRecipe<?> getRecipe() {
         assert level != null;
         return level.getRecipeManager().getRecipeFor(CGRecipeSerializerInit.FUEL_LOADING_TYPE.get(), wrapper, level).orElse(null);
-    }
-
-    @Override
-    public int[] invSize() {
-        return new int[]{0, 1, 2, 3, 4, 5};
     }
 
     @Override
@@ -68,23 +89,13 @@ public class FuelLoaderBlockEntity extends AbstractFluidBlockEntity {
     }
 
     @Override
-    public boolean canItemFit(int slot, ItemStack stack) {
-        if (slot == 0 || slot == 1) {
-            return stack.getItem() instanceof BucketItem;
-        } else if (slot >= 2) {
-            return stack.getItem() instanceof UpgradeItem;
-        }
-        return false;
-    }
-
-    @Override
     public int getEnergyUsage() {
-        return 30;
+        return CGConfig.FUEL_LOADER_ENERGY_USAGE.get();
     }
 
     @Override
     public int getEnergyCapacity() {
-        return 40000;
+        return CGConfig.FUEL_LOADER_ENERGY_CAPACITY.get();
     }
 
     @Override
@@ -128,8 +139,8 @@ public class FuelLoaderBlockEntity extends AbstractFluidBlockEntity {
 
     @Override
     public void executeExtra() {
-        emptyBucketSlot(0, 0);
-        fillBucketSlot(0, 1);
+        emptyFluidSlot(0, 0);
+        fillFluidSlot(0, 1);
     }
 
     @Nullable

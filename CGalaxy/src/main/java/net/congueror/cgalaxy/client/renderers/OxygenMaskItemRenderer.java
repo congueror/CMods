@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.congueror.cgalaxy.CGalaxy;
 import net.congueror.cgalaxy.client.models.OxygenMaskModel;
-import net.congueror.cgalaxy.items.OxygenMaskItem;
+import net.congueror.cgalaxy.items.space_suit.OxygenMaskItem;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;

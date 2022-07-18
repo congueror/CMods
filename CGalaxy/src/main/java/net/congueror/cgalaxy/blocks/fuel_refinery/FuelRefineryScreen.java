@@ -2,14 +2,14 @@ package net.congueror.cgalaxy.blocks.fuel_refinery;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidScreen;
+import net.congueror.clib.blocks.machine_base.machine.AbstractFluidMachineScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 import javax.annotation.Nonnull;
 
-public class FuelRefineryScreen extends AbstractFluidScreen<FuelRefineryContainer> {
+public class FuelRefineryScreen extends AbstractFluidMachineScreen<FuelRefineryContainer> {
     public static ResourceLocation GUI = new ResourceLocation(CGalaxy.MODID, "textures/gui/fuel_refinery.png");
     FuelRefineryContainer container;
 

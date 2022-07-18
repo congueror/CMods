@@ -2,8 +2,8 @@ package net.congueror.cgalaxy.blocks.fuel_refinery;
 
 import net.congueror.cgalaxy.init.CGBlockEntityInit;
 import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
-import net.congueror.clib.blocks.abstract_machine.fluid.AbstractFluidBlockEntity;
-import net.congueror.clib.api.recipe.FluidRecipe;
+import net.congueror.clib.blocks.machine_base.machine.AbstractFluidMachineBlockEntity;
+import net.congueror.clib.util.recipe.FluidRecipe;
 import net.congueror.clib.items.UpgradeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,6 +13,7 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nonnull;
@@ -21,18 +22,47 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
-public class FuelRefineryBlockEntity extends AbstractFluidBlockEntity {
+public class FuelRefineryBlockEntity extends AbstractFluidMachineBlockEntity {
     public FuelRefineryBlockEntity(BlockPos pos, BlockState state) {
         super(CGBlockEntityInit.FUEL_REFINERY.get(), pos, state);
         this.tanks = IntStream.range(0, 2).mapToObj(k -> new FluidTank(15000)).toArray(FluidTank[]::new);
     }
 
     @Override
-    public int getSlotLimits(int slot) {
+    public int getInvSize() {
+        return 6;
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
         if (slot == 1) {
             return 1;
         }
-        return super.getSlotLimits(slot);
+        return super.getSlotLimit(slot);
+    }
+
+    @Override
+    public boolean canItemFit(int slot, ItemStack stack) {
+        if (slot == 0) {
+            return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
+        }
+        if (slot == 1) {
+            return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
+        }
+        if (slot >= 2 && slot <= 5) {
+            return stack.getItem() instanceof UpgradeItem;
+        }
+        return false;
+    }
+
+    @Override
+    public int getTanks() {
+        return 2;
+    }
+
+    @Override
+    public int getTankCapacity(int tank) {
+        return 4500;
     }
 
     @Nullable
@@ -40,11 +70,6 @@ public class FuelRefineryBlockEntity extends AbstractFluidBlockEntity {
     public FluidRecipe<?> getRecipe() {
         assert level != null;
         return level.getRecipeManager().getRecipeFor(CGRecipeSerializerInit.FUEL_REFINING_TYPE.get(), wrapper, level).orElse(null);
-    }
-
-    @Override
-    public int[] invSize() {
-        return new int[] {0, 1, 2, 3, 4, 5};
     }
 
     @Override
@@ -61,20 +86,6 @@ public class FuelRefineryBlockEntity extends AbstractFluidBlockEntity {
         map.put("tanks", new int[]{1});
         map.put("slots", new int[]{1});
         return map;
-    }
-
-    @Override
-    public boolean canItemFit(int slot, ItemStack stack) {
-        if (slot == 0) {
-            return stack.getItem() instanceof BucketItem;
-        }
-        if (slot == 1) {
-            return stack.getItem().equals(Items.BUCKET);
-        }
-        if (slot >= 2 && slot <= 5) {
-            return stack.getItem() instanceof UpgradeItem;
-        }
-        return false;
     }
 
     @Override
@@ -100,8 +111,8 @@ public class FuelRefineryBlockEntity extends AbstractFluidBlockEntity {
 
     @Override
     public void executeExtra() {
-        emptyBucketSlot(0, 0);
-        fillBucketSlot(1, 1);
+        emptyFluidSlot(0, 0);
+        fillFluidSlot(1, 1);
     }
 
     @Nullable

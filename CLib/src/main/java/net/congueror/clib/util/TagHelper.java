@@ -1,7 +1,5 @@
 package net.congueror.clib.util;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -13,9 +11,7 @@ import java.util.stream.Stream;
 
 public final class TagHelper {
 
-    public static final TagKey<Item> STICKS = ItemTags.create(new ResourceLocation("forge:dusts"));
-    public static final TagKey<Item> DUSTS_BLAZE_POWDER = ItemTags.create(new ResourceLocation("forge:dusts/blaze_powder"));
-    public static final TagKey<Item> SHARDS_AMETHYST = ItemTags.create(new ResourceLocation("forge:shards/amethyst"));
+
 
     private TagHelper() {}
 

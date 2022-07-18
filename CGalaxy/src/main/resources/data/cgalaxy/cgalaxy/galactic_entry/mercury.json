@@ -1,0 +1,17 @@
+{
+  "type": "planet",
+  "id": "cgalaxy:mercury",
+  "parent": "cgalaxy:solar_system",
+  "diameter": {
+    "distance": 4879.4,
+    "unit": "km"
+  },
+  "moons": 0,
+  "atmosphere": "Negligible",
+  "gravity": 3.7,
+  "tier": 3,
+  "angle": 340,
+  "daysPerYear": 88,
+  "ringIndex": 0,
+  "texture": "cgalaxy:textures/sky/mercury.png"
+}

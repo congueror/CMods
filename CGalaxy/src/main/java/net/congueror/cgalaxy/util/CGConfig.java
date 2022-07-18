@@ -11,35 +11,44 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 public class CGConfig {
     public static ForgeConfigSpec SERVER_CONFIG;
     public static ForgeConfigSpec CLIENT_CONFIG;
-
-    public static final String CATEGORY_SPACE_SUIT_CLIENT = "client_space_suit";
+    public static ForgeConfigSpec COMMON_CONFIG;
 
     public static ForgeConfigSpec.EnumValue<TemperatureUnits> TEMPERATURE;
     public static ForgeConfigSpec.EnumValue<RadiationUnits> RADIATION;
     public static ForgeConfigSpec.EnumValue<AirPressureUnits> AIR_PRESSURE;
     public static ForgeConfigSpec.EnumValue<GuiColors> GUI_COLOR;
 
+    public static ForgeConfigSpec.ConfigValue<Integer> FUEL_LOADER_ENERGY_USAGE;
+    public static ForgeConfigSpec.ConfigValue<Integer> FUEL_LOADER_ENERGY_CAPACITY;
+
     static {
         ForgeConfigSpec.Builder SERVER_BUILDER = new ForgeConfigSpec.Builder();
         ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
+        ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
 
-        CLIENT_BUILDER.comment("Space Suit Settings").push(CATEGORY_SPACE_SUIT_CLIENT);
+        CLIENT_BUILDER.comment("Space Suit Settings").push("client_space_suit");
         TEMPERATURE = CLIENT_BUILDER.comment("The measuring unit of temperature displayed on the space suit hud").defineEnum("temperatureUnit", TemperatureUnits.CELCIUS);
         RADIATION = CLIENT_BUILDER.comment("The measuring unit of radiation displayed on the space suit hud").defineEnum("radiationUnit", RadiationUnits.SIEVERT);
         AIR_PRESSURE = CLIENT_BUILDER.comment("The measuring unit of air pressure displayed on the space suit hud").defineEnum("airPressureUnit", AirPressureUnits.PASCALS);
         GUI_COLOR = CLIENT_BUILDER.comment("The color of the space suit gui and hud").defineEnum("suitColor", GuiColors.GREEN);
         CLIENT_BUILDER.pop();
 
+        SERVER_BUILDER.comment("Machine Settings").push("machine_settings");
+        FUEL_LOADER_ENERGY_USAGE = SERVER_BUILDER.comment("The energy usage of the machine in FE/t").define("fuelLoaderUsage", 30);
+        FUEL_LOADER_ENERGY_CAPACITY = SERVER_BUILDER.comment("The energy buffer capacity of the machine in FE").define("fuelLoaderEnergyCapacity", 8100);
+        SERVER_BUILDER.pop();
+
         SERVER_CONFIG = SERVER_BUILDER.build();
         CLIENT_CONFIG = CLIENT_BUILDER.build();
+        COMMON_CONFIG = COMMON_BUILDER.build();
     }
 
     @SubscribeEvent
-    public static void onLoad(final ModConfigEvent.Loading configEvent) {
+    public static void onLoad(final ModConfigEvent.Loading e) {
     }
 
     @SubscribeEvent
-    public static void onReload(final ModConfigEvent.Reloading configEvent) {
+    public static void onReload(final ModConfigEvent.Reloading e) {
     }
 
     public enum TemperatureUnits {

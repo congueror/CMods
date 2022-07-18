@@ -1,11 +1,12 @@
 package net.congueror.cgalaxy.blocks;
 
-import net.congueror.cgalaxy.api.registry.CGCropBlock;
-import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
+import net.congueror.cgalaxy.util.registry.CGCropBlock;
+import net.congueror.cgalaxy.util.registry.CGDimensionBuilder;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.congueror.cgalaxy.init.CGItemInit;
-import net.congueror.cgalaxy.util.DamageSources;
+import net.congueror.cgalaxy.util.CGDamageSource;
 import net.congueror.cgalaxy.util.SpaceSuitUtils;
+import net.congueror.cgalaxy.util.json_managers.DimensionManager;
 import net.congueror.cgalaxy.world.CGDimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -51,10 +52,10 @@ public class LunacCropBlock extends CropBlock implements CGCropBlock {
 
     @Override
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
-        CGDimensionBuilder.DimensionObject obj = CGDimensionBuilder.getObjectFromKey(pLevel.dimension());
+        CGDimensionBuilder.DimensionObject obj = DimensionManager.getObjectFromKey(pLevel.dimension());
         if (obj != null && pEntity instanceof LivingEntity e) {
             if (SpaceSuitUtils.hasRadiationProtection(e, obj.getRadiation())) {
-                pEntity.hurt(DamageSources.RADIATION, 1.0f);
+                pEntity.hurt(CGDamageSource.RADIATION, 1.0f);
             }
         } else if (pState.getValue(BlockStateProperties.AGE_7) == 7 && pEntity instanceof ItemEntity e) {
             if (e.getItem().is(Items.NETHERITE_INGOT)) {

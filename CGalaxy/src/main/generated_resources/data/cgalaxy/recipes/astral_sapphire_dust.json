@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:gems/astral_sapphire"
+    },
+    {
+      "tag": "clib:hammer"
+    }
+  ],
+  "result": {
+    "item": "cgalaxy:astral_sapphire_dust"
+  }
+}

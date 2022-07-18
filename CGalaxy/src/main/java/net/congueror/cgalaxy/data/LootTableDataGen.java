@@ -40,9 +40,9 @@ public class LootTableDataGen extends LootTableDataProvider {
         createChestLootTable(CGalaxy.location("chests/lunar_farm"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(6))
                         .add(EmptyLootItem.emptyItem().setWeight(5))
-                        .add(LootItem.lootTableItem(CGItemInit.ASTRAL_SAPPHIRE.get()).setQuality(1).setWeight(6))
-                        .add(LootItem.lootTableItem(CGBlockInit.LUNAR_CARROTS.get()).setQuality(2).setWeight(10))
-                        .add(LootItem.lootTableItem(CGBlockInit.MOON_REGOLITH.get()).setQuality(10).setWeight(20))
+                        .add(LootItem.lootTableItem(CGItemInit.ASTRAL_SAPPHIRE.get()).setWeight(6))
+                        .add(LootItem.lootTableItem(CGBlockInit.LUNAR_CARROTS.get()).setWeight(10))
+                        .add(LootItem.lootTableItem(CGBlockInit.MOON_REGOLITH.get()).setWeight(20))
                 ));
         return tables;
     }

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_bottom_top",
-  "textures": {
-    "side": "clib:block/solar_generator_side",
-    "bottom": "clib:block/machine_frame",
-    "top": "clib:block/solar_generator_3_top"
-  }
-}

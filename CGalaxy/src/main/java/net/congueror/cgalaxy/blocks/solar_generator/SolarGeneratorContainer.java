@@ -1,10 +1,12 @@
-package net.congueror.clib.blocks.solar_generator;
+package net.congueror.cgalaxy.blocks.solar_generator;
 
-import net.congueror.clib.blocks.abstract_machine.item.AbstractItemContainer;
+import net.congueror.cgalaxy.init.CGContainerInit;
+import net.congueror.cgalaxy.networking.CGNetwork;
+import net.congueror.clib.blocks.machine_base.machine.AbstractItemMachineContainer;
 import net.congueror.clib.init.CLContainerInit;
 import net.congueror.clib.items.UpgradeItem;
 import net.congueror.clib.networking.CLNetwork;
-import net.congueror.clib.networking.PacketUpdateSolarGenerator;
+import net.congueror.cgalaxy.networking.PacketUpdateSolarGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -19,11 +21,11 @@ import net.minecraftforge.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 
-public class SolarGeneratorContainer extends AbstractItemContainer<SolarGeneratorBlockEntity> {
+public class SolarGeneratorContainer extends AbstractItemMachineContainer<SolarGeneratorBlockEntity> {
     int generationLastTick;
 
     public SolarGeneratorContainer(int id, Player player, Inventory playerInventory, SolarGeneratorBlockEntity tile, ContainerData dataIn) {
-        super(CLContainerInit.SOLAR_GENERATOR.get(), id, player, playerInventory, tile, dataIn);
+        super(CGContainerInit.SOLAR_GENERATOR.get(), id, player, playerInventory, tile, dataIn);
 
         tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
             addSlot(new SlotItemHandler(iItemHandler, 0, 137, 53));

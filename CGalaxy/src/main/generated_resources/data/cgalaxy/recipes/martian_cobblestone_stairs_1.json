@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "cgalaxy:martian_cobblestone"
+  },
+  "result": "cgalaxy:martian_cobblestone_stairs",
+  "count": 1
+}

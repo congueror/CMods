@@ -3,7 +3,6 @@ package net.congueror.cgalaxy.gui.galaxy_map;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.congueror.cgalaxy.CGalaxy;
-import net.congueror.cgalaxy.blocks.station_core.SpaceStationCoreContainer;
 import net.congueror.cgalaxy.blocks.station_core.SpaceStationCoreSelectScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
@@ -15,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+
+import static net.congueror.cgalaxy.util.saved_data.WorldSavedData.CORE_LOCATIONS;
 
 public class SpaceStationSelectScreen extends Screen {
     public static final ResourceLocation GUI = new ResourceLocation(CGalaxy.MODID, "textures/gui/space_station_core_selection.png");
@@ -35,7 +36,7 @@ public class SpaceStationSelectScreen extends Screen {
         super.init();
         assert this.minecraft != null;
 
-        var cores = SpaceStationCoreContainer.CORE_LOCATIONS.get(orbitDim);
+        var cores = CORE_LOCATIONS.get(orbitDim);
         if (cores != null) {
             cores.stream().filter(o -> o.canPlayerAccess(user)).forEach(o -> {
                 list.add(addRenderableWidget(new SpaceStationCoreSelectScreen.SSCoreButton((this.width - 236) / 2 + 11, 64 + 8, pButton -> {

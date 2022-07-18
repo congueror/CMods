@@ -1,0 +1,16 @@
+{
+  "type": "moon",
+  "id": "cgalaxy:europa",
+  "parent": "cgalaxy:jupiter",
+  "diameter": {
+    "distance": 3121.6,
+    "unit": "km"
+  },
+  "atmosphere": "Negligible",
+  "gravity": 1.315,
+  "tier": 6,
+  "angle": 9,
+  "daysPerYear": 3.5,
+  "ringIndex": 2,
+  "texture": "cgalaxy:textures/sky/jupiter.png"
+}

@@ -6,9 +6,7 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -28,18 +26,13 @@ import java.util.stream.Stream;
  *             new CLItem(new Item.Properties()
  *                  .tab(ModCreativeModeTabs.ResourcesIG.instance)))
  *             .withTranslation("My Test")
- *             .withExistingItemTags(Tags.Items.INGOTS)
+ *             .withItemTags(Tags.Items.INGOTS)
  *             .build(ITEMS);
  * </pre>
  */
 @SuppressWarnings("unused")
 public class ItemBuilder<I extends Item> implements Builder<I> {
     public final RegistryObject<I> regObject;
-
-    /**
-     * All the item tags added via the {@link #withNewItemTag(String)} and {@link BlockBuilder#withNewItemTag(String)} methods. The string is simply the full name of the tag, e.g. "forge:ingots/steel".
-     */
-    public static final Map<String, TagKey<Item>> ITEM_TAGS = new HashMap<>();
 
     public static final ListMap<String, ItemBuilder<?>> OBJECTS = new ListMap<>();
 
@@ -78,25 +71,29 @@ public class ItemBuilder<I extends Item> implements Builder<I> {
      * @param tags An array of tags to be added to the item.
      */
     @SafeVarargs
-    public final ItemBuilder<I> withExistingItemTags(TagKey<Item>... tags) {
+    public final ItemBuilder<I> withItemTags(TagKey<Item>... tags) {
         for (TagKey<Item> tag : tags) {
-            itemTags.put(tag.location().toString(), tag);
+            String name = tag.location().toString();
+            itemTags.put(name, tag);
+            if (name.contains("/")) {
+                String parent = name.substring(0, name.indexOf("/"));
+                itemTagsGen.put(ItemTags.create(new ResourceLocation(parent)), tag);
+            }
         }
         return this;
     }
 
     /**
-     * A new tag to be added to the item. Accessible through the {@link #ITEM_TAGS} field. For already defined tags use {@link #withExistingItemTags(TagKey[])}.
+     * A new tag to be added to the item. For already defined tags use {@link #withItemTags(TagKey[])}.
      * Note that if the string has a Backslash("/") it will create and add 2 tags, e.g. Passing this string will add the following tags:
      * <p>
      * "forge:nuggets/my_nugget" -> "forge:nuggets", "forge:nuggets/my_nugget"
      *
      * @param tagName The full name of the tag, e.g. "forge:ingots/my_ingot"
      */
-    public ItemBuilder<I> withNewItemTag(String tagName) {
+    public ItemBuilder<I> withItemTag(String tagName) {
         TagKey<Item> tag = ItemTags.create(new ResourceLocation(tagName));
         itemTags.put(tagName, tag);
-        ITEM_TAGS.put(tagName, tag);
         if (tagName.contains("/")) {
             String parent = tagName.substring(0, tagName.indexOf("/"));
             itemTagsGen.put(ItemTags.create(new ResourceLocation(parent)), tag);

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=top": {
+      "model": "cgalaxy:block/martian_stone_bricks_slab_top"
+    },
+    "type=bottom": {
+      "model": "cgalaxy:block/martian_stone_bricks_slab"
+    },
+    "type=double": {
+      "model": "cgalaxy:block/martian_stone_bricks"
+    }
+  }
+}

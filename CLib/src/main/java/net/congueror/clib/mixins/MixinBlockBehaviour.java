@@ -1,6 +1,6 @@
 package net.congueror.clib.mixins;
 
-import net.congueror.clib.api.events.BlockOnPlacedEvent;
+import net.congueror.clib.util.events.BlockOnPlacedEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;

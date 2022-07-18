@@ -21,13 +21,16 @@ public class MoonSkyEffects extends AbstractEffects {
         super(CGalaxy.location("moon_effect"), Float.NaN, false, DimensionSpecialEffects.SkyType.NONE, false, false);
     }
 
+    int i;
+
     @Override
     public ISkyRenderHandler getSkyRenderHandler() {
         return new AbstractSkyRenderer() {
             @Override
             public void render(int ticks, float partialTicks, PoseStack poseStack, ClientLevel level, Minecraft mc) {
-                ResourceLocation SUN = new ResourceLocation(CGalaxy.MODID, "textures/sky/moon_sun.png");
+                ResourceLocation SUN = new ResourceLocation(CGalaxy.MODID, "textures/sky/sun_2.png");
                 ResourceLocation EARTH = new ResourceLocation(CGalaxy.MODID, "textures/sky/earth.png");
+
                 //Forked from WorldRenderer.renderSky
                 RenderSystem.disableTexture();
                 Vec3 vec3 = level.getSkyColor(mc.gameRenderer.getMainCamera().getPosition(), partialTicks);

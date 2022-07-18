@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
@@ -14,9 +15,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.*;
@@ -68,25 +71,45 @@ public class WorldHelper {
     }
 
     /**
-     * Used to register a dimension resource key to the {@link Registry}.
+     * Used to create a dimension resource key.
      *
      * @param modid Your mod id
      * @param name  The id of the dimension
      * @return The registry key
      */
-    public static Holder<ResourceKey<Level>> registerDim(String modid, String name) {
-        return Holder.direct(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(modid, name)));
+    public static ResourceKey<Level> registerDim(String modid, String name) {
+        return registerDim(new ResourceLocation(modid, name));
     }
 
     /**
-     * Used to register a biome resource key to the {@link Registry}
+     * Used to create a dimension resource key.
+     *
+     * @param loc location of the dimension
+     * @return The registry key
+     */
+    public static ResourceKey<Level> registerDim(ResourceLocation loc) {
+        return ResourceKey.create(Registry.DIMENSION_REGISTRY, loc);
+    }
+
+    /**
+     * Used to create a biome resource key.
      *
      * @param modid Your mod id
-     * @param name  The id of the dimension
+     * @param name  The id of the biome
      * @return The registry key
      */
     public static ResourceKey<Biome> registerBiome(String modid, String name) {
-        return ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(modid, name));
+        return registerBiome(new ResourceLocation(modid, name));
+    }
+
+    /**
+     * Used to create a biome resource key.
+     *
+     * @param name The location of the biome
+     * @return The registry key
+     */
+    public static ResourceKey<Biome> registerBiome(ResourceLocation name) {
+        return ResourceKey.create(Registry.BIOME_REGISTRY, name);
     }
 
     /**
@@ -136,11 +159,12 @@ public class WorldHelper {
      * @param filler    The block that will be replaced by the ore. See {@link #blockRuleTest(Block)} or {@link #tagRuleTest(TagKey)}
      * @param block     The ore block
      * @param veinSize  The maximum amount of blocks that will be adjacent to the ore. Must be greater than 1 for some reason
-     * @param maxHeight The maximum y value that the ore can spawn at. (Minimum is always the bottom)
+     * @param minHeight The minimum y value that the ore can spawn at.
+     * @param maxHeight The maximum y value that the ore can spawn at.
      * @param count     How many attempts it will make to spawn the ore each chunk.
      */
     public static Holder<PlacedFeature> registerConfiguredOre(RuleTest filler, Block block, int veinSize, int minHeight, int maxHeight, int count) {
-        return registerConfiguredFeature(Objects.requireNonNull(block.getRegistryName()).toString(), Feature.ORE,
+        return registerConfiguredFeature(Objects.requireNonNull(block.getRegistryName()), Feature.ORE,
                 new OreConfiguration(filler, block.defaultBlockState(), veinSize),
                 CountPlacement.of(count),
                 InSquarePlacement.spread(),
@@ -154,14 +178,33 @@ public class WorldHelper {
      * @param ore       The ore block.
      * @param deepslate The deepslate ore block.
      * @param veinSize  The maximum amount of blocks that will be adjacent to the ore. Must be greater than 1 for some reason
-     * @param maxHeight The maximum y value that the ore can spawn at. (Minimum is always the bottom)
+     * @param minHeight The minimum y value that the ore can spawn at.
+     * @param maxHeight The maximum y value that the ore can spawn at.
      * @param count     How many attempts it will make to spawn the ore each chunk.
      */
     public static Holder<PlacedFeature> registerConfiguredOre(Block ore, Block deepslate, int veinSize, int minHeight, int maxHeight, int count) {
-        return registerConfiguredFeature(Objects.requireNonNull(ore.getRegistryName()).toString(), Feature.ORE,
+        return registerConfiguredFeature(Objects.requireNonNull(ore.getRegistryName()), Feature.ORE,
                 new OreConfiguration(List.of(
                         OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, ore.defaultBlockState()),
                         OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, deepslate.defaultBlockState())), veinSize),
+                CountPlacement.of(count),
+                InSquarePlacement.spread(),
+                HeightRangePlacement.triangle(VerticalAnchor.absolute(minHeight), VerticalAnchor.absolute(maxHeight)),
+                BiomeFilter.biome());
+    }
+
+    /**
+     * Used to register a configured ore feature to the {@link BuiltinRegistries} which will be placed in stone and deepslate.
+     *
+     * @param targetStates List of target states
+     * @param name Name of the feature
+     * @param veinSize  The maximum amount of blocks that will be adjacent to the ore. Must be greater than 1 for some reason
+     * @param minHeight The minimum y value that the ore can spawn at.
+     * @param maxHeight The maximum y value that the ore can spawn at.
+     * @param count     How many attempts it will make to spawn the ore each chunk.
+     */
+    public static Holder<PlacedFeature> registerConfiguredOre(List<OreConfiguration.TargetBlockState> targetStates, ResourceLocation name, int veinSize, int minHeight, int maxHeight, int count) {
+        return registerConfiguredFeature(name, Feature.ORE, new OreConfiguration(targetStates, veinSize),
                 CountPlacement.of(count),
                 InSquarePlacement.spread(),
                 HeightRangePlacement.triangle(VerticalAnchor.absolute(minHeight), VerticalAnchor.absolute(maxHeight)),
@@ -174,7 +217,7 @@ public class WorldHelper {
      * @param block The disk block
      */
     public static Holder<PlacedFeature> registerConfiguredDisk(Block block) {
-        return registerConfiguredFeature(Objects.requireNonNull(block.getRegistryName()).toString(), Feature.DISK,
+        return registerConfiguredFeature(Objects.requireNonNull(block.getRegistryName()), Feature.DISK,
                 new DiskConfiguration(block.defaultBlockState(), UniformInt.of(2, 3), 1, ImmutableList.of(Blocks.DIRT.defaultBlockState(), block.defaultBlockState())),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP_TOP_SOLID,
@@ -191,10 +234,9 @@ public class WorldHelper {
      * @param large   Large bud block
      * @param cluster Cluster block
      * @param rarity  The rarity of this geode. (normal = 24)
-     * @return
      */
     public static Holder<PlacedFeature> registerConfiguredGeode(Block block, Block budding, Block small, Block medium, Block large, Block cluster, int rarity) {
-        return registerConfiguredFeature(block.getRegistryName() + "_geode", Feature.GEODE,
+        return registerConfiguredFeature(new ResourceLocation(block.getRegistryName() + "_geode"), Feature.GEODE,
                 new GeodeConfiguration(new GeodeBlockSettings(BlockStateProvider.simple(Blocks.AIR.defaultBlockState()),
                         BlockStateProvider.simple(block.defaultBlockState()), BlockStateProvider.simple(budding.defaultBlockState()),
                         BlockStateProvider.simple(Blocks.CALCITE.defaultBlockState()), BlockStateProvider.simple(Blocks.SMOOTH_BASALT.defaultBlockState()),
@@ -215,10 +257,9 @@ public class WorldHelper {
      * @param fluid     The fluid's block you want the lake to be filled with.
      * @param maxHeight The maximum height the lake will spawn at.
      * @param chance    The chance that this lake has to spawn. The greater the number the more rare it is.
-     * @return
      */
     public static Holder<PlacedFeature> registerConfiguredLake(Block fluid, int minHeight, int maxHeight, int chance) {
-        return registerConfiguredFeature(fluid.getRegistryName() + "_lake", Feature.LAKE, new LakeFeature.Configuration(
+        return registerConfiguredFeature(new ResourceLocation(fluid.getRegistryName() + "_lake"), Feature.LAKE, new LakeFeature.Configuration(
                         BlockStateProvider.simple(fluid.defaultBlockState()), BlockStateProvider.simple(Blocks.STONE.defaultBlockState())),
                 RarityFilter.onAverageOnceEvery(chance),
                 InSquarePlacement.spread(),
@@ -227,10 +268,10 @@ public class WorldHelper {
                 SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR_WG, Integer.MIN_VALUE, -5), BiomeFilter.biome());
     }
 
-    public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<PlacedFeature> registerConfiguredFeature(String name, F feature, FC config, PlacementModifier... placements) {
-        return Holder.direct(Registry.register(
-                BuiltinRegistries.PLACED_FEATURE, new ResourceLocation(name), new PlacedFeature(Holder.direct(Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation(name),
-                        new ConfiguredFeature<>(feature, config))), List.of(placements))));
+    public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<PlacedFeature> registerConfiguredFeature(ResourceLocation name, F feature, FC config, PlacementModifier... placements) {
+        return Holder.direct(Registry.register(BuiltinRegistries.PLACED_FEATURE, name,
+                new PlacedFeature(Holder.direct(Registry.register(BuiltinRegistries.CONFIGURED_FEATURE,
+                        name, new ConfiguredFeature<>(feature, config))), List.of(placements))));
     }
 
     /**
@@ -268,6 +309,12 @@ public class WorldHelper {
     public static void addLocalMod(BiomeLoadingEvent e, Holder<PlacedFeature>... feature) {
         for (Holder<PlacedFeature> feature1 : feature) {
             e.getGeneration().addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, feature1);
+        }
+    }
+
+    public static void addMonster(BiomeLoadingEvent e, MobSpawnSettings.SpawnerData... spawners) {
+        for (MobSpawnSettings.SpawnerData s : spawners) {
+            e.getSpawns().addSpawn(MobCategory.MONSTER, s);
         }
     }
 

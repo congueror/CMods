@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
+import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.Map;
@@ -152,6 +153,21 @@ public class BlockModelDataProvider extends BlockStateProvider {
                 new ResourceLocation(block.getRegistryName().getNamespace(), block.getRegistryName().getPath())));
     }
 
+    public void snowLayerBlock(Block block, ResourceLocation texture) {
+        ModelFile[] model = new ModelFile[8];
+        for (int i = 2; i < 7 * 2 + 1; i += 2) {
+            model[i / 2 - 1] = models().withExistingParent(block.getRegistryName().toString() + "_height" + i, new ResourceLocation("block/snow_height" + i))
+                    .texture("texture", texture)
+                    .texture("particle", texture);
+        }
+        model[7] = models().cubeAll(block.getRegistryName().toString(), texture);
+
+        VariantBlockStateBuilder builder = getVariantBuilder(block);
+        for (int i = 1; i <= 8; i++) {
+            builder.partialState().with(BlockStateProperties.LAYERS, i).modelForState().modelFile(model[i-1]).addModel();
+        }
+    }
+
     /**
      * Block model and state for torch blocks.
      *
@@ -181,6 +197,21 @@ public class BlockModelDataProvider extends BlockStateProvider {
 
                 .partialState().with(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST)
                 .modelForState().rotationY(180).modelFile(file).addModel();
+    }
+
+    public void facingBlock(Block block, ModelFile file) {
+        getVariantBuilder(block)
+                .partialState().with(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH)
+                .modelForState().modelFile(file).rotationY(0).addModel()
+
+                .partialState().with(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH)
+                .modelForState().modelFile(file).rotationY(180).addModel()
+
+                .partialState().with(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST)
+                .modelForState().modelFile(file).rotationY(90).addModel()
+
+                .partialState().with(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST)
+                .modelForState().modelFile(file).rotationY(270).addModel();
     }
 
     public void age7Block(Block block, ModelFile[] files) {

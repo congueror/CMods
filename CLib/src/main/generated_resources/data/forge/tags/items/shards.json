@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#forge:shards/sapphire"
+    "#forge:shards/sapphire",
+    "#forge:shards/amethyst"
   ]
 }

@@ -13,7 +13,7 @@ public abstract class AbstractEffects extends DimensionSpecialEffects {
         this.location = location;
     }
 
-    public void build() {
+    public void register() {
         EFFECTS.put(location, this);
     }
 

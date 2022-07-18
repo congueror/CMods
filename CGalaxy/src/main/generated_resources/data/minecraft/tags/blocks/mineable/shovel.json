@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "cgalaxy:moon_regolith"
+    "cgalaxy:moon_regolith",
+    "cgalaxy:martian_soil"
   ]
 }

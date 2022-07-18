@@ -26,7 +26,7 @@ archivesBaseName = 'workspace'
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
-    mappings channel: 'parchment', version: '2022.05.22-1.18.2'
+    mappings channel: 'parchment', version: '2022.07.10-1.18.2'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -115,16 +115,16 @@ repositories {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.18.2-40.1.25"
+    minecraft "net.minecraftforge:forge:1.18.2-40.1.68"
 
     implementation fg.deobf("curse.maven:world-stripper-250603:3624497")
+    implementation fg.deobf("curse.maven:pipez-443900:3819249")
 
     //compile fg.deobf('slimeknights.tconstruct:TConstruct:1.16.5-3.1.0.231')
     //compile fg.deobf('slimeknights.mantle:Mantle:1.16.5-1.6.114')
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.5.174")
-
+    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2-forge:10.1.0.223")
 
     implementation project(':CLib')
     implementation project(':CGalaxy')
@@ -132,11 +132,14 @@ dependencies {
 
 sourceSets {
     main.resources.srcDirs += "$rootProject/CLib/src/main/resources"
+    main.resources.srcDirs += "$rootProject/CGalaxy/src/main/resources"
 }
 
 mixin {
     add sourceSets.main, "clib.mixin-refmap.json"
     config 'clib.mixin.json'
+    add sourceSets.main, "cgalaxy.mixin-refmap.json"
+    config 'cgalaxy.mixin.json'
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

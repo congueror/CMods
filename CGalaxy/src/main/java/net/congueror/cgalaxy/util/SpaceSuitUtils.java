@@ -1,18 +1,20 @@
 package net.congueror.cgalaxy.util;
 
-import net.congueror.cgalaxy.api.events.OxygenCheckEvent;
-import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
-import net.congueror.cgalaxy.api.registry.CGEntity;
-import net.congueror.cgalaxy.items.*;
-import net.congueror.cgalaxy.world.CGDimensions;
+import net.congueror.cgalaxy.items.space_suit.*;
+import net.congueror.cgalaxy.util.events.OxygenCheckEvent;
+import net.congueror.cgalaxy.util.json_managers.DimensionManager;
+import net.congueror.cgalaxy.util.registry.CGDimensionBuilder;
+import net.congueror.cgalaxy.util.registry.CGEntity;
 import net.congueror.clib.util.RenderingHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +25,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class SpaceSuitUtils {
+
     public static void tickPlayer(TickEvent.PlayerTickEvent e) {
         Player player = e.player;
         Level level = player.getCommandSenderWorld();
@@ -38,37 +42,56 @@ public class SpaceSuitUtils {
         double y = player.getY();
         double z = player.getZ();
 
-        List<Entity> entities = level.getEntitiesOfClass(Entity.class, new AABB(x - (192 / 2d), y - (192 / 2d), z - (192 / 2d), x + (192 / 2d), y + (192 / 2d), z + (192 / 2d)));
-        for (Entity entity : entities) {
-            CGDimensionBuilder.DimensionObject obj = CGDimensionBuilder.getObjectFromKey(level.dimension());
-            if (obj != null) {
+        CGDimensionBuilder.DimensionObject obj = DimensionManager.getObjectFromKey(level.dimension());
+        if (obj != null) {
+            if (obj.isOrbit()) {
+                if (y < 0 && !level.isClientSide) {
+                    ServerLevel world = Objects.requireNonNull(player.level.getServer()).getLevel(Level.OVERWORLD);
+                    ((ServerPlayer) player).teleportTo(world, x, 600, z, 0, 0);
+                }
+
+                if (!player.isCreative()) {
+                    if (!isPressurized(player)) {
+                        if (player.tickCount % 90 == 0) {
+                            player.setDeltaMovement(0.01, player.getDeltaMovement().y, player.getDeltaMovement().z);
+                        }
+                    }
+                }
+                if (player.isCrouching()) {
+                    player.setDeltaMovement(player.getDeltaMovement().x, -0.05, player.getDeltaMovement().z);
+                }
+                if (player.jumping) {
+                    player.setDeltaMovement(player.getDeltaMovement().x, 0.05, player.getDeltaMovement().z);
+                }
+            }
+
+            //noinspection ConstantConditions
+            int temperature = getTemperature(level);
+            float radiation = obj.getRadiation();
+            double gravity = obj.getGravity();
+
+            List<Entity> entities = level.getEntitiesOfClass(Entity.class, new AABB(x - 96, y - 96, z - 96, x + 96, y + 96, z + 96));
+            for (Entity entity : entities) {
                 if (entity instanceof LivingEntity le) {
                     boolean hasOxygen = SpaceSuitUtils.hasOxygen(le, obj);
                     SpaceSuitUtils.drainTanks(le);
-                    SpaceSuitUtils.drainProtection(le, getTemperature(player), getRadiation(player));
+                    SpaceSuitUtils.drainProtection(le, temperature, radiation);
 
-                    AttributeMap manager = le.getAttributes();
-                    Objects.requireNonNull(manager.getInstance(ForgeMod.ENTITY_GRAVITY.get())).setBaseValue(obj.getGravity());
-                    entity.fallDistance = 1;
+                    AttributeInstance instance = le.getAttributes().getInstance(ForgeMod.ENTITY_GRAVITY.get());
+                    if (instance.getBaseValue() != gravity)
+                        instance.setBaseValue(gravity);
+
                     if (!hasOxygen) {
-                        entity.hurt(DamageSources.NO_OXYGEN, 2.0f);
+                        entity.hurt(CGDamageSource.NO_OXYGEN, 2.0f);
                     }
-
-                    setAirPressure(le, obj.getAirPressure());
-                    if (RenderingHelper.isDayTime(level)) {
-                        setTemperature(le, obj.getDayTemp());
-                    } else {
-                        setTemperature(le, obj.getNightTemp());
+                    if (!SpaceSuitUtils.hasHeatProtection(le, temperature)) {
+                        le.hurt(CGDamageSource.HEAT, 3.0f);
                     }
-                    setRadiation(le, obj.getRadiation());
-                    if (!SpaceSuitUtils.hasHeatProtection(le, getTemperature(le))) {
-                        le.hurt(DamageSources.HEAT, 3.0f);
+                    if (!SpaceSuitUtils.hasColdProtection(le, temperature)) {
+                        le.hurt(CGDamageSource.COLD, 3.0f);
                     }
-                    if (!SpaceSuitUtils.hasColdProtection(le, getTemperature(le))) {
-                        le.hurt(DamageSources.COLD, 3.0f);
-                    }
-                    if (!SpaceSuitUtils.hasRadiationProtection(le, getRadiation(le))) {
-                        le.hurt(DamageSources.RADIATION, 1.0f);
+                    if (!SpaceSuitUtils.hasRadiationProtection(le, radiation)) {
+                        le.hurt(CGDamageSource.RADIATION, 1.0f);
                     }
 
                     if (obj.getRadiation() < 100) {
@@ -77,24 +100,23 @@ public class SpaceSuitUtils {
                     if (obj.getBreathable()) {
                         setOxygenTick(le, 0);
                     }
-                    if (getTemperature(le) < 60) {
+                    if (temperature < 60) {
                         setHeatTick(le, 0);
                     }
-                    if (getTemperature(le) > -60) {
+                    if (temperature > -60) {
                         setColdTick(le, 0);
                     }
-                }
+                } else if (entity instanceof ItemEntity ie) {
+                    ie.setDeltaMovement(ie.getDeltaMovement().multiply(1, obj.getGravity() / 0.08d, 1));
 
-                if (entity instanceof ItemEntity) {
-                    //entity.setDeltaMovement(0.0D, -obj.getGravity() / 4.0D, 0.0D);
-                    if (level.dimension() == CGDimensions.MOON.getDim().value() && getItemGravity(entity) <= 1 && entity.getDeltaMovement().y() <= -0.1) {
-                        setItemGravity(entity, 2);
-                        entity.setDeltaMovement((entity.getDeltaMovement().x()), ((entity.getDeltaMovement().y()) + (obj.getGravity() * 2.5)),
-                                (entity.getDeltaMovement().z()));
-                        setItemGravity(entity, 0);
-                    }
+                    //ie.setDeltaMovement(ie.getDeltaMovement().add(0, -obj.getGravity() / 2d, 0));
+                    //ie.setNoGravity(true);
                 }
             }
+        } else {
+            AttributeInstance instance = player.getAttributes().getInstance(ForgeMod.ENTITY_GRAVITY.get());
+            if (instance.getBaseValue() != instance.getAttribute().getDefaultValue())
+                instance.setBaseValue(instance.getAttribute().getDefaultValue());
         }
     }
 
@@ -107,33 +129,26 @@ public class SpaceSuitUtils {
 
     public static boolean upgradeSpaceSuit(LivingEntity entity, SpaceSuitUpgradeItem upgrade) {
         return ((SpaceSuitItem) entity.getItemBySlot(EquipmentSlot.HEAD).getItem()).upgradeArmor(entity.getItemBySlot(EquipmentSlot.HEAD), upgrade) &&
-        ((SpaceSuitItem) entity.getItemBySlot(EquipmentSlot.CHEST).getItem()).upgradeArmor(entity.getItemBySlot(EquipmentSlot.CHEST), upgrade) &&
-        ((SpaceSuitItem) entity.getItemBySlot(EquipmentSlot.LEGS).getItem()).upgradeArmor(entity.getItemBySlot(EquipmentSlot.LEGS), upgrade) &&
-        ((SpaceSuitItem) entity.getItemBySlot(EquipmentSlot.FEET).getItem()).upgradeArmor(entity.getItemBySlot(EquipmentSlot.FEET), upgrade);
+                ((SpaceSuitItem) entity.getItemBySlot(EquipmentSlot.CHEST).getItem()).upgradeArmor(entity.getItemBySlot(EquipmentSlot.CHEST), upgrade) &&
+                ((SpaceSuitItem) entity.getItemBySlot(EquipmentSlot.LEGS).getItem()).upgradeArmor(entity.getItemBySlot(EquipmentSlot.LEGS), upgrade) &&
+                ((SpaceSuitItem) entity.getItemBySlot(EquipmentSlot.FEET).getItem()).upgradeArmor(entity.getItemBySlot(EquipmentSlot.FEET), upgrade);
     }
 
-    public static int getTemperature(LivingEntity entity) {
-        return entity.getPersistentData().getInt("Temperature");
+    @Nullable
+    public static Integer getTemperature(Level level) {
+        CGDimensionBuilder.DimensionObject obj = DimensionManager.getObjectFromKey(level.dimension());
+        return obj != null ? (RenderingHelper.isDayTime(level) ? obj.getDayTemp() : obj.getNightTemp()) : null;
     }
 
-    public static void setTemperature(LivingEntity entity, int temperature) {
-        entity.getPersistentData().putInt("Temperature", temperature);
+    @Nullable
+    public static Float getRadiation(Level level) {
+        CGDimensionBuilder.DimensionObject obj = DimensionManager.getObjectFromKey(level.dimension());
+        return obj != null ? obj.getRadiation() : null;
     }
 
-    public static float getRadiation(LivingEntity entity) {
-        return entity.getPersistentData().getFloat("Radiation");
-    }
-
-    public static void setRadiation(LivingEntity entity, float radiation) {
-        entity.getPersistentData().putFloat("Radiation", radiation);
-    }
-
+    @Deprecated
     public static double getAirPressure(LivingEntity entity) {
         return entity.getPersistentData().getDouble("AirPressure");
-    }
-
-    public static void setAirPressure(LivingEntity entity, double airPressure) {
-        entity.getPersistentData().putDouble("AirPressure", airPressure);
     }
 
     public static int getHeatTick(LivingEntity entity) {
@@ -176,14 +191,6 @@ public class SpaceSuitUtils {
         entity.getPersistentData().putBoolean("Pressurized", pressurized);
     }
 
-    public static double getItemGravity(Entity entity) {
-        return entity.getPersistentData().getDouble("ItemGravity");
-    }
-
-    public static void setItemGravity(Entity entity, double amount) {
-        entity.getPersistentData().putDouble("ItemGravity", amount);
-    }
-
     public static ArrayList<ItemStack> deserializeContents(LivingEntity entity) {
         ArrayList<ItemStack> stacks = new ArrayList<>();
         for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
@@ -200,6 +207,14 @@ public class SpaceSuitUtils {
             }
         }
         return stacks;
+    }
+
+    public static ItemStack[] getTanks(LivingEntity entity) {
+        return deserializeContents(entity).stream().filter(stack -> stack.getItem() instanceof OxygenTankItem).toArray(ItemStack[]::new);
+    }
+
+    public static ItemStack getFirstNonEmptyTank(LivingEntity entity) {
+        return deserializeContents(entity).stream().filter(stack -> stack.getItem() instanceof OxygenTankItem && ((OxygenTankItem) stack.getItem()).getFluid(stack).getAmount() > 0).findFirst().orElse(ItemStack.EMPTY);
     }
 
     public static boolean hasHeatProtection(LivingEntity entity, int temperature) {
@@ -268,6 +283,10 @@ public class SpaceSuitUtils {
                 return i.canBreath(obj);
             }
 
+            if (isPressurized(entity)) {
+                return true;
+            }
+
             if (SpaceSuitUtils.isEquipped(entity)) {
                 AtomicBoolean flag2 = new AtomicBoolean();
                 AtomicBoolean flag3 = new AtomicBoolean();
@@ -276,17 +295,13 @@ public class SpaceSuitUtils {
                         flag2.set(true);
                     }
                     if (itemStack.getItem() instanceof OxygenTankItem tank) {
-                        flag3.set(tank.getOxygen(itemStack) > 0);
+                        flag3.set(tank.getFluid(itemStack).getAmount() > 0);
                     }
                 });
                 return flag2.get() && flag3.get();
             }
 
-            if (isPressurized(entity)) {
-                return true;
-            }
-
-            OxygenCheckEvent event = new OxygenCheckEvent();
+            OxygenCheckEvent event = new OxygenCheckEvent(entity, obj);
             MinecraftForge.EVENT_BUS.post(event);
             return event.hasOxygen();
         }
@@ -368,20 +383,19 @@ public class SpaceSuitUtils {
     }
 
     public static void drainTanks(LivingEntity entity) {
-        ItemStack tank = SpaceSuitUtils.deserializeContents(entity).stream().filter(itemStack -> itemStack.getItem() instanceof OxygenTankItem && ((OxygenTankItem) itemStack.getItem()).getOxygen(itemStack) > 0).findFirst().orElse(ItemStack.EMPTY);
+        ItemStack tank = getFirstNonEmptyTank(entity);
         if (!tank.isEmpty()) {
             if (getOxygenTick(entity) > 90) {
                 if (entity instanceof Player && ((Player) entity).isCreative()) {
-                    return;
                 } else {
                     ((OxygenTankItem) tank.getItem()).drain(tank, 1);
                     entity.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
                         int index = -1;
                         if (iItemHandler.getStackInSlot(0).getItem() instanceof OxygenTankItem &&
-                                ((OxygenTankItem) iItemHandler.getStackInSlot(0).getItem()).getOxygen(iItemHandler.getStackInSlot(0)) > 0) {
+                                ((OxygenTankItem) iItemHandler.getStackInSlot(0).getItem()).getFluid(iItemHandler.getStackInSlot(0)).getAmount() > 0) {
                             index = 0;
                         } else if (iItemHandler.getStackInSlot(1).getItem() instanceof OxygenTankItem && (
-                                (OxygenTankItem) iItemHandler.getStackInSlot(1).getItem()).getOxygen(iItemHandler.getStackInSlot(1)) > 0) {
+                                (OxygenTankItem) iItemHandler.getStackInSlot(1).getItem()).getFluid(iItemHandler.getStackInSlot(1)).getAmount() > 0) {
                             index = 1;
                         }
 

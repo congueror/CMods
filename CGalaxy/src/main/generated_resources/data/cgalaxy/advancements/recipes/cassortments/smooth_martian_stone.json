@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cgalaxy:smooth_martian_stone"
+    ]
+  },
+  "criteria": {
+    "has_martian_stone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "cgalaxy:martian_stone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cgalaxy:smooth_martian_stone"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_martian_stone",
+      "has_the_recipe"
+    ]
+  ]
+}

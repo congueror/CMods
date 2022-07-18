@@ -26,8 +26,9 @@ public class OverworldOrbitEffects extends AbstractEffects {
         return new AbstractSkyRenderer() {
             @Override
             public void render(int ticks, float partialTicks, PoseStack poseStack, ClientLevel level, Minecraft mc) {
-                ResourceLocation SUN = new ResourceLocation(CGalaxy.MODID, "textures/sky/moon_sun.png");
+                ResourceLocation SUN = new ResourceLocation(CGalaxy.MODID, "textures/sky/sun_2.png");
                 ResourceLocation EARTH = new ResourceLocation(CGalaxy.MODID, "textures/sky/earth.png");
+                ResourceLocation MOON = new ResourceLocation(CGalaxy.MODID, "textures/sky/moon.png");
                 //Forked from WorldRenderer.renderSky
                 RenderSystem.disableTexture();
                 Vec3 vec3 = level.getSkyColor(mc.gameRenderer.getMainCamera().getPosition(), partialTicks);
@@ -53,7 +54,7 @@ public class OverworldOrbitEffects extends AbstractEffects {
                 FogRenderer.levelFogColor();
                 poseStack.pushPose();
                 poseStack.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
-                poseStack.mulPose(Vector3f.XP.rotationDegrees(level.getTimeOfDay(partialTicks) * 0.2f * 360.0F));
+                poseStack.mulPose(Vector3f.XP.rotationDegrees(level.getTimeOfDay(partialTicks) * 360.0F));
                 this.starVBO.bind();
                 this.starVBO.drawWithShader(poseStack.last().pose(), RenderSystem.getProjectionMatrix(), shaderinstance);
                 VertexBuffer.unbind();
@@ -72,7 +73,7 @@ public class OverworldOrbitEffects extends AbstractEffects {
                 poseStack.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
                 poseStack.mulPose(Vector3f.XP.rotationDegrees(level.getTimeOfDay(partialTicks) * 360.0F));
                 Matrix4f matrix4f1 = poseStack.last().pose();
-                size = 30.0F;
+                size = 40.0F;
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderTexture(0, SUN);
                 bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
@@ -80,6 +81,29 @@ public class OverworldOrbitEffects extends AbstractEffects {
                 bufferbuilder.vertex(matrix4f1, size, 100.0F, -size).uv(1.0F, 0.0F).endVertex();
                 bufferbuilder.vertex(matrix4f1, size, 100.0F, size).uv(1.0F, 1.0F).endVertex();
                 bufferbuilder.vertex(matrix4f1, -size, 100.0F, size).uv(0.0F, 1.0F).endVertex();
+                bufferbuilder.end();
+                BufferUploader.end(bufferbuilder);
+                poseStack.popPose();
+                RenderSystem.disableBlend();
+
+                //Moon
+                RenderSystem.enableTexture();
+                RenderSystem.enableBlend();
+                RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                poseStack.pushPose();
+                poseStack.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
+                poseStack.mulPose(Vector3f.XP.rotationDegrees(level.getTimeOfDay(partialTicks) * 360.0F));
+                poseStack.mulPose(Vector3f.ZP.rotationDegrees(180F));
+                Matrix4f matrix4f3 = poseStack.last().pose();
+                size = 3.0F;
+                RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                RenderSystem.setShaderTexture(0, MOON);
+                bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+                bufferbuilder.vertex(matrix4f3, -size, 100.0F, -size).uv(0.0F, 0.0F).endVertex();
+                bufferbuilder.vertex(matrix4f3, size, 100.0F, -size).uv(1.0F, 0.0F).endVertex();
+                bufferbuilder.vertex(matrix4f3, size, 100.0F, size).uv(1.0F, 1.0F).endVertex();
+                bufferbuilder.vertex(matrix4f3, -size, 100.0F, size).uv(0.0F, 1.0F).endVertex();
                 bufferbuilder.end();
                 BufferUploader.end(bufferbuilder);
                 poseStack.popPose();
@@ -102,6 +126,7 @@ public class OverworldOrbitEffects extends AbstractEffects {
                 bufferbuilder.end();
                 BufferUploader.end(bufferbuilder);
                 poseStack.popPose();
+
 
                 RenderSystem.disableBlend();
                 if (level.effects().hasGround()) {

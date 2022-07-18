@@ -1,6 +1,6 @@
 package net.congueror.clib.mixins;
 
-import net.congueror.clib.api.events.PlayerSetupAnimationEvent;
+import net.congueror.clib.util.events.PlayerSetupAnimationEvent;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;

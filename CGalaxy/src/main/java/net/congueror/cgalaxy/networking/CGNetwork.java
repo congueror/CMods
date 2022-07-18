@@ -17,6 +17,11 @@ public class CGNetwork {
 
     public static void registerMessages() {
         INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(CGalaxy.MODID, "main"), () -> "1.0", s -> true, s -> true);
+        INSTANCE.messageBuilder(PacketUpdateSolarGenerator.class, nextID())
+                .encoder(PacketUpdateSolarGenerator::toBytes)
+                .decoder(PacketUpdateSolarGenerator::new)
+                .consumer(PacketUpdateSolarGenerator::handle)
+                .add();
         INSTANCE.messageBuilder(PacketSyncMap.class, nextID())
                 .encoder(PacketSyncMap::toBytes)
                 .decoder(PacketSyncMap::new)
@@ -56,6 +61,16 @@ public class CGNetwork {
                 .encoder(PacketUpdateSSCore::toBytes)
                 .decoder(PacketUpdateSSCore::new)
                 .consumer(PacketUpdateSSCore::handle)
+                .add();
+        INSTANCE.messageBuilder(PacketCreateSpaceStation.class, nextID())
+                .encoder(PacketCreateSpaceStation::toBytes)
+                .decoder(PacketCreateSpaceStation::new)
+                .consumer(PacketCreateSpaceStation::handle)
+                .add();
+        INSTANCE.messageBuilder(PacketUpdateSSCreator.class, nextID())
+                .encoder(PacketUpdateSSCreator::toBytes)
+                .decoder(PacketUpdateSSCreator::new)
+                .consumer(PacketUpdateSSCreator::handle)
                 .add();
     }
 

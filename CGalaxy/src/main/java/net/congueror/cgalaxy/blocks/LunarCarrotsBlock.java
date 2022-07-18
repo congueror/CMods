@@ -1,7 +1,7 @@
 package net.congueror.cgalaxy.blocks;
 
-import net.congueror.cgalaxy.api.registry.CGCropBlock;
-import net.congueror.cgalaxy.api.registry.CGDimensionBuilder;
+import net.congueror.cgalaxy.util.registry.CGCropBlock;
+import net.congueror.cgalaxy.util.registry.CGDimensionBuilder;
 import net.congueror.cgalaxy.init.CGBlockInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;

@@ -1,7 +1,8 @@
-package net.congueror.clib.blocks.solar_generator;
+package net.congueror.cgalaxy.blocks.solar_generator;
 
 import com.google.gson.JsonObject;
-import net.congueror.clib.api.recipe.ItemRecipe;
+import net.congueror.cgalaxy.init.CGRecipeSerializerInit;
+import net.congueror.clib.util.recipe.ItemRecipe;
 import net.congueror.clib.init.CLRecipeSerializerInit;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
@@ -68,12 +69,12 @@ public class SolarGeneratorRecipe implements ItemRecipe<Container> {
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
-        return CLRecipeSerializerInit.SOLAR_ENERGY.get();
+        return CGRecipeSerializerInit.SOLAR_ENERGY.get();
     }
 
     @Override
     public @NotNull RecipeType<?> getType() {
-        return CLRecipeSerializerInit.SOLAR_ENERGY_TYPE.get();
+        return CGRecipeSerializerInit.SOLAR_ENERGY_TYPE.get();
     }
 
     public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<SolarGeneratorRecipe> {

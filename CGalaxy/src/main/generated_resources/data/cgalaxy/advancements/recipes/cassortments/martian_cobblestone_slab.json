@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "cgalaxy:martian_cobblestone_slab"
+    ]
+  },
+  "criteria": {
+    "has_Block{cgalaxy:martian_cobblestone}": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "cgalaxy:martian_cobblestone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "cgalaxy:martian_cobblestone_slab"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_Block{cgalaxy:martian_cobblestone}",
+      "has_the_recipe"
+    ]
+  ]
+}
