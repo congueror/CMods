@@ -9,12 +9,10 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.congueror.clib.CLib;
-import net.congueror.clib.blocks.solar_generator.SolarGeneratorScreen;
-import net.congueror.clib.init.CLBlockInit;
 import net.congueror.clib.init.CLItemInit;
-import net.congueror.clib.init.CLRecipeSerializerInit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -25,9 +23,9 @@ import java.util.stream.Collectors;
 
 //Ticks per cycle for energy buffer: energy capacity / (fe/t)
 @JeiPlugin
-public class JEICompat implements IModPlugin {
+public class CLJEICompat implements IModPlugin {
     private static final ResourceLocation ID = new ResourceLocation(CLib.MODID, "plugin/main");
-    public static final ResourceLocation SOLAR_ENERGY = new ResourceLocation(CLib.MODID, "solar_energy");
+
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -37,27 +35,26 @@ public class JEICompat implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
-        registration.addRecipeCategories(new SolarEnergyCategory(guiHelper));
+
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         registration.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM, Collections.singletonList(new ItemStack(CLItemInit.GHOST_ITEM.get())));
-        registration.addRecipes(getRecipes(CLRecipeSerializerInit.SOLAR_ENERGY_TYPE.get()), SOLAR_ENERGY);
+
     }
 
-    public static List<Recipe<?>> getRecipes(RecipeType<?> recipe) {
-        assert Minecraft.getInstance().level != null;
-        return Minecraft.getInstance().level.getRecipeManager().getRecipes().stream().filter(iRecipe -> iRecipe.getType() == recipe).collect(Collectors.toList());
+    public static <C extends Container, T extends Recipe<C>> List<T> getRecipes(RecipeType<T> recipe) {
+        return Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(recipe);
     }
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(SolarGeneratorScreen.class, 88, 33, 24, 23, SOLAR_ENERGY);
+
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(CLBlockInit.SOLAR_GENERATOR_1.get()), SOLAR_ENERGY);
+
     }
 }

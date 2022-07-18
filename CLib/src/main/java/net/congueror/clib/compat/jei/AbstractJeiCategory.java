@@ -1,11 +1,13 @@
 package net.congueror.clib.compat.jei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.congueror.clib.CLib;
 import net.minecraft.client.resources.language.I18n;
@@ -23,6 +25,7 @@ import java.util.List;
 
 public abstract class AbstractJeiCategory<T> implements IRecipeCategory<T> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(CLib.MODID, "textures/gui/jei_gui.png");
+    protected final RecipeType<T> recipeType;
     protected final IGuiHelper helper;
     protected boolean isGenerator;
     protected int fePerTick;
@@ -39,7 +42,8 @@ public abstract class AbstractJeiCategory<T> implements IRecipeCategory<T> {
 
     protected final String localized;
 
-    public AbstractJeiCategory(IGuiHelper helper, String translationKey, int processTime, int energyCapacity, int fePerTick, boolean isGenerator) {
+    public AbstractJeiCategory(RecipeType<T> recipeType, IGuiHelper helper, String translationKey, int processTime, int energyCapacity, int fePerTick, boolean isGenerator) {
+        this.recipeType = recipeType;
         this.helper = helper;
         this.isGenerator = isGenerator;
         this.fePerTick = fePerTick;
@@ -51,15 +55,30 @@ public abstract class AbstractJeiCategory<T> implements IRecipeCategory<T> {
         arrow_vertical_anim = helper.drawableBuilder(TEXTURE, 222, 0, 17, 30).buildAnimated(processTime, IDrawableAnimated.StartDirection.BOTTOM, false);
         energy_slot = helper.drawableBuilder(TEXTURE, 172, 18, 18, 62).build();
         energy_glass = helper.drawableBuilder(TEXTURE, 206, 0, 16, 60).build();
-        energy = helper.drawableBuilder(TEXTURE, 190, 0, 16, 60).buildAnimated(energySpeed, isGenerator ? IDrawableAnimated.StartDirection.BOTTOM : IDrawableAnimated.StartDirection.TOP, true);
+        energy = helper.drawableBuilder(TEXTURE, 190, 0, 16, 60).buildAnimated(energySpeed, isGenerator ? IDrawableAnimated.StartDirection.BOTTOM : IDrawableAnimated.StartDirection.TOP, !isGenerator);
         tank = helper.drawableBuilder(TEXTURE, 172, 80, 18, 52).build();
         slot = helper.drawableBuilder(TEXTURE, 172, 0, 18, 18).build();
 
         localized = I18n.get(translationKey);
     }
 
+    @Override
+    public @NotNull RecipeType<T> getRecipeType() {
+        return recipeType;
+    }
+
+    @Override
+    public ResourceLocation getUid() {
+        return recipeType.getUid();
+    }
+
+    @Override
+    public Class<? extends T> getRecipeClass() {
+        return recipeType.getRecipeClass();
+    }
+
     public IDrawable createIcon(ItemLike item) {
-        return helper.createDrawableIngredient(new ItemStack(item));
+        return helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(item));
     }
 
     @Override

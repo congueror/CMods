@@ -39,10 +39,6 @@ public class RoomPressurizerRecipe implements FluidRecipe<IItemFluidInventory> {
         return new FluidIngredient[]{ingredient, ingredient1};
     }
 
-    public List<FluidStack> getInputs() {
-        return new ArrayList<>(ingredient.getFluidStacks());
-    }
-
     public int[] getPercentages() {
         return new int[]{percentage, percentage1};
     }

@@ -30,7 +30,7 @@ public class SolarGeneratorBlockEntity extends AbstractItemBlockEntity<SolarGene
     }
 
     public ResourceLocation getTexture() {
-        return getRecipe() != null ? new ResourceLocation(Objects.requireNonNull(getRecipe()).getTexture()) : new ResourceLocation("clib:textures/gui/overworld.png");
+        return getRecipe() != null ? new ResourceLocation(Objects.requireNonNull(getRecipe()).getTexture()) : new ResourceLocation("cgalaxy:textures/gui/overworld.png");
     }
 
     public float getNightIntensity() {

@@ -3,5 +3,5 @@
   "dimension": "cgalaxy:moon",
   "dayIntensity": 1.8,
   "nightIntensity": 0,
-  "texture": "clib:textures/gui/moon.png"
+  "texture": "cgalaxy:textures/gui/moon.png"
 }

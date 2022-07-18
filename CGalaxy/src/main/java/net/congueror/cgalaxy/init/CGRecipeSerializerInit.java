@@ -28,9 +28,10 @@ public class CGRecipeSerializerInit {
     public static final RegistryObject<RecipeSerializer<RoomPressurizerRecipe>> ROOM_PRESSURIZER = RECIPE_SERIALIZERS.register("room_pressurizing", RoomPressurizerRecipe.Serializer::new);
 
     public static final RegistryObject<RecipeType<FuelLoaderRecipe>> FUEL_LOADING_TYPE = registerType("fuel_loading");
-    public static final RegistryObject<RecipeType<FuelLoaderRecipe>> FUEL_REFINING_TYPE = registerType("fuel_refining");
-    public static final RegistryObject<RecipeType<FuelLoaderRecipe>> GAS_EXTRACTING_TYPE = registerType("gas_extracting");
-    public static final RegistryObject<RecipeType<FuelLoaderRecipe>> ROOM_PRESSURIZING_TYPE = registerType("room_pressurizing");
+    public static final RegistryObject<RecipeType<FuelRefineryRecipe>> FUEL_REFINING_TYPE = registerType("fuel_refining");
+    public static final RegistryObject<RecipeType<GasExtractorRecipe>> GAS_EXTRACTING_TYPE = registerType("gas_extracting");
+    public static final RegistryObject<RecipeType<RoomPressurizerRecipe>> ROOM_PRESSURIZING_TYPE = registerType("room_pressurizing");
+    public static final RegistryObject<RecipeType<SolarGeneratorRecipe>> SOLAR_ENERGY_TYPE = registerType("solar_energy");
 
     private static <T extends Recipe<?>> RegistryObject<RecipeType<T>> registerType(String name) {
         return RECIPE_TYPES.register(name, () -> new RecipeType<>() {

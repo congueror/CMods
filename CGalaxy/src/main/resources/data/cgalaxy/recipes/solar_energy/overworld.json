@@ -3,5 +3,5 @@
   "dimension": "minecraft:overworld",
   "dayIntensity": 1.0,
   "nightIntensity": 0,
-  "texture": "clib:textures/gui/overworld.png"
+  "texture": "cgalaxy:textures/gui/overworld.png"
 }

@@ -42,7 +42,7 @@ public class SolarGeneratorContainer extends AbstractItemContainer<SolarGenerato
         if (tile.energyGen != generationLastTick) {
             generationLastTick = tile.energyGen;
             if (player instanceof ServerPlayer) {
-                CLNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
+                CGNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
                         new PacketUpdateSolarGenerator(containerId, tile.energyGen));
             }
         }
